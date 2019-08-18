@@ -24,11 +24,7 @@ package com.github.gw2toolbelt.apigen.model
 import java.util.concurrent.*
 
 @ExperimentalUnsignedTypes
-data class Duration(
+data class Duration internal constructor(
     val amount: ULong,
     val unit: TimeUnit
-) {
-
-    internal constructor(amount: Int, unit: TimeUnit): this(amount.toULong(), unit)
-
-}
+)
