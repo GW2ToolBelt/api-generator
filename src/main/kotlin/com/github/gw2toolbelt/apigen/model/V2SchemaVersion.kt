@@ -1,0 +1,10 @@
+package com.github.gw2toolbelt.apigen.model
+
+enum class V2SchemaVersion {
+    V2_SCHEMA_CLASSIC,
+    V2_SCHEMA_2019_02_21T00_00_00_000Z,
+    V2_SCHEMA_2019_03_22T00_00_00_000Z,
+    V2_SCHEMA_2019_05_16T00_00_00_000Z,
+    V2_SCHEMA_2019_05_21T23_00_00_000Z,
+    V2_SCHEMA_2019_05_22T00_00_00_000Z
+}
