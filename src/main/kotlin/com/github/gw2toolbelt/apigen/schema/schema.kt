@@ -21,6 +21,8 @@
  */
 package com.github.gw2toolbelt.apigen.schema
 
+import com.github.gw2toolbelt.apigen.model.*
+
 interface SchemaType {
 
     sealed class Kind {
@@ -34,7 +36,6 @@ interface SchemaType {
         object STRING : Kind(), SchemaType
 
     }
-
 
 }
 
@@ -50,7 +51,15 @@ data class SchemaMap(
 
     data class Property(
         val type: SchemaType,
-        val description: String
+        val description: String?,
+        val isDeprecated: Boolean,
+        val optionality: Optionality
     )
 
+}
+
+sealed class Optionality {
+    object OPTIONAL : Optionality()
+    object REQUIRED : Optionality()
+    class MANDATED(val scope: TokenScope) : Optionality()
 }
