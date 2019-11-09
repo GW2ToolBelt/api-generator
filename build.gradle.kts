@@ -115,8 +115,8 @@ publishing {
 }
 
 signing {
+    isRequired = (deployment.type === com.github.gw2toolbelt.build.BuildType.RELEASE)
     sign(publishing.publications)
-    isRequired = deployment.type === com.github.gw2toolbelt.build.BuildType.RELEASE
 }
 
 repositories {
