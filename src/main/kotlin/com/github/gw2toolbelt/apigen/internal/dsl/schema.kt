@@ -47,6 +47,9 @@ internal class SchemaMapBuilder {
     ): SchemaMapPropertyBuilder =
         SchemaMapPropertyBuilder(type, description).also { _properties[this] = it }
 
+    val deprecated = PropertyModifier.deprecated
+    val optional = PropertyModifier.optional
+
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaMapPropertyBuilder) {
             property.optionality = Optionality.MANDATED(scope)
