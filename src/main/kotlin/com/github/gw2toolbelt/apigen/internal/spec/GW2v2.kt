@@ -38,6 +38,17 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/materials" {
+        summary = "Returns information about the materials stored in a player's vault."
+        security = setOf(ACCOUNT, INVENTORIES)
+
+        schema(array(map {
+            "id"(INTEGER, "the material's item ID")
+            "category"(INTEGER, "the material category the item belongs to")
+            "count"(INTEGER, "the number of the material that is stored in the player's vault")
+            optional.."binding"(STRING, "the binding of the material")
+        }))
+    }
     "/account/minis" {
         summary = "Returns information about a player's unlocked miniatures."
         security = setOf(UNLOCKS)
