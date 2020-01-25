@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/mapchests" {
+        summary = "Returns which Hero's Choice Chests a player has acquired since the most recent daily reset."
+        security = setOf(PROGRESSION)
+
+        schema(array(STRING, "an array of IDs for Hero's Choice Chests that the player has acquired since the most recent daily reset"))
+    }
     "/account/materials" {
         summary = "Returns information about the materials stored in a player's vault."
         security = setOf(ACCOUNT, INVENTORIES)
