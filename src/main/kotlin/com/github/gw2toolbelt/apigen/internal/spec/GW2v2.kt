@@ -38,6 +38,15 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/wallet" {
+        summary = "Returns information about a player's wallet."
+        security = setOf(WALLET)
+
+        schema(array(map {
+            "id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
+            "value"(INTEGER, "the amount of this currency in the player's wallet")
+        }))
+    }
     "/account/worldbosses" {
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset."
         security = setOf(PROGRESSION)
