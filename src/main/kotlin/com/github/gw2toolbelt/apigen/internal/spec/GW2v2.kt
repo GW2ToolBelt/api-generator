@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/mounts/skins" {
+        summary = "Returns information about a player's unlocked mount skins."
+        security = setOf(UNLOCKS)
+
+        schema(array(STRING, "an array of IDs containing the ID of each mount skin unlocked by the player"))
+    }
     "/account/mounts/types" {
         summary = "Returns information about a player's unlocked mounts."
         security = setOf(UNLOCKS)
