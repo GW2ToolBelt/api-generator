@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/novelties" {
+        summary = "Returns information about a player's unlocked novelties."
+        security = setOf(UNLOCKS)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each novelty unlocked by the player"))
+    }
     "/account/outfits" {
         summary = "Returns information about a player's unlocked outfits."
         security = setOf(UNLOCKS)
