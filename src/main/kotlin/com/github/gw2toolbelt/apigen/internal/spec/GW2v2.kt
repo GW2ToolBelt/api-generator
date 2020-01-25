@@ -31,6 +31,13 @@ import java.util.concurrent.TimeUnit.*
 
 @ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
+    "/build" {
+        summary = "Returns the current build ID."
+
+        schema(map {
+            "id"(INTEGER, "the current build ID")
+        })
+    }
     "/tokeninfo" {
         summary = "Returns information about the supplied API key."
         security(ACCOUNT)
