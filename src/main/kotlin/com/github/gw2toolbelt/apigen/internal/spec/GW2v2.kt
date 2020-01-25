@@ -38,6 +38,23 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/achievements" {
+        summary = "Returns a player's progress towards all their achievements."
+        security = setOf(ACCOUNT, PROGRESSION)
+
+        schema(array(map {
+            "id"(INTEGER, "the achievement's ID")
+            "done"(BOOLEAN, "whether or not the achievement is done")
+            optional.."bits"(
+                description = "the meaning of each value varies with each achievement",
+                type = array(INTEGER, "this attribute contains an array of numbers, giving more specific information on the progress for the achievement")
+            )
+            optional.."current"(INTEGER, "the player's current progress towards the achievement")
+            optional.."max"(INTEGER, "the amount needed to complete the achievement")
+            optional.."repeated"(INTEGER, "the number of times the achievement has been completed if the achievement is repeatable")
+            optional.."unlocked"(BOOLEAN, "if this achievement can be unlocked, whether or not the achievement is unlocked")
+        }))
+    }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(UNLOCKS)
