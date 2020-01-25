@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/outfits" {
+        summary = "Returns information about a player's unlocked outfits."
+        security = setOf(UNLOCKS)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each outfit unlocked by the player"))
+    }
     "/account/raids" {
         summary = "Returns which raid encounter a player has cleared since the most recent raid reset."
         security = setOf(PROGRESSION)
