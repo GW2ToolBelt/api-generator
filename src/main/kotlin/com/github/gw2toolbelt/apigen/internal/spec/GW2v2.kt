@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/worldbosses" {
+        summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset."
+        security = setOf(PROGRESSION)
+
+        schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
+    }
     "/tokeninfo" {
         summary = "Returns information about the supplied API key."
         security(ACCOUNT)
