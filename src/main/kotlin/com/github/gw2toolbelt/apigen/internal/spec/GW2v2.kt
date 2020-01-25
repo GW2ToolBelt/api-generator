@@ -38,6 +38,12 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/account/mailcarriers" {
+        summary = "Returns information about a player's unlocked mail carriers."
+        security = setOf(UNLOCKS)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each mail carrier unlocked by the player"))
+    }
     "/account/mapchests" {
         summary = "Returns which Hero's Choice Chests a player has acquired since the most recent daily reset."
         security = setOf(PROGRESSION)
