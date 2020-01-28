@@ -257,6 +257,32 @@ internal val GW2v2 = GW2APIVersion {
             }
         )
     }
+    "/wvw/objectives" {
+        summary = "Returns information about the objectives in the World versus World game mode."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(STRING, "the ID of the objective")
+            "name"(STRING, "the name of the objective")
+            "type"(STRING, "the type of the objective")
+            "sector_id"(INTEGER, "the map sector the objective can be found in")
+            "map_id"(INTEGER, "the ID of the map the objective can be found on")
+            "map_type"(STRING, "the type of the map the objective can be found on")
+            "coord"(
+                description = "an array of three numbers representing the X, Y and Z coordinates of the objectives marker on the map",
+                type = array(DECIMAL)
+            )
+            "label_coord"(
+                description = "an array of two numbers representing the X and Y coordinates of the sector centroid",
+                type = array(DECIMAL)
+            )
+            "marker"(STRING, "the icon link")
+            "chat_link"(STRING, "the chat code for the objective")
+            optional.."upgrade_id"(INTEGER, "the ID of the upgrades available for the objective")
+        })
+    }
     "/wvw/ranks" {
         summary = "Returns information about the achievable ranks in the World versus World game mode."
         cache(1u, HOURS)
