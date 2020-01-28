@@ -67,6 +67,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs containing an ID for each dungeon path that the player has completed since the most recent daily reset"))
     }
+    "/account/dyes" {
+        summary = "Returns information about a player's unlocked dyes."
+        security = setOf(UNLOCKS)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each dye unlocked by the player"))
+    }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(UNLOCKS)
