@@ -257,6 +257,18 @@ internal val GW2v2 = GW2APIVersion {
             }
         )
     }
+    "/worlds" {
+        summary = "Returns information about the available worlds (or servers)."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the world")
+            "name"(STRING, "the name of the world")
+            "population"(STRING, "the population level of the world")
+        })
+    }
     "/wvw/objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache(1u, HOURS)
