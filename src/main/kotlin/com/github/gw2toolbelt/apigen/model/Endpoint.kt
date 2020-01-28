@@ -34,6 +34,8 @@ data class Endpoint(
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
 
+    val idType: SchemaType? get() = (schema as? SchemaMap)?.properties?.get("id")?.type
+
     val schema get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]
     val versions get() = _schema.keys.toSet()
 
