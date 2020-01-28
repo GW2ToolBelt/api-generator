@@ -61,6 +61,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs for each item that can be crafted once per day that the player has crafted since the most recent daily reset"))
     }
+    "/account/dungeons" {
+        summary = "Returns which dungeons paths a player has completed since the most recent daily reset."
+        security = setOf(PROGRESSION)
+
+        schema(array(STRING, "an array of IDs containing an ID for each dungeon path that the player has completed since the most recent daily reset"))
+    }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(UNLOCKS)
