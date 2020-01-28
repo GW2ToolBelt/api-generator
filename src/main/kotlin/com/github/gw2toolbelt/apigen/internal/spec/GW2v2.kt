@@ -295,4 +295,29 @@ internal val GW2v2 = GW2APIVersion {
             "min_level"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
+    "/wvw/upgrades" {
+        summary = "Returns information about available upgrades for objectives in the World versus World game mode."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the upg")
+            "tiers"(
+                description = "",
+                type = map {
+                    "name"(STRING, "the name of the upgrade tier")
+                    "yaks_required"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
+                    "upgrades"(
+                        description = "",
+                        type = map {
+                            "name"(STRING, "the name of the upgrade")
+                            "description"(STRING, "the description for the upgrade")
+                            "icon"(STRING, "the icon link")
+                        }
+                    )
+                }
+            )
+        })
+    }
 }
