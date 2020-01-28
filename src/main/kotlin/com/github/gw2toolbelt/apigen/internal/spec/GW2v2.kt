@@ -183,6 +183,20 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
+    "/titles" {
+        summary = "Returns information about the titles that are in the game."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the title")
+            "name"(STRING, "the display name of the title")
+            deprecated..optional.."achievement"(INTEGER, "the ID of the achievement that grants this title")
+            optional.."achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
+            optional.."ap_required"(INTEGER, "the amount of AP required to unlock this title")
+        })
+    }
     "/tokeninfo" {
         summary = "Returns information about the supplied API key."
         security(ACCOUNT)
