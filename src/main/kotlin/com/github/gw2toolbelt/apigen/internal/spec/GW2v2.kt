@@ -25,20 +25,11 @@ import com.github.gw2toolbelt.apigen.internal.dsl.*
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.TokenScope.*
 import com.github.gw2toolbelt.apigen.model.V2SchemaVersion.*
-import com.github.gw2toolbelt.apigen.schema.*
 import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
-import java.util.concurrent.*
 import java.util.concurrent.TimeUnit.*
 
 @ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
-    "/build" {
-        summary = "Returns the current build ID."
-
-        schema(map {
-            "id"(INTEGER, "the current build ID")
-        })
-    }
     "/account/achievements" {
         summary = "Returns a player's progress towards all their achievements."
         security = setOf(ACCOUNT, PROGRESSION)
@@ -183,6 +174,13 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(PROGRESSION)
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
+    }
+    "/build" {
+        summary = "Returns the current build ID."
+
+        schema(map {
+            "id"(INTEGER, "the current build ID")
+        })
     }
     "/legends" {
         summary = "Returns information about the Revenant legends."
