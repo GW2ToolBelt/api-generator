@@ -85,6 +85,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(INTEGER, "an array of IDs containing the ID of each glider unlocked by the player"))
     }
+    "/account/home/nodes" {
+        summary = "Returns information about a player's unlocked home instance nodes."
+        security = setOf(PROGRESSION)
+
+        schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
+    }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(UNLOCKS)
