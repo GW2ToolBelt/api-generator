@@ -55,6 +55,12 @@ internal val GW2v2 = GW2APIVersion {
             optional.."unlocked"(BOOLEAN, "if this achievement can be unlocked, whether or not the achievement is unlocked")
         }))
     }
+    "/account/dailycrafting" {
+        summary = "Returns which items that can be crafted once per day a player crafted since the most recent daily reset."
+        security = setOf(PROGRESSION, UNLOCKS)
+
+        schema(array(STRING, "an array of IDs for each item that can be crafted once per day that the player has crafted since the most recent daily reset"))
+    }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(UNLOCKS)
