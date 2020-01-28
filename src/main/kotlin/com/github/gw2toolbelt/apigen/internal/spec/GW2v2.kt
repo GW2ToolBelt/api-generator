@@ -257,4 +257,16 @@ internal val GW2v2 = GW2APIVersion {
             }
         )
     }
+    "/wvw/ranks" {
+        summary = "Returns information about the achievable ranks in the World versus World game mode."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the rank")
+            "title"(STRING, "the title of the rank")
+            "min_level"(INTEGER, "the WvW level required to unlock this rank")
+        })
+    }
 }
