@@ -183,6 +183,21 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
+    "/races" {
+        summary = "Returns information about the game's playable races."
+        cache = Duration(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(STRING, "the race's ID")
+            "name"(STRING, "the race's localized name")
+            "skills"(
+                description = "an array of racial skill IDs",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/titles" {
         summary = "Returns information about the titles that are in the game."
         cache(1u, HOURS)
