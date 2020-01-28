@@ -27,6 +27,7 @@ import com.github.gw2toolbelt.apigen.model.TokenScope.*
 import com.github.gw2toolbelt.apigen.model.V2SchemaVersion.*
 import com.github.gw2toolbelt.apigen.schema.*
 import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
+import java.util.concurrent.*
 import java.util.concurrent.TimeUnit.*
 
 @ExperimentalUnsignedTypes
@@ -182,6 +183,22 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(PROGRESSION)
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
+    }
+    "/legends" {
+        summary = "Returns information about the Revenant legends."
+        cache = Duration(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(STRING, "the legend's ID")
+            "swap"(INTEGER, "the ID of the profession (swap Legend) skill")
+            "heal"(INTEGER, "the ID of the heal skill")
+            "elite"(INTEGER, "the ID of the elite skills")
+            "utilities"(
+                description = "the IDs of the utility skills",
+                type = array(INTEGER)
+            )
+        })
     }
     "/races" {
         summary = "Returns information about the game's playable races."
