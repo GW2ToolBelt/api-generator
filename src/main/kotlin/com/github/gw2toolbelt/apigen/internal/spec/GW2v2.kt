@@ -257,6 +257,15 @@ internal val GW2v2 = GW2APIVersion {
             }
         )
     }
+    "/worldbosses" {
+        summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day."
+        cache(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the worldboss")
+        })
+    }
     "/worlds" {
         summary = "Returns information about the available worlds (or servers)."
         cache(1u, HOURS)
