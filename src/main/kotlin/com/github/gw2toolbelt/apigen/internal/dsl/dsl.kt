@@ -56,6 +56,7 @@ internal class GW2APIEndpointBuilder {
             cache = cache,
             security = security ?: emptySet(),
             isLocalized = isLocalized,
+            queryTypes = if (this::queryTypes.isInitialized) queryTypes else null,
             _schema = schema
         )
 
@@ -68,6 +69,8 @@ internal class GW2APIEndpointBuilder {
 
     var isLocalized: Boolean = false
 
+    private lateinit var queryTypes: Set<QueryType>
+
     fun cache(amount: ULong, unit: TimeUnit) { cache = Duration(amount, unit) }
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
@@ -79,6 +82,11 @@ internal class GW2APIEndpointBuilder {
     fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
         this.schema = EnumMap(V2SchemaVersion::class.java)
         schemas.forEach { this.schema[it.first] = it.second }
+    }
+
+    fun supportedQueries(vararg types: QueryType) {
+        check(!this::queryTypes.isInitialized)
+        queryTypes = types.toSet()
     }
 
 }

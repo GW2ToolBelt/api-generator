@@ -21,24 +21,12 @@
  */
 package com.github.gw2toolbelt.apigen.model
 
-import com.github.gw2toolbelt.apigen.schema.*
-import java.util.*
+sealed class QueryType {
 
-@ExperimentalUnsignedTypes
-data class Endpoint(
-    val summary: String,
-    val cache: Duration?,
-    val security: Set<TokenScope>,
-    val isLocalized: Boolean,
-    val queryTypes: Set<QueryType>?,
-    private val _schema: EnumMap<V2SchemaVersion, SchemaType>
-) {
+    object ById : QueryType()
 
-    val schema get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]
-    val versions get() = _schema.keys.toSet()
+    object ByPage : QueryType()
 
-    operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
-        return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
-    }
+    class ByIds(val supportsAll: Boolean) : QueryType()
 
 }

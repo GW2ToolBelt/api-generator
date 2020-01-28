@@ -104,3 +104,10 @@ internal class SchemaMapPropertyBuilder(private val type: SchemaType, private va
         )
 
 }
+
+internal val BY_ID get() = QueryType.ById
+internal val BY_PAGE get() = QueryType.ByPage
+internal val BY_IDS = QueryType.ByIds(supportsAll = true)
+
+@Suppress("FunctionName")
+internal fun BY_IDS(all: Boolean = true) = QueryType.ByIds(supportsAll = all)
