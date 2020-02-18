@@ -104,6 +104,25 @@ internal val GW2v2 = GW2APIVersion {
             optional.."level"(INTEGER, "the index of the unlocked mastery level")
         }))
     }
+    "/account/mastery/points" {
+        summary = "Returns information about a player's unlocked mastery points."
+        security = setOf(ACCOUNT, PROGRESSION)
+
+        schema(map {
+            "totals"(
+                description = "information about the total mastery points for a reason",
+                type = array(map {
+                    "region"(STRING, "the mastery region")
+                    "spent"(INTEGER, "the amount of mastery points of this region spent in mastery tracks")
+                    "earned"(INTEGER, "the amount of mastery points of this region earned for the account")
+                })
+            )
+            "unlocked"(
+                description = "an array of IDs of unlocked mastery points",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/account/materials" {
         summary = "Returns information about the materials stored in a player's vault."
         security = setOf(ACCOUNT, INVENTORIES)
