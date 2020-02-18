@@ -222,6 +222,24 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/emotes" {
+        summary = "Returns information about unlockable emotes."
+        cache = Duration(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(array(INTEGER, "an array of IDs containing the ID of each emote unlocked by the player"))
+        schema(map {
+            "id"(STRING, "the emote's ID")
+            "commands"(
+                description = "the commands that may be used to trigger the emote",
+                type = array(INTEGER)
+            )
+            "unlock_items"(
+                description = "the IDs of the items that unlock the emote",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/legends" {
         summary = "Returns information about the Revenant legends."
         cache = Duration(1u, HOURS)
