@@ -49,49 +49,49 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/account/dailycrafting" {
         summary = "Returns which items that can be crafted once per day a player crafted since the most recent daily reset."
-        security = setOf(PROGRESSION, UNLOCKS)
+        security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
 
         schema(array(STRING, "an array of IDs for each item that can be crafted once per day that the player has crafted since the most recent daily reset"))
     }
     "/account/dungeons" {
         summary = "Returns which dungeons paths a player has completed since the most recent daily reset."
-        security = setOf(PROGRESSION)
+        security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing an ID for each dungeon path that the player has completed since the most recent daily reset"))
     }
     "/account/dyes" {
         summary = "Returns information about a player's unlocked dyes."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each dye unlocked by the player"))
     }
     "/account/finishers" {
         summary = "Returns information about a player's unlocked finishers."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each finisher unlocked by the player"))
     }
     "/account/gliders" {
         summary = "Returns information about a player's unlocked gliders."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each glider unlocked by the player"))
     }
     "/account/home/nodes" {
         summary = "Returns information about a player's unlocked home instance nodes."
-        security = setOf(PROGRESSION)
+        security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
     }
     "/account/mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each mail carrier unlocked by the player"))
     }
     "/account/mapchests" {
         summary = "Returns which Hero's Choice Chests a player has acquired since the most recent daily reset."
-        security = setOf(PROGRESSION)
+        security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs for Hero's Choice Chests that the player has acquired since the most recent daily reset"))
     }
@@ -136,31 +136,31 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/account/minis" {
         summary = "Returns information about a player's unlocked miniatures."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each miniature unlocked by the player"))
     }
     "/account/mounts/skins" {
         summary = "Returns information about a player's unlocked mount skins."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(STRING, "an array of IDs containing the ID of each mount skin unlocked by the player"))
     }
     "/account/mounts/types" {
         summary = "Returns information about a player's unlocked mounts."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(STRING, "an array of IDs containing the ID of each mount unlocked by the player"))
     }
     "/account/novelties" {
         summary = "Returns information about a player's unlocked novelties."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each novelty unlocked by the player"))
     }
     "/account/outfits" {
         summary = "Returns information about a player's unlocked outfits."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each outfit unlocked by the player"))
     }
@@ -172,31 +172,31 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/account/raids" {
         summary = "Returns which raid encounter a player has cleared since the most recent raid reset."
-        security = setOf(PROGRESSION)
+        security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing the ID of each raid encounter that the player has cleared since the most recent raid reset"))
     }
     "/account/recipes" {
         summary = "Returns information about a player's unlocked recipes."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each recipe unlocked by the player"))
     }
     "/account/skins" {
         summary = "Returns information about a player's unlocked skins."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each skin unlocked by the player"))
     }
     "/account/titles" {
         summary = "Returns information about a player's unlocked titles."
-        security = setOf(UNLOCKS)
+        security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each title unlocked by the player"))
     }
     "/account/wallet" {
         summary = "Returns information about a player's wallet."
-        security = setOf(WALLET)
+        security = setOf(ACCOUNT, WALLET)
 
         schema(array(map {
             "id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
@@ -205,7 +205,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/account/worldbosses" {
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset."
-        security = setOf(PROGRESSION)
+        security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
