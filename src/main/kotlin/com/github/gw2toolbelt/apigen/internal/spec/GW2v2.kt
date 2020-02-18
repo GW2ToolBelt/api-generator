@@ -222,6 +222,15 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/dailycrafting" {
+        summary = "Returns information about the items that can be crafted once per day."
+        cache(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the dailycrafting")
+        })
+    }
     "/emotes" {
         summary = "Returns information about unlockable emotes."
         cache = Duration(1u, HOURS)
