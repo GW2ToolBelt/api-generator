@@ -222,6 +222,20 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/currencies" {
+        summary = "Returns information about currencies contained in the acount wallet."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the currency's ID")
+            "name"(STRING, "the currency's name")
+            "description"(STRING, "a description of the currency")
+            "icon"(STRING, "the currency's icon")
+            "order"(INTEGER, "a number that can be used to sort the list of currencies")
+        })
+    }
     "/dailycrafting" {
         summary = "Returns information about the items that can be crafted once per day."
         cache(1u, HOURS)
