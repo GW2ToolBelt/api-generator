@@ -256,6 +256,22 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/outfits" {
+        summary = "Returns information about outfits."
+        cache = Duration(1u, HOURS)
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the outfit's ID")
+            "name"(STRING, "the outfit's name")
+            "icon"(STRING, "the outfit's icon")
+            "unlock_items"(
+                description = "the IDs of the items that unlock the outfit",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/races" {
         summary = "Returns information about the game's playable races."
         cache = Duration(1u, HOURS)
