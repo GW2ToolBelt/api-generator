@@ -65,6 +65,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(INTEGER, "an array of IDs containing the ID of each dye unlocked by the player"))
     }
+    "/account/emotes" {
+        summary = "Returns information about a player's unlocked emotes."
+        security = setOf(ACCOUNT)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each emote unlocked by the player"))
+    }
     "/account/finishers" {
         summary = "Returns information about a player's unlocked finishers."
         security = setOf(ACCOUNT, UNLOCKS)
