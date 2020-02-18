@@ -256,6 +256,15 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/mapchests" {
+        summary = "Returns information about the Hero's Choice Chests that can be acquired once per day."
+        cache(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the ID of the mapchest")
+        })
+    }
     "/outfits" {
         summary = "Returns information about outfits."
         cache = Duration(1u, HOURS)
