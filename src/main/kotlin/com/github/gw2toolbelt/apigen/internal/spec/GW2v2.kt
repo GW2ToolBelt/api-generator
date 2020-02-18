@@ -95,6 +95,15 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs for Hero's Choice Chests that the player has acquired since the most recent daily reset"))
     }
+    "/account/masteries" {
+        summary = "Returns information about a player's unlocked masteries."
+        security = setOf(ACCOUNT, PROGRESSION)
+
+        schema(array(map {
+            "id"(INTEGER, "the mastery's ID")
+            optional.."level"(INTEGER, "the index of the unlocked mastery level")
+        }))
+    }
     "/account/materials" {
         summary = "Returns information about the materials stored in a player's vault."
         security = setOf(ACCOUNT, INVENTORIES)
