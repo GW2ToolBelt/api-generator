@@ -164,6 +164,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(INTEGER, "an array of IDs containing the ID of each outfit unlocked by the player"))
     }
+    "/account/pvp/heroes" {
+        summary = "Returns information about a player's unlocked PvP heroes."
+        security = setOf(ACCOUNT, UNLOCKS)
+
+        schema(array(INTEGER, "an array of IDs containing the ID of each PvP hero unlocked by the player"))
+    }
     "/account/raids" {
         summary = "Returns which raid encounter a player has cleared since the most recent raid reset."
         security = setOf(PROGRESSION)
