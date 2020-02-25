@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.apigen
+package com.github.gw2toolbelt.apigen.model
 
 import java.util.*
 
@@ -31,9 +31,12 @@ import java.util.*
 public enum class Language(
     public val locale: Locale
 ) {
-    CHINESE(Locale.CHINESE),
-    ENGLISH(Locale.ENGLISH),
-    FRENCH(Locale.FRENCH),
-    GERMAN(Locale.GERMAN),
-    SPANISH(Locale("es", "ES"))
+    CHINESE("zh", "CH"),
+    ENGLISH("en", "US"),
+    FRENCH("fr", "FR"),
+    GERMAN("de", "DE"),
+    SPANISH("es", "ES");
+
+    constructor(language: String, country: String): this(Locale(language, country))
+
 }
