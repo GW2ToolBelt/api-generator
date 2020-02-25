@@ -21,6 +21,7 @@
  */
 package com.github.gw2toolbelt.apigen.model
 
+import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
 import java.util.*
 
