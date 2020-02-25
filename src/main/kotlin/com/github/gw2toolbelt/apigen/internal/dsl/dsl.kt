@@ -76,7 +76,7 @@ internal class GW2APIEndpointBuilder {
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
     fun schema(schema: SchemaType) {
-        this.schema = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
+        val tmp = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
             fun SchemaType.copyOrGet(superIncluded: Boolean = false): SchemaType? {
                 return when (this) {
                     is SchemaMap -> {
@@ -110,12 +110,18 @@ internal class GW2APIEndpointBuilder {
             schema.copyOrGet()
         }
 
-        println(this.schema.size)
+        this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
+            tmp.forEach { (key, value) ->
+                // TODO the compiler trips here without casts. Try this with NI once 1.3.70 is out
+                if (value !== null) map[key as V2SchemaVersion] = value as SchemaType
+            }
+        }
     }
 
     fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
-        this.schema = EnumMap(V2SchemaVersion::class.java)
-        schemas.forEach { this.schema[it.first] = it.second }
+        this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
+            schemas.forEach { map[it.first] = it.second }
+        }
     }
 
     fun supportedQueries(vararg types: QueryType) {
