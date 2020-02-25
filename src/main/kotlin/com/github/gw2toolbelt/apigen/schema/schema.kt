@@ -22,13 +22,11 @@
 package com.github.gw2toolbelt.apigen.schema
 
 import com.github.gw2toolbelt.apigen.model.*
+import com.github.gw2toolbelt.apigen.model.v2.*
 
 interface SchemaType {
 
     sealed class Kind {
-
-        object ARRAY : Kind()
-        object MAP : Kind()
 
         object BOOLEAN : Kind(), SchemaType
         object DECIMAL : Kind(), SchemaType
@@ -53,7 +51,9 @@ data class SchemaMap(
         val type: SchemaType,
         val description: String?,
         val isDeprecated: Boolean,
-        val optionality: Optionality
+        val optionality: Optionality,
+        val since: V2SchemaVersion?,
+        val until: V2SchemaVersion?
     )
 
 }
