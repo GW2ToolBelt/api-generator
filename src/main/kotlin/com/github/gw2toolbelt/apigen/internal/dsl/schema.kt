@@ -22,6 +22,7 @@
 package com.github.gw2toolbelt.apigen.internal.dsl
 
 import com.github.gw2toolbelt.apigen.model.*
+import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
 
 internal interface SchemaAggregateBuildProvider : SchemaArrayBuilderProvider, SchemaMapBuilderProvider
@@ -53,6 +54,18 @@ internal class SchemaMapBuilder {
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaMapPropertyBuilder) {
             property.optionality = Optionality.MANDATED(scope)
+        }
+    }
+
+    fun since(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaMapPropertyBuilder) {
+            property.since = version
+        }
+    }
+
+    fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaMapPropertyBuilder) {
+            property.until = version
         }
     }
 
@@ -94,13 +107,17 @@ internal class SchemaMapPropertyBuilder(private val type: SchemaType, private va
 
     var isDeprecated = false
     var optionality: Optionality? = null
+    var since: V2SchemaVersion? = null
+    var until: V2SchemaVersion? = null
 
     val property get() =
         SchemaMap.Property(
             type = type,
             description = description,
             optionality = optionality ?: Optionality.REQUIRED,
-            isDeprecated = isDeprecated
+            isDeprecated = isDeprecated,
+            since = since,
+            until = until
         )
 
 }

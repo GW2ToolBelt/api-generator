@@ -22,12 +22,13 @@
 package com.github.gw2toolbelt.apigen.internal.dsl
 
 import com.github.gw2toolbelt.apigen.model.*
+import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
 import java.util.*
 import java.util.concurrent.*
 
 @ExperimentalUnsignedTypes
-typealias GW2APIEndpointFactory = () -> List<Endpoint>
+typealias GW2APIEndpointFactory = () -> Set<Endpoint>
 
 @ExperimentalUnsignedTypes
 @Suppress("FunctionName")
@@ -39,7 +40,7 @@ internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): GW2APIEn
 internal class GW2APIVersionBuilder : SchemaAggregateBuildProvider {
 
     private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
-    val endpoints get() = _endpoints.map { it.endpoint }
+    val endpoints get() = _endpoints.map { it.endpoint }.toSet()
 
     @ExperimentalUnsignedTypes
     operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
@@ -75,8 +76,41 @@ internal class GW2APIEndpointBuilder {
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
     fun schema(schema: SchemaType) {
-        this.schema = EnumMap(V2SchemaVersion::class.java)
-        this.schema[V2SchemaVersion.V2_SCHEMA_CLASSIC] = schema
+        this.schema = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
+            fun SchemaType.copyOrGet(superIncluded: Boolean = false): SchemaType? {
+                return when (this) {
+                    is SchemaMap -> {
+                        fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
+                            is SchemaMap -> properties.any { (_, property) ->
+                                property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
+                            }
+                            else -> false
+                        }
+
+                        val includeVersion = version === V2SchemaVersion.V2_SCHEMA_CLASSIC || hasChangedInVersion()
+                        val copiedProperties = properties.mapValues { (_, property) ->
+                            val includedSinceVersion = property.since?.let { it === version } ?: false
+                            val includedInVersion = ((includedSinceVersion || property.since?.let { version >= it } ?: true)) && (property.until?.let { it < version } ?: true)
+
+                            when {
+                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> property.copy(type = property.type.copyOrGet(superIncluded = true)!!)
+                                else -> null
+                            }
+                        }.filterValues { it !== null }.mapValues { it.value!! }
+
+                        return when {
+                            !superIncluded && copiedProperties.isEmpty() -> null
+                            else -> SchemaMap(copiedProperties, description)
+                        }
+                    }
+                    else -> this
+                }
+            }
+
+            schema.copyOrGet()
+        }
+
+        println(this.schema.size)
     }
 
     fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
