@@ -21,6 +21,7 @@
  */
 package com.github.gw2toolbelt.apigen
 
+import com.github.gw2toolbelt.apigen.model.*
 import java.util.*
 
 /**
@@ -29,6 +30,6 @@ import java.util.*
  * @since   0.1.0
  */
 public data class APIVersion internal constructor(
-    public val endpoints: Set<Any>,
+    public val endpoints: Set<Endpoint>,
     public val supportedLanguages: EnumSet<Language>
 )
