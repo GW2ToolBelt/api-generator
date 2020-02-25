@@ -24,12 +24,42 @@ package com.github.gw2toolbelt.apigen.internal.spec
 import com.github.gw2toolbelt.apigen.internal.dsl.*
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.TokenScope.*
-import com.github.gw2toolbelt.apigen.model.V2SchemaVersion.*
+import com.github.gw2toolbelt.apigen.model.v2.V2SchemaVersion.*
 import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
 import java.util.concurrent.TimeUnit.*
 
 @ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
+    "/account" {
+        summary = "Returns information about a player's account."
+        security(ACCOUNT)
+
+        schema(map {
+            "id"(STRING, "the unique persistent account GUID")
+            "age"(INTEGER, "the age of the account in seconds")
+            "name"(STRING, "the unique account name with numerical suffix")
+            "world"(INTEGER, "the ID of the home world the account is assigned to")
+            "guilds"(
+                description = "a list of guilds assigned to the given account",
+                type = array(STRING)
+            )
+            optional(GUILDS).."guild_leader"(
+                description = "a list of guilds the account is leader of",
+                type = array(STRING)
+            )
+            "created"(STRING, "an ISO-8601 standard timestamp of when the account was created")
+            "access"(
+                description = "a list of what content this account has access to",
+                type = array(STRING)
+            )
+            "commander"(BOOLEAN, "true if the player has bought a commander tag")
+            optional(PROGRESSION).."fractal_level"(INTEGER, "the account's personal fractal level")
+            optional(PROGRESSION).."daily_ap"(INTEGER, "the daily AP the account has")
+            optional(PROGRESSION).."monthly_ap"(INTEGER, "the monthly AP the account has")
+            optional(PROGRESSION).."wvw_rank"(INTEGER, "the account's personal wvw rank")
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."last_modified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
+        })
+    }
     "/account/achievements" {
         summary = "Returns a player's progress towards all their achievements."
         security = setOf(ACCOUNT, PROGRESSION)
