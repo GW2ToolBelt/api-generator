@@ -293,6 +293,16 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/files" {
+        summary = "Returns commonly requested in-game assets."
+        cache = Duration(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(STRING, "the file identifier")
+            "icon"(STRING, "the URL to the image")
+        })
+    }
     "/legends" {
         summary = "Returns information about the Revenant legends."
         cache = Duration(1u, HOURS)
