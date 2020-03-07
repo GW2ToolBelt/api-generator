@@ -280,7 +280,6 @@ internal val GW2v2 = GW2APIVersion {
         cache = Duration(1u, HOURS)
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(array(INTEGER, "an array of IDs containing the ID of each emote unlocked by the player"))
         schema(map {
             "id"(STRING, "the emote's ID")
             "commands"(
