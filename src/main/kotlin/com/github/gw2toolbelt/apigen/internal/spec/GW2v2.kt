@@ -252,6 +252,33 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the current build ID")
         })
     }
+    "/colors" {
+        summary = "Returns information about all dye colors in the game."
+        cache(1u, HOURS)
+        isLocalized = true
+
+        fun APPEARANCE() = map {
+            "brightness"(INTEGER, "the brightness")
+            "contrast"(INTEGER, "the contrast")
+            "hue"(INTEGER, "the hue in HSL colorspace")
+            "saturation"(INTEGER, "the saturation in HSL colorspace")
+            "lightness"(INTEGER, "the lightness in HSL colorspace")
+            "rbg"(array(INTEGER), "a list containing precalculated RGB values")
+        }
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the color's ID")
+            "name"(STRING, "the color's name")
+            "base_rgb"(array(INTEGER), "the base RGB values")
+            "cloth"(APPEARANCE(), "detailed information on its appearance when applied on cloth armor")
+            "leather"(APPEARANCE(), "detailed information on its appearance when applied on leather armor")
+            "metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
+            optional.."fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
+            "item"(INTEGER, "the ID of the dye item")
+            "categories"(array(STRING), "the categories of the color")
+        })
+    }
     "/currencies" {
         summary = "Returns information about currencies contained in the acount wallet."
         cache(1u, HOURS)
