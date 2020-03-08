@@ -45,8 +45,9 @@ internal class SchemaMapBuilder {
     operator fun String.invoke(
         type: SchemaType,
         description: String? = null
-    ): SchemaMapPropertyBuilder =
-        SchemaMapPropertyBuilder(type, description).also { _properties[this] = it }
+    ): SchemaMapPropertyBuilder {
+        return SchemaMapPropertyBuilder(this, type, description).also { _properties[this] = it }
+    }
 
     val deprecated = PropertyModifier.deprecated
     val optional = PropertyModifier.optional
@@ -66,6 +67,12 @@ internal class SchemaMapBuilder {
     fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaMapPropertyBuilder) {
             property.until = version
+        }
+    }
+
+    fun SerialName(value: String): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaMapPropertyBuilder) {
+            property.serialName = value
         }
     }
 
@@ -103,21 +110,28 @@ internal interface SchemaMapBuilderProvider {
 
 }
 
-internal class SchemaMapPropertyBuilder(private val type: SchemaType, private val description: String?) {
+internal class SchemaMapPropertyBuilder(
+    private val propertyName: String,
+    private val type: SchemaType,
+    private val description: String?
+) {
 
     var isDeprecated = false
     var optionality: Optionality? = null
     var since: V2SchemaVersion? = null
     var until: V2SchemaVersion? = null
+    var serialName: String? = null
 
     val property get() =
         SchemaMap.Property(
+            propertyName = propertyName,
             type = type,
             description = description,
             optionality = optionality ?: Optionality.REQUIRED,
             isDeprecated = isDeprecated,
             since = since,
-            until = until
+            until = until,
+            serialName = serialName ?: propertyName.toLowerCase()
         )
 
 }

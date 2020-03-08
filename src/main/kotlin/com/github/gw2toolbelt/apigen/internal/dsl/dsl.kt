@@ -44,15 +44,16 @@ internal class GW2APIVersionBuilder : SchemaAggregateBuildProvider {
 
     @ExperimentalUnsignedTypes
     operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
-        GW2APIEndpointBuilder().also(configure).also { _endpoints.add(it) }
+        GW2APIEndpointBuilder(this).also(configure).also { _endpoints.add(it) }
 
 }
 
 @ExperimentalUnsignedTypes
-internal class GW2APIEndpointBuilder {
+internal class GW2APIEndpointBuilder(private val route: String) {
 
     val endpoint get() =
         Endpoint(
+            route = route,
             summary = summary,
             cache = cache,
             security = security ?: emptySet(),

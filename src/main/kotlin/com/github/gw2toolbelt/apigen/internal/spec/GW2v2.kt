@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit.*
 
 @ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
-    "/account" {
+    "/Account" {
         summary = "Returns information about a player's account."
         security(ACCOUNT)
 
@@ -43,7 +43,7 @@ internal val GW2v2 = GW2APIVersion {
                 description = "a list of guilds assigned to the given account",
                 type = array(STRING)
             )
-            optional(GUILDS).."guild_leader"(
+            optional(GUILDS)..SerialName("guild_leader").."guildLeader"(
                 description = "a list of guilds the account is leader of",
                 type = array(STRING)
             )
@@ -53,14 +53,14 @@ internal val GW2v2 = GW2APIVersion {
                 type = array(STRING)
             )
             "commander"(BOOLEAN, "true if the player has bought a commander tag")
-            optional(PROGRESSION).."fractal_level"(INTEGER, "the account's personal fractal level")
-            optional(PROGRESSION).."daily_ap"(INTEGER, "the daily AP the account has")
-            optional(PROGRESSION).."monthly_ap"(INTEGER, "the monthly AP the account has")
-            optional(PROGRESSION).."wvw_rank"(INTEGER, "the account's personal wvw rank")
-            since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."last_modified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
+            optional(PROGRESSION)..SerialName("fractal_level").."fractalLevel"(INTEGER, "the account's personal fractal level")
+            optional(PROGRESSION)..SerialName("daily_ap").."dailyAP"(INTEGER, "the daily AP the account has")
+            optional(PROGRESSION)..SerialName("monthly_ap").."monthAP"(INTEGER, "the monthly AP the account has")
+            optional(PROGRESSION)..SerialName("wvw_rank").."wvwRank"(INTEGER, "the account's personal wvw rank")
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."lastModified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
         })
     }
-    "/account/achievements" {
+    "/Account/Achievements" {
         summary = "Returns a player's progress towards all their achievements."
         security = setOf(ACCOUNT, PROGRESSION)
 
@@ -77,61 +77,61 @@ internal val GW2v2 = GW2APIVersion {
             optional.."unlocked"(BOOLEAN, "if this achievement can be unlocked, whether or not the achievement is unlocked")
         }))
     }
-    "/account/dailycrafting" {
+    "/Account/DailyCrafting" {
         summary = "Returns which items that can be crafted once per day a player crafted since the most recent daily reset."
         security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
 
         schema(array(STRING, "an array of IDs for each item that can be crafted once per day that the player has crafted since the most recent daily reset"))
     }
-    "/account/dungeons" {
+    "/Account/Dungeons" {
         summary = "Returns which dungeons paths a player has completed since the most recent daily reset."
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing an ID for each dungeon path that the player has completed since the most recent daily reset"))
     }
-    "/account/dyes" {
+    "/Account/Dyes" {
         summary = "Returns information about a player's unlocked dyes."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each dye unlocked by the player"))
     }
-    "/account/emotes" {
+    "/Account/Emotes" {
         summary = "Returns information about a player's unlocked emotes."
         security = setOf(ACCOUNT)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each emote unlocked by the player"))
     }
-    "/account/finishers" {
+    "/Account/Finishers" {
         summary = "Returns information about a player's unlocked finishers."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each finisher unlocked by the player"))
     }
-    "/account/gliders" {
+    "/Account/Gliders" {
         summary = "Returns information about a player's unlocked gliders."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each glider unlocked by the player"))
     }
-    "/account/home/nodes" {
+    "/Account/Home/Nodes" {
         summary = "Returns information about a player's unlocked home instance nodes."
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
     }
-    "/account/mailcarriers" {
+    "/Account/Mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each mail carrier unlocked by the player"))
     }
-    "/account/mapchests" {
+    "/Account/MapChests" {
         summary = "Returns which Hero's Choice Chests a player has acquired since the most recent daily reset."
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs for Hero's Choice Chests that the player has acquired since the most recent daily reset"))
     }
-    "/account/masteries" {
+    "/Account/Masteries" {
         summary = "Returns information about a player's unlocked masteries."
         security = setOf(ACCOUNT, PROGRESSION)
 
@@ -140,7 +140,7 @@ internal val GW2v2 = GW2APIVersion {
             optional.."level"(INTEGER, "the index of the unlocked mastery level")
         }))
     }
-    "/account/mastery/points" {
+    "/Account/Mastery/Points" {
         summary = "Returns information about a player's unlocked mastery points."
         security = setOf(ACCOUNT, PROGRESSION)
 
@@ -159,7 +159,7 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
-    "/account/materials" {
+    "/Account/Materials" {
         summary = "Returns information about the materials stored in a player's vault."
         security = setOf(ACCOUNT, INVENTORIES)
 
@@ -170,67 +170,67 @@ internal val GW2v2 = GW2APIVersion {
             optional.."binding"(STRING, "the binding of the material")
         }))
     }
-    "/account/minis" {
+    "/Account/Minis" {
         summary = "Returns information about a player's unlocked miniatures."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each miniature unlocked by the player"))
     }
-    "/account/mounts/skins" {
+    "/Account/Mounts/Skins" {
         summary = "Returns information about a player's unlocked mount skins."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(STRING, "an array of IDs containing the ID of each mount skin unlocked by the player"))
     }
-    "/account/mounts/types" {
+    "/Account/Mounts/Types" {
         summary = "Returns information about a player's unlocked mounts."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(STRING, "an array of IDs containing the ID of each mount unlocked by the player"))
     }
-    "/account/novelties" {
+    "/Account/Novelties" {
         summary = "Returns information about a player's unlocked novelties."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each novelty unlocked by the player"))
     }
-    "/account/outfits" {
+    "/Account/Outfits" {
         summary = "Returns information about a player's unlocked outfits."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each outfit unlocked by the player"))
     }
-    "/account/pvp/heroes" {
+    "/Account/PvP/Heroes" {
         summary = "Returns information about a player's unlocked PvP heroes."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each PvP hero unlocked by the player"))
     }
-    "/account/raids" {
+    "/Account/Raids" {
         summary = "Returns which raid encounter a player has cleared since the most recent raid reset."
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs containing the ID of each raid encounter that the player has cleared since the most recent raid reset"))
     }
-    "/account/recipes" {
+    "/Account/Recipes" {
         summary = "Returns information about a player's unlocked recipes."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each recipe unlocked by the player"))
     }
-    "/account/skins" {
+    "/Account/Skins" {
         summary = "Returns information about a player's unlocked skins."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each skin unlocked by the player"))
     }
-    "/account/titles" {
+    "/Account/Titles" {
         summary = "Returns information about a player's unlocked titles."
         security = setOf(ACCOUNT, UNLOCKS)
 
         schema(array(INTEGER, "an array of IDs containing the ID of each title unlocked by the player"))
     }
-    "/account/wallet" {
+    "/Account/Wallet" {
         summary = "Returns information about a player's wallet."
         security = setOf(ACCOUNT, WALLET)
 
@@ -239,20 +239,20 @@ internal val GW2v2 = GW2APIVersion {
             "value"(INTEGER, "the amount of this currency in the player's wallet")
         }))
     }
-    "/account/worldbosses" {
+    "/Account/WorldBosses" {
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset."
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
-    "/build" {
+    "/Build" {
         summary = "Returns the current build ID."
 
         schema(map {
             "id"(INTEGER, "the current build ID")
         })
     }
-    "/colors" {
+    "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache(1u, HOURS)
         isLocalized = true
@@ -270,21 +270,43 @@ internal val GW2v2 = GW2APIVersion {
         schema(map {
             "id"(INTEGER, "the color's ID")
             "name"(STRING, "the color's name")
-            "base_rgb"(array(INTEGER), "the base RGB values")
+            SerialName("base_rgb").."baseRGB"(array(INTEGER), "the base RGB values")
             "cloth"(APPEARANCE(), "detailed information on its appearance when applied on cloth armor")
             "leather"(APPEARANCE(), "detailed information on its appearance when applied on leather armor")
             "metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
             optional.."fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
             "item"(INTEGER, "the ID of the dye item")
-            "categories"(array(STRING), "the categories of the color")
+            "categories"(array(STRING), "the categories of the color") {
+                // Hue
+                value("Gray", "")
+                value("Brown", "")
+                value("Red", "")
+                value("Orange", "")
+                value("Yellow", "")
+                value("Green", "")
+                value("Blue", "")
+                value("Purple", "")
+
+                // Material
+                value("Vibrant", "")
+                value("Leather", "")
+                value("Metal", "")
+
+                // Rarity
+                value("Starter", "")
+                value("Common", "")
+                value("Uncommon", "")
+                value("Rare", "")
+                value("Exclusive", "")
+            }
         })
     }
-    "/commerce/listings" {
+    "/Commerce/Listings" {
         summary = "Returns current buy and sell listings from the trading post."
 
         fun LISTING() = map {
             "listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
-            "unit_price"(INTEGER, "the sell offer or buy order price in coins")
+            SerialName("unit_price").."unitPrice"(INTEGER, "the sell offer or buy order price in coins")
             "quantity"(INTEGER, "the amount of items being sold/bought in this listing")
         }
 
@@ -295,7 +317,7 @@ internal val GW2v2 = GW2APIVersion {
             "sells"(array(LISTING()), "list of all sell listings")
         })
     }
-    "/commerce/prices" {
+    "/Commerce/Prices" {
         summary = "Returns current aggregated buy and sell listing information from the trading post."
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
@@ -305,20 +327,20 @@ internal val GW2v2 = GW2APIVersion {
             "buys"(
                 description = "the buy information",
                 type = map {
-                    "unit_price"(INTEGER, "the highest buy order price in coins")
+                    SerialName("unit_price").."unitPrice"(INTEGER, "the highest buy order price in coins")
                     "quantity"(INTEGER, "the amount of items being bought")
                 }
             )
             "sells"(
                 description = "the sell information",
                 type = map {
-                    "unit_price"(INTEGER, "the lowest sell order price in coins")
+                    SerialName("unit_price").."unitPrice"(INTEGER, "the lowest sell order price in coins")
                     "quantity"(INTEGER, "the amount of items being sold")
                 }
             )
         })
     }
-    "/currencies" {
+    "/Currencies" {
         summary = "Returns information about currencies contained in the acount wallet."
         cache(1u, HOURS)
         isLocalized = true
@@ -332,7 +354,7 @@ internal val GW2v2 = GW2APIVersion {
             "order"(INTEGER, "a number that can be used to sort the list of currencies")
         })
     }
-    "/dailycrafting" {
+    "/DailyCrafting" {
         summary = "Returns information about the items that can be crafted once per day."
         cache(1u, HOURS)
 
@@ -341,7 +363,7 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the ID of the dailycrafting")
         })
     }
-    "/emotes" {
+    "/Emotes" {
         summary = "Returns information about unlockable emotes."
         cache = Duration(1u, HOURS)
 
@@ -352,13 +374,13 @@ internal val GW2v2 = GW2APIVersion {
                 description = "the commands that may be used to trigger the emote",
                 type = array(INTEGER)
             )
-            "unlock_items"(
+            SerialName("unlock_items").."unlockItems"(
                 description = "the IDs of the items that unlock the emote",
                 type = array(INTEGER)
             )
         })
     }
-    "/files" {
+    "/Files" {
         summary = "Returns commonly requested in-game assets."
         cache = Duration(1u, HOURS)
 
@@ -368,7 +390,7 @@ internal val GW2v2 = GW2APIVersion {
             "icon"(STRING, "the URL to the image")
         })
     }
-    "/itemstats" {
+    "/ItemStats" {
         summary = "Returns information about itemstats."
         cache = Duration(1u, HOURS)
 
@@ -386,7 +408,7 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
-    "/legends" {
+    "/Legends" {
         summary = "Returns information about the Revenant legends."
         cache = Duration(1u, HOURS)
 
@@ -402,7 +424,7 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
-    "/mapchests" {
+    "/MapChests" {
         summary = "Returns information about the Hero's Choice Chests that can be acquired once per day."
         cache(1u, HOURS)
 
@@ -411,7 +433,7 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the ID of the mapchest")
         })
     }
-    "/outfits" {
+    "/Outfits" {
         summary = "Returns information about outfits."
         cache = Duration(1u, HOURS)
         isLocalized = true
@@ -421,13 +443,13 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the outfit's ID")
             "name"(STRING, "the outfit's name")
             "icon"(STRING, "the outfit's icon")
-            "unlock_items"(
+            SerialName("unlock_items").."unlockItems"(
                 description = "the IDs of the items that unlock the outfit",
                 type = array(INTEGER)
             )
         })
     }
-    "/races" {
+    "/Races" {
         summary = "Returns information about the game's playable races."
         cache = Duration(1u, HOURS)
         isLocalized = true
@@ -442,7 +464,7 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
-    "/titles" {
+    "/Titles" {
         summary = "Returns information about the titles that are in the game."
         cache(1u, HOURS)
         isLocalized = true
@@ -453,10 +475,10 @@ internal val GW2v2 = GW2APIVersion {
             "name"(STRING, "the display name of the title")
             deprecated..optional.."achievement"(INTEGER, "the ID of the achievement that grants this title")
             optional.."achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
-            optional.."ap_required"(INTEGER, "the amount of AP required to unlock this title")
+            optional..SerialName("ap_required").."apRequired"(INTEGER, "the amount of AP required to unlock this title")
         })
     }
-    "/tokeninfo" {
+    "/TokenInfo" {
         summary = "Returns information about the supplied API key."
         security(ACCOUNT)
 
@@ -477,8 +499,8 @@ internal val GW2v2 = GW2APIVersion {
                     type = array(STRING)
                 )
                 "type"(STRING, "the type of the access token given")
-                optional.."expires_at"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
-                optional.."issued_at"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
+                optional..SerialName("expires_at").."expiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
+                optional..SerialName("issued_at").."issuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
                 optional.."urls"(
                     description = "if the given subtoken is restricted to a list of URLs, contains an array of strings describing what endpoints are available to this token",
                     type = array(STRING)
@@ -486,7 +508,7 @@ internal val GW2v2 = GW2APIVersion {
             }
         )
     }
-    "/worldbosses" {
+    "/WorldBosses" {
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day."
         cache(1u, HOURS)
 
@@ -495,7 +517,7 @@ internal val GW2v2 = GW2APIVersion {
             "id"(INTEGER, "the ID of the worldboss")
         })
     }
-    "/worlds" {
+    "/Worlds" {
         summary = "Returns information about the available worlds (or servers)."
         cache(1u, HOURS)
         isLocalized = true
@@ -507,7 +529,7 @@ internal val GW2v2 = GW2APIVersion {
             "population"(STRING, "the population level of the world")
         })
     }
-    "/wvw/objectives" {
+    "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache(1u, HOURS)
         isLocalized = true
@@ -517,23 +539,23 @@ internal val GW2v2 = GW2APIVersion {
             "id"(STRING, "the ID of the objective")
             "name"(STRING, "the name of the objective")
             "type"(STRING, "the type of the objective")
-            "sector_id"(INTEGER, "the map sector the objective can be found in")
-            "map_id"(INTEGER, "the ID of the map the objective can be found on")
-            "map_type"(STRING, "the type of the map the objective can be found on")
+            SerialName("sector_id").."sectorId"(INTEGER, "the map sector the objective can be found in")
+            SerialName("map_id").."mapId"(INTEGER, "the ID of the map the objective can be found on")
+            SerialName("map_type").."mapType"(STRING, "the type of the map the objective can be found on")
             "coord"(
                 description = "an array of three numbers representing the X, Y and Z coordinates of the objectives marker on the map",
                 type = array(DECIMAL)
             )
-            "label_coord"(
+            SerialName("label_coord").."labelCoord"(
                 description = "an array of two numbers representing the X and Y coordinates of the sector centroid",
                 type = array(DECIMAL)
             )
             "marker"(STRING, "the icon link")
-            "chat_link"(STRING, "the chat code for the objective")
-            optional.."upgrade_id"(INTEGER, "the ID of the upgrades available for the objective")
+            SerialName("chat_link").."chatLink"(STRING, "the chat code for the objective")
+            optional..SerialName("upgrade_id").."upgradeId"(INTEGER, "the ID of the upgrades available for the objective")
         })
     }
-    "/wvw/ranks" {
+    "/WvW/Ranks" {
         summary = "Returns information about the achievable ranks in the World versus World game mode."
         cache(1u, HOURS)
         isLocalized = true
@@ -542,10 +564,10 @@ internal val GW2v2 = GW2APIVersion {
         schema(map {
             "id"(INTEGER, "the ID of the rank")
             "title"(STRING, "the title of the rank")
-            "min_level"(INTEGER, "the WvW level required to unlock this rank")
+            SerialName("min_level").."minLevel"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
-    "/wvw/upgrades" {
+    "/WvW/Upgrades" {
         summary = "Returns information about available upgrades for objectives in the World versus World game mode."
         cache(1u, HOURS)
         isLocalized = true
@@ -557,7 +579,7 @@ internal val GW2v2 = GW2APIVersion {
                 description = "",
                 type = map {
                     "name"(STRING, "the name of the upgrade tier")
-                    "yaks_required"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
+                    SerialName("yaks_required").."yaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "upgrades"(
                         description = "",
                         type = map {

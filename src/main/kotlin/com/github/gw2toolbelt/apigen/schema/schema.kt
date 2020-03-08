@@ -48,12 +48,14 @@ data class SchemaMap(
 ) : SchemaType {
 
     data class Property(
+        val propertyName: String,
         val type: SchemaType,
         val description: String?,
         val isDeprecated: Boolean,
         val optionality: Optionality,
         val since: V2SchemaVersion?,
-        val until: V2SchemaVersion?
+        val until: V2SchemaVersion?,
+        val serialName: String
     )
 
 }

@@ -27,6 +27,7 @@ import java.util.*
 
 @ExperimentalUnsignedTypes
 data class Endpoint(
+    val route: String,
     val summary: String,
     val cache: Duration?,
     val security: Set<TokenScope>,
