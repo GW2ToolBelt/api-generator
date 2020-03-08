@@ -329,6 +329,24 @@ internal val GW2v2 = GW2APIVersion {
             "icon"(STRING, "the URL to the image")
         })
     }
+    "/itemstats" {
+        summary = "Returns information about itemstats."
+        cache = Duration(1u, HOURS)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the stat set's ID")
+            "name"(STRING, "the name of the stat set")
+            "attributes"(
+                description = "the list of attribute bonuses",
+                type = array(map {
+                    "attribute"(STRING, "the name of the attribute")
+                    "multiplier"(DECIMAL, "the multiplier for that attribute")
+                    "value"(INTEGER, "the default value for that attribute")
+                })
+            )
+        })
+    }
     "/legends" {
         summary = "Returns information about the Revenant legends."
         cache = Duration(1u, HOURS)
