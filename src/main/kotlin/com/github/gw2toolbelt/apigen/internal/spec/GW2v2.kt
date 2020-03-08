@@ -295,6 +295,29 @@ internal val GW2v2 = GW2APIVersion {
             "sells"(array(LISTING()), "list of all sell listings")
         })
     }
+    "/commerce/prices" {
+        summary = "Returns current aggregated buy and sell listing information from the trading post."
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the item's ID")
+            "whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
+            "buys"(
+                description = "the buy information",
+                type = map {
+                    "unit_price"(INTEGER, "the highest buy order price in coins")
+                    "quantity"(INTEGER, "the amount of items being bought")
+                }
+            )
+            "sells"(
+                description = "the sell information",
+                type = map {
+                    "unit_price"(INTEGER, "the lowest sell order price in coins")
+                    "quantity"(INTEGER, "the amount of items being sold")
+                }
+            )
+        })
+    }
     "/currencies" {
         summary = "Returns information about currencies contained in the acount wallet."
         cache(1u, HOURS)
