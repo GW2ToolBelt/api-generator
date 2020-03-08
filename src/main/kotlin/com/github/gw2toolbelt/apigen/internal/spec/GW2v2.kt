@@ -284,7 +284,7 @@ internal val GW2v2 = GW2APIVersion {
 
         fun LISTING() = map {
             "listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
-            "unit_price"(INTEGER, "the sell offer or buy order price in coins"),
+            "unit_price"(INTEGER, "the sell offer or buy order price in coins")
             "quantity"(INTEGER, "the amount of items being sold/bought in this listing")
         }
 
