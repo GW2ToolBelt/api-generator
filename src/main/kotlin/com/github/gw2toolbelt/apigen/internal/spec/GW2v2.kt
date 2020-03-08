@@ -259,10 +259,10 @@ internal val GW2v2 = GW2APIVersion {
 
         fun APPEARANCE() = map {
             "brightness"(INTEGER, "the brightness")
-            "contrast"(INTEGER, "the contrast")
+            "contrast"(DECIMAL, "the contrast")
             "hue"(INTEGER, "the hue in HSL colorspace")
-            "saturation"(INTEGER, "the saturation in HSL colorspace")
-            "lightness"(INTEGER, "the lightness in HSL colorspace")
+            "saturation"(DECIMAL, "the saturation in HSL colorspace")
+            "lightness"(DECIMAL, "the lightness in HSL colorspace")
             "rbg"(array(INTEGER), "a list containing precalculated RGB values")
         }
 
