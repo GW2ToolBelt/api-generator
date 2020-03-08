@@ -279,6 +279,22 @@ internal val GW2v2 = GW2APIVersion {
             "categories"(array(STRING), "the categories of the color")
         })
     }
+    "/commerce/listings" {
+        summary = "Returns current buy and sell listings from the trading post."
+
+        fun LISTING() = map {
+            "listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
+            "unit_price"(INTEGER, "the sell offer or buy order price in coins"),
+            "quantity"(INTEGER, "the amount of items being sold/bought in this listing")
+        }
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the item's ID")
+            "buys"(array(LISTING()), "list of all buy listings")
+            "sells"(array(LISTING()), "list of all sell listings")
+        })
+    }
     "/currencies" {
         summary = "Returns information about currencies contained in the acount wallet."
         cache(1u, HOURS)
