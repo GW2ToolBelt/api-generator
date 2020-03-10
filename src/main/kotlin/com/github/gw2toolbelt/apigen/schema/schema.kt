@@ -24,44 +24,56 @@ package com.github.gw2toolbelt.apigen.schema
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.v2.*
 
-interface SchemaType {
+public interface SchemaType {
 
-    sealed class Kind {
+    public sealed class Kind {
 
-        object BOOLEAN : Kind(), SchemaType
-        object DECIMAL : Kind(), SchemaType
-        object INTEGER : Kind(), SchemaType
-        object STRING : Kind(), SchemaType
+        public object BOOLEAN : Kind(), SchemaType
+        public object DECIMAL : Kind(), SchemaType
+        public object INTEGER : Kind(), SchemaType
+        public object STRING : Kind(), SchemaType
 
     }
 
 }
 
-data class SchemaArray internal constructor(
-    val items: SchemaType,
-    val description: String?
+public data class SchemaArray internal constructor(
+    public val items: SchemaType,
+    public val description: String?
 ) : SchemaType
 
-data class SchemaMap(
-    val properties: Map<String, Property>,
-    val description: String?
+public data class SchemaMap(
+    public val properties: Map<String, Property>,
+    public val description: String?
 ) : SchemaType {
 
-    data class Property(
-        val propertyName: String,
-        val type: SchemaType,
-        val description: String?,
-        val isDeprecated: Boolean,
-        val optionality: Optionality,
-        val since: V2SchemaVersion?,
-        val until: V2SchemaVersion?,
-        val serialName: String
+    public data class Property(
+        public val propertyName: String,
+        public val type: SchemaType,
+        public val description: String?,
+        public val isDeprecated: Boolean,
+        public val optionality: Optionality,
+        public val since: V2SchemaVersion?,
+        public val until: V2SchemaVersion?,
+        public val serialName: String
     )
 
 }
 
-sealed class Optionality {
-    object OPTIONAL : Optionality()
-    object REQUIRED : Optionality()
-    class MANDATED(val scope: TokenScope) : Optionality()
+public sealed class Optionality {
+
+    public abstract val isOptional: Boolean
+
+    public object OPTIONAL : Optionality() {
+        override val isOptional = true
+    }
+
+    public class MANDATED(public val scope: TokenScope) : Optionality() {
+        override val isOptional = true
+    }
+
+    public object REQUIRED : Optionality() {
+        override val isOptional = false
+    }
+
 }
