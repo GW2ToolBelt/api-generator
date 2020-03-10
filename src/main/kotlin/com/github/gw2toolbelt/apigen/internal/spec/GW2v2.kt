@@ -27,7 +27,6 @@ import com.github.gw2toolbelt.apigen.model.v2.V2SchemaVersion.*
 import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
 import kotlin.time.*
 
-@ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
     "/Account" {
         summary = "Returns information about a player's account."
