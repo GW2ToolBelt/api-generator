@@ -42,6 +42,16 @@ java {
     targetCompatibility = JavaVersion.VERSION_12
 }
 
+kotlin {
+    sourceSets {
+        all {
+            languageSettings.apply {
+                useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+            }
+        }
+    }
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "12"

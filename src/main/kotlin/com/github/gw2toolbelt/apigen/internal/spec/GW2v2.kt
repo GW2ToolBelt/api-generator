@@ -22,11 +22,10 @@
 package com.github.gw2toolbelt.apigen.internal.spec
 
 import com.github.gw2toolbelt.apigen.internal.dsl.*
-import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.TokenScope.*
 import com.github.gw2toolbelt.apigen.model.v2.V2SchemaVersion.*
 import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
-import java.util.concurrent.TimeUnit.*
+import kotlin.time.*
 
 @ExperimentalUnsignedTypes
 internal val GW2v2 = GW2APIVersion {
@@ -254,7 +253,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         fun APPEARANCE() = map {
@@ -342,7 +341,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Currencies" {
         summary = "Returns information about currencies contained in the acount wallet."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -356,7 +355,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/DailyCrafting" {
         summary = "Returns information about the items that can be crafted once per day."
-        cache(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -365,7 +364,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Emotes" {
         summary = "Returns information about unlockable emotes."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -382,7 +381,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Files" {
         summary = "Returns commonly requested in-game assets."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -392,7 +391,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/ItemStats" {
         summary = "Returns information about itemstats."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -410,7 +409,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Legends" {
         summary = "Returns information about the Revenant legends."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -426,7 +425,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/MapChests" {
         summary = "Returns information about the Hero's Choice Chests that can be acquired once per day."
-        cache(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -435,7 +434,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Outfits" {
         summary = "Returns information about outfits."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -451,7 +450,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Races" {
         summary = "Returns information about the game's playable races."
-        cache = Duration(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -466,7 +465,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Titles" {
         summary = "Returns information about the titles that are in the game."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -510,7 +509,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/WorldBosses" {
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day."
-        cache(1u, HOURS)
+        cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
@@ -519,7 +518,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Worlds" {
         summary = "Returns information about the available worlds (or servers)."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -531,7 +530,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -557,7 +556,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/WvW/Ranks" {
         summary = "Returns information about the achievable ranks in the World versus World game mode."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -569,7 +568,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/WvW/Upgrades" {
         summary = "Returns information about available upgrades for objectives in the World versus World game mode."
-        cache(1u, HOURS)
+        cache = 1.hours
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)

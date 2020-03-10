@@ -25,30 +25,23 @@ import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
 import java.util.*
-import java.util.concurrent.*
+import kotlin.time.*
 
-@ExperimentalUnsignedTypes
-typealias GW2APIEndpointFactory = () -> Set<Endpoint>
-
-@ExperimentalUnsignedTypes
 @Suppress("FunctionName")
-internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): GW2APIEndpointFactory {
+internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Set<Endpoint> {
     return fun() = GW2APIVersionBuilder().also(configure).endpoints
 }
 
-@ExperimentalUnsignedTypes
 internal class GW2APIVersionBuilder : SchemaAggregateBuildProvider {
 
     private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
     val endpoints get() = _endpoints.map { it.endpoint }.toSet()
 
-    @ExperimentalUnsignedTypes
     operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
         GW2APIEndpointBuilder(this).also(configure).also { _endpoints.add(it) }
 
 }
 
-@ExperimentalUnsignedTypes
 internal class GW2APIEndpointBuilder(private val route: String) {
 
     val endpoint get() =
@@ -58,7 +51,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
             cache = cache,
             security = security ?: emptySet(),
             isLocalized = isLocalized,
-            queryTypes = if (this::queryTypes.isInitialized) queryTypes else null,
+            queryTypes = if (this::queryTypes.isInitialized) queryTypes else emptySet(),
             _schema = schema
         )
 
@@ -73,7 +66,6 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
     private lateinit var queryTypes: Set<QueryType>
 
-    fun cache(amount: ULong, unit: TimeUnit) { cache = Duration(amount, unit) }
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
     fun schema(schema: SchemaType) {
