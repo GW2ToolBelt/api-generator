@@ -22,7 +22,11 @@
 @file:JvmName("GW2APIGen")
 package com.github.gw2toolbelt.apigen
 
+import com.github.gw2toolbelt.apigen.internal.dsl.*
 import com.github.gw2toolbelt.apigen.internal.spec.*
+import com.github.gw2toolbelt.apigen.model.*
+import com.github.gw2toolbelt.apigen.schema.*
+import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
 import java.util.*
 
 /**
@@ -35,4 +39,25 @@ public val API_V2_DEFINITION: APIVersion by lazy {
         endpoints = GW2v2(),
         supportedLanguages = EnumSet.allOf(Language::class.java)
     )
+}
+
+/**
+ * The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol.
+ *
+ * @since   0.1.0
+ */
+public val MUMBLELINK_IDENTITY_DEFINITION: SchemaMap by lazy {
+    SchemaMap(SchemaMapBuilder().apply {
+        "name"(STRING, "the name of the currently played character")
+        "profession"(INTEGER, "the current profession (class) of the currently played character")
+        "spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
+        "race"(INTEGER, "the ID of the race of the currently played character")
+        SerialName("map_id").."mapID"(INTEGER, "the ID of the current map")
+        SerialName("world_id").."worldID"(INTEGER, "the ID of the current world")
+        SerialName("team_color_id").."teamColorID"(INTEGER, "the ID of the current team")
+        "commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
+        "map"(INTEGER, "the ID of the current map")
+        "fov"(DECIMAL, "the scaling of the FOV")
+        "uisz"(INTEGER, "the selected UI size")
+    }.properties, null)
 }
