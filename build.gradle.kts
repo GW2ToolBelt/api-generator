@@ -23,7 +23,7 @@ import com.github.gw2toolbelt.build.*
 import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
-    kotlin("jvm") version "1.3.70"
+    kotlin("jvm") version "1.3.71"
     signing
     `maven-publish`
 }
