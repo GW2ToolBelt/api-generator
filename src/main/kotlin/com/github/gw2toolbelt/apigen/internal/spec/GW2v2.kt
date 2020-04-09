@@ -274,29 +274,7 @@ internal val GW2v2 = GW2APIVersion {
             "metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
             optional.."fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
             "item"(INTEGER, "the ID of the dye item")
-            "categories"(array(STRING), "the categories of the color") {
-                // Hue
-                value("Gray", "")
-                value("Brown", "")
-                value("Red", "")
-                value("Orange", "")
-                value("Yellow", "")
-                value("Green", "")
-                value("Blue", "")
-                value("Purple", "")
-
-                // Material
-                value("Vibrant", "")
-                value("Leather", "")
-                value("Metal", "")
-
-                // Rarity
-                value("Starter", "")
-                value("Common", "")
-                value("Uncommon", "")
-                value("Rare", "")
-                value("Exclusive", "")
-            }
+            "categories"(array(STRING), "the categories of the color")
         })
     }
     "/Commerce/Listings" {
