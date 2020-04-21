@@ -42,6 +42,11 @@ public data class SchemaArray internal constructor(
     public val description: String?
 ) : SchemaType
 
+public data class SchemaConditional internal constructor(
+    public val disambiguationBy: String,
+    public val interpretations: Map<String, SchemaType>
+) : SchemaType
+
 public data class SchemaMap(
     public val properties: Map<String, Property>,
     public val description: String?

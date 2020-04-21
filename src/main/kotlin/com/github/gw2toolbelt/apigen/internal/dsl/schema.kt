@@ -49,6 +49,13 @@ internal class SchemaMapBuilder {
         return SchemaMapPropertyBuilder(this, type, description).also { _properties[this] = it }
     }
 
+    operator fun String.invoke(
+        disambiguationBy: String,
+        interpretations: Map<String, SchemaType>
+    ): SchemaMapPropertyBuilder {
+        return SchemaMapPropertyBuilder(this, SchemaConditional(disambiguationBy, interpretations), null).also { _properties[this] = it }
+    }
+
     val deprecated = PropertyModifier.deprecated
     val optional = PropertyModifier.optional
 
