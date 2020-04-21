@@ -366,6 +366,151 @@ internal val GW2v2 = GW2APIVersion {
             "icon"(STRING, "the URL to the image")
         })
     }
+    "/Items" {
+        summary = "Returns information about items in the game."
+        cache = 1.hours
+
+        fun INFIX_UPGRADES() = array(
+            description = "",
+            items = map {
+                "id"(INTEGER, "the itemstat id")
+                "attributes"(
+                    description = "list of attribute bonuses",
+                    type = map {
+                        "attribute"(STRING, "attribute this bonus applies to")
+                        "modifier"(INTEGER, "the modifier value")
+                    }
+                )
+                optional.."buff"(
+                    description = "object containing an additional effect",
+                    type = map {
+                        SerialName("skill_id").."skillId"(INTEGER, "the skill id of the effect")
+                        optional.."description"(STRING, "the effect's description")
+                    }
+                )
+            }
+        )
+
+        fun INFUSION_SLOTS() = array(
+            description = "",
+            items = map {
+                "flags"(array(STRING), "infusion slot type of infusion upgrades")
+                optional..SerialName("infusion_type").."itemId"(INTEGER, "the infusion upgrade already in the armor piece")
+            }
+        )
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(map {
+            "id"(INTEGER, "the item's ID")
+            "name"(STRING, "the item's name")
+            "type"(STRING, "the item's type")
+            optional.."icon"(STRING, "the icon URL")
+            optional.."description"(STRING, "the item description")
+            "level"(INTEGER, "the required level")
+            SerialName("vendor_value").."vendorValue"(INTEGER, "the value in coins when selling to a vendor")
+            optional..SerialName("default_skin").."defaultSkin"(INTEGER, "the default skin id")
+            "flags"(array(STRING), "flags applying to the item")
+            SerialName("game_types").."gameTypes"(array(STRING), "the game types in which the item is usable")
+            "restrictions"(array(STRING), "restrictions applied to the item")
+            optional..SerialName("upgrades_into").."upgradesInto"(
+                description = "lists what items this item can be upgraded into, and the method of upgrading",
+                type = array(map {
+                    "upgrade"(STRING, "describes the method of upgrading")
+                    SerialName("item_id").."itemId"(INTEGER, "the item ID that results from performing the upgrade")
+                })
+            )
+            optional..SerialName("upgrades_from").."upgradesFrom"(
+                description = "lists what items this item can be upgraded from, and the method of upgrading",
+                type = array(map {
+                    "upgrade"(STRING, "describes the method of upgrading")
+                    SerialName("item_id").."itemId"(INTEGER, "the item ID that results from performing the upgrade")
+                })
+            )
+            "details"(disambiguationBy = "type", interpretations = mapOf(
+                "Armor" to map {
+                    "type"(STRING, "the armor slot type")
+                    SerialName("weight_class").."weightClass"(STRING, "the weight class")
+                    "defense"(INTEGER, "the defense value of the armor piece")
+                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
+                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                },
+                "Back" to map {
+                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
+                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                },
+                "Bag" to map {
+                    "size"(INTEGER, "the number of bag slots")
+                    SerialName("no_sell_or_sort").."noSellOrSort"(BOOLEAN, "whether the bag is invisible")
+                },
+                "Consumable" to map {
+                    "type"(STRING, "the consumable type")
+                    optional.."description"(STRING, "effect description for consumables applying an effect")
+                    optional..SerialName("duration_ms").."durationMs"(INTEGER, "effect duration in milliseconds")
+                    optional..SerialName("unlock_type").."unlockType"(STRING, "unlock type for unlock consumables")
+                    optional..SerialName("color_id").."colorId"(INTEGER, "the dye id for dye unlocks")
+                    optional..SerialName("recipe_id").."recipeId"(INTEGER, "the recipe id for recipe unlocks")
+                    optional..SerialName("extra_recipe_ids").."extraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
+                    optional..SerialName("guild_upgrade_id").."guildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
+                    optional..SerialName("apply_count").."applyCount"(INTEGER, "the number of stacks of the effect applied by this item")
+                    optional.."name"(STRING, "the effect type name of the consumable")
+                    optional.."icon"(STRING, "the icon of the effect")
+                    optional.."skin"(array(INTEGER), "a list of skin ids which this item unlocks")
+                },
+                "Container" to map {
+                    "type"(STRING, "the container type")
+                },
+                "Gathering" to map {
+                    "type"(STRING, "the tool type")
+                },
+                "Gizmo" to map {
+                    "type"(STRING, "the gizmo type")
+                    optional..SerialName("guild_upgrade_id").."guildUpgradeId"(INTEGER, "the guild upgrade id for the item")
+                    "vendor_ids"(array(INTEGER), "the vendor ids")
+                },
+                "MiniPet" to map {
+                    SerialName("minipet_id").."minipetId"(INTEGER, "the miniature it unlocks")
+                },
+                "Tool" to map {
+                    "type"(STRING, "the tool type")
+                    "charges"(INTEGER, "the available charges")
+                },
+                "Trinket" to map {
+                    "type"(STRING, "the trinket type")
+                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
+                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                },
+                "UpgradeComponent" to map {
+                    "type"(STRING, "the type of the upgrade component")
+                    "flags"(array(STRING), "the items that can be upgraded with the upgrade component")
+                    SerialName("infusion_upgrade_flags").."infusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
+                    "suffix"(STRING, "the suffix appended to the item name when the component is applied")
+                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional.."bonuses"(array(STRING), "the bonuses from runes")
+                },
+                "Weapon" to map {
+                    "type"(STRING, "the weapon type")
+                    SerialName("min_power").."minPower"(INTEGER, "minimum weapon strength")
+                    SerialName("max_power").."maxPower"(INTEGER, "maximum weapon strength")
+                    SerialName("damage_type").."damageType"(STRING, "the damage type")
+                    "defense"(INTEGER, "the defense value of the weapon")
+                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
+                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                }
+            ))
+        })
+    }
     "/ItemStats" {
         summary = "Returns information about itemstats."
         cache = 1.hours
