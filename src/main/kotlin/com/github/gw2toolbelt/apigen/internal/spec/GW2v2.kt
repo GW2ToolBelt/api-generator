@@ -505,10 +505,10 @@ internal val GW2v2 = GW2APIVersion {
                     SerialName("damage_type").."damageType"(STRING, "the damage type")
                     "defense"(INTEGER, "the defense value of the weapon")
                     SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
-                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 }
             ))
         })
