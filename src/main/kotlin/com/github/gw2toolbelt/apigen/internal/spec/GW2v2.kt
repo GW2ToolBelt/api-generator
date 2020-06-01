@@ -317,7 +317,7 @@ internal val GW2v2 = GW2APIVersion {
         })
     }
     "/Currencies" {
-        summary = "Returns information about currencies contained in the acount wallet."
+        summary = "Returns information about currencies contained in the account wallet."
         cache = 1.hours
         isLocalized = true
 
