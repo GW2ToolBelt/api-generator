@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("RedundantVisibilityModifier")
 package com.github.gw2toolbelt.apigen.schema
 
 import com.github.gw2toolbelt.apigen.model.*
@@ -37,21 +38,53 @@ public interface SchemaType {
 
 }
 
+/**
+ * A schema for lists.
+ *
+ * @param items         the schema definition for the elements of this list
+ * @param description   TODO
+ */
 public data class SchemaArray internal constructor(
     public val items: SchemaType,
     public val description: String?
 ) : SchemaType
 
+/**
+ * A schema for a sealed hierarchy (i.e. algebraic sum type-like construct).
+ *
+ * The interpretation is chosen based on a "disambiguation-property".
+ *
+ * @param disambiguationBy  the serial name of the disambiguation-property
+ * @param interpretations   the available interpretations
+ */
 public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
     public val interpretations: Map<String, SchemaType>
 ) : SchemaType
 
+/**
+ * TODO doc
+ *
+ * @param   properties
+ * @param   description
+ */
 public data class SchemaMap(
     public val properties: Map<String, Property>,
     public val description: String?
 ) : SchemaType {
 
+    /**
+     * TODO doc
+     *
+     * @param   propertyName    the name of the property in title-case (e.g. "ItemId")
+     * @param   type            the schema definition for this property
+     * @param   description     TODO
+     * @param   isDeprecated    TODO
+     * @param   optionality     the [Optionality] of this property
+     * @param   since           TODO
+     * @param   until           TODO
+     * @param   serialName      the serial name of the property
+     */
     public data class Property(
         public val propertyName: String,
         public val type: SchemaType,
