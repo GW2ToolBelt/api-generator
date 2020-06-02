@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package com.github.gw2toolbelt.apigen.model
 
 import java.util.*

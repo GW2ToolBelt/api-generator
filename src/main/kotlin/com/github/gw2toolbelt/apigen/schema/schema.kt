@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package com.github.gw2toolbelt.apigen.schema
 
 import com.github.gw2toolbelt.apigen.model.*
