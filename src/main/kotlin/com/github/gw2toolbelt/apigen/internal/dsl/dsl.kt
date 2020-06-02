@@ -105,7 +105,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
         this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
             tmp.forEach { (key, value) ->
-                // TODO the compiler trips here without casts. Try this with NI once 1.3.70 is out
+                // TODO the compiler trips here without casts. Try this with NI once 1.4 is out
                 if (value !== null) map[key as V2SchemaVersion] = value as SchemaType
             }
         }

@@ -25,14 +25,20 @@ package com.github.gw2toolbelt.apigen.schema
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.v2.*
 
-public sealed class SchemaType {
+public sealed class SchemaType
+public sealed class SchemaPrimitive : SchemaType()
 
-    public object BOOLEAN : SchemaType()
-    public object DECIMAL : SchemaType()
-    public object INTEGER : SchemaType()
-    public object STRING : SchemaType()
+/** A schema representing primitive boolean types. */
+public object SchemaBoolean : SchemaPrimitive()
 
-}
+/** A schema representing primitive decimal types. */
+public object SchemaDecimal : SchemaPrimitive()
+
+/** A schema representing primitive integer types. */
+public object SchemaInteger : SchemaPrimitive()
+
+/** A schema representing primitive string types. */
+public object SchemaString : SchemaPrimitive()
 
 /**
  * A schema for lists.

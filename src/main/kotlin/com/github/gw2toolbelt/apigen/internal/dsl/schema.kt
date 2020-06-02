@@ -25,6 +25,11 @@ import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
 
+val BOOLEAN get() = SchemaBoolean
+val DECIMAL get() = SchemaDecimal
+val INTEGER get() = SchemaInteger
+val STRING get() = SchemaString
+
 internal interface SchemaAggregateBuildProvider : SchemaArrayBuilderProvider, SchemaMapBuilderProvider
 
 internal interface SchemaArrayBuilderProvider {

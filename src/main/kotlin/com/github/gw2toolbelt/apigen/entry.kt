@@ -26,7 +26,6 @@ import com.github.gw2toolbelt.apigen.internal.dsl.*
 import com.github.gw2toolbelt.apigen.internal.spec.*
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.schema.*
-import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
 import java.util.*
 
 /**
