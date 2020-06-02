@@ -52,24 +52,30 @@ kotlin {
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "13"
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "13"
+        }
     }
-}
 
-val sourcesJar = tasks.create<Jar>("sourcesJar") {
-    archiveBaseName.set(artifactName)
-    archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
-}
+    withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("--release", "14"))
+    }
 
-val javadocJar = tasks.create<Jar>("javadocJar") {
-    dependsOn(tasks.javadoc)
+    create<Jar>("sourcesJar") {
+        archiveBaseName.set(artifactName)
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+    }
 
-    archiveBaseName.set(artifactName)
-    archiveClassifier.set("javadoc")
-    from(tasks.javadoc.get().outputs)
+    create<Jar>("javadocJar") {
+        dependsOn(javadoc)
+
+        archiveBaseName.set(artifactName)
+        archiveClassifier.set("javadoc")
+        from(javadoc.get().outputs)
+    }
 }
 
 publishing {
