@@ -48,16 +48,16 @@ public val API_V2_DEFINITION: APIVersion by lazy {
  */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaMap by lazy {
     SchemaMap(SchemaMapBuilder().apply {
-        "name"(STRING, "the name of the currently played character")
-        "profession"(INTEGER, "the current profession (class) of the currently played character")
-        "spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
-        "race"(INTEGER, "the ID of the race of the currently played character")
-        SerialName("map_id").."mapID"(INTEGER, "the ID of the current map")
-        SerialName("world_id").."worldID"(INTEGER, "the ID of the current world")
-        SerialName("team_color_id").."teamColorID"(INTEGER, "the ID of the current team")
-        "commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
-        "map"(INTEGER, "the ID of the current map")
-        "fov"(DECIMAL, "the scaling of the FOV")
-        "uisz"(INTEGER, "the selected UI size")
+        "Name"(STRING, "the name of the currently played character")
+        "Profession"(INTEGER, "the current profession (class) of the currently played character")
+        "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
+        "Race"(INTEGER, "the ID of the race of the currently played character")
+        SerialName("map_id").."MapId"(INTEGER, "the ID of the current map")
+        SerialName("world_id").."WorldId"(INTEGER, "the ID of the current world")
+        SerialName("team_color_id").."TeamColorId"(INTEGER, "the ID of the current team")
+        "Commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
+        "Map"(INTEGER, "the ID of the current map")
+        "FoV"(DECIMAL, "the scaling of the FOV")
+        SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
     }.properties, null)
 }

@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("DuplicatedCode", "FunctionName")
 package com.github.gw2toolbelt.apigen.internal.spec
 
 import com.github.gw2toolbelt.apigen.internal.dsl.*
@@ -33,29 +34,29 @@ internal val GW2v2 = GW2APIVersion {
         security(ACCOUNT)
 
         schema(map {
-            "id"(STRING, "the unique persistent account GUID")
-            "age"(INTEGER, "the age of the account in seconds")
-            "name"(STRING, "the unique account name with numerical suffix")
-            "world"(INTEGER, "the ID of the home world the account is assigned to")
-            "guilds"(
+            "Id"(STRING, "the unique persistent account GUID")
+            "Age"(INTEGER, "the age of the account in seconds")
+            "Name"(STRING, "the unique account name with numerical suffix")
+            "World"(INTEGER, "the ID of the home world the account is assigned to")
+            "Guilds"(
                 description = "a list of guilds assigned to the given account",
                 type = array(STRING)
             )
-            optional(GUILDS)..SerialName("guild_leader").."guildLeader"(
+            optional(GUILDS)..SerialName("guild_leader").."GuildLeader"(
                 description = "a list of guilds the account is leader of",
                 type = array(STRING)
             )
-            "created"(STRING, "an ISO-8601 standard timestamp of when the account was created")
-            "access"(
+            "Created"(STRING, "an ISO-8601 standard timestamp of when the account was created")
+            "Access"(
                 description = "a list of what content this account has access to",
                 type = array(STRING)
             )
-            "commander"(BOOLEAN, "true if the player has bought a commander tag")
-            optional(PROGRESSION)..SerialName("fractal_level").."fractalLevel"(INTEGER, "the account's personal fractal level")
-            optional(PROGRESSION)..SerialName("daily_ap").."dailyAP"(INTEGER, "the daily AP the account has")
-            optional(PROGRESSION)..SerialName("monthly_ap").."monthAP"(INTEGER, "the monthly AP the account has")
-            optional(PROGRESSION)..SerialName("wvw_rank").."wvwRank"(INTEGER, "the account's personal wvw rank")
-            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."lastModified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
+            "Commander"(BOOLEAN, "true if the player has bought a commander tag")
+            optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(INTEGER, "the account's personal fractal level")
+            optional(PROGRESSION)..SerialName("daily_ap").."DailyAP"(INTEGER, "the daily AP the account has")
+            optional(PROGRESSION)..SerialName("monthly_ap").."MonthlyAP"(INTEGER, "the monthly AP the account has")
+            optional(PROGRESSION)..SerialName("wvw_rank").."WvWRank"(INTEGER, "the account's personal wvw rank")
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
         })
     }
     "/Account/Achievements" {
@@ -63,16 +64,16 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(map {
-            "id"(INTEGER, "the achievement's ID")
-            "done"(BOOLEAN, "whether or not the achievement is done")
-            optional.."bits"(
+            "Id"(INTEGER, "the achievement's ID")
+            "Done"(BOOLEAN, "whether or not the achievement is done")
+            optional.."Bits"(
                 description = "the meaning of each value varies with each achievement",
                 type = array(INTEGER, "this attribute contains an array of numbers, giving more specific information on the progress for the achievement")
             )
-            optional.."current"(INTEGER, "the player's current progress towards the achievement")
-            optional.."max"(INTEGER, "the amount needed to complete the achievement")
-            optional.."repeated"(INTEGER, "the number of times the achievement has been completed if the achievement is repeatable")
-            optional.."unlocked"(BOOLEAN, "if this achievement can be unlocked, whether or not the achievement is unlocked")
+            optional.."Current"(INTEGER, "the player's current progress towards the achievement")
+            optional.."Max"(INTEGER, "the amount needed to complete the achievement")
+            optional.."Repeated"(INTEGER, "the number of times the achievement has been completed if the achievement is repeatable")
+            optional.."Unlocked"(BOOLEAN, "if this achievement can be unlocked, whether or not the achievement is unlocked")
         }))
     }
     "/Account/DailyCrafting" {
@@ -134,8 +135,8 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(array(map {
-            "id"(INTEGER, "the mastery's ID")
-            optional.."level"(INTEGER, "the index of the unlocked mastery level")
+            "Id"(INTEGER, "the mastery's ID")
+            optional.."Level"(INTEGER, "the index of the unlocked mastery level")
         }))
     }
     "/Account/Mastery/Points" {
@@ -143,15 +144,15 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, PROGRESSION)
 
         schema(map {
-            "totals"(
+            "Totals"(
                 description = "information about the total mastery points for a reason",
                 type = array(map {
-                    "region"(STRING, "the mastery region")
-                    "spent"(INTEGER, "the amount of mastery points of this region spent in mastery tracks")
-                    "earned"(INTEGER, "the amount of mastery points of this region earned for the account")
+                    "Region"(STRING, "the mastery region")
+                    "Spent"(INTEGER, "the amount of mastery points of this region spent in mastery tracks")
+                    "Earned"(INTEGER, "the amount of mastery points of this region earned for the account")
                 })
             )
-            "unlocked"(
+            "Unlocked"(
                 description = "an array of IDs of unlocked mastery points",
                 type = array(INTEGER)
             )
@@ -162,10 +163,10 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, INVENTORIES)
 
         schema(array(map {
-            "id"(INTEGER, "the material's item ID")
-            "category"(INTEGER, "the material category the item belongs to")
-            "count"(INTEGER, "the number of the material that is stored in the player's vault")
-            optional.."binding"(STRING, "the binding of the material")
+            "Id"(INTEGER, "the material's item ID")
+            "Category"(INTEGER, "the material category the item belongs to")
+            "Count"(INTEGER, "the number of the material that is stored in the player's vault")
+            optional.."Binding"(STRING, "the binding of the material")
         }))
     }
     "/Account/Minis" {
@@ -233,8 +234,8 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, WALLET)
 
         schema(array(map {
-            "id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
-            "value"(INTEGER, "the amount of this currency in the player's wallet")
+            "Id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
+            "Value"(INTEGER, "the amount of this currency in the player's wallet")
         }))
     }
     "/Account/WorldBosses" {
@@ -247,7 +248,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns the current build ID."
 
         schema(map {
-            "id"(INTEGER, "the current build ID")
+            "Id"(INTEGER, "the current build ID")
         })
     }
     "/Colors" {
@@ -256,41 +257,41 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         fun APPEARANCE() = map {
-            "brightness"(INTEGER, "the brightness")
-            "contrast"(DECIMAL, "the contrast")
-            "hue"(INTEGER, "the hue in HSL colorspace")
-            "saturation"(DECIMAL, "the saturation in HSL colorspace")
-            "lightness"(DECIMAL, "the lightness in HSL colorspace")
-            "rbg"(array(INTEGER), "a list containing precalculated RGB values")
+            "Brightness"(INTEGER, "the brightness")
+            "Contrast"(DECIMAL, "the contrast")
+            "Hue"(INTEGER, "the hue in HSL colorspace")
+            "Saturation"(DECIMAL, "the saturation in HSL colorspace")
+            "Lightness"(DECIMAL, "the lightness in HSL colorspace")
+            "RBG"(array(INTEGER), "a list containing precalculated RGB values")
         }
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the color's ID")
-            "name"(STRING, "the color's name")
-            SerialName("base_rgb").."baseRGB"(array(INTEGER), "the base RGB values")
-            "cloth"(APPEARANCE(), "detailed information on its appearance when applied on cloth armor")
-            "leather"(APPEARANCE(), "detailed information on its appearance when applied on leather armor")
-            "metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
-            optional.."fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
-            "item"(INTEGER, "the ID of the dye item")
-            "categories"(array(STRING), "the categories of the color")
+            "Id"(INTEGER, "the color's ID")
+            "Name"(STRING, "the color's name")
+            SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
+            "Cloth"(APPEARANCE(), "detailed information on its appearance when applied on cloth armor")
+            "Leather"(APPEARANCE(), "detailed information on its appearance when applied on leather armor")
+            "Metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
+            optional.."Fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
+            "Item"(INTEGER, "the ID of the dye item")
+            "Categories"(array(STRING), "the categories of the color")
         })
     }
     "/Commerce/Listings" {
         summary = "Returns current buy and sell listings from the trading post."
 
         fun LISTING() = map {
-            "listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
-            SerialName("unit_price").."unitPrice"(INTEGER, "the sell offer or buy order price in coins")
-            "quantity"(INTEGER, "the amount of items being sold/bought in this listing")
+            "Listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
+            SerialName("unit_price").."UnitPrice"(INTEGER, "the sell offer or buy order price in coins")
+            "Quantity"(INTEGER, "the amount of items being sold/bought in this listing")
         }
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the item's ID")
-            "buys"(array(LISTING()), "list of all buy listings")
-            "sells"(array(LISTING()), "list of all sell listings")
+            "Id"(INTEGER, "the item's ID")
+            "Buys"(array(LISTING()), "list of all buy listings")
+            "Sells"(array(LISTING()), "list of all sell listings")
         })
     }
     "/Commerce/Prices" {
@@ -298,20 +299,20 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the item's ID")
-            "whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
-            "buys"(
+            "Id"(INTEGER, "the item's ID")
+            "Whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
+            "Buys"(
                 description = "the buy information",
                 type = map {
-                    SerialName("unit_price").."unitPrice"(INTEGER, "the highest buy order price in coins")
-                    "quantity"(INTEGER, "the amount of items being bought")
+                    SerialName("unit_price").."UnitPrice"(INTEGER, "the highest buy order price in coins")
+                    "Quantity"(INTEGER, "the amount of items being bought")
                 }
             )
             "sells"(
                 description = "the sell information",
                 type = map {
-                    SerialName("unit_price").."unitPrice"(INTEGER, "the lowest sell order price in coins")
-                    "quantity"(INTEGER, "the amount of items being sold")
+                    SerialName("unit_price").."UnitPrice"(INTEGER, "the lowest sell order price in coins")
+                    "Quantity"(INTEGER, "the amount of items being sold")
                 }
             )
         })
@@ -323,11 +324,11 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the currency's ID")
-            "name"(STRING, "the currency's name")
-            "description"(STRING, "a description of the currency")
-            "icon"(STRING, "the currency's icon")
-            "order"(INTEGER, "a number that can be used to sort the list of currencies")
+            "Id"(INTEGER, "the currency's ID")
+            "Name"(STRING, "the currency's name")
+            "Description"(STRING, "a description of the currency")
+            "Icon"(STRING, "the currency's icon")
+            "Order"(INTEGER, "a number that can be used to sort the list of currencies")
         })
     }
     "/DailyCrafting" {
@@ -336,7 +337,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the dailycrafting")
+            "Id"(INTEGER, "the ID of the dailycrafting")
         })
     }
     "/Emotes" {
@@ -345,12 +346,12 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(STRING, "the emote's ID")
-            "commands"(
+            "Id"(STRING, "the emote's ID")
+            "Commands"(
                 description = "the commands that may be used to trigger the emote",
                 type = array(INTEGER)
             )
-            SerialName("unlock_items").."unlockItems"(
+            SerialName("unlock_items").."UnlockItems"(
                 description = "the IDs of the items that unlock the emote",
                 type = array(INTEGER)
             )
@@ -362,8 +363,8 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(STRING, "the file identifier")
-            "icon"(STRING, "the URL to the image")
+            "Id"(STRING, "the file identifier")
+            "Icon"(STRING, "the URL to the image")
         })
     }
     "/Items" {
@@ -373,19 +374,19 @@ internal val GW2v2 = GW2APIVersion {
         fun INFIX_UPGRADES() = array(
             description = "",
             items = map {
-                "id"(INTEGER, "the itemstat id")
-                "attributes"(
+                "Id"(INTEGER, "the itemstat id")
+                "Attributes"(
                     description = "list of attribute bonuses",
                     type = map {
-                        "attribute"(STRING, "attribute this bonus applies to")
-                        "modifier"(INTEGER, "the modifier value")
+                        "Attribute"(STRING, "attribute this bonus applies to")
+                        "Modifier"(INTEGER, "the modifier value")
                     }
                 )
-                optional.."buff"(
+                optional.."Buff"(
                     description = "object containing an additional effect",
                     type = map {
-                        SerialName("skill_id").."skillId"(INTEGER, "the skill id of the effect")
-                        optional.."description"(STRING, "the effect's description")
+                        SerialName("skill_id").."SkillId"(INTEGER, "the skill id of the effect")
+                        optional.."Description"(STRING, "the effect's description")
                     }
                 )
             }
@@ -394,121 +395,121 @@ internal val GW2v2 = GW2APIVersion {
         fun INFUSION_SLOTS() = array(
             description = "",
             items = map {
-                "flags"(array(STRING), "infusion slot type of infusion upgrades")
-                optional..SerialName("infusion_type").."itemId"(INTEGER, "the infusion upgrade already in the armor piece")
+                "Flags"(array(STRING), "infusion slot type of infusion upgrades")
+                optional..SerialName("infusion_type").."ItemId"(INTEGER, "the infusion upgrade already in the armor piece") // TODO is this correct?
             }
         )
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the item's ID")
-            "name"(STRING, "the item's name")
-            "type"(STRING, "the item's type")
-            SerialName("chat_link").."chatLink"(STRING, "the chat link")
-            optional.."icon"(STRING, "the icon URL")
-            optional.."description"(STRING, "the item description")
-            "rarity"(STRING, "the item rarity")
-            "level"(INTEGER, "the required level")
-            SerialName("vendor_value").."vendorValue"(INTEGER, "the value in coins when selling to a vendor")
-            optional..SerialName("default_skin").."defaultSkin"(INTEGER, "the default skin id")
-            "flags"(array(STRING), "flags applying to the item")
-            SerialName("game_types").."gameTypes"(array(STRING), "the game types in which the item is usable")
-            "restrictions"(array(STRING), "restrictions applied to the item")
-            optional..SerialName("upgrades_into").."upgradesInto"(
+            "Id"(INTEGER, "the item's ID")
+            "Name"(STRING, "the item's name")
+            "Type"(STRING, "the item's type")
+            SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+            optional.."Icon"(STRING, "the icon URL")
+            optional.."Description"(STRING, "the item description")
+            "Rarity"(STRING, "the item rarity")
+            "Level"(INTEGER, "the required level")
+            SerialName("vendor_value").."VendorValue"(INTEGER, "the value in coins when selling to a vendor")
+            optional..SerialName("default_skin").."DefaultSkin"(INTEGER, "the default skin id")
+            "Flags"(array(STRING), "flags applying to the item")
+            SerialName("game_types").."GameTypes"(array(STRING), "the game types in which the item is usable")
+            "Restrictions"(array(STRING), "restrictions applied to the item")
+            optional..SerialName("upgrades_into").."UpgradesInto"(
                 description = "lists what items this item can be upgraded into, and the method of upgrading",
                 type = array(map {
-                    "upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."itemId"(INTEGER, "the item ID that results from performing the upgrade")
+                    "Upgrade"(STRING, "describes the method of upgrading")
+                    SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
-            optional..SerialName("upgrades_from").."upgradesFrom"(
+            optional..SerialName("upgrades_from").."UpgradesFrom"(
                 description = "lists what items this item can be upgraded from, and the method of upgrading",
                 type = array(map {
-                    "upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."itemId"(INTEGER, "the item ID that results from performing the upgrade")
+                    "Upgrade"(STRING, "describes the method of upgrading")
+                    SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
             "details"(disambiguationBy = "type", interpretations = mapOf(
                 "Armor" to map {
-                    "type"(STRING, "the armor slot type")
-                    SerialName("weight_class").."weightClass"(STRING, "the weight class")
-                    "defense"(INTEGER, "the defense value of the armor piece")
-                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
-                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    "Type"(STRING, "the armor slot type")
+                    SerialName("weight_class").."WeightClass"(STRING, "the weight class")
+                    "Defense"(INTEGER, "the defense value of the armor piece")
+                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
+                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 },
                 "Back" to map {
-                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
-                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
+                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 },
                 "Bag" to map {
-                    "size"(INTEGER, "the number of bag slots")
-                    SerialName("no_sell_or_sort").."noSellOrSort"(BOOLEAN, "whether the bag is invisible")
+                    "Size"(INTEGER, "the number of bag slots")
+                    SerialName("no_sell_or_sort").."NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
                 },
                 "Consumable" to map {
-                    "type"(STRING, "the consumable type")
-                    optional.."description"(STRING, "effect description for consumables applying an effect")
-                    optional..SerialName("duration_ms").."durationMs"(INTEGER, "effect duration in milliseconds")
-                    optional..SerialName("unlock_type").."unlockType"(STRING, "unlock type for unlock consumables")
-                    optional..SerialName("color_id").."colorId"(INTEGER, "the dye id for dye unlocks")
-                    optional..SerialName("recipe_id").."recipeId"(INTEGER, "the recipe id for recipe unlocks")
-                    optional..SerialName("extra_recipe_ids").."extraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
-                    optional..SerialName("guild_upgrade_id").."guildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
-                    optional..SerialName("apply_count").."applyCount"(INTEGER, "the number of stacks of the effect applied by this item")
-                    optional.."name"(STRING, "the effect type name of the consumable")
-                    optional.."icon"(STRING, "the icon of the effect")
-                    optional.."skin"(array(INTEGER), "a list of skin ids which this item unlocks")
+                    "Type"(STRING, "the consumable type")
+                    optional.."Description"(STRING, "effect description for consumables applying an effect")
+                    optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
+                    optional..SerialName("unlock_type").."UnlockType"(STRING, "unlock type for unlock consumables")
+                    optional..SerialName("color_id").."ColorId"(INTEGER, "the dye id for dye unlocks")
+                    optional..SerialName("recipe_id").."RecipeId"(INTEGER, "the recipe id for recipe unlocks")
+                    optional..SerialName("extra_recipe_ids").."ExtraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
+                    optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
+                    optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
+                    optional.."Name"(STRING, "the effect type name of the consumable")
+                    optional.."Icon"(STRING, "the icon of the effect")
+                    optional.."Skin"(array(INTEGER), "a list of skin ids which this item unlocks")
                 },
                 "Container" to map {
-                    "type"(STRING, "the container type")
+                    "Type"(STRING, "the container type")
                 },
                 "Gathering" to map {
-                    "type"(STRING, "the tool type")
+                    "Type"(STRING, "the tool type")
                 },
                 "Gizmo" to map {
                     "type"(STRING, "the gizmo type")
-                    optional..SerialName("guild_upgrade_id").."guildUpgradeId"(INTEGER, "the guild upgrade id for the item")
-                    "vendor_ids"(array(INTEGER), "the vendor ids")
+                    optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
+                    SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
                 },
                 "MiniPet" to map {
-                    SerialName("minipet_id").."minipetId"(INTEGER, "the miniature it unlocks")
+                    SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
                 },
                 "Tool" to map {
-                    "type"(STRING, "the tool type")
-                    "charges"(INTEGER, "the available charges")
+                    "Type"(STRING, "the tool type")
+                    "Charges"(INTEGER, "the available charges")
                 },
                 "Trinket" to map {
-                    "type"(STRING, "the trinket type")
-                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
-                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    "Type"(STRING, "the trinket type")
+                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
+                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 },
                 "UpgradeComponent" to map {
-                    "type"(STRING, "the type of the upgrade component")
-                    "flags"(array(STRING), "the items that can be upgraded with the upgrade component")
-                    SerialName("infusion_upgrade_flags").."infusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
-                    "suffix"(STRING, "the suffix appended to the item name when the component is applied")
-                    SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional.."bonuses"(array(STRING), "the bonuses from runes")
+                    "Type"(STRING, "the type of the upgrade component")
+                    "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
+                    SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
+                    "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
+                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional.."Bonuses"(array(STRING), "the bonuses from runes")
                 },
                 "Weapon" to map {
-                    "type"(STRING, "the weapon type")
-                    SerialName("min_power").."minPower"(INTEGER, "minimum weapon strength")
-                    SerialName("max_power").."maxPower"(INTEGER, "maximum weapon strength")
-                    SerialName("damage_type").."damageType"(STRING, "the damage type")
-                    "defense"(INTEGER, "the defense value of the weapon")
-                    SerialName("infusion_slots").."infusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
-                    optional..SerialName("infix_upgrade").."infixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."suffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."secondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    optional..SerialName("stat_choices").."statChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    "Type"(STRING, "the weapon type")
+                    SerialName("min_power").."MinPower"(INTEGER, "minimum weapon strength")
+                    SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
+                    SerialName("damage_type").."DamageType"(STRING, "the damage type")
+                    "Defense"(INTEGER, "the defense value of the weapon")
+                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
+                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 }
             ))
         })
@@ -519,14 +520,14 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the stat set's ID")
-            "name"(STRING, "the name of the stat set")
-            "attributes"(
+            "Id"(INTEGER, "the stat set's ID")
+            "Name"(STRING, "the name of the stat set")
+            "Attributes"(
                 description = "the list of attribute bonuses",
                 type = array(map {
-                    "attribute"(STRING, "the name of the attribute")
-                    "multiplier"(DECIMAL, "the multiplier for that attribute")
-                    "value"(INTEGER, "the default value for that attribute")
+                    "Attribute"(STRING, "the name of the attribute")
+                    "Multiplier"(DECIMAL, "the multiplier for that attribute")
+                    "Value"(INTEGER, "the default value for that attribute")
                 })
             )
         })
@@ -537,11 +538,11 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(STRING, "the legend's ID")
-            "swap"(INTEGER, "the ID of the profession (swap Legend) skill")
-            "heal"(INTEGER, "the ID of the heal skill")
-            "elite"(INTEGER, "the ID of the elite skills")
-            "utilities"(
+            "Id"(STRING, "the legend's ID")
+            "Swap"(INTEGER, "the ID of the profession (swap Legend) skill")
+            "Heal"(INTEGER, "the ID of the heal skill")
+            "Elite"(INTEGER, "the ID of the elite skills")
+            "Utilities"(
                 description = "the IDs of the utility skills",
                 type = array(INTEGER)
             )
@@ -553,7 +554,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the mapchest")
+            "Id"(INTEGER, "the ID of the mapchest")
         })
     }
     "/Outfits" {
@@ -563,9 +564,9 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the outfit's ID")
-            "name"(STRING, "the outfit's name")
-            "icon"(STRING, "the outfit's icon")
+            "Id"(INTEGER, "the outfit's ID")
+            "Name"(STRING, "the outfit's name")
+            "Icon"(STRING, "the outfit's icon")
             SerialName("unlock_items").."unlockItems"(
                 description = "the IDs of the items that unlock the outfit",
                 type = array(INTEGER)
@@ -579,9 +580,9 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(STRING, "the race's ID")
-            "name"(STRING, "the race's localized name")
-            "skills"(
+            "Id"(STRING, "the race's ID")
+            "Name"(STRING, "the race's localized name")
+            "Skills"(
                 description = "an array of racial skill IDs",
                 type = array(INTEGER)
             )
@@ -594,11 +595,11 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the title")
-            "name"(STRING, "the display name of the title")
-            deprecated..optional.."achievement"(INTEGER, "the ID of the achievement that grants this title")
-            optional.."achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
-            optional..SerialName("ap_required").."apRequired"(INTEGER, "the amount of AP required to unlock this title")
+            "Id"(INTEGER, "the ID of the title")
+            "Name"(STRING, "the display name of the title")
+            deprecated..optional.."Achievement"(INTEGER, "the ID of the achievement that grants this title")
+            optional.."Achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
+            optional..SerialName("ap_required").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
         })
     }
     "/TokenInfo" {
@@ -607,24 +608,24 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(
             V2_SCHEMA_CLASSIC to map {
-                "id"(STRING, "the API key that was requested")
-                "name"(STRING, "the name given to the API key by the account owner")
-                "permissions"(
+                "Id"(STRING, "the API key that was requested")
+                "Name"(STRING, "the name given to the API key by the account owner")
+                "Permissions"(
                     description = "an array of strings describing which permissions the API key has",
                     type = array(STRING)
                 )
             },
             V2_SCHEMA_2019_05_22T00_00_00_000Z to map {
-                "id"(STRING, "the API key that was requested")
-                "name"(STRING, "the name given to the API key by the account owner")
-                "permissions"(
+                "Id"(STRING, "the API key that was requested")
+                "Name"(STRING, "the name given to the API key by the account owner")
+                "Permissions"(
                     description = "an array of strings describing which permissions the API key has",
                     type = array(STRING)
                 )
-                "type"(STRING, "the type of the access token given")
-                optional..SerialName("expires_at").."expiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
-                optional..SerialName("issued_at").."issuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
-                optional.."urls"(
+                "Type"(STRING, "the type of the access token given")
+                optional..SerialName("expires_at").."ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
+                optional..SerialName("issued_at").."IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
+                optional.."URLs"(
                     description = "if the given subtoken is restricted to a list of URLs, contains an array of strings describing what endpoints are available to this token",
                     type = array(STRING)
                 )
@@ -637,7 +638,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the worldboss")
+            "Id"(INTEGER, "the ID of the worldboss")
         })
     }
     "/Worlds" {
@@ -647,9 +648,9 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the world")
-            "name"(STRING, "the name of the world")
-            "population"(STRING, "the population level of the world")
+            "Id"(INTEGER, "the ID of the world")
+            "Name"(STRING, "the name of the world")
+            "Population"(STRING, "the population level of the world")
         })
     }
     "/WvW/Objectives" {
@@ -659,23 +660,23 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(STRING, "the ID of the objective")
-            "name"(STRING, "the name of the objective")
-            "type"(STRING, "the type of the objective")
-            SerialName("sector_id").."sectorId"(INTEGER, "the map sector the objective can be found in")
-            SerialName("map_id").."mapId"(INTEGER, "the ID of the map the objective can be found on")
-            SerialName("map_type").."mapType"(STRING, "the type of the map the objective can be found on")
-            "coord"(
+            "Id"(STRING, "the ID of the objective")
+            "Name"(STRING, "the name of the objective")
+            "Type"(STRING, "the type of the objective")
+            SerialName("sector_id").."SectorId"(INTEGER, "the map sector the objective can be found in")
+            SerialName("map_id").."MapId"(INTEGER, "the ID of the map the objective can be found on")
+            SerialName("map_type").."MapType"(STRING, "the type of the map the objective can be found on")
+            "Coord"(
                 description = "an array of three numbers representing the X, Y and Z coordinates of the objectives marker on the map",
                 type = array(DECIMAL)
             )
-            SerialName("label_coord").."labelCoord"(
+            SerialName("label_coord").."LabelCoord"(
                 description = "an array of two numbers representing the X and Y coordinates of the sector centroid",
                 type = array(DECIMAL)
             )
             "marker"(STRING, "the icon link")
-            SerialName("chat_link").."chatLink"(STRING, "the chat code for the objective")
-            optional..SerialName("upgrade_id").."upgradeId"(INTEGER, "the ID of the upgrades available for the objective")
+            SerialName("chat_link").."ChatLink"(STRING, "the chat code for the objective")
+            optional..SerialName("upgrade_id").."UpgradeId"(INTEGER, "the ID of the upgrades available for the objective")
         })
     }
     "/WvW/Ranks" {
@@ -685,9 +686,9 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the rank")
-            "title"(STRING, "the title of the rank")
-            SerialName("min_level").."minLevel"(INTEGER, "the WvW level required to unlock this rank")
+            "Id"(INTEGER, "the ID of the rank")
+            "Title"(STRING, "the title of the rank")
+            SerialName("min_level").."MinLevel"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
     "/WvW/Upgrades" {
@@ -697,18 +698,18 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "id"(INTEGER, "the ID of the upg")
-            "tiers"(
+            "Id"(INTEGER, "the ID of the upg")
+            "Tiers"(
                 description = "",
                 type = map {
-                    "name"(STRING, "the name of the upgrade tier")
-                    SerialName("yaks_required").."yaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
-                    "upgrades"(
+                    "Name"(STRING, "the name of the upgrade tier")
+                    SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
+                    "Upgrades"(
                         description = "",
                         type = map {
-                            "name"(STRING, "the name of the upgrade")
-                            "description"(STRING, "the description for the upgrade")
-                            "icon"(STRING, "the icon link")
+                            "Name"(STRING, "the name of the upgrade")
+                            "Description"(STRING, "the description for the upgrade")
+                            "Icon"(STRING, "the icon link")
                         }
                     )
                 }
