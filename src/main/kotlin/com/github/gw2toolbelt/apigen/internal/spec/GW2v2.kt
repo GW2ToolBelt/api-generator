@@ -25,7 +25,7 @@ package com.github.gw2toolbelt.apigen.internal.spec
 import com.github.gw2toolbelt.apigen.internal.dsl.*
 import com.github.gw2toolbelt.apigen.model.TokenScope.*
 import com.github.gw2toolbelt.apigen.model.v2.V2SchemaVersion.*
-import com.github.gw2toolbelt.apigen.schema.SchemaType.Kind.*
+import com.github.gw2toolbelt.apigen.schema.SchemaType.*
 import kotlin.time.*
 
 internal val GW2v2 = GW2APIVersion {

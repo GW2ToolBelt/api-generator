@@ -25,16 +25,12 @@ package com.github.gw2toolbelt.apigen.schema
 import com.github.gw2toolbelt.apigen.model.*
 import com.github.gw2toolbelt.apigen.model.v2.*
 
-public interface SchemaType {
+public sealed class SchemaType {
 
-    public sealed class Kind {
-
-        public object BOOLEAN : Kind(), SchemaType
-        public object DECIMAL : Kind(), SchemaType
-        public object INTEGER : Kind(), SchemaType
-        public object STRING : Kind(), SchemaType
-
-    }
+    public object BOOLEAN : SchemaType()
+    public object DECIMAL : SchemaType()
+    public object INTEGER : SchemaType()
+    public object STRING : SchemaType()
 
 }
 
@@ -47,7 +43,7 @@ public interface SchemaType {
 public data class SchemaArray internal constructor(
     public val items: SchemaType,
     public val description: String?
-) : SchemaType
+) : SchemaType()
 
 /**
  * A schema for a sealed hierarchy (i.e. algebraic sum type-like construct).
@@ -60,7 +56,7 @@ public data class SchemaArray internal constructor(
 public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
     public val interpretations: Map<String, SchemaType>
-) : SchemaType
+) : SchemaType()
 
 /**
  * TODO doc
@@ -71,7 +67,7 @@ public data class SchemaConditional internal constructor(
 public data class SchemaMap(
     public val properties: Map<String, Property>,
     public val description: String?
-) : SchemaType {
+) : SchemaType() {
 
     /**
      * TODO doc
