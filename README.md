@@ -64,7 +64,25 @@ german information:
 
 ### Query Types
 
-! TODO
+Generally, API endpoints are structured in two different ways: There are 1. "blob"-style endpoints which return just
+return all relevant data (e.g. `/v2/build`) and 2. _indexed_ endpoints which return indices for many datums (e.g.
+`v2/items`).
+
+Indexed endpoints provide a couple of different parameters to retrieve the data for a given set of ids. These are
+referred to as `QueryTypes` throughout documentation and source of this project. Possible query types are:
+- querying by id (e.g. `/v2/items?id={id}`),
+- querying by ids (e.g. `/v2/items?ids={ids; ","-separated}`), and
+- querying by page (e.g. `/v2/items?page={index}&page_size={size}`).
+
+##### Querying by Ids
+Some endpoints support a specialized version of this query type that can be used to retrieve all datums at once (e.g.
+`/v2/legends?ids=all`).
+
+##### Querying by Page
+When querying by page, the response contains additional header elements:
+- `x-page-size` which is the requested page size,
+- `x-page-total` which is the total amount of pages for the given size, and
+- `x-result-count` which is the number of results on the returned page.
 
 
 ## Usage
