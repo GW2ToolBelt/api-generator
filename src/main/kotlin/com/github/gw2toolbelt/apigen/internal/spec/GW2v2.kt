@@ -428,7 +428,7 @@ internal val GW2v2 = GW2APIVersion {
                     SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
-            "details"(disambiguationBy = "type", interpretations = mapOf(
+            "Details"(disambiguationBy = "type", interpretations = mapOf(
                 "Armor" to map {
                     "Type"(STRING, "the armor slot type")
                     SerialName("weight_class").."WeightClass"(STRING, "the weight class")
@@ -566,7 +566,7 @@ internal val GW2v2 = GW2APIVersion {
             "Id"(INTEGER, "the outfit's ID")
             "Name"(STRING, "the outfit's name")
             "Icon"(STRING, "the outfit's icon")
-            SerialName("unlock_items").."unlockItems"(
+            SerialName("unlock_items").."UnlockItems"(
                 description = "the IDs of the items that unlock the outfit",
                 type = array(INTEGER)
             )
@@ -673,7 +673,7 @@ internal val GW2v2 = GW2APIVersion {
                 description = "an array of two numbers representing the X and Y coordinates of the sector centroid",
                 type = array(DECIMAL)
             )
-            "marker"(STRING, "the icon link")
+            "Marker"(STRING, "the icon link")
             SerialName("chat_link").."ChatLink"(STRING, "the chat code for the objective")
             optional..SerialName("upgrade_id").."UpgradeId"(INTEGER, "the ID of the upgrades available for the objective")
         })
