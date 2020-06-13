@@ -7,7 +7,7 @@ This library contains information about the structure and data-types of the API.
 This information can be used to generate custom API clients or other programs
 which require definitions of the API.
 
-This library requires Java 12 or later. (Keep in mind that library is intended
+This library requires Java 14 or later. (Keep in mind that library is intended
 to be for static code-generation only. This requirement is not relevant for the
 generated output.)
 
