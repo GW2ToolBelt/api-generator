@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier", "unused", "DataClassPrivateConstructor")
 package com.github.gw2toolbelt.apigen.schema
 
 import com.github.gw2toolbelt.apigen.model.*
@@ -86,8 +86,9 @@ public data class SchemaMap(
      * @param   since           TODO
      * @param   until           TODO
      * @param   serialName      the serial name of the property
+     * @param   camelCaseName   the name of the property in camelCase
      */
-    public data class Property(
+    public data class Property internal constructor(
         public val propertyName: String,
         public val type: SchemaType,
         public val description: String?,
@@ -95,7 +96,8 @@ public data class SchemaMap(
         public val optionality: Optionality,
         public val since: V2SchemaVersion?,
         public val until: V2SchemaVersion?,
-        public val serialName: String
+        public val serialName: String,
+        public val camelCaseName: String?
     )
 
 }

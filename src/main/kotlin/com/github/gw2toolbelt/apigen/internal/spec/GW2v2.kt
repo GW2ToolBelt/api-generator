@@ -54,7 +54,7 @@ internal val GW2v2 = GW2APIVersion {
             optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(INTEGER, "the account's personal fractal level")
             optional(PROGRESSION)..SerialName("daily_ap").."DailyAP"(INTEGER, "the daily AP the account has")
             optional(PROGRESSION)..SerialName("monthly_ap").."MonthlyAP"(INTEGER, "the monthly AP the account has")
-            optional(PROGRESSION)..SerialName("wvw_rank").."WvWRank"(INTEGER, "the account's personal wvw rank")
+            optional(PROGRESSION)..CamelCase("wvwRank")..SerialName("wvw_rank").."WvWRank"(INTEGER, "the account's personal wvw rank")
             since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "an ISO-8601 standard timestamp of when the account information last changed as perceived by the API")
         })
     }
@@ -435,7 +435,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
                 "Back" to map {
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
@@ -443,7 +443,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
                 "Bag" to map {
                     "Size"(INTEGER, "the number of bag slots")
@@ -508,7 +508,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 }
             ))
         })
@@ -624,7 +624,7 @@ internal val GW2v2 = GW2APIVersion {
                 "Type"(STRING, "the type of the access token given")
                 optional..SerialName("expires_at").."ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
                 optional..SerialName("issued_at").."IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
-                optional.."URLs"(
+                optional..CamelCase("urls").."URLs"(
                     description = "if the given subtoken is restricted to a list of URLs, contains an array of strings describing what endpoints are available to this token",
                     type = array(STRING)
                 )

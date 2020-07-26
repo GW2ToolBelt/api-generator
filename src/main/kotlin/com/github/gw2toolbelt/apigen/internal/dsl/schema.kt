@@ -82,6 +82,14 @@ internal class SchemaMapBuilder {
         }
     }
 
+    @Suppress("FunctionName")
+    fun CamelCase(value: String): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaMapPropertyBuilder) {
+            property.camelCase = value
+        }
+    }
+
+    @Suppress("FunctionName")
     fun SerialName(value: String): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaMapPropertyBuilder) {
             property.serialName = value
@@ -89,6 +97,8 @@ internal class SchemaMapBuilder {
     }
 
     operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
+    operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
+
     operator fun IPropertyModifier.rangeTo(property: SchemaMapPropertyBuilder): SchemaMapPropertyBuilder = property.also { this.applyTo(it) }
     operator fun Set<IPropertyModifier>.rangeTo(property: SchemaMapPropertyBuilder): SchemaMapPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
 
@@ -132,13 +142,47 @@ internal class SchemaMapPropertyBuilder(
         require(propertyName[0].isUpperCase()) { "propertyName should be in TitleCase" }
     }
 
-    var isDeprecated = false
-    var optionality: Optionality? = null
-    var since: V2SchemaVersion? = null
-    var until: V2SchemaVersion? = null
-    var serialName: String? = null
+    private var isUnused = true
 
-    val property get() =
+    var isDeprecated = false
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var optionality: Optionality? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var since: V2SchemaVersion? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var until: V2SchemaVersion? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var serialName: String? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var camelCase: String? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    val property by lazy {
+        isUnused = false
+
         SchemaMap.Property(
             propertyName = propertyName,
             type = type,
@@ -147,8 +191,10 @@ internal class SchemaMapPropertyBuilder(
             isDeprecated = isDeprecated,
             since = since,
             until = until,
-            serialName = serialName ?: propertyName.toLowerCase()
+            serialName = serialName ?: propertyName.toLowerCase(),
+            camelCaseName = camelCase ?: propertyName.run { "${toCharArray()[0].toLowerCase()}${substring(1)}" }
         )
+    }
 
 }
 
