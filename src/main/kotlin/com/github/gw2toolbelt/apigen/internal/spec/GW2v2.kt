@@ -307,7 +307,7 @@ internal val GW2v2 = GW2APIVersion {
                     "Quantity"(INTEGER, "the amount of items being bought")
                 }
             )
-            "sells"(
+            "Sells"(
                 description = "the sell information",
                 type = map {
                     SerialName("unit_price").."UnitPrice"(INTEGER, "the lowest sell order price in coins")
