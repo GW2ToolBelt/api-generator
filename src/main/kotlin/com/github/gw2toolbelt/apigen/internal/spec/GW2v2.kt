@@ -392,7 +392,7 @@ internal val GW2v2 = GW2APIVersion {
             description = "",
             items = map {
                 "Flags"(array(STRING), "infusion slot type of infusion upgrades")
-                optional..SerialName("infusion_type").."ItemId"(INTEGER, "the infusion upgrade already in the armor piece") // TODO is this correct?
+                optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade already in the armor piece") // TODO is this correct?
             }
         )
 
@@ -461,7 +461,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
                     optional.."Name"(STRING, "the effect type name of the consumable")
                     optional.."Icon"(STRING, "the icon of the effect")
-                    optional.."Skin"(array(INTEGER), "a list of skin ids which this item unlocks")
+                    optional.."Skins"(array(INTEGER), "a list of skin ids which this item unlocks")
                 },
                 "Container" to map {
                     "Type"(STRING, "the container type")
@@ -472,7 +472,7 @@ internal val GW2v2 = GW2APIVersion {
                 "Gizmo" to map {
                     "Type"(STRING, "the gizmo type")
                     optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
-                    SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
+                    optional..SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
                 },
                 "MiniPet" to map {
                     SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
@@ -488,6 +488,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
                 "UpgradeComponent" to map {
                     "Type"(STRING, "the type of the upgrade component")
@@ -496,6 +497,7 @@ internal val GW2v2 = GW2APIVersion {
                     "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
                     optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional.."Bonuses"(array(STRING), "the bonuses from runes")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
                 "Weapon" to map {
                     "Type"(STRING, "the weapon type")
