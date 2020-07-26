@@ -128,6 +128,10 @@ internal class SchemaMapPropertyBuilder(
     private val description: String?
 ) {
 
+    init {
+        require(propertyName[0].isUpperCase()) { "propertyName should be in TitleCase" }
+    }
+
     var isDeprecated = false
     var optionality: Optionality? = null
     var since: V2SchemaVersion? = null
