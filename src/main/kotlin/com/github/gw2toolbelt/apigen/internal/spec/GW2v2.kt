@@ -370,26 +370,23 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about items in the game."
         cache = 1.hours
 
-        fun INFIX_UPGRADES() = array(
-            description = "",
-            items = map {
-                "Id"(INTEGER, "the itemstat id")
-                "Attributes"(
-                    description = "list of attribute bonuses",
-                    type = map {
-                        "Attribute"(STRING, "attribute this bonus applies to")
-                        "Modifier"(INTEGER, "the modifier value")
-                    }
-                )
-                optional.."Buff"(
-                    description = "object containing an additional effect",
-                    type = map {
-                        SerialName("skill_id").."SkillId"(INTEGER, "the skill id of the effect")
-                        optional.."Description"(STRING, "the effect's description")
-                    }
-                )
-            }
-        )
+        fun INFIX_UPGRADES() = map {
+            "Id"(INTEGER, "the itemstat id")
+            "Attributes"(
+                description = "list of attribute bonuses",
+                type = array(map {
+                    "Attribute"(STRING, "attribute this bonus applies to")
+                    "Modifier"(INTEGER, "the modifier value")
+                })
+            )
+            optional.."Buff"(
+                description = "object containing an additional effect",
+                type = map {
+                    SerialName("skill_id").."SkillId"(INTEGER, "the skill id of the effect")
+                    optional.."Description"(STRING, "the effect's description")
+                }
+            )
+        }
 
         fun INFUSION_SLOTS() = array(
             description = "",
@@ -434,17 +431,19 @@ internal val GW2v2 = GW2APIVersion {
                     SerialName("weight_class").."WeightClass"(STRING, "the weight class")
                     "Defense"(INTEGER, "the defense value of the armor piece")
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
-                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
                 },
                 "Back" to map {
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
-                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
                 },
                 "Bag" to map {
                     "Size"(INTEGER, "the number of bag slots")
@@ -485,17 +484,17 @@ internal val GW2v2 = GW2APIVersion {
                 "Trinket" to map {
                     "Type"(STRING, "the trinket type")
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
-                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 },
                 "UpgradeComponent" to map {
                     "Type"(STRING, "the type of the upgrade component")
                     "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
                     SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
                     "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
-                    SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional.."Bonuses"(array(STRING), "the bonuses from runes")
                 },
                 "Weapon" to map {
@@ -509,6 +508,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
                     optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "")
                 }
             ))
         })
