@@ -425,7 +425,7 @@ internal val GW2v2 = GW2APIVersion {
                     SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
-            "Details"(disambiguationBy = "type", interpretations = mapOf(
+            optional.."Details"(disambiguationBy = "type", interpretations = mapOf(
                 "Armor" to map {
                     "Type"(STRING, "the armor slot type")
                     SerialName("weight_class").."WeightClass"(STRING, "the weight class")
