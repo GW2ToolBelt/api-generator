@@ -471,7 +471,7 @@ internal val GW2v2 = GW2APIVersion {
                     "Type"(STRING, "the tool type")
                 },
                 "Gizmo" to map {
-                    "type"(STRING, "the gizmo type")
+                    "Type"(STRING, "the gizmo type")
                     optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
                     SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
                 },
