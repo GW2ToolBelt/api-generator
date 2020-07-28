@@ -278,6 +278,35 @@ internal val GW2v2 = GW2APIVersion {
             "Id"(INTEGER, "the current build ID")
         })
     }
+    "/Characters/:Id/Inventory" {
+        summary = "Returns information about a character's inventory."
+        security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
+
+        schema(array(array(map {
+            "Id"(INTEGER, "the item's ID")
+            "Count"(INTEGER, "the amount of items in the stack")
+            optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+            optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+            optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
+            optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
+            optional.."Stats"(
+                description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                type = map {
+                    "Id"(INTEGER, "the itemstat ID")
+                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                }
+            )
+            optional.."Binding"(STRING, "the binding of the material")
+            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+        })))
+    }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache = 1.hours
