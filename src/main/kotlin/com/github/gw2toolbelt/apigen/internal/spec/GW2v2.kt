@@ -727,14 +727,14 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(map {
-            "Id"(INTEGER, "the ID of the upg")
+            "Id"(INTEGER, "the ID of the upgrade")
             "Tiers"(
-                description = "",
+                description = "the different tiers of the upgrade",
                 type = map {
                     "Name"(STRING, "the name of the upgrade tier")
                     SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "Upgrades"(
-                        description = "",
+                        description = "the upgrades available at the tier",
                         type = map {
                             "Name"(STRING, "the name of the upgrade")
                             "Description"(STRING, "the description for the upgrade")
