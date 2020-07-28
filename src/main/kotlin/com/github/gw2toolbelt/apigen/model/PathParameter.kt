@@ -21,34 +21,16 @@
  */
 package com.github.gw2toolbelt.apigen.model
 
-import com.github.gw2toolbelt.apigen.model.v2.*
 import com.github.gw2toolbelt.apigen.schema.*
-import java.util.*
-import kotlin.time.*
 
 /**
  * TODO doc
  *
  * @since   0.1.0
  */
-public data class Endpoint internal constructor(
-    public val route: String,
-    public val summary: String,
-    public val cache: Duration?,
-    public val security: Set<TokenScope>,
-    public val isLocalized: Boolean,
-    public val queryTypes: Set<QueryType>,
-    public val pathParameters: List<PathParameter>,
-    private val _schema: EnumMap<V2SchemaVersion, SchemaType>
-) {
-
-    public val idType: SchemaType? get() = (schema as? SchemaMap)?.properties?.get("Id")?.type
-
-    public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-    public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
-
-    public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
-        return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
-    }
-
-}
+public data class PathParameter internal constructor(
+    val key: String,
+    val type: SchemaPrimitive,
+    val description: String,
+    val name: String
+)

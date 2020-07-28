@@ -52,6 +52,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
             security = security ?: emptySet(),
             isLocalized = isLocalized,
             queryTypes = if (this::queryTypes.isInitialized) queryTypes else emptySet(),
+            pathParameters = pathParameters.values.toList(),
             _schema = schema
         )
 
@@ -65,6 +66,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
     var isLocalized: Boolean = false
 
     private lateinit var queryTypes: Set<QueryType>
+    private val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
 
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
@@ -120,6 +122,13 @@ internal class GW2APIEndpointBuilder(private val route: String) {
     fun supportedQueries(vararg types: QueryType) {
         check(!this::queryTypes.isInitialized)
         queryTypes = types.toSet()
+    }
+
+    fun pathParameter(key: String, type: SchemaPrimitive, description: String, name: String = key) {
+        check(":$key" in (route.split('/')))
+        check(key !in pathParameters)
+
+        pathParameters[key] = PathParameter(key, type, description, name)
     }
 
 }

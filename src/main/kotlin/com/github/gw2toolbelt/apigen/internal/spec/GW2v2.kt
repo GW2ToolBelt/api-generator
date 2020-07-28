@@ -282,6 +282,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a character's inventory."
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
 
+        pathParameter("Id", STRING, "the character's ID")
         schema(array(array(map {
             "Id"(INTEGER, "the item's ID")
             "Count"(INTEGER, "the amount of items in the stack")
