@@ -117,6 +117,34 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
     }
+    "/Account/Inventory" {
+        summary = "Returns information about a player's shared inventory slots."
+        security = setOf(ACCOUNT, INVENTORIES)
+
+        schema(array(map {
+            "Id"(INTEGER, "the item's ID")
+            "Count"(INTEGER, "the amount of items in the stack")
+            optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+            optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+            optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
+            optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
+            optional.."Stats"(
+                description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                type = map {
+                    "Id"(INTEGER, "the itemstat ID")
+                    optional.."Power"(INTEGER, "the amount of power given by the item")
+                    optional.."Precision"(INTEGER, "the amount of precision given by the item")
+                    optional.."Toughness"(INTEGER, "the amount of toughness given by the item")
+                    optional.."Vitality"(INTEGER, "the amount of vitality given by the item")
+                    optional.."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                    optional.."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                    optional.."Healing"(INTEGER, "the amount of healing given by the item")
+                    optional.."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                }
+            )
+            optional.."Binding"(STRING, "the binding of the material")
+        }))
+    }
     "/Account/Mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(ACCOUNT, UNLOCKS)
