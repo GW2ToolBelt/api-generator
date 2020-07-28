@@ -132,14 +132,14 @@ internal val GW2v2 = GW2APIVersion {
                 description = "contains information on the stats chosen if the item offers an option for stats/prefix",
                 type = map {
                     "Id"(INTEGER, "the itemstat ID")
-                    optional.."Power"(INTEGER, "the amount of power given by the item")
-                    optional.."Precision"(INTEGER, "the amount of precision given by the item")
-                    optional.."Toughness"(INTEGER, "the amount of toughness given by the item")
-                    optional.."Vitality"(INTEGER, "the amount of vitality given by the item")
-                    optional.."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
-                    optional.."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
-                    optional.."Healing"(INTEGER, "the amount of healing given by the item")
-                    optional.."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
                 }
             )
             optional.."Binding"(STRING, "the binding of the material")
