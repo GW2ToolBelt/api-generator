@@ -30,7 +30,7 @@ val DECIMAL get() = SchemaDecimal
 val INTEGER get() = SchemaInteger
 val STRING get() = SchemaString
 
-internal interface SchemaAggregateBuildProvider : SchemaArrayBuilderProvider, SchemaMapBuilderProvider
+internal interface SchemaAggregateBuildProvider : SchemaArrayBuilderProvider, SchemaMapBuilderProvider, SchemaRecordBuilderProvider
 
 internal interface SchemaArrayBuilderProvider {
 
@@ -42,56 +42,67 @@ internal interface SchemaArrayBuilderProvider {
 
 }
 
-internal class SchemaMapBuilder {
+internal interface SchemaMapBuilderProvider {
 
-    private val _properties = mutableMapOf<String, SchemaMapPropertyBuilder>()
+    fun map(
+        keys: SchemaType,
+        values: SchemaType,
+        description: String? = null
+    ): SchemaType =
+        SchemaMap(keys, values, description)
+
+}
+
+internal class SchemaRecordBuilder {
+
+    private val _properties = mutableMapOf<String, SchemaRecordPropertyBuilder>()
     val properties get() = _properties.mapValues { it.value.property }
 
     operator fun String.invoke(
         type: SchemaType,
         description: String? = null
-    ): SchemaMapPropertyBuilder {
-        return SchemaMapPropertyBuilder(this, type, description).also { _properties[this] = it }
+    ): SchemaRecordPropertyBuilder {
+        return SchemaRecordPropertyBuilder(this, type, description).also { _properties[this] = it }
     }
 
     operator fun String.invoke(
         disambiguationBy: String,
         interpretations: Map<String, SchemaType>
-    ): SchemaMapPropertyBuilder {
-        return SchemaMapPropertyBuilder(this, SchemaConditional(disambiguationBy, interpretations), null).also { _properties[this] = it }
+    ): SchemaRecordPropertyBuilder {
+        return SchemaRecordPropertyBuilder(this, SchemaConditional(disambiguationBy, interpretations), null).also { _properties[this] = it }
     }
 
     val deprecated = PropertyModifier.deprecated
     val optional = PropertyModifier.optional
 
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaMapPropertyBuilder) {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.optionality = Optionality.MANDATED(scope)
         }
     }
 
     fun since(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaMapPropertyBuilder) {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.since = version
         }
     }
 
     fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaMapPropertyBuilder) {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.until = version
         }
     }
 
     @Suppress("FunctionName")
     fun CamelCase(value: String): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaMapPropertyBuilder) {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.camelCase = value
         }
     }
 
     @Suppress("FunctionName")
     fun SerialName(value: String): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaMapPropertyBuilder) {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.serialName = value
         }
     }
@@ -99,22 +110,22 @@ internal class SchemaMapBuilder {
     operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
     operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
 
-    operator fun IPropertyModifier.rangeTo(property: SchemaMapPropertyBuilder): SchemaMapPropertyBuilder = property.also { this.applyTo(it) }
-    operator fun Set<IPropertyModifier>.rangeTo(property: SchemaMapPropertyBuilder): SchemaMapPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
+    operator fun IPropertyModifier.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { this.applyTo(it) }
+    operator fun Set<IPropertyModifier>.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
 
     interface IPropertyModifier {
-        fun applyTo(property: SchemaMapPropertyBuilder)
+        fun applyTo(property: SchemaRecordPropertyBuilder)
     }
 
     @Suppress("EnumEntryName")
     enum class PropertyModifier : IPropertyModifier {
         deprecated {
-            override fun applyTo(property: SchemaMapPropertyBuilder) {
+            override fun applyTo(property: SchemaRecordPropertyBuilder) {
                 property.isDeprecated = true
             }
         },
         optional {
-            override fun applyTo(property: SchemaMapPropertyBuilder) {
+            override fun applyTo(property: SchemaRecordPropertyBuilder) {
                 property.optionality = Optionality.OPTIONAL
             }
         }
@@ -122,17 +133,17 @@ internal class SchemaMapBuilder {
 
 }
 
-internal interface SchemaMapBuilderProvider {
+internal interface SchemaRecordBuilderProvider {
 
-    fun map(
+    fun record(
         description: String? = null,
-        configure: SchemaMapBuilder.() -> Unit
+        configure: SchemaRecordBuilder.() -> Unit
     ): SchemaType =
-        SchemaMap(SchemaMapBuilder().also(configure).properties, description)
+        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
 
 }
 
-internal class SchemaMapPropertyBuilder(
+internal class SchemaRecordPropertyBuilder(
     private val propertyName: String,
     private val type: SchemaType,
     private val description: String?
@@ -183,7 +194,7 @@ internal class SchemaMapPropertyBuilder(
     val property by lazy {
         isUnused = false
 
-        SchemaMap.Property(
+        SchemaRecord.Property(
             propertyName = propertyName,
             type = type,
             description = description,

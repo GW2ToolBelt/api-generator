@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("RedundantVisibilityModifier")
 package com.github.gw2toolbelt.apigen.model
 
 import com.github.gw2toolbelt.apigen.model.v2.*
@@ -42,7 +43,7 @@ public data class Endpoint internal constructor(
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
 
-    public val idType: SchemaType? get() = (schema as? SchemaMap)?.properties?.get("Id")?.type
+    public val idType: SchemaType? get() = (schema as? SchemaRecord)?.properties?.get("Id")?.type
 
     public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
     public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()

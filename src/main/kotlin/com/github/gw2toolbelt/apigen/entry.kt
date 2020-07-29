@@ -46,8 +46,8 @@ public val API_V2_DEFINITION: APIVersion by lazy {
  *
  * @since   0.1.0
  */
-public val MUMBLELINK_IDENTITY_DEFINITION: SchemaMap by lazy {
-    SchemaMap(SchemaMapBuilder().apply {
+public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
+    SchemaRecord(SchemaRecordBuilder().apply {
         "Name"(STRING, "the name of the currently played character")
         "Profession"(INTEGER, "the current profession (class) of the currently played character")
         "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")

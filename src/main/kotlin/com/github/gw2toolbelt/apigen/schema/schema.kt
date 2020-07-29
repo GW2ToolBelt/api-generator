@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier", "unused", "DataClassPrivateConstructor")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package com.github.gw2toolbelt.apigen.schema
 
 import com.github.gw2toolbelt.apigen.model.*
@@ -52,6 +52,19 @@ public data class SchemaArray internal constructor(
 ) : SchemaType()
 
 /**
+ * A schema for maps.
+ *
+ * @param keys          the schema definition for the keys of this map
+ * @param values        the schema definition for the values of this map
+ * @param description   TODO
+ */
+public data class SchemaMap internal constructor(
+    public val keys: SchemaType,
+    public val values: SchemaType,
+    public val description: String?
+) : SchemaType()
+
+/**
  * A schema for a sealed hierarchy (i.e. algebraic sum type-like construct).
  *
  * The interpretation is chosen based on a "disambiguation-property".
@@ -65,18 +78,18 @@ public data class SchemaConditional internal constructor(
 ) : SchemaType()
 
 /**
- * TODO doc
+ * A schema for records.
  *
- * @param   properties
- * @param   description
+ * @param   properties      the properties of this record
+ * @param   description     TODO
  */
-public data class SchemaMap(
+public data class SchemaRecord(
     public val properties: Map<String, Property>,
     public val description: String?
 ) : SchemaType() {
 
     /**
-     * TODO doc
+     * A record property.
      *
      * @param   propertyName    the name of the property in title-case (e.g. "ItemId")
      * @param   type            the schema definition for this property

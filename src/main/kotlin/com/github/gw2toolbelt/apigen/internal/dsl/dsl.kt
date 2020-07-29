@@ -74,9 +74,9 @@ internal class GW2APIEndpointBuilder(private val route: String) {
         val tmp = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
             fun SchemaType.copyOrGet(superIncluded: Boolean = false): SchemaType? {
                 return when (this) {
-                    is SchemaMap -> {
+                    is SchemaRecord -> {
                         fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
-                            is SchemaMap -> properties.any { (_, property) ->
+                            is SchemaRecord -> properties.any { (_, property) ->
                                 property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
                             }
                             else -> false
@@ -95,7 +95,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
                         return when {
                             !superIncluded && copiedProperties.isEmpty() -> null
-                            else -> SchemaMap(copiedProperties, description)
+                            else -> SchemaRecord(copiedProperties, description)
                         }
                     }
                     else -> this

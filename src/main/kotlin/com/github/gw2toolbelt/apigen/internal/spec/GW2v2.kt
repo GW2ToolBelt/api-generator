@@ -32,7 +32,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's account."
         security(ACCOUNT)
 
-        schema(map {
+        schema(record {
             "Id"(STRING, "the unique persistent account GUID")
             "Age"(INTEGER, "the age of the account in seconds")
             "Name"(STRING, "the unique account name with numerical suffix")
@@ -62,7 +62,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns a player's progress towards all their achievements."
         security = setOf(ACCOUNT, PROGRESSION)
 
-        schema(array(map {
+        schema(array(record {
             "Id"(INTEGER, "the achievement's ID")
             "Done"(BOOLEAN, "whether or not the achievement is done")
             optional.."Bits"(
@@ -121,7 +121,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's shared inventory slots."
         security = setOf(ACCOUNT, INVENTORIES)
 
-        schema(array(map {
+        schema(array(record {
             "Id"(INTEGER, "the item's ID")
             "Count"(INTEGER, "the amount of items in the stack")
             optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
@@ -130,7 +130,7 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
             optional.."Stats"(
                 description = "contains information on the stats chosen if the item offers an option for stats/prefix",
-                type = map {
+                type = record {
                     "Id"(INTEGER, "the itemstat ID")
                     optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                     optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
@@ -161,7 +161,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's unlocked masteries."
         security = setOf(ACCOUNT, PROGRESSION)
 
-        schema(array(map {
+        schema(array(record {
             "Id"(INTEGER, "the mastery's ID")
             optional.."Level"(INTEGER, "the index of the unlocked mastery level")
         }))
@@ -170,10 +170,10 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's unlocked mastery points."
         security = setOf(ACCOUNT, PROGRESSION)
 
-        schema(map {
+        schema(record {
             "Totals"(
                 description = "information about the total mastery points for a reason",
-                type = array(map {
+                type = array(record {
                     "Region"(STRING, "the mastery region")
                     "Spent"(INTEGER, "the amount of mastery points of this region spent in mastery tracks")
                     "Earned"(INTEGER, "the amount of mastery points of this region earned for the account")
@@ -189,7 +189,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about the materials stored in a player's vault."
         security = setOf(ACCOUNT, INVENTORIES)
 
-        schema(array(map {
+        schema(array(record {
             "Id"(INTEGER, "the material's item ID")
             "Category"(INTEGER, "the material category the item belongs to")
             "Count"(INTEGER, "the number of the material that is stored in the player's vault")
@@ -260,7 +260,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's wallet."
         security = setOf(ACCOUNT, WALLET)
 
-        schema(array(map {
+        schema(array(record {
             "Id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
             "Value"(INTEGER, "the amount of this currency in the player's wallet")
         }))
@@ -274,7 +274,7 @@ internal val GW2v2 = GW2APIVersion {
     "/Build" {
         summary = "Returns the current build ID."
 
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the current build ID")
         })
     }
@@ -283,7 +283,7 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
 
         pathParameter("Id", STRING, "the character's ID")
-        schema(array(array(map {
+        schema(array(array(record {
             "Id"(INTEGER, "the item's ID")
             "Count"(INTEGER, "the amount of items in the stack")
             optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
@@ -292,7 +292,7 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
             optional.."Stats"(
                 description = "contains information on the stats chosen if the item offers an option for stats/prefix",
-                type = map {
+                type = record {
                     "Id"(INTEGER, "the itemstat ID")
                     optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                     optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
@@ -313,7 +313,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
         isLocalized = true
 
-        fun APPEARANCE() = map {
+        fun APPEARANCE() = record {
             "Brightness"(INTEGER, "the brightness")
             "Contrast"(DECIMAL, "the contrast")
             "Hue"(INTEGER, "the hue in HSL colorspace")
@@ -323,7 +323,7 @@ internal val GW2v2 = GW2APIVersion {
         }
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the color's ID")
             "Name"(STRING, "the color's name")
             SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
@@ -338,14 +338,14 @@ internal val GW2v2 = GW2APIVersion {
     "/Commerce/Listings" {
         summary = "Returns current buy and sell listings from the trading post."
 
-        fun LISTING() = map {
+        fun LISTING() = record {
             "Listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
             SerialName("unit_price").."UnitPrice"(INTEGER, "the sell offer or buy order price in coins")
             "Quantity"(INTEGER, "the amount of items being sold/bought in this listing")
         }
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the item's ID")
             "Buys"(array(LISTING()), "list of all buy listings")
             "Sells"(array(LISTING()), "list of all sell listings")
@@ -355,19 +355,19 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns current aggregated buy and sell listing information from the trading post."
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the item's ID")
             "Whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
             "Buys"(
                 description = "the buy information",
-                type = map {
+                type = record {
                     SerialName("unit_price").."UnitPrice"(INTEGER, "the highest buy order price in coins")
                     "Quantity"(INTEGER, "the amount of items being bought")
                 }
             )
             "Sells"(
                 description = "the sell information",
-                type = map {
+                type = record {
                     SerialName("unit_price").."UnitPrice"(INTEGER, "the lowest sell order price in coins")
                     "Quantity"(INTEGER, "the amount of items being sold")
                 }
@@ -380,7 +380,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the currency's ID")
             "Name"(STRING, "the currency's name")
             "Description"(STRING, "a description of the currency")
@@ -393,7 +393,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the dailycrafting")
         })
     }
@@ -402,7 +402,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(STRING, "the emote's ID")
             "Commands"(
                 description = "the commands that may be used to trigger the emote",
@@ -419,7 +419,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(STRING, "the file identifier")
             "Icon"(STRING, "the URL to the image")
         })
@@ -428,18 +428,18 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about items in the game."
         cache = 1.hours
 
-        fun INFIX_UPGRADES() = map {
+        fun INFIX_UPGRADES() = record {
             "Id"(INTEGER, "the itemstat id")
             "Attributes"(
                 description = "list of attribute bonuses",
-                type = array(map {
+                type = array(record {
                     "Attribute"(STRING, "attribute this bonus applies to")
                     "Modifier"(INTEGER, "the modifier value")
                 })
             )
             optional.."Buff"(
                 description = "object containing an additional effect",
-                type = map {
+                type = record {
                     SerialName("skill_id").."SkillId"(INTEGER, "the skill id of the effect")
                     optional.."Description"(STRING, "the effect's description")
                 }
@@ -448,14 +448,14 @@ internal val GW2v2 = GW2APIVersion {
 
         fun INFUSION_SLOTS() = array(
             description = "",
-            items = map {
+            items = record {
                 "Flags"(array(STRING), "infusion slot type of infusion upgrades")
                 optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade already in the armor piece") // TODO is this correct?
             }
         )
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the item's ID")
             "Name"(STRING, "the item's name")
             "Type"(STRING, "the item's type")
@@ -471,20 +471,20 @@ internal val GW2v2 = GW2APIVersion {
             "Restrictions"(array(STRING), "restrictions applied to the item")
             optional..SerialName("upgrades_into").."UpgradesInto"(
                 description = "lists what items this item can be upgraded into, and the method of upgrading",
-                type = array(map {
+                type = array(record {
                     "Upgrade"(STRING, "describes the method of upgrading")
                     SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
             optional..SerialName("upgrades_from").."UpgradesFrom"(
                 description = "lists what items this item can be upgraded from, and the method of upgrading",
-                type = array(map {
+                type = array(record {
                     "Upgrade"(STRING, "describes the method of upgrading")
                     SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
             optional.."Details"(disambiguationBy = "type", interpretations = mapOf(
-                "Armor" to map {
+                "Armor" to record {
                     "Type"(STRING, "the armor slot type")
                     SerialName("weight_class").."WeightClass"(STRING, "the weight class")
                     "Defense"(INTEGER, "the defense value of the armor piece")
@@ -495,7 +495,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                     optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
-                "Back" to map {
+                "Back" to record {
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
                     optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
                     optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
@@ -503,11 +503,11 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                     optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
-                "Bag" to map {
+                "Bag" to record {
                     "Size"(INTEGER, "the number of bag slots")
                     SerialName("no_sell_or_sort").."NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
                 },
-                "Consumable" to map {
+                "Consumable" to record {
                     "Type"(STRING, "the consumable type")
                     optional.."Description"(STRING, "effect description for consumables applying an effect")
                     optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
@@ -521,25 +521,25 @@ internal val GW2v2 = GW2APIVersion {
                     optional.."Icon"(STRING, "the icon of the effect")
                     optional.."Skins"(array(INTEGER), "a list of skin ids which this item unlocks")
                 },
-                "Container" to map {
+                "Container" to record {
                     "Type"(STRING, "the container type")
                 },
-                "Gathering" to map {
+                "Gathering" to record {
                     "Type"(STRING, "the tool type")
                 },
-                "Gizmo" to map {
+                "Gizmo" to record {
                     "Type"(STRING, "the gizmo type")
                     optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
                     optional..SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
                 },
-                "MiniPet" to map {
+                "MiniPet" to record {
                     SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
                 },
-                "Tool" to map {
+                "Tool" to record {
                     "Type"(STRING, "the tool type")
                     "Charges"(INTEGER, "the available charges")
                 },
-                "Trinket" to map {
+                "Trinket" to record {
                     "Type"(STRING, "the trinket type")
                     SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
                     optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
@@ -548,7 +548,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                     optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
-                "UpgradeComponent" to map {
+                "UpgradeComponent" to record {
                     "Type"(STRING, "the type of the upgrade component")
                     "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
                     SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
@@ -557,7 +557,7 @@ internal val GW2v2 = GW2APIVersion {
                     optional.."Bonuses"(array(STRING), "the bonuses from runes")
                     optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                 },
-                "Weapon" to map {
+                "Weapon" to record {
                     "Type"(STRING, "the weapon type")
                     SerialName("min_power").."MinPower"(INTEGER, "minimum weapon strength")
                     SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
@@ -578,12 +578,12 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the stat set's ID")
             "Name"(STRING, "the name of the stat set")
             "Attributes"(
                 description = "the list of attribute bonuses",
-                type = array(map {
+                type = array(record {
                     "Attribute"(STRING, "the name of the attribute")
                     "Multiplier"(DECIMAL, "the multiplier for that attribute")
                     "Value"(INTEGER, "the default value for that attribute")
@@ -596,7 +596,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(STRING, "the legend's ID")
             "Swap"(INTEGER, "the ID of the profession (swap Legend) skill")
             "Heal"(INTEGER, "the ID of the heal skill")
@@ -612,7 +612,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the mapchest")
         })
     }
@@ -622,7 +622,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the outfit's ID")
             "Name"(STRING, "the outfit's name")
             "Icon"(STRING, "the outfit's icon")
@@ -638,7 +638,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(STRING, "the race's ID")
             "Name"(STRING, "the race's localized name")
             "Skills"(
@@ -653,7 +653,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the title")
             "Name"(STRING, "the display name of the title")
             deprecated..optional.."Achievement"(INTEGER, "the ID of the achievement that grants this title")
@@ -666,7 +666,7 @@ internal val GW2v2 = GW2APIVersion {
         security(ACCOUNT)
 
         schema(
-            V2_SCHEMA_CLASSIC to map {
+            V2_SCHEMA_CLASSIC to record {
                 "Id"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
@@ -674,7 +674,7 @@ internal val GW2v2 = GW2APIVersion {
                     type = array(STRING)
                 )
             },
-            V2_SCHEMA_2019_05_22T00_00_00_000Z to map {
+            V2_SCHEMA_2019_05_22T00_00_00_000Z to record {
                 "Id"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
@@ -696,7 +696,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the worldboss")
         })
     }
@@ -706,7 +706,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the world")
             "Name"(STRING, "the name of the world")
             "Population"(STRING, "the population level of the world")
@@ -718,7 +718,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(STRING, "the ID of the objective")
             "Name"(STRING, "the name of the objective")
             "Type"(STRING, "the type of the objective")
@@ -744,7 +744,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the rank")
             "Title"(STRING, "the title of the rank")
             SerialName("min_level").."MinLevel"(INTEGER, "the WvW level required to unlock this rank")
@@ -756,16 +756,16 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(map {
+        schema(record {
             "Id"(INTEGER, "the ID of the upgrade")
             "Tiers"(
                 description = "the different tiers of the upgrade",
-                type = map {
+                type = record {
                     "Name"(STRING, "the name of the upgrade tier")
                     SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "Upgrades"(
                         description = "the upgrades available at the tier",
-                        type = map {
+                        type = record {
                             "Name"(STRING, "the name of the upgrade")
                             "Description"(STRING, "the description for the upgrade")
                             "Icon"(STRING, "the icon link")
