@@ -36,9 +36,10 @@ internal interface SchemaArrayBuilderProvider {
 
     fun array(
         items: SchemaType,
-        description: String? = null
+        description: String? = null,
+        nullableItems: Boolean = false
     ): SchemaType =
-        SchemaArray(items, description)
+        SchemaArray(items, nullableItems, description)
 
 }
 
@@ -47,9 +48,10 @@ internal interface SchemaMapBuilderProvider {
     fun map(
         keys: SchemaPrimitive,
         values: SchemaType,
-        description: String? = null
+        description: String? = null,
+        nullableValues: Boolean = false
     ): SchemaType =
-        SchemaMap(keys, values, description)
+        SchemaMap(keys, values, nullableValues, description)
 
 }
 

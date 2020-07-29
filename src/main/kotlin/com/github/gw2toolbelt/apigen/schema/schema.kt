@@ -44,23 +44,27 @@ public object SchemaString : SchemaPrimitive()
  * A schema for lists.
  *
  * @param items         the schema definition for the elements of this list
+ * @param nullableItems whether or not the items may contain `null`
  * @param description   TODO
  */
 public data class SchemaArray internal constructor(
     public val items: SchemaType,
+    public val nullableItems: Boolean,
     public val description: String?
 ) : SchemaType()
 
 /**
  * A schema for maps.
  *
- * @param keys          the schema definition for the keys of this map
- * @param values        the schema definition for the values of this map
- * @param description   TODO
+ * @param keys              the schema definition for the keys of this map
+ * @param values            the schema definition for the values of this map
+ * @param nullableValues    whether or not the values may contain `null`
+ * @param description       TODO
  */
 public data class SchemaMap internal constructor(
     public val keys: SchemaPrimitive,
     public val values: SchemaType,
+    public val nullableValues: Boolean,
     public val description: String?
 ) : SchemaType()
 
