@@ -632,6 +632,72 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Professions" {
+        summary = "Returns information about the game's playable professions."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record {
+            "Id"(STRING, "the profession's ID")
+            "Name"(STRING, "the profession's localized name")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the profession's palette code")
+            "Icon"(STRING, "a render service URL for the profession's icon")
+            SerialName("icon_big").."BigIcon"(STRING, "a render service URL for a big version of the profession's icon")
+            "Specializations"(array(INTEGER), "the IDs of the profession's specializations")
+            "Weapons"(
+                description = "information about the weapons usuable by this profession",
+                type = map(
+                    keys = STRING,
+                    values = record {
+                        optional.."Specialization"(INTEGER, "the ID of the profession's specializations required for this weapon")
+                        "Flags"(array(STRING), "additional flags describing this weapon's properties (e.g. MainHand, OffHand, TwoHand, Aquatic)")
+                        "Skills"(
+                            description = "the skills for the weapon if wielded by this profession",
+                            type = array(record {
+                                "Id"(INTEGER, "the skill's ID")
+                                "Slot"(STRING, "the skill's slot")
+                                optional.."Attunement"(STRING, "the elementalist attunement for this skill")
+                                optional.."Offhand"(STRING, "the offhand weapon for this skill")
+                            })
+                        )
+                    }
+                )
+            )
+            "Flags"(array(STRING), "additional flags describing this profession's properties (e.g. NoRacialSkills)")
+            "Skills"(
+                description = "the profession specific skills",
+                type = array(record {
+                    "Id"(INTEGER, "the skill's ID")
+                    "Slot"(STRING, "the skill's slot")
+                    "Type"(STRING, "the skill's type")
+                    optional.."Attunement"(STRING, "the elementalist attunement for this skill")
+                    optional.."Source"(STRING, "the profession ID of the source of the stolen skill") // TODO is this correct?
+                })
+            )
+            "Training"(
+                description = "array of trainings of this profession",
+                type = array(record {
+                    "Id"(INTEGER, "the training's ID")
+                    "Category"(STRING, "the training's category")
+                    "Name"(STRING, "the training's localized name")
+                    "Track"(
+                        description = "array of skill/trait in the training track",
+                        type = array(record {
+                            "Cost"(INTEGER, "the amount of skill points required to unlock this step")
+                            "Type"(STRING, "the type of the step (e.g. Skill, Trait)")
+                            optional..SerialName("skill_id").."SkillId"(INTEGER, "the ID of the skill unlocked by this step")
+                            optional..SerialName("trait_id").."TraitId"(INTEGER, "the ID of the trait unlocked by this step")
+                        })
+                    )
+                })
+            )
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("skills_by_palette").."SkillsByPalette"(
+                description = "mappings from palette IDs to skill IDs",
+                type = array(array(INTEGER))
+            )
+        })
+    }
     "/Races" {
         summary = "Returns information about the game's playable races."
         cache = 1.hours
