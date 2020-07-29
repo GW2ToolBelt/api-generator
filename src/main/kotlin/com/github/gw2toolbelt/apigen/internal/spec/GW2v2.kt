@@ -724,7 +724,7 @@ internal val GW2v2 = GW2APIVersion {
             "Name"(STRING, "the display name of the title")
             deprecated..optional.."Achievement"(INTEGER, "the ID of the achievement that grants this title")
             optional.."Achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
-            optional..SerialName("ap_required").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
+            optional..SerialName("ap_required")..CamelCase("apRequired").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
         })
     }
     "/TokenInfo" {
