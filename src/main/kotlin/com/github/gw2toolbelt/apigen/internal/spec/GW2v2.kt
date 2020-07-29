@@ -283,30 +283,43 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
 
         pathParameter("Id", STRING, "the character's ID")
-        schema(array(array(record {
-            "Id"(INTEGER, "the item's ID")
-            "Count"(INTEGER, "the amount of items in the stack")
-            optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-            optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
-            optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
-            optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
-            optional.."Stats"(
-                description = "contains information on the stats chosen if the item offers an option for stats/prefix",
-                type = record {
-                    "Id"(INTEGER, "the itemstat ID")
-                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
-                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
-                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
-                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
-                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
-                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
-                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
-                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
-                }
+        schema(record {
+            "Bags"(
+                description = "the character's inventory bags",
+                type = array(record {
+                    "Id"(INTEGER, "the bag's item ID")
+                    "Size"(INTEGER, "the bag's size")
+                    "Inventory"(
+                        description = "the bag's content",
+                        type = array(record {
+                            "Id"(INTEGER, "the item's ID")
+                            "Count"(INTEGER, "the amount of items in the stack")
+                            optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+                            optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+                            optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
+                            optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "") // TODO description: figure out what this actually describes
+                            optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
+                            optional.."Stats"(
+                                description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                                type = record {
+                                    "Id"(INTEGER, "the itemstat ID")
+                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                                }
+                            )
+                            optional.."Binding"(STRING, "the binding of the material")
+                            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                        }, nullableItems = true)
+                    )
+                })
             )
-            optional.."Binding"(STRING, "the binding of the material")
-            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
-        })))
+        })
     }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
