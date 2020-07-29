@@ -697,7 +697,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record {
-            "Id"(INTEGER, "the ID of the worldboss")
+            "Id"(STRING, "the worldboss's ID")
         })
     }
     "/Worlds" {
