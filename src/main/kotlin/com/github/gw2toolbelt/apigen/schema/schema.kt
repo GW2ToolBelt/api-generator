@@ -59,7 +59,7 @@ public data class SchemaArray internal constructor(
  * @param description   TODO
  */
 public data class SchemaMap internal constructor(
-    public val keys: SchemaType,
+    public val keys: SchemaPrimitive,
     public val values: SchemaType,
     public val description: String?
 ) : SchemaType()

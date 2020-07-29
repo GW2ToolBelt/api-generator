@@ -45,7 +45,7 @@ internal interface SchemaArrayBuilderProvider {
 internal interface SchemaMapBuilderProvider {
 
     fun map(
-        keys: SchemaType,
+        keys: SchemaPrimitive,
         values: SchemaType,
         description: String? = null
     ): SchemaType =
