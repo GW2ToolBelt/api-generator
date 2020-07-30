@@ -348,6 +348,21 @@ internal val GW2v2 = GW2APIVersion {
             "Categories"(array(STRING), "the categories of the color")
         })
     }
+    "/Commerce/Delivery" {
+        summary = "Returns information about the items and coins currently available for pickup."
+        security = setOf(ACCOUNT, TRADINGPOST)
+
+        schema(record {
+            "Coins"(INTEGER, "the amount of coins ready for pickup")
+            "Items"(
+                description = "the items ready for pickup",
+                type = array(record {
+                    "Id"(INTEGER, "the item's ID")
+                    "Count"(INTEGER, "the amount of this item ready for pickup")
+                })
+            )
+        })
+    }
     "/Commerce/Listings" {
         summary = "Returns current buy and sell listings from the trading post."
 
