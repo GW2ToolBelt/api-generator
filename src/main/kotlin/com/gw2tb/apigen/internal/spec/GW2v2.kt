@@ -20,11 +20,11 @@
  * SOFTWARE.
  */
 @file:Suppress("DuplicatedCode", "FunctionName")
-package com.github.gw2toolbelt.apigen.internal.spec
+package com.gw2tb.apigen.internal.spec
 
-import com.github.gw2toolbelt.apigen.internal.dsl.*
-import com.github.gw2toolbelt.apigen.model.TokenScope.*
-import com.github.gw2toolbelt.apigen.model.v2.V2SchemaVersion.*
+import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.model.TokenScope.*
+import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.*
 
 internal val GW2v2 = GW2APIVersion {

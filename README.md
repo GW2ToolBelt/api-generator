@@ -103,7 +103,7 @@ Schema types are an abstraction roughly representing the data-types and
 data-structures exposed by the API. It is recommended to generate a one-to-one
 mapping between schema mappings and appropriate language or library constructs.
 
-For a better understanding of schema types, please refer to their [documentation](src/main/kotlin/com/github/gw2toolbelt/apigen/schema/schema.kt).
+For a better understanding of schema types, please refer to their [documentation](src/main/kotlin/com/gw2tb/apigen/schema/schema.kt).
 
 
 ## Building from source
@@ -136,7 +136,7 @@ Additionally `tasks` may be used to print a list of all available tasks.
 ### Adding/modifying endpoints
 
 From time to time endpoints are added or updated. These changes need to be
-manually integrated into the [API definition](src/main/kotlin/com/github/gw2toolbelt/apigen/internal/spec).
+manually integrated into the [API definition](src/main/kotlin/com/gw2tb/apigen/internal/spec).
 The API definition files use a custom DSL for defining endpoint that attempts to
 be as concise as possible while also providing the additional benefits of type-safety.
 
@@ -158,7 +158,7 @@ Each endpoint definition must contain a `summary` describing what the endpoint
 does, and a `schema` which defines the shape of the returned data.
 
 For further information on which functions to use in what situations, please
-refer to the documentation of the [DSL](src/main/kotlin/com/github/gw2toolbelt/apigen/internal/dsl).
+refer to the documentation of the [DSL](src/main/kotlin/com/gw2tb/apigen/internal/dsl).
 
 
 ## Implementations

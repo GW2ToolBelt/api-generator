@@ -19,11 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.build
+package com.gw2tb.apigen.model
 
-data class Deployment internal constructor(
-    val type: BuildType,
-    val repo: String,
-    val user: String? = null,
-    val password: String? = null
+import com.gw2tb.apigen.schema.*
+
+/**
+ * TODO doc
+ *
+ * @since   0.1.0
+ */
+public data class PathParameter internal constructor(
+    val key: String,
+    val type: SchemaPrimitive,
+    val description: String,
+    val name: String
 )

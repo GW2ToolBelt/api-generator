@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.apigen.internal.dsl
+package com.gw2tb.apigen.internal.dsl
 
-import com.github.gw2toolbelt.apigen.model.*
-import com.github.gw2toolbelt.apigen.model.v2.*
-import com.github.gw2toolbelt.apigen.schema.*
+import com.gw2tb.apigen.model.*
+import com.gw2tb.apigen.model.v2.*
+import com.gw2tb.apigen.schema.*
 
 val BOOLEAN get() = SchemaBoolean
 val DECIMAL get() = SchemaDecimal

@@ -19,25 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier", "unused")
-package com.github.gw2toolbelt.apigen.model
+@file:Suppress("RedundantVisibilityModifier")
+package com.gw2tb.apigen.model
 
+import com.gw2tb.apigen.model.v2.*
+import com.gw2tb.apigen.schema.*
 import java.util.*
+import kotlin.time.*
 
 /**
- * A language supported by at least one version of the Guild Wars 2 API.
+ * TODO doc
  *
  * @since   0.1.0
  */
-public enum class Language(
-    public val locale: Locale
+public data class Endpoint internal constructor(
+    public val route: String,
+    public val summary: String,
+    public val cache: Duration?,
+    public val security: Set<TokenScope>,
+    public val isLocalized: Boolean,
+    public val queryTypes: Set<QueryType>,
+    public val pathParameters: List<PathParameter>,
+    private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
-    CHINESE("zh", "CH"),
-    ENGLISH("en", "US"),
-    FRENCH("fr", "FR"),
-    GERMAN("de", "DE"),
-    SPANISH("es", "ES");
 
-    constructor(language: String, country: String): this(Locale(language, country))
+    public val idType: SchemaType? get() = (schema as? SchemaRecord)?.properties?.get("Id")?.type
+
+    public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+    public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
+
+    public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
+        return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
+    }
 
 }

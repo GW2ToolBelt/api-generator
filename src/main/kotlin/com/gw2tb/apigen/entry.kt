@@ -21,12 +21,12 @@
  */
 @file:Suppress("RedundantVisibilityModifier", "unused")
 @file:JvmName("GW2APIGen")
-package com.github.gw2toolbelt.apigen
+package com.gw2tb.apigen
 
-import com.github.gw2toolbelt.apigen.internal.dsl.*
-import com.github.gw2toolbelt.apigen.internal.spec.*
-import com.github.gw2toolbelt.apigen.model.*
-import com.github.gw2toolbelt.apigen.schema.*
+import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.internal.spec.*
+import com.gw2tb.apigen.model.*
+import com.gw2tb.apigen.schema.*
 import java.util.*
 
 /**

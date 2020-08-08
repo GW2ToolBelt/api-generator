@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 @file:Suppress("RedundantVisibilityModifier", "unused")
-package com.github.gw2toolbelt.apigen.schema
+package com.gw2tb.apigen.schema
 
-import com.github.gw2toolbelt.apigen.model.*
-import com.github.gw2toolbelt.apigen.model.v2.*
+import com.gw2tb.apigen.model.*
+import com.gw2tb.apigen.model.v2.*
 
 public sealed class SchemaType
 public sealed class SchemaPrimitive : SchemaType()

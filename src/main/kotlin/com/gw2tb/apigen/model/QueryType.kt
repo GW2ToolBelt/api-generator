@@ -19,10 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.build
+package com.gw2tb.apigen.model
 
-enum class BuildType {
-    LOCAL,
-    SNAPSHOT,
-    RELEASE
+sealed class QueryType {
+
+    object ById : QueryType()
+
+    object ByPage : QueryType()
+
+    class ByIds(val supportsAll: Boolean) : QueryType()
+
 }

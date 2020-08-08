@@ -19,7 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.github.gw2toolbelt.build.*
+import com.gw2tb.apigen.build.*
+import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
@@ -33,7 +34,7 @@ val nextVersion = "0.1.0"
 
 group = "com.github.gw2toolbelt.apigen"
 version = when (deployment.type) {
-    com.github.gw2toolbelt.build.BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
+    BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
     else -> nextVersion
 }
 
@@ -131,7 +132,7 @@ publishing {
 }
 
 signing {
-    isRequired = (deployment.type === com.github.gw2toolbelt.build.BuildType.RELEASE)
+    isRequired = (deployment.type === BuildType.RELEASE)
     sign(publishing.publications)
 }
 

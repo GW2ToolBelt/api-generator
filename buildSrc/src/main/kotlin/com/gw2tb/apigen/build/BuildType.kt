@@ -19,22 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
-package com.github.gw2toolbelt.apigen.model.v2
+package com.gw2tb.apigen.build
 
-/**
- * A schema version number for the V2 web API.
- *
- * @param identifier   the string identifier of the schema version, or `null`
- *
- * @since   0.1.0
- */
-public enum class V2SchemaVersion(public val identifier: String?) {
-    V2_SCHEMA_CLASSIC(null),
-    V2_SCHEMA_2019_02_21T00_00_00_000Z("2019-02-21T00:00:00.000Z"),
-    V2_SCHEMA_2019_03_22T00_00_00_000Z("2019-03-22T00:00:00.000Z"),
-    V2_SCHEMA_2019_05_16T00_00_00_000Z("2019-05-16T00:00:00.000Z"),
-    V2_SCHEMA_2019_05_21T23_00_00_000Z("2019-05-21T23:00:00.000Z"),
-    V2_SCHEMA_2019_05_22T00_00_00_000Z("2019-05-22T00:00:00.000Z"),
-    V2_SCHEMA_2019_12_19T00_00_00_000Z("2019-12-19T00:00:00.000Z")
+enum class BuildType {
+    LOCAL,
+    SNAPSHOT,
+    RELEASE
 }

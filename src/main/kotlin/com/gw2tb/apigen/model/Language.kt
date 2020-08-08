@@ -19,17 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.apigen.model
+@file:Suppress("RedundantVisibilityModifier", "unused")
+package com.gw2tb.apigen.model
 
-enum class TokenScope {
-    ACCOUNT,
-    BUILDS,
-    CHARACTERS,
-    GUILDS,
-    INVENTORIES,
-    PROGRESSION,
-    PVP,
-    TRADINGPOST,
-    UNLOCKS,
-    WALLET
+import java.util.*
+
+/**
+ * A language supported by at least one version of the Guild Wars 2 API.
+ *
+ * @since   0.1.0
+ */
+public enum class Language(
+    public val locale: Locale
+) {
+    CHINESE("zh", "CH"),
+    ENGLISH("en", "US"),
+    FRENCH("fr", "FR"),
+    GERMAN("de", "DE"),
+    SPANISH("es", "ES");
+
+    constructor(language: String, country: String): this(Locale(language, country))
+
 }

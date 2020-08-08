@@ -19,18 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
-package com.github.gw2toolbelt.apigen
-
-import com.github.gw2toolbelt.apigen.model.*
-import java.util.*
+package com.gw2tb.apigen.model
 
 /**
- * A Guild Wars 2 API version.
+ * TODO doc
  *
  * @since   0.1.0
  */
-public data class APIVersion internal constructor(
-    public val endpoints: Set<Endpoint>,
-    public val supportedLanguages: EnumSet<Language>
-)
+public enum class TokenScope {
+    ACCOUNT,
+    BUILDS,
+    CHARACTERS,
+    GUILDS,
+    INVENTORIES,
+    PROGRESSION,
+    PVP,
+    TRADINGPOST,
+    UNLOCKS,
+    WALLET
+}

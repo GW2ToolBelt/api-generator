@@ -19,18 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.gw2toolbelt.apigen.model
+@file:Suppress("RedundantVisibilityModifier")
+package com.gw2tb.apigen
 
-import com.github.gw2toolbelt.apigen.schema.*
+import com.gw2tb.apigen.model.*
+import java.util.*
 
 /**
- * TODO doc
+ * A Guild Wars 2 API version.
  *
  * @since   0.1.0
  */
-public data class PathParameter internal constructor(
-    val key: String,
-    val type: SchemaPrimitive,
-    val description: String,
-    val name: String
+public data class APIVersion internal constructor(
+    public val endpoints: Set<Endpoint>,
+    public val supportedLanguages: EnumSet<Language>
 )
