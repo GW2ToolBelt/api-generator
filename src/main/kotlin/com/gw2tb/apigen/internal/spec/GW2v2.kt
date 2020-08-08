@@ -758,6 +758,94 @@ internal val GW2v2 = GW2APIVersion {
             optional..SerialName("ap_required")..CamelCase("apRequired").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
         })
     }
+    "/Traits" {
+        summary = "Returns information about the traits available in the game."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record {
+            "Id"(INTEGER, "the trait's ID")
+            "Tier"(INTEGER, "the trait's tier")
+            "Order"(INTEGER, "the trait's order")
+            "Name"(STRING, "the trait's name")
+            "Description"(STRING, "the trait's description")
+            "Slot"(STRING, "the slot for the trait")
+            "Facts"(
+                description = "",
+                type = conditional(sharedConfigure = {
+                    "Type"(STRING, "")
+                    optional.."Icon"(STRING, "the URL for the fact's icon")
+                    optional.."Text"(STRING, "") // TODO
+                }) {
+                    "AttributeAdjust"(record {
+                        optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
+                        optional.."Target"(STRING, "the attribute this fact adjusts")
+                    })
+                    "Buff"(record {
+                        "Status"(INTEGER, "the boon, condition, or effect referred to by the fact")
+                        optional.."Duration"(STRING, "the duration of the effect in seconds")
+                        optional.."Description"(STRING, "the description of the status effect")
+                        optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+                    })
+                    "BuffConversion"(record {
+                        "Source"(STRING, "the attribute that is used to calculate the attribute gain")
+                        "Percent"(INTEGER, "how much of the source attribute is added to target")
+                        "Target"(STRING, "the attribute that gets added to")
+                    })
+                    "ComboField"(record {
+                        SerialName("field_type").."FieldType"(STRING, "the type of the field")
+                    })
+                    "ComboFinisher"(record {
+                        SerialName("finisher_type").."FinisherType"(STRING, "the type of finisher")
+                        "Percent"(INTEGER, "the percent chance that the finisher will trigger")
+                    })
+                    "Damage"(record {
+                        SerialName("hit_count").."HitCount"(INTEGER, "the amount of times the damage hits")
+                    })
+                    "Distance"(record {
+                        "Distance"(INTEGER, "the distance value")
+                    })
+                    "NoData"(record {  })
+                    "Number"(record {
+                        "Value"(INTEGER, "the number value as referenced by text")
+                    })
+                    "Percent"(record {
+                        "Value"(INTEGER, "the percentage value as referenced by text")
+                    })
+                    "PrefixedBuff"(record {
+                        "Status"(INTEGER, "the boon, condition, or effect referred to by the fact")
+                        optional.."Duration"(STRING, "the duration of the effect in seconds")
+                        optional.."Description"(STRING, "the description of the status effect")
+                        optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+                        "Prefix"(record {
+                            "Text"(STRING, "") // TODO
+                            "Icon"(STRING, "") // TODO
+                            "Status"(STRING, "") // TODO
+                            "Description"(STRING, "") // TODO
+                        })
+                    })
+                    "Radius"(record {
+                        "Distance"(INTEGER, "the radius value")
+                    })
+                    "Range"(record {
+                        "Value"(INTEGER, "the range of the trait/skill")
+                    })
+                    "Recharge"(record {
+                        "Value"(INTEGER, "the recharge time in seconds")
+                    })
+                    "Time"(record {
+                        "Duration"(INTEGER, "the time value in seconds")
+                    })
+                    "Unblockable"(record {
+                        "Value"(BOOLEAN, "always true")
+                    })
+                }
+            )
+            "Specialization"(INTEGER, "the specialization that this trait is part of")
+            "Icon"(STRING, "the URL for the trait's icon")
+        })
+    }
     "/TokenInfo" {
         summary = "Returns information about the supplied API key."
         security(ACCOUNT)
