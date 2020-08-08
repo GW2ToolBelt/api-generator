@@ -69,9 +69,10 @@ internal class SchemaRecordBuilder {
 
     operator fun String.invoke(
         disambiguationBy: String,
-        interpretations: Map<String, SchemaType>
+        interpretations: Map<String, SchemaType>,
+        disambiguationBySideProperty: Boolean = false
     ): SchemaRecordPropertyBuilder {
-        return SchemaRecordPropertyBuilder(this, SchemaConditional(disambiguationBy, interpretations), null).also { _properties[this] = it }
+        return SchemaRecordPropertyBuilder(this, SchemaConditional(disambiguationBy, disambiguationBySideProperty, interpretations), null).also { _properties[this] = it }
     }
 
     val deprecated = PropertyModifier.deprecated

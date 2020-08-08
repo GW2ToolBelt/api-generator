@@ -73,11 +73,14 @@ public data class SchemaMap internal constructor(
  *
  * The interpretation is chosen based on a "disambiguation-property".
  *
- * @param disambiguationBy  the serial name of the disambiguation-property
- * @param interpretations   the available interpretations
+ * @param disambiguationBy              the serial name of the disambiguation-
+ *                                      property
+ * @param disambiguationBySideProperty  TODO
+ * @param interpretations               the available interpretations
  */
 public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
+    public val disambiguationBySideProperty: Boolean,
     public val interpretations: Map<String, SchemaType>
 ) : SchemaType()
 
