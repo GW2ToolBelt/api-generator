@@ -119,7 +119,7 @@ public data class SchemaRecord(
         public val since: V2SchemaVersion?,
         public val until: V2SchemaVersion?,
         public val serialName: String,
-        public val camelCaseName: String?
+        public val camelCaseName: String
     )
 
 }
