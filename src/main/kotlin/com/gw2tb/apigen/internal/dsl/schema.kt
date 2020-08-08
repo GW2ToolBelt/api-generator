@@ -30,28 +30,13 @@ val DECIMAL get() = SchemaDecimal
 val INTEGER get() = SchemaInteger
 val STRING get() = SchemaString
 
-internal interface SchemaAggregateBuildProvider : SchemaArrayBuilderProvider, SchemaMapBuilderProvider, SchemaRecordBuilderProvider
+internal class SchemaConditionalBuilder {
 
-internal interface SchemaArrayBuilderProvider {
+    val interpretations = mutableMapOf<String, SchemaType>()
 
-    fun array(
-        items: SchemaType,
-        description: String? = null,
-        nullableItems: Boolean = false
-    ): SchemaType =
-        SchemaArray(items, nullableItems, description)
-
-}
-
-internal interface SchemaMapBuilderProvider {
-
-    fun map(
-        keys: SchemaPrimitive,
-        values: SchemaType,
-        description: String? = null,
-        nullableValues: Boolean = false
-    ): SchemaType =
-        SchemaMap(keys, values, nullableValues, description)
+    operator fun String.invoke(type: SchemaType) {
+        interpretations[this] = type
+    }
 
 }
 
@@ -65,14 +50,6 @@ internal class SchemaRecordBuilder {
         description: String? = null
     ): SchemaRecordPropertyBuilder {
         return SchemaRecordPropertyBuilder(this, type, description).also { _properties[this] = it }
-    }
-
-    operator fun String.invoke(
-        disambiguationBy: String,
-        interpretations: Map<String, SchemaType>,
-        disambiguationBySideProperty: Boolean = false
-    ): SchemaRecordPropertyBuilder {
-        return SchemaRecordPropertyBuilder(this, SchemaConditional(disambiguationBy, disambiguationBySideProperty, interpretations), null).also { _properties[this] = it }
     }
 
     val deprecated = PropertyModifier.deprecated
@@ -133,16 +110,6 @@ internal class SchemaRecordBuilder {
             }
         }
     }
-
-}
-
-internal interface SchemaRecordBuilderProvider {
-
-    fun record(
-        description: String? = null,
-        configure: SchemaRecordBuilder.() -> Unit
-    ): SchemaType =
-        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
 
 }
 

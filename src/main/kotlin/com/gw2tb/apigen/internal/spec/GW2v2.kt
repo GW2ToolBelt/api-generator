@@ -511,94 +511,97 @@ internal val GW2v2 = GW2APIVersion {
                     SerialName("item_id").."ItemId"(INTEGER, "the item ID that results from performing the upgrade")
                 })
             )
-            optional.."Details"(disambiguationBy = "type", disambiguationBySideProperty = true, interpretations = mapOf(
-                "Armor" to record {
-                    "Type"(STRING, "the armor slot type")
-                    SerialName("weight_class").."WeightClass"(STRING, "the weight class")
-                    "Defense"(INTEGER, "the defense value of the armor piece")
-                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
-                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
-                },
-                "Back" to record {
-                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
-                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
-                },
-                "Bag" to record {
-                    "Size"(INTEGER, "the number of bag slots")
-                    SerialName("no_sell_or_sort").."NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
-                },
-                "Consumable" to record {
-                    "Type"(STRING, "the consumable type")
-                    optional.."Description"(STRING, "effect description for consumables applying an effect")
-                    optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
-                    optional..SerialName("unlock_type").."UnlockType"(STRING, "unlock type for unlock consumables")
-                    optional..SerialName("color_id").."ColorId"(INTEGER, "the dye id for dye unlocks")
-                    optional..SerialName("recipe_id").."RecipeId"(INTEGER, "the recipe id for recipe unlocks")
-                    optional..SerialName("extra_recipe_ids").."ExtraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
-                    optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
-                    optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
-                    optional.."Name"(STRING, "the effect type name of the consumable")
-                    optional.."Icon"(STRING, "the icon of the effect")
-                    optional.."Skins"(array(INTEGER), "a list of skin ids which this item unlocks")
-                },
-                "Container" to record {
-                    "Type"(STRING, "the container type")
-                },
-                "Gathering" to record {
-                    "Type"(STRING, "the tool type")
-                },
-                "Gizmo" to record {
-                    "Type"(STRING, "the gizmo type")
-                    optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
-                    optional..SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
-                },
-                "MiniPet" to record {
-                    SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
-                },
-                "Tool" to record {
-                    "Type"(STRING, "the tool type")
-                    "Charges"(INTEGER, "the available charges")
-                },
-                "Trinket" to record {
-                    "Type"(STRING, "the trinket type")
-                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
-                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
-                },
-                "UpgradeComponent" to record {
-                    "Type"(STRING, "the type of the upgrade component")
-                    "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
-                    SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
-                    "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
-                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional.."Bonuses"(array(STRING), "the bonuses from runes")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
-                },
-                "Weapon" to record {
-                    "Type"(STRING, "the weapon type")
-                    SerialName("min_power").."MinPower"(INTEGER, "minimum weapon strength")
-                    SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
-                    SerialName("damage_type").."DamageType"(STRING, "the damage type")
-                    "Defense"(INTEGER, "the defense value of the weapon")
-                    SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
-                    optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
-                    optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
-                    optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
-                    optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                    optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+            optional.."Details"(
+                description = "", // TODO
+                type = conditional(disambiguationBySideProperty = true) {
+                    "Armor"(record {
+                        "Type"(STRING, "the armor slot type")
+                        SerialName("weight_class").."WeightClass"(STRING, "the weight class")
+                        "Defense"(INTEGER, "the defense value of the armor piece")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                        optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                    })
+                    "Back"(record {
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                        optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                    })
+                    "Bag"(record {
+                        "Size"(INTEGER, "the number of bag slots")
+                        SerialName("no_sell_or_sort").."NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
+                    })
+                    "Consumable"(record {
+                        "Type"(STRING, "the consumable type")
+                        optional.."Description"(STRING, "effect description for consumables applying an effect")
+                        optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
+                        optional..SerialName("unlock_type").."UnlockType"(STRING, "unlock type for unlock consumables")
+                        optional..SerialName("color_id").."ColorId"(INTEGER, "the dye id for dye unlocks")
+                        optional..SerialName("recipe_id").."RecipeId"(INTEGER, "the recipe id for recipe unlocks")
+                        optional..SerialName("extra_recipe_ids").."ExtraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
+                        optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
+                        optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
+                        optional.."Name"(STRING, "the effect type name of the consumable")
+                        optional.."Icon"(STRING, "the icon of the effect")
+                        optional.."Skins"(array(INTEGER), "a list of skin ids which this item unlocks")
+                    })
+                    "Container"(record {
+                        "Type"(STRING, "the container type")
+                    })
+                    "Gathering"(record {
+                        "Type"(STRING, "the tool type")
+                    })
+                    "Gizmo"(record {
+                        "Type"(STRING, "the gizmo type")
+                        optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
+                        optional..SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor ids")
+                    })
+                    "MiniPet"(record {
+                        SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
+                    })
+                    "Tool"(record {
+                        "Type"(STRING, "the tool type")
+                        "Charges"(INTEGER, "the available charges")
+                    })
+                    "Trinket"(record {
+                        "Type"(STRING, "the trinket type")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                        optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                    })
+                    "UpgradeComponent"(record {
+                        "Type"(STRING, "the type of the upgrade component")
+                        "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
+                        SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
+                        "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                        optional.."Bonuses"(array(STRING), "the bonuses from runes")
+                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                    })
+                    "Weapon"(record {
+                        "Type"(STRING, "the weapon type")
+                        SerialName("min_power").."MinPower"(INTEGER, "minimum weapon strength")
+                        SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
+                        SerialName("damage_type").."DamageType"(STRING, "the damage type")
+                        "Defense"(INTEGER, "the defense value of the weapon")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADES(), "infix upgrade object")
+                        optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item id")
+                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item id")
+                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                    })
                 }
-            ))
+            )
         })
     }
     "/ItemStats" {

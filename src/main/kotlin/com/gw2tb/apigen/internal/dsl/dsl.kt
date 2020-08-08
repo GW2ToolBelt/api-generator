@@ -32,13 +32,47 @@ internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Se
     return fun() = GW2APIVersionBuilder().also(configure).endpoints
 }
 
-internal class GW2APIVersionBuilder : SchemaAggregateBuildProvider {
+internal class GW2APIVersionBuilder {
 
     private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
     val endpoints get() = _endpoints.map { it.endpoint }.toSet()
 
     operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
         GW2APIEndpointBuilder(this).also(configure).also { _endpoints.add(it) }
+
+    fun array(
+        items: SchemaType,
+        description: String? = null,
+        nullableItems: Boolean = false
+    ): SchemaType =
+        SchemaArray(items, nullableItems, description)
+
+    fun map(
+        keys: SchemaPrimitive,
+        values: SchemaType,
+        description: String? = null,
+        nullableValues: Boolean = false
+    ): SchemaType =
+        SchemaMap(keys, values, nullableValues, description)
+
+    fun record(
+        description: String? = null,
+        configure: SchemaRecordBuilder.() -> Unit
+    ): SchemaType =
+        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
+
+    fun conditional(
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder.() -> Unit
+    ): SchemaType =
+        SchemaConditional(
+            disambiguationBy,
+            disambiguationBySideProperty,
+            sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
+            SchemaConditionalBuilder().also(configure).interpretations
+        )
 
 }
 
