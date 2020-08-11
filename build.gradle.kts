@@ -29,10 +29,10 @@ plugins {
     `maven-publish`
 }
 
-val artifactName = "api-generator"
+val artifactName = "apigen"
 val nextVersion = "0.1.0"
 
-group = "com.github.gw2toolbelt.apigen"
+group = "com.gw2tb.api-generator"
 version = when (deployment.type) {
     BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
     else -> nextVersion
