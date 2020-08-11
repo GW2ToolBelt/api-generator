@@ -545,7 +545,7 @@ internal val GW2v2 = GW2APIVersion {
                         optional..SerialName("color_id").."ColorId"(INTEGER, "the dye id for dye unlocks")
                         optional..SerialName("recipe_id").."RecipeId"(INTEGER, "the recipe id for recipe unlocks")
                         optional..SerialName("extra_recipe_ids").."ExtraRecipeIds"(array(INTEGER), "additional recipe ids for recipe unlocks")
-                        optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(array(INTEGER), "the guild upgrade id for the item")
+                        optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade id for the item")
                         optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
                         optional.."Name"(STRING, "the effect type name of the consumable")
                         optional.."Icon"(STRING, "the icon of the effect")
