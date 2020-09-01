@@ -78,12 +78,14 @@ public data class SchemaMap internal constructor(
  * @param disambiguationBySideProperty  TODO
  * @param sharedProperties              TODO
  * @param interpretations               the available interpretations
+ * @param description                   TODO
  */
 public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
     public val disambiguationBySideProperty: Boolean,
     public val sharedProperties: Map<String, SchemaRecord.Property>,
-    public val interpretations: Map<String, SchemaType>
+    public val interpretations: Map<String, SchemaType>,
+    public val description: String
 ) : SchemaType()
 
 /**
@@ -94,7 +96,7 @@ public data class SchemaConditional internal constructor(
  */
 public data class SchemaRecord(
     public val properties: Map<String, Property>,
-    public val description: String?
+    public val description: String
 ) : SchemaType() {
 
     /**
@@ -113,7 +115,7 @@ public data class SchemaRecord(
     public data class Property internal constructor(
         public val propertyName: String,
         public val type: SchemaType,
-        public val description: String?,
+        public val description: String,
         public val isDeprecated: Boolean,
         public val optionality: Optionality,
         public val since: V2SchemaVersion?,

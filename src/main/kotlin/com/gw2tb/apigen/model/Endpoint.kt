@@ -30,6 +30,14 @@ import kotlin.time.*
 /**
  * TODO doc
  *
+ * @param route
+ * @param summary
+ * @param cache
+ * @param security
+ * @param isLocalized
+ * @param queryTypes
+ * @param pathParameters
+ *
  * @since   0.1.0
  */
 public data class Endpoint internal constructor(
@@ -43,7 +51,7 @@ public data class Endpoint internal constructor(
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
 
-    public val idType: SchemaType? get() = (schema as? SchemaRecord)?.properties?.get("Id")?.type
+    public val idType: SchemaType? get() = (schema as? SchemaRecord)?.properties?.get("ID")?.type
 
     public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
     public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()

@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("unused")
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.model.*
@@ -27,11 +28,15 @@ import com.gw2tb.apigen.schema.*
 import java.util.*
 import kotlin.time.*
 
+@DslMarker
+annotation class APIGenDSL
+
 @Suppress("FunctionName")
 internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Set<Endpoint> {
     return fun() = GW2APIVersionBuilder().also(configure).endpoints
 }
 
+@APIGenDSL
 internal class GW2APIVersionBuilder {
 
     private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
@@ -40,28 +45,33 @@ internal class GW2APIVersionBuilder {
     operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
         GW2APIEndpointBuilder(this).also(configure).also { _endpoints.add(it) }
 
+    @APIGenDSL
     fun array(
         items: SchemaType,
-        description: String? = null,
+        description: String,
         nullableItems: Boolean = false
     ): SchemaType =
         SchemaArray(items, nullableItems, description)
 
+    @APIGenDSL
     fun map(
         keys: SchemaPrimitive,
         values: SchemaType,
-        description: String? = null,
+        description: String,
         nullableValues: Boolean = false
     ): SchemaType =
         SchemaMap(keys, values, nullableValues, description)
 
+    @APIGenDSL
     fun record(
-        description: String? = null,
+        description: String,
         configure: SchemaRecordBuilder.() -> Unit
     ): SchemaType =
         SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
 
+    @APIGenDSL
     fun conditional(
+        description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
@@ -71,7 +81,51 @@ internal class GW2APIVersionBuilder {
             disambiguationBy,
             disambiguationBySideProperty,
             sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
-            SchemaConditionalBuilder().also(configure).interpretations
+            SchemaConditionalBuilder().also(configure).interpretations,
+            description
+        )
+
+}
+
+@APIGenDSL
+internal interface SchemaBuilder {
+
+    @APIGenDSL
+    fun array(
+        items: SchemaType,
+        nullableItems: Boolean = false
+    ): SchemaType =
+        SchemaArray(items, nullableItems, null)
+
+    @APIGenDSL
+    fun map(
+        keys: SchemaPrimitive,
+        values: SchemaType,
+        nullableValues: Boolean = false
+    ): SchemaType =
+        SchemaMap(keys, values, nullableValues, null)
+
+    @APIGenDSL
+    fun record(
+        description: String,
+        configure: SchemaRecordBuilder.() -> Unit
+    ): SchemaType =
+        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
+
+    @APIGenDSL
+    fun conditional(
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder.() -> Unit
+    ): SchemaType =
+        SchemaConditional(
+            disambiguationBy,
+            disambiguationBySideProperty,
+            sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
+            SchemaConditionalBuilder().also(configure).interpretations,
+            description
         )
 
 }
@@ -92,6 +146,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
     private lateinit var schema: EnumMap<V2SchemaVersion, SchemaType>
 
+    /** A short summary describing the endpoint. This should be a single, complete sentence. */
     lateinit var summary: String
 
     var cache: Duration? = null
@@ -141,7 +196,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
         this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
             tmp.forEach { (key, value) ->
-                // TODO the compiler trips here without casts. Try this with NI once 1.4 is out
+                // TODO the compiler trips here without casts. Try this with NI once it is out
                 if (value !== null) map[key as V2SchemaVersion] = value as SchemaType
             }
         }
