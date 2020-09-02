@@ -36,6 +36,7 @@ import kotlin.time.*
  * @param security
  * @param isLocalized
  * @param queryTypes
+ * @param parameters
  * @param pathParameters
  *
  * @since   0.1.0
@@ -47,6 +48,7 @@ public data class Endpoint internal constructor(
     public val security: Set<TokenScope>,
     public val isLocalized: Boolean,
     public val queryTypes: Set<QueryType>,
+    public val parameters: List<Parameter>,
     public val pathParameters: List<PathParameter>,
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
