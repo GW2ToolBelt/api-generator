@@ -814,6 +814,23 @@ internal val GW2v2 = GW2APIVersion {
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
     }
+    "/Specializations" {
+        summary = "Returns information about the specializations in the game."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(description = "Information about a specialization.") {
+            CamelCase("id").."ID"(INTEGER, "the ID of the specialization")
+            "Name"(STRING, "the localized name of the specialization")
+            "Profession"(STRING, "the ID of the profession the specialization belongs to")
+            "Elite"(BOOLEAN, "a flag indicating whether or not the specialization is an elite specialization")
+            "Icon"(STRING, "a render service URL for the specialization's icon")
+            "Background"(STRING, "a render service URL for the specialization's background image")
+            SerialName("minor_traits").."MinorTraits"(array(INTEGER), "a list of all IDs of the specialization's minor traits")
+            SerialName("major_traits").."MajorTraits"(array(INTEGER), "a list of all IDs of the specialization's major traits")
+        })
+    }
     "/Titles" {
         summary = "Returns information about the titles that are in the game."
         cache = 1.hours
