@@ -7,9 +7,9 @@ This library contains information about the structure and data-types of the API.
 This information can be used to generate custom API clients or other programs
 which require definitions of the API.
 
-This library requires Java 14 or later. (Keep in mind that library is intended
-to be for static code-generation only. This requirement is not relevant for the
-generated output.)
+This library requires Java 14 or later. (Keep in mind that this library is
+intended to be used for static code-generation only. This requirement is not
+relevant for the generated output.)
 
 
 ## The Guild Wars 2 API
@@ -110,7 +110,16 @@ For a better understanding of schema types, please refer to their [documentation
 
 ### Setup
 
-! TODO
+A complete build of only requires an installation of JDK 14 or later¹.
+This JDK should either be used to invoke Gradle (i.e. sit in `JAVA_HOME`), or be
+made visible to Gradle by setting up environment variables (or [Gradle properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties))
+as follows:
+```
+JDK_14="path to JDK 14"
+```
+
+¹ Note that instead of a JDK with version `X`, another JDK whose `javac`'s
+`--release` flag supports version `X` is sufficient.
 
 
 ### Building
