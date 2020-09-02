@@ -387,7 +387,6 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Commerce/Exchange/:Type" {
         summary = "Returns information about the gem exchange."
-        cache = 5.minutes
 
         pathParameter("Type", STRING, "the exchange type")
         parameter("Quantity", INTEGER, "the amount to exchange")
@@ -452,7 +451,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Commerce/Transactions/:Relevance/:Type" {
         summary = "Returns information about an account's transactions."
-        cache = 5.minutes
+        cache = 1.minutes
 
         pathParameter("Relevance", STRING, "the temporal relevance")
         pathParameter("Type", STRING, "the transaction type")
