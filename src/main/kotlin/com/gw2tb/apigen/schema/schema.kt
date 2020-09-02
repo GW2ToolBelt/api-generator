@@ -105,10 +105,10 @@ public data class SchemaRecord(
      * @param   propertyName    the name of the property in title-case (e.g. "ItemId")
      * @param   type            the schema definition for this property
      * @param   description     TODO
-     * @param   isDeprecated    TODO
+     * @param   isDeprecated    whether or not the property is deprecated
      * @param   optionality     the [Optionality] of this property
-     * @param   since           TODO
-     * @param   until           TODO
+     * @param   since           the minimum [V2SchemaVersion] required for the property
+     * @param   until           the [V2SchemaVersion] up to which the property existed
      * @param   serialName      the serial name of the property
      * @param   camelCaseName   the name of the property in camelCase
      */

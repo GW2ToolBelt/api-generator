@@ -30,14 +30,15 @@ import kotlin.time.*
 /**
  * TODO doc
  *
- * @param route
- * @param summary
- * @param cache
- * @param security
- * @param isLocalized
- * @param queryTypes
- * @param parameters
- * @param pathParameters
+ * @param route             the path of the endpoint
+ * @param summary           a summary of the endpoint's purpose
+ * @param cache             the expect cache duration (as suggested by the Cache-Control header), or [Duration.INFINITE]
+ *                          if the resource is expect to never change
+ * @param security          TODO
+ * @param isLocalized       whether or not the endpoint is localized
+ * @param queryTypes        the [QueryType]s supported by the endpoint
+ * @param parameters        the required parameters for the endpoint
+ * @param pathParameters    the path parameters for the endpoint
  *
  * @since   0.1.0
  */
@@ -53,7 +54,17 @@ public data class Endpoint internal constructor(
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
 
-    public val idType: SchemaType? get() = (schema as? SchemaRecord)?.properties?.get("ID")?.type
+    /** Whether or not the endpoint requires authentication. Use [security] for further information. */
+    public val requiresAuthentication: Boolean get() = security.isNotEmpty()
+
+    /** Returns the ID type of the endpoint, or `null` if the endpoint's values do not have a form of IDs. */
+    public val idType: SchemaType? by lazy {
+        if (QueryType.ById in queryTypes || queryTypes.any { it is QueryType.ByIds }) {
+            (schema as? SchemaRecord)?.properties?.get("ID")?.type
+        } else {
+            null
+        }
+    }
 
     public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
     public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
