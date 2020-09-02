@@ -419,15 +419,36 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
-//    "/Commerce/Transactions" {
-//        summary = ""
-//    }
-//    "/Commerce/Transactions/:Type" {
-//
-//    }
-//    "/Commerce/Transactions/:Type/:Type" {
-//
-//    }
+    "/Commerce/Transactions" {
+        summary = "Returns information about an account's transactions."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+        security(ACCOUNT, TRADINGPOST)
+
+        schema(array(STRING, "")) // TODO
+    }
+    "/Commerce/Transactions/:Relevance" {
+        summary = "Returns information about an account's transactions."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+
+        pathParameter("Relevance", STRING, "the temporal relevance")
+        schema(array(STRING, "")) // TODO
+    }
+    "/Commerce/Transactions/:Relevance/:Type" {
+        summary = "Returns information about an account's transactions."
+        cache = 5.minutes
+
+        pathParameter("Relevance", STRING, "the temporal relevance")
+        pathParameter("Type", STRING, "the transaction type")
+        supportedQueries(BY_PAGE)
+        schema(record(description = "Information about a transaction.") {
+            CamelCase("id").."ID"(INTEGER, "the transaction's ID")
+            SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+            "Price"(INTEGER, "the price in coins")
+            "Quantity"(INTEGER, "the quantity of the item")
+            "Created"(STRING, "the ISO-8601 standard timestamp of when the transaction was created")
+            optional.."Purchased"(STRING, "the ISO-8601 standard timestamp of when the transaction was completed")
+        })
+    }
     "/Currencies" {
         summary = "Returns information about currencies contained in the account wallet."
         cache = 1.hours
