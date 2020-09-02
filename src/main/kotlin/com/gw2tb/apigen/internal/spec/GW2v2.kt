@@ -465,6 +465,17 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Purchased"(STRING, "the ISO-8601 standard timestamp of when the transaction was completed")
         })
     }
+    "/CreateSubToken" {
+        summary = "Creates a new subtoken."
+        security(ACCOUNT)
+
+        parameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
+        parameter("permissions", STRING, "a comma separated list of permissions to inherit")
+        parameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
+        schema(record(description = "A created subtoken.") {
+            "Subtoken"(STRING, "a JWT which can be used like an API key")
+        })
+    }
     "/Currencies" {
         summary = "Returns information about currencies contained in the account wallet."
         cache = 1.hours
