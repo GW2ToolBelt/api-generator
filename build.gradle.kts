@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
     kotlin("jvm") version "1.3.72"
+    id("org.jetbrains.dokka") version "1.4.0-dev-65"
     signing
     `maven-publish`
 }
@@ -67,11 +68,11 @@ tasks {
     }
 
     create<Jar>("javadocJar") {
-        dependsOn(javadoc)
+        dependsOn(dokkaJavadoc)
 
         archiveBaseName.set(artifactName)
         archiveClassifier.set("javadoc")
-        from(javadoc.get().outputs)
+        from(dokkaJavadoc.get().outputs)
     }
 }
 
@@ -134,6 +135,9 @@ signing {
 
 repositories {
     mavenCentral()
+    maven("https://kotlin.bintray.com/kotlinx")
+    maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/dokka/dev")
+    jcenter()
 }
 
 dependencies {

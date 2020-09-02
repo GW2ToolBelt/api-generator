@@ -20,3 +20,10 @@
  * SOFTWARE.
  */
 rootProject.name = "api-generator"
+
+pluginManagement {
+    repositories {
+        maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/dokka/dev")
+        gradlePluginPortal()
+    }
+}
