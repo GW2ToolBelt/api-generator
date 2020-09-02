@@ -68,13 +68,13 @@ Generally, API endpoints are structured in two different ways: There are 1. "blo
 return all relevant data (e.g. `/v2/build`) and 2. _indexed_ endpoints which return indices for many datums (e.g.
 `v2/items`).
 
-Indexed endpoints provide a couple of different parameters to retrieve the data for a given set of ids. These are
+Indexed endpoints provide a couple of different parameters to retrieve the data for a given set of IDs. These are
 referred to as `QueryTypes` throughout documentation and source of this project. Possible query types are:
-- querying by id (e.g. `/v2/items?id={id}`),
-- querying by ids (e.g. `/v2/items?ids={ids; ","-separated}`), and
+- querying by ID (e.g. `/v2/items?id={id}`),
+- querying by IDs (e.g. `/v2/items?ids={ids; ","-separated}`), and
 - querying by page (e.g. `/v2/items?page={index}&page_size={size}`).
 
-##### Querying by Ids
+##### Querying by IDs
 Some endpoints support a specialized version of this query type that can be used to retrieve all datums at once (e.g.
 `/v2/legends?ids=all`).
 
