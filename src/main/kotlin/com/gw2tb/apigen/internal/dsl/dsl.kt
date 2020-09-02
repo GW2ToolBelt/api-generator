@@ -215,10 +215,10 @@ internal class GW2APIEndpointBuilder(private val route: String) {
         queryTypes = types.toSet()
     }
 
-    fun parameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase()) {
+    fun parameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(), isOptional: Boolean = false) {
         check(key !in parameters)
 
-        parameters[key] = Parameter(key, type, description, name)
+        parameters[key] = Parameter(key, type, description, name, isOptional)
     }
 
     fun pathParameter(key: String, type: SchemaPrimitive, description: String, name: String = key) {
