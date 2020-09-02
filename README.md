@@ -16,7 +16,17 @@ relevant for the generated output.)
 
 ### Authentication
 
-! TODO
+Some API endpoints provide account-specific data. To query these endpoints, an
+_API key_ must be passed to authenticate. Further, each API key has a custom set
+of permissions which determine what information can be retrieved using the key.
+
+An API key may be passed along a request by using the `access_token` query
+parameter, or using the `Authorization: Bearer [api key]` request header
+(recommended).
+
+E.g. `https://api.guildwars2.com/v2/account/inventory?access_token=${TOKEN}`
+returns the shared inventory of the keys owner iff the key has the `ACCOUNT` and
+`INVENTORY` permissions.
 
 
 ### Localization
