@@ -39,8 +39,8 @@ version = when (deployment.type) {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 kotlin {
@@ -56,12 +56,8 @@ kotlin {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "13"
+            jvmTarget = "8"
         }
-    }
-
-    withType<JavaCompile> {
-        options.compilerArgs.addAll(listOf("--release", "14"))
     }
 
     create<Jar>("sourcesJar") {
