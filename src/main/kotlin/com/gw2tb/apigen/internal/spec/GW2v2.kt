@@ -379,6 +379,23 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Commerce/Exchange" {
+        summary = "Returns information about the gem exchange."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "")) // TODO
+    }
+    "/Commerce/Exchange/:Type" {
+        summary = "Returns information about the gem exchange."
+        cache = 5.minutes
+
+        pathParameter("Type", STRING, "the exchange type")
+        parameter("Quantity", INTEGER, "the amount to exchange")
+        schema(record(description = "Information about an exchange.") {
+            "CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
+            "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
+        })
+    }
     "/Commerce/Listings" {
         summary = "Returns current buy and sell listings from the trading post."
 
