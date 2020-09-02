@@ -829,6 +829,9 @@ internal val GW2v2 = GW2APIVersion {
             "Background"(STRING, "a render service URL for the specialization's background image")
             SerialName("minor_traits").."MinorTraits"(array(INTEGER), "a list of all IDs of the specialization's minor traits")
             SerialName("major_traits").."MajorTraits"(array(INTEGER), "a list of all IDs of the specialization's major traits")
+            optional..SerialName("weapon_trait").."WeaponTrait"(INTEGER, "the ID of the elite specialization's weapon trait")
+            optional..SerialName("profession_icon").."ProfessionIcon"(STRING, "a render service URL for the elite specialization's icon")
+            optional..SerialName("profession_icon_big").."BigProfessionIcon"(STRING, "a render service URL for a large variant of the elite specialization's icon")
         })
     }
     "/Titles" {
