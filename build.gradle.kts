@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
     kotlin("jvm") version "1.3.72"
-    id("org.jetbrains.dokka") version "1.4.0-dev-65"
+    id("org.jetbrains.dokka") version "1.4.0"
     signing
     `maven-publish`
 }
@@ -135,8 +135,6 @@ signing {
 
 repositories {
     mavenCentral()
-    maven("https://kotlin.bintray.com/kotlinx")
-    maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/dokka/dev")
     jcenter()
 }
 
