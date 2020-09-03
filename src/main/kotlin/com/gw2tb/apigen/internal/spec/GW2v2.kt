@@ -301,7 +301,7 @@ internal val GW2v2 = GW2APIVersion {
         schema(record(name = "CharactersInventorySlot", description = "Information about a bag in a character's inventory.") {
             "Bags"(
                 description = "the character's inventory bags",
-                type = array(record(description = "Information about an inventory bag.") {
+                type = array(record(name = "Bag", description = "Information about an inventory bag.") {
                     CamelCase("id").."ID"(INTEGER, "the bag's item ID")
                     "Size"(INTEGER, "the bag's size")
                     "Inventory"(
@@ -372,7 +372,7 @@ internal val GW2v2 = GW2APIVersion {
             "Coins"(INTEGER, "the amount of coins ready for pickup")
             "Items"(
                 description = "the items ready for pickup",
-                type = array(record(description = "Information about an item ready for pickup.") {
+                type = array(record(name = "Item", description = "Information about an item ready for pickup.") {
                     CamelCase("id").."ID"(INTEGER, "the item's ID")
                     "Count"(INTEGER, "the amount of this item ready for pickup")
                 })
@@ -399,7 +399,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns current buy and sell listings from the trading post."
 
         @APIGenDSL
-        fun SchemaRecordBuilder.LISTING() = record(description = "Information about an item's listing.") {
+        fun SchemaRecordBuilder.LISTING(name: String) = record(name = name, description = "Information about an item's listing.") {
             "Listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
             SerialName("unit_price").."UnitPrice"(INTEGER, "the sell offer or buy order price in coins")
             "Quantity"(INTEGER, "the amount of items being sold/bought in this listing")
@@ -408,8 +408,8 @@ internal val GW2v2 = GW2APIVersion {
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "CommerceListing", description = "Information about an item listed in the trading post.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
-            "Buys"(array(LISTING()), "list of all buy listings")
-            "Sells"(array(LISTING()), "list of all sell listings")
+            "Buys"(array(LISTING(name = "Buy")), "list of all buy listings")
+            "Sells"(array(LISTING(name = "Sell")), "list of all sell listings")
         })
     }
     "/Commerce/Prices" {
@@ -535,7 +535,7 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(INTEGER, "the itemstat ID")
             "Attributes"(
                 description = "the list of attribute bonuses granted by this item",
-                type = array(record(description = "Information about an infix upgrade's attribute bonuses.") {
+                type = array(record(name = "Attribute", description = "Information about an infix upgrade's attribute bonuses.") {
                     "Attribute"(STRING, "the attribute this bonus applies to")
                     "Modifier"(INTEGER, "the modifier value")
                 })
@@ -550,7 +550,7 @@ internal val GW2v2 = GW2APIVersion {
         }
 
         @APIGenDSL
-        fun SchemaRecordBuilder.INFUSION_SLOTS() = array(record(description = "Information about an items infusion slot.") {
+        fun SchemaRecordBuilder.INFUSION_SLOTS() = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
             "Flags"(array(STRING), "infusion slot type of infusion upgrades")
             optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade in the armor piece")
         })
@@ -687,7 +687,7 @@ internal val GW2v2 = GW2APIVersion {
             "Name"(STRING, "the name of the stat set")
             "Attributes"(
                 description = "the list of attribute bonuses",
-                type = array(record(description = "Information about an attribute bonus.") {
+                type = array(record(name = "Attribute", description = "Information about an attribute bonus.") {
                     "Attribute"(STRING, "the name of the attribute")
                     "Multiplier"(DECIMAL, "the multiplier for that attribute")
                     "Value"(INTEGER, "the default value for that attribute")
@@ -753,12 +753,12 @@ internal val GW2v2 = GW2APIVersion {
                 description = "information about the weapons usable by this profession",
                 type = map(
                     keys = STRING,
-                    values = record(description = "Information about a profession's weapon and it's skills.") {
+                    values = record(name = "Weapon", description = "Information about a profession's weapon and it's skills.") {
                         optional.."Specialization"(INTEGER, "the ID of the profession's specializations required for this weapon")
                         "Flags"(array(STRING), "additional flags describing this weapon's properties (e.g. MainHand, OffHand, TwoHand, Aquatic)")
                         "Skills"(
                             description = "the skills for the weapon if wielded by this profession",
-                            type = array(record(description = "Information about a weapon's skills.") {
+                            type = array(record(name = "Skill", description = "Information about a weapon's skills.") {
                                 CamelCase("id").."ID"(INTEGER, "the skill's ID")
                                 "Slot"(STRING, "the skill's slot")
                                 optional.."Attunement"(STRING, "the elementalist attunement for this skill")
@@ -771,7 +771,7 @@ internal val GW2v2 = GW2APIVersion {
             "Flags"(array(STRING), "additional flags describing this profession's properties (e.g. NoRacialSkills)")
             "Skills"(
                 description = "the profession specific skills",
-                type = array(record(description = "Information about a profession skill.") {
+                type = array(record(name = "Skill", description = "Information about a profession skill.") {
                     CamelCase("id").."ID"(INTEGER, "the skill's ID")
                     "Slot"(STRING, "the skill's slot")
                     "Type"(STRING, "the skill's type")

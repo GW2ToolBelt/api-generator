@@ -109,9 +109,10 @@ internal interface SchemaBuilder {
     @APIGenDSL
     fun record(
         description: String,
+        name: String? = null,
         configure: SchemaRecordBuilder.() -> Unit
     ): SchemaType =
-        SchemaRecord(null, SchemaRecordBuilder().also(configure).properties, description)
+        SchemaRecord(name, SchemaRecordBuilder().also(configure).properties, description)
 
     @APIGenDSL
     fun conditional(
