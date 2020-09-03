@@ -889,10 +889,10 @@ internal val GW2v2 = GW2APIVersion {
                 "Value"(INTEGER, "the number value as referenced by text")
             })
             "Percent"(record(description = "An additional percentage value.") {
-                "Percent"(INTEGER, "the percentage value as referenced by text")
+                "Percent"(DECIMAL, "the percentage value as referenced by text")
             })
             "PrefixedBuff"(record(description = "Additional information about a prefixed buff.") {
-                "Status"(STRING, "the boon, condition, or effect referred to by the fact")
+                optional.."Status"(STRING, "the boon, condition, or effect referred to by the fact")
                 optional.."Duration"(INTEGER, "the duration of the effect in seconds")
                 optional.."Description"(STRING, "the description of the status effect")
                 optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
@@ -901,8 +901,8 @@ internal val GW2v2 = GW2APIVersion {
                     type = record(description = "Information about a buff's prefix.") {
                         "Text"(STRING, "") // TODO
                         "Icon"(STRING, "") // TODO
-                        "Status"(STRING, "") // TODO
-                        "Description"(STRING, "") // TODO
+                        optional.."Status"(STRING, "") // TODO
+                        optional.."Description"(STRING, "") // TODO
                     }
                 )
             })
@@ -913,7 +913,10 @@ internal val GW2v2 = GW2APIVersion {
                 "Value"(INTEGER, "the range of the trait/skill")
             })
             "Recharge"(record(description = "Additional information about recharge.") {
-                "Value"(INTEGER, "the recharge time in seconds")
+                "Value"(DECIMAL, "the recharge time in seconds")
+            })
+            "StunBreak"(record(description = "Additional information about a stunbreak.") {
+                "Value"(BOOLEAN, "always true")
             })
             "Time"(record(description = "Additional information about time.") {
                 "Duration"(INTEGER, "the time value in seconds")
@@ -929,7 +932,7 @@ internal val GW2v2 = GW2APIVersion {
             "Tier"(INTEGER, "the trait's tier")
             "Order"(INTEGER, "the trait's order")
             "Name"(STRING, "the trait's name")
-            "Description"(STRING, "the trait's description")
+            optional.."Description"(STRING, "the trait's description")
             "Slot"(STRING, "the slot for the trait")
             optional.."Facts"(
                 description = "a list of facts",
@@ -962,6 +965,9 @@ internal val GW2v2 = GW2APIVersion {
                     "Name"(STRING, "the skill's name")
                     "Description"(STRING, "the skill's description")
                     "Icon"(STRING, "the URL of the skill's icon")
+                    SerialName("chat_link").."ChatLink"(STRING, "the skill's chat link")
+                    optional.."Categories"(array(STRING), "") // TODO
+                    optional.."Flags"(array(STRING), "") // TODO
                     optional.."Facts"(
                         description = "a list of facts of the skill",
                         type = array(conditional(
