@@ -389,7 +389,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about the gem exchange."
 
         pathParameter("Type", STRING, "the exchange type")
-        parameter("Quantity", INTEGER, "the amount to exchange")
+        queryParameter("Quantity", INTEGER, "the amount to exchange")
         schema(record(name = "CommerceExchange", description = "Information about an exchange.") {
             "CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
             "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
@@ -469,9 +469,9 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Creates a new subtoken."
         security(ACCOUNT)
 
-        parameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
-        parameter("permissions", STRING, "a comma separated list of permissions to inherit")
-        parameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
+        queryParameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
+        queryParameter("permissions", STRING, "a comma separated list of permissions to inherit")
+        queryParameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
         schema(record("SubToken", description = "A created subtoken.") {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
         })

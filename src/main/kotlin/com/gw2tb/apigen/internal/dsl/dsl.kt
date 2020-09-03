@@ -142,7 +142,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
             security = security ?: emptySet(),
             isLocalized = isLocalized,
             queryTypes = if (this::queryTypes.isInitialized) queryTypes else emptySet(),
-            queryParameters = parameters.values.toList(),
+            queryParameters = queryParameters.values.toList(),
             pathParameters = pathParameters.values.toList(),
             _schema = schema
         )
@@ -158,8 +158,8 @@ internal class GW2APIEndpointBuilder(private val route: String) {
     var isLocalized: Boolean = false
 
     private lateinit var queryTypes: Set<QueryType>
-    private val parameters: MutableMap<String, QueryParameter> = mutableMapOf()
     private val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
+    private val queryParameters: MutableMap<String, QueryParameter> = mutableMapOf()
 
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
@@ -217,17 +217,17 @@ internal class GW2APIEndpointBuilder(private val route: String) {
         queryTypes = types.toSet()
     }
 
-    fun parameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(), isOptional: Boolean = false) {
-        check(key !in parameters)
-
-        parameters[key] = QueryParameter(key, type, description, name, isOptional)
-    }
-
     fun pathParameter(key: String, type: SchemaPrimitive, description: String, name: String = key) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
 
         pathParameters[key] = PathParameter(key, type, description, name)
+    }
+
+    fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(Locale.ENGLISH), isOptional: Boolean = false) {
+        check(key !in queryParameters)
+
+        queryParameters[key] = QueryParameter(key, type, description, name, isOptional)
     }
 
 }
