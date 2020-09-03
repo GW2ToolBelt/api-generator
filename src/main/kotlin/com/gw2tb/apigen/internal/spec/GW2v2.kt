@@ -1029,7 +1029,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(name = "Worldboss", description = "Information about a worldboss that reward boss chests that can be opened once a day.") {
+        schema(record(name = "WorldBoss", description = "Information about a worldboss that reward boss chests that can be opened once a day.") {
             CamelCase("id").."ID"(STRING, "the worldboss's ID")
         })
     }
