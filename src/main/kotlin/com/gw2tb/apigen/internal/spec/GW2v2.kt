@@ -32,7 +32,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's account."
         security(ACCOUNT)
 
-        schema(record(description = "Information about a player's account.") {
+        schema(record(name = "Account", description = "Information about a player's account.") {
             CamelCase("id").."ID"(STRING, "the unique persistent account GUID")
             "Age"(INTEGER, "the age of the account in seconds")
             "Name"(STRING, "the unique account name")
@@ -55,7 +55,7 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(
             description = "A list of progress information towards all achievements the account has made progress.",
-            items = record(description = "Information about a player's progress towards an achievement.") {
+            items = record(name = "AccountAchievement", description = "Information about a player's progress towards an achievement.") {
                 CamelCase("id").."ID"(INTEGER, "the achievement's ID")
                 "Done"(BOOLEAN, "a flag indicating whether or not the account has completed the achievement")
                 optional.."Bits"(array(INTEGER), "an array of numbers (whose exact meaning differs) giving information about the progress towards an achievement")
@@ -114,7 +114,7 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(
             description = "A list of stacks of items in an account's shared inventory.",
-            items = record(description = "Information about a stack of items in a player's shared inventory.") {
+            items = record(name = "AccountInventorySlot", description = "Information about a stack of items in a player's shared inventory.") {
                 CamelCase("id").."ID"(INTEGER, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
@@ -157,7 +157,7 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(
             description = "A list of all masteries unlocked by an account.",
-            items = record(description = "Information about a player's unlocked mastery.") {
+            items = record(name = "AccountMastery", description = "Information about a player's unlocked mastery.") {
                 CamelCase("id").."ID"(INTEGER, "the mastery's ID")
                 optional.."Level"(INTEGER, "the index of the unlocked mastery level")
             }
@@ -167,7 +167,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's unlocked mastery points."
         security = setOf(ACCOUNT, PROGRESSION)
 
-        schema(record(description = "Information about a player's unlocked mastery points for a region.") {
+        schema(record(name = "AccountMasteryPoint", description = "Information about a player's unlocked mastery points for a region.") {
             "Totals"(
                 description = "information about the total mastery points for a region",
                 type = array(record(description = "Information about the mastery points for a region.") {
@@ -185,7 +185,7 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(
             description = "A list of all materials in an account's vault.",
-            items = record(description = "Information about a stack of materials in a player's vault.") {
+            items = record(name = "AccountMaterial", description = "Information about a stack of materials in a player's vault.") {
                 CamelCase("id").."ID"(INTEGER, "the material's item ID")
                 "Category"(INTEGER, "the material category the item belongs to")
                 "Count"(INTEGER, "the number of the material that is stored in the player's vault")
@@ -259,7 +259,7 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(
             description = "A list of all currencies in an account's wallet.",
-            items = record(description = "Information about a currency in a player's wallet.") {
+            items = record(name = "AccountWalletCurrency", description = "Information about a currency in a player's wallet.") {
                 CamelCase("id").."ID"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
                 "Value"(INTEGER, "the amount of this currency in the player's wallet")
             }
@@ -274,7 +274,7 @@ internal val GW2v2 = GW2APIVersion {
     "/Build" {
         summary = "Returns the current build ID."
 
-        schema(record(description = "Information about the current game build.") {
+        schema(record(name = "Build", description = "Information about the current game build.") {
             CamelCase("id").."ID"(INTEGER, "the current build ID")
         })
     }
@@ -298,7 +298,7 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
 
         pathParameter("ID", STRING, "the character's ID")
-        schema(record(description = "Information about a bag in a character's inventory.") {
+        schema(record(name = "CharactersInventorySlot", description = "Information about a bag in a character's inventory.") {
             "Bags"(
                 description = "the character's inventory bags",
                 type = array(record(description = "Information about an inventory bag.") {
@@ -352,7 +352,7 @@ internal val GW2v2 = GW2APIVersion {
         }
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a dye color.") {
+        schema(record(name = "Color", description = "Information about a dye color.") {
             CamelCase("id").."ID"(INTEGER, "the color's ID")
             "Name"(STRING, "the color's name")
             SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
@@ -368,7 +368,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about the items and coins currently available for pickup."
         security = setOf(ACCOUNT, TRADINGPOST)
 
-        schema(record(description = "Information about the items and coins currently available for pickup.") {
+        schema(record(name = "CommerceDelivery", description = "Information about the items and coins currently available for pickup.") {
             "Coins"(INTEGER, "the amount of coins ready for pickup")
             "Items"(
                 description = "the items ready for pickup",
@@ -390,7 +390,7 @@ internal val GW2v2 = GW2APIVersion {
 
         pathParameter("Type", STRING, "the exchange type")
         parameter("Quantity", INTEGER, "the amount to exchange")
-        schema(record(description = "Information about an exchange.") {
+        schema(record(name = "CommerceExchange", description = "Information about an exchange.") {
             "CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
             "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
         })
@@ -406,7 +406,7 @@ internal val GW2v2 = GW2APIVersion {
         }
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(record(description = "Information about an item listed in the trading post.") {
+        schema(record(name = "CommerceListing", description = "Information about an item listed in the trading post.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
             "Buys"(array(LISTING()), "list of all buy listings")
             "Sells"(array(LISTING()), "list of all sell listings")
@@ -416,7 +416,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns current aggregated buy and sell listing information from the trading post."
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(record(description = "Information about an item listed in the trading post.") {
+        schema(record(name = "CommercePrices", description = "Information about an item listed in the trading post.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
             "Whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
             "Buys"(
@@ -456,7 +456,7 @@ internal val GW2v2 = GW2APIVersion {
         pathParameter("Relevance", STRING, "the temporal relevance")
         pathParameter("Type", STRING, "the transaction type")
         supportedQueries(BY_PAGE)
-        schema(record(description = "Information about a transaction.") {
+        schema(record(name = "CommerceTransaction", description = "Information about a transaction.") {
             CamelCase("id").."ID"(INTEGER, "the transaction's ID")
             SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
             "Price"(INTEGER, "the price in coins")
@@ -472,7 +472,7 @@ internal val GW2v2 = GW2APIVersion {
         parameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
         parameter("permissions", STRING, "a comma separated list of permissions to inherit")
         parameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
-        schema(record(description = "A created subtoken.") {
+        schema(record("SubToken", description = "A created subtoken.") {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
         })
     }
@@ -482,7 +482,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a currency.") {
+        schema(record(name = "Currency", description = "Information about a currency.") {
             CamelCase("id").."ID"(INTEGER, "the currency's ID")
             "Name"(STRING, "the currency's name")
             "Description"(STRING, "a description of the currency")
@@ -495,7 +495,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an item that can be crafted once per day.") {
+        schema(record(name = "DailyCrafting", description = "Information about an item that can be crafted once per day.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the dailycrafting")
         })
     }
@@ -504,7 +504,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an unlockable emote.") {
+        schema(record(name = "Emote", description = "Information about an unlockable emote.") {
             CamelCase("id").."ID"(STRING, "the emote's ID")
             "Commands"(
                 description = "the commands that may be used to trigger the emote",
@@ -521,7 +521,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an in-game asset.") {
+        schema(record(name = "File", description = "Information about an in-game asset.") {
             CamelCase("id").."ID"(STRING, "the file identifier")
             "Icon"(STRING, "the URL to the image")
         })
@@ -556,7 +556,7 @@ internal val GW2v2 = GW2APIVersion {
         })
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
-        schema(record(description = "Information about an item.") {
+        schema(record(name = "Item", description = "Information about an item.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
             "Name"(STRING, "the item's name")
             "Type"(STRING, "the item's type")
@@ -682,7 +682,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a stat set.") {
+        schema(record(name = "ItemStatSet", description = "Information about a stat set.") {
             CamelCase("id").."ID"(INTEGER, "the stat set's ID")
             "Name"(STRING, "the name of the stat set")
             "Attributes"(
@@ -700,7 +700,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a Revenant legend.") {
+        schema(record(name = "Legend", description = "Information about a Revenant legend.") {
             CamelCase("id").."ID"(STRING, "the legend's ID")
             "Swap"(INTEGER, "the ID of the profession (swap Legend) skill")
             "Heal"(INTEGER, "the ID of the heal skill")
@@ -716,7 +716,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a Hero's Choice Chests that can be acquired once per day.") {
+        schema(record(name = "MapChest", description = "Information about a Hero's Choice Chests that can be acquired once per day.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the mapchest")
         })
     }
@@ -726,7 +726,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an outfit.") {
+        schema(record(name = "Outfit", description = "Information about an outfit.") {
             CamelCase("id").."ID"(INTEGER, "the outfit's ID")
             "Name"(STRING, "the outfit's name")
             "Icon"(STRING, "the outfit's icon")
@@ -742,7 +742,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a playable profession.") {
+        schema(record(name = "Profession", description = "Information about a playable profession.") {
             CamelCase("id").."ID"(STRING, "the profession's ID")
             "Name"(STRING, "the profession's localized name")
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the profession's palette code")
@@ -808,7 +808,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a playable race.") {
+        schema(record(name = "Race", description = "Information about a playable race.") {
             CamelCase("id").."ID"(STRING, "the race's ID")
             "Name"(STRING, "the race's localized name")
             "Skills"(array(INTEGER), "an array of racial skill IDs")
@@ -820,7 +820,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a specialization.") {
+        schema(record(name = "Specialization", description = "Information about a specialization.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the specialization")
             "Name"(STRING, "the localized name of the specialization")
             "Profession"(STRING, "the ID of the profession the specialization belongs to")
@@ -840,7 +840,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a title.") {
+        schema(record(name = "Title", description = "Information about a title.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the title")
             "Name"(STRING, "the display name of the title")
             deprecated..optional.."Achievement"(INTEGER, "the ID of the achievement that grants this title")
@@ -1002,7 +1002,7 @@ internal val GW2v2 = GW2APIVersion {
         security(ACCOUNT)
 
         schema(
-            V2_SCHEMA_CLASSIC to record(description = "Information about an API key.") {
+            V2_SCHEMA_CLASSIC to record(name = "TokenInfo", description = "Information about an API key.") {
                 CamelCase("id").."ID"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
@@ -1010,7 +1010,7 @@ internal val GW2v2 = GW2APIVersion {
                     type = array(STRING)
                 )
             },
-            V2_SCHEMA_2019_05_22T00_00_00_000Z to record("Information about an API key.") {
+            V2_SCHEMA_2019_05_22T00_00_00_000Z to record(name = "TokenInfo", description = "Information about an API key.") {
                 CamelCase("id").."ID"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
@@ -1029,7 +1029,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about a worldboss that reward boss chests that can be opened once a day.") {
+        schema(record(name = "Worldboss", description = "Information about a worldboss that reward boss chests that can be opened once a day.") {
             CamelCase("id").."ID"(STRING, "the worldboss's ID")
         })
     }
@@ -1039,7 +1039,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an available world (or server).") {
+        schema(record(name = "World", description = "Information about an available world (or server).") {
             CamelCase("id").."ID"(INTEGER, "the ID of the world")
             "Name"(STRING, "the name of the world")
             "Population"(STRING, "the population level of the world")
@@ -1051,7 +1051,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an objective in the World versus World game mode.") {
+        schema(record(name = "WvWObjective", description = "Information about an objective in the World versus World game mode.") {
             CamelCase("id").."ID"(STRING, "the ID of the objective")
             "Name"(STRING, "the name of the objective")
             "Type"(STRING, "the type of the objective")
@@ -1071,7 +1071,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an achievable rank in the World versus World game mode.") {
+        schema(record(name = "WvWRank", description = "Information about an achievable rank in the World versus World game mode.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the rank")
             "Title"(STRING, "the title of the rank")
             SerialName("min_level").."MinLevel"(INTEGER, "the WvW level required to unlock this rank")
@@ -1083,7 +1083,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(description = "Information about an upgrade for objectives in the World versus World game mode.") {
+        schema(record(name = "WvWUpgrade", description = "Information about an upgrade for objectives in the World versus World game mode.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the upgrade")
             "Tiers"(
                 description = "the different tiers of the upgrade",

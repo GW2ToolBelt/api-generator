@@ -37,7 +37,7 @@ import kotlin.time.*
  * @param security          TODO
  * @param isLocalized       whether or not the endpoint is localized
  * @param queryTypes        the [QueryType]s supported by the endpoint
- * @param queryParameters        the required parameters for the endpoint
+ * @param queryParameters   the required parameters for the endpoint
  * @param pathParameters    the path parameters for the endpoint
  *
  * @since   0.1.0

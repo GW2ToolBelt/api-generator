@@ -64,10 +64,11 @@ internal class GW2APIVersionBuilder {
 
     @APIGenDSL
     fun record(
+        name: String,
         description: String,
         configure: SchemaRecordBuilder.() -> Unit
     ): SchemaType =
-        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
+        SchemaRecord(name, SchemaRecordBuilder().also(configure).properties, description)
 
     @APIGenDSL
     fun conditional(
@@ -110,7 +111,7 @@ internal interface SchemaBuilder {
         description: String,
         configure: SchemaRecordBuilder.() -> Unit
     ): SchemaType =
-        SchemaRecord(SchemaRecordBuilder().also(configure).properties, description)
+        SchemaRecord(null, SchemaRecordBuilder().also(configure).properties, description)
 
     @APIGenDSL
     fun conditional(
@@ -186,7 +187,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
                         return when {
                             !superIncluded && copiedProperties.isEmpty() -> null
-                            else -> SchemaRecord(copiedProperties, description)
+                            else -> SchemaRecord(name, copiedProperties, description)
                         }
                     }
                     else -> this

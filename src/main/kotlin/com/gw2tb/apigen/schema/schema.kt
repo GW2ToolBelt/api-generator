@@ -91,10 +91,12 @@ public data class SchemaConditional internal constructor(
 /**
  * A schema for records.
  *
- * @param   properties      the properties of this record
- * @param   description     TODO
+ * @param name          TODO
+ * @param properties    the properties of this record
+ * @param description   TODO
  */
 public data class SchemaRecord(
+    public val name: String?,
     public val properties: Map<String, Property>,
     public val description: String
 ) : SchemaType() {
@@ -102,15 +104,15 @@ public data class SchemaRecord(
     /**
      * A record property.
      *
-     * @param   propertyName    the name of the property in title-case (e.g. "ItemId")
-     * @param   type            the schema definition for this property
-     * @param   description     TODO
-     * @param   isDeprecated    whether or not the property is deprecated
-     * @param   optionality     the [Optionality] of this property
-     * @param   since           the minimum [V2SchemaVersion] required for the property
-     * @param   until           the [V2SchemaVersion] up to which the property existed
-     * @param   serialName      the serial name of the property
-     * @param   camelCaseName   the name of the property in camelCase
+     * @param propertyName  the name of the property in title-case (e.g. "ItemId")
+     * @param type          the schema definition for this property
+     * @param description   TODO
+     * @param isDeprecated  whether or not the property is deprecated
+     * @param optionality   the [Optionality] of this property
+     * @param since         the minimum [V2SchemaVersion] required for the property
+     * @param until         the [V2SchemaVersion] up to which the property existed
+     * @param serialName    the serial name of the property
+     * @param camelCaseName the name of the property in camelCase
      */
     public data class Property internal constructor(
         public val propertyName: String,
