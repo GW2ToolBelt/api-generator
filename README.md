@@ -157,10 +157,9 @@ appropriate file. For example, the `/v2/build` endpoint looks as follows:
 ```
 "/Build" {
     summary = "Returns the current build ID."
-    cache = Duration(1, MINUTES)
 
-    schema(map {
-        "id"(INTEGER, "The current build ID.")
+    schema(record(name = "Build", description = "Information about the current game build.") {
+        CamelCase("id").."ID"(INTEGER, "the current build ID")
     })
 }
 ```
