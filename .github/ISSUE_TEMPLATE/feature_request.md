@@ -7,7 +7,7 @@ assignees: ''
 ---
 
 <!--
-Requesting a support for a new/missing API endpoint?
+Requesting support for a new/missing API endpoint?
 ----------------------------------------------------
 Please use the appropriate template instead.
 
