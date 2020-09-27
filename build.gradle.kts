@@ -99,12 +99,12 @@ publishing {
                 name.set(project.name)
                 description.set("A library for generating programs that interface with the official Guild Wars 2 API.")
                 packaging = "jar"
-                url.set("https://github.com/GW2Toolbelt/api-generator")
+                url.set("https://github.com/GW2ToolBelt/api-generator")
 
                 licenses {
                     license {
                         name.set("MIT")
-                        url.set("https://github.com/GW2Toolbelt/api-generator/blob/master/LICENSE")
+                        url.set("https://github.com/GW2ToolBelt/api-generator/blob/master/LICENSE")
                         distribution.set("repo")
                     }
                 }
@@ -119,9 +119,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/GW2Toolbelt/api-generator.git")
-                    developerConnection.set("scm:git:git://github.com/GW2Toolbelt/api-generator.git")
-                    url.set("https://github.com/GW2Toolbelt/api-generator.git")
+                    connection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
+                    developerConnection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
+                    url.set("https://github.com/GW2ToolBelt/api-generator.git")
                 }
             }
         }

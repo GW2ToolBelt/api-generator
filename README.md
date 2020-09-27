@@ -175,7 +175,7 @@ refer to the documentation of the [DSL](src/main/kotlin/com/gw2tb/apigen/interna
 
 | Project                                                        | Language                          |
 |----------------------------------------------------------------|-----------------------------------|
-| [GW2APIClient](https://github.com/GW2Toolbelt/GW2APIClient)    | Kotlin (Android, JS, JVM, Native) |
+| [GW2APIClient](https://github.com/GW2ToolBelt/GW2APIClient)    | Kotlin (Android, JS, JVM, Native) |
 
 
 ## License
