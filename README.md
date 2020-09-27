@@ -25,8 +25,8 @@ parameter, or using the `Authorization: Bearer [api key]` request header
 (recommended).
 
 E.g. `https://api.guildwars2.com/v2/account/inventory?access_token=${TOKEN}`
-returns the shared inventory of the keys owner iff the key has the `ACCOUNT` and
-`INVENTORY` permissions.
+returns the shared inventory of the key's owner iff the key has the `ACCOUNT`
+and `INVENTORY` permissions.
 
 
 ### Localization
