@@ -76,7 +76,8 @@ public data class SchemaMap internal constructor(
  * @param disambiguationBy              the serial name of the disambiguation-
  *                                      property
  * @param disambiguationBySideProperty  TODO
- * @param sharedProperties              TODO
+ * @param sharedProperties              the properties available in all
+ *                                      interpretations of this conditional
  * @param interpretations               the available interpretations
  * @param description                   TODO
  */
@@ -91,7 +92,7 @@ public data class SchemaConditional internal constructor(
 /**
  * A schema for records.
  *
- * @param name          TODO
+ * @param name          the name of the record in _TitleCase_.
  * @param properties    the properties of this record
  * @param description   TODO
  */

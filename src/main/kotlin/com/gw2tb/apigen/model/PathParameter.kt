@@ -24,13 +24,18 @@ package com.gw2tb.apigen.model
 import com.gw2tb.apigen.schema.*
 
 /**
- * TODO doc
+ * A parameter that is part of a queries path.
  *
- * @since   0.1.0
+ * See [Endpoint] for further information.
+ *
+ * @param key           the key of the parameter (that is used in the route definition)
+ * @param type          the type of the parameter
+ * @param description   TODO
+ * @param name          the name of the parameter in _TitleCase_
  */
 public data class PathParameter internal constructor(
-    val key: String,
-    val type: SchemaPrimitive,
-    val description: String,
-    val name: String
+    public val key: String,
+    public val type: SchemaPrimitive,
+    public val description: String,
+    public val name: String
 )

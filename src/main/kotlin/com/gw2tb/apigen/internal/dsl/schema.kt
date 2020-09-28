@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("FunctionName")
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.model.*
@@ -210,9 +211,14 @@ internal class SchemaRecordPropertyBuilder(
 
 }
 
-internal val BY_ID get() = QueryType.ById
-internal val BY_PAGE get() = QueryType.ByPage
-internal val BY_IDS = QueryType.ByIds(supportsAll = true)
+/** See [QueryType.ByID]. */
+internal val BY_ID get() = QueryType.ByID
 
-@Suppress("FunctionName")
-internal fun BY_IDS(all: Boolean = true) = QueryType.ByIds(supportsAll = all)
+/** See [QueryType.ByPage]. */
+internal val BY_PAGE get() = QueryType.ByPage
+
+/** See [QueryType.ByIDs]. */
+internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
+
+/** See [QueryType.ByIDs]. */
+internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)

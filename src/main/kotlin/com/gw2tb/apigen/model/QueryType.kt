@@ -21,12 +21,20 @@
  */
 package com.gw2tb.apigen.model
 
-sealed class QueryType {
+/** A query type. */
+public sealed class QueryType {
 
-    object ById : QueryType()
+    /** Queries by ID `?id={id}`. */
+    public object ByID : QueryType()
 
-    object ByPage : QueryType()
+    /** Queries by page `?page={index}&page_size={size}`. */
+    public object ByPage : QueryType()
 
-    class ByIds(val supportsAll: Boolean) : QueryType()
+    /**
+     * Queries by IDs `?ids={ids}`.
+     *
+     * @param supportsAll   whether or not `?ids=all` is supported
+     */
+    public class ByIDs(public val supportsAll: Boolean) : QueryType()
 
 }

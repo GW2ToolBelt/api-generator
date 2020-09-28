@@ -21,11 +21,7 @@
  */
 package com.gw2tb.apigen.model
 
-/**
- * TODO doc
- *
- * @since   0.1.0
- */
+/** An API key permission scope. */
 public enum class TokenScope {
     ACCOUNT,
     BUILDS,

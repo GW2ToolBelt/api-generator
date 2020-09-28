@@ -29,9 +29,9 @@ import com.gw2tb.apigen.schema.*
  * @since   0.1.0
  */
 public data class QueryParameter internal constructor(
-    val key: String,
-    val type: SchemaPrimitive,
-    val description: String,
-    val name: String,
-    val isOptional: Boolean
+    public val key: String,
+    public val type: SchemaPrimitive,
+    public val description: String,
+    public val name: String,
+    public val isOptional: Boolean
 )

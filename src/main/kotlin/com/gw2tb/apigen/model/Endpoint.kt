@@ -30,17 +30,19 @@ import kotlin.time.*
 /**
  * TODO doc
  *
+ * The [route] may contain `:` prefixed segments. These segments represent the
+ * [pathParameters]. A real URL can be constructed by replacing all such
+ * segments with the value for the parameter with the segment as key.
+ *
  * @param route             the path of the endpoint
  * @param summary           a summary of the endpoint's purpose
  * @param cache             the expect cache duration (as suggested by the Cache-Control header), or [Duration.INFINITE]
  *                          if the resource is expect to never change
- * @param security          TODO
+ * @param security          the required [TokenScope]s for the endpoint
  * @param isLocalized       whether or not the endpoint is localized
  * @param queryTypes        the [QueryType]s supported by the endpoint
  * @param queryParameters   the required parameters for the endpoint
  * @param pathParameters    the path parameters for the endpoint
- *
- * @since   0.1.0
  */
 public data class Endpoint internal constructor(
     public val route: String,
@@ -59,16 +61,20 @@ public data class Endpoint internal constructor(
 
     /** Returns the ID type of the endpoint, or `null` if the endpoint's values do not have a form of IDs. */
     public val idType: SchemaType? by lazy {
-        if (QueryType.ById in queryTypes || queryTypes.any { it is QueryType.ByIds }) {
+        if (QueryType.ByID in queryTypes || queryTypes.any { it is QueryType.ByIDs }) {
             (schema as? SchemaRecord)?.properties?.get("ID")?.type
         } else {
             null
         }
     }
 
+    /** TODO doc */
     public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+
+    /** TODO doc */
     public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
 
+    /** TODO doc */
     public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
         return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
     }

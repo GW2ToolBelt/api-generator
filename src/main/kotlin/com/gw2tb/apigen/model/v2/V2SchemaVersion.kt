@@ -25,9 +25,8 @@ package com.gw2tb.apigen.model.v2
 /**
  * A schema version number for the V2 web API.
  *
- * @param identifier   the string identifier of the schema version, or `null`
- *
- * @since   0.1.0
+ * @param identifier    the string identifier of the schema version, or `null`
+ *                      for the "classic" schema
  */
 public enum class V2SchemaVersion(public val identifier: String?) {
     V2_SCHEMA_CLASSIC(null),

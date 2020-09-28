@@ -30,8 +30,6 @@ import java.util.*
  *
  * @param endpoints             the version's supported endpoints
  * @param supportedLanguages    the version's supported languages
- *
- * @since   0.1.0
  */
 public data class APIVersion internal constructor(
     public val endpoints: Set<Endpoint>,

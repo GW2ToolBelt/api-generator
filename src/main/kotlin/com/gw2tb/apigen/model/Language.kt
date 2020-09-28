@@ -24,11 +24,7 @@ package com.gw2tb.apigen.model
 
 import java.util.*
 
-/**
- * A language supported by at least one version of the Guild Wars 2 API.
- *
- * @since   0.1.0
- */
+/** A language supported by at least one version of the Guild Wars 2 API. */
 public enum class Language(
     public val locale: Locale
 ) {
