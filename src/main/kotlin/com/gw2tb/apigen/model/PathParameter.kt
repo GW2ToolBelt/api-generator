@@ -30,7 +30,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @param key           the key of the parameter (that is used in the route definition)
  * @param type          the type of the parameter
- * @param description   TODO
+ * @param description   the description of the parameter
  * @param name          the name of the parameter in _TitleCase_
  */
 public data class PathParameter internal constructor(

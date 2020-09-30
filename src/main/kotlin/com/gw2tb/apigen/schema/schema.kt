@@ -45,7 +45,8 @@ public object SchemaString : SchemaPrimitive()
  *
  * @param items         the schema definition for the elements of this list
  * @param nullableItems whether or not the items may contain `null`
- * @param description   TODO
+ * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
+ *                      holds {description}.")
  */
 public data class SchemaArray internal constructor(
     public val items: SchemaType,
@@ -59,7 +60,8 @@ public data class SchemaArray internal constructor(
  * @param keys              the schema definition for the keys of this map
  * @param values            the schema definition for the values of this map
  * @param nullableValues    whether or not the values may contain `null`
- * @param description       TODO
+ * @param description       the description of the type or `null`. (Should be worded to complete the sentence "This
+ *                          field holds {description}.")
  */
 public data class SchemaMap internal constructor(
     public val keys: SchemaPrimitive,
@@ -81,7 +83,8 @@ public data class SchemaMap internal constructor(
  * @param sharedProperties              the properties available in all
  *                                      interpretations of this conditional
  * @param interpretations               the available interpretations
- * @param description                   TODO
+ * @param description                   the description of the type or `null`. (Should be worded to complete the
+ *                                      sentence "This field holds {description}.")
  */
 public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
@@ -96,7 +99,8 @@ public data class SchemaConditional internal constructor(
  *
  * @param name          the name of the record in _TitleCase_.
  * @param properties    the properties of this record
- * @param description   TODO
+ * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
+ *                      holds {description}.")
  */
 public data class SchemaRecord(
     public val name: String?,
@@ -109,7 +113,8 @@ public data class SchemaRecord(
      *
      * @param propertyName  the name of the property in title-case (e.g. "ItemId")
      * @param type          the schema definition for this property
-     * @param description   TODO
+     * @param description   the description of the property. (Should be worded to complete the sentence "This field
+     *                      holds {description}.")
      * @param isDeprecated  whether or not the property is deprecated
      * @param optionality   the [Optionality] of this property
      * @param since         the minimum [V2SchemaVersion] required for the property
