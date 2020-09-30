@@ -30,7 +30,7 @@ plugins {
     `maven-publish`
 }
 
-val artifactName = "apigen"
+val artifactName = "api-generator"
 val nextVersion = "0.1.0"
 
 group = "com.gw2tb.api-generator"
