@@ -26,10 +26,29 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 
-val BOOLEAN get() = SchemaBoolean
-val DECIMAL get() = SchemaDecimal
-val INTEGER get() = SchemaInteger
-val STRING get() = SchemaString
+/** Alias for [SchemaBoolean]. */
+internal val BOOLEAN get() = SchemaBoolean
+
+/** Alias for [SchemaDecimal]. */
+internal val DECIMAL get() = SchemaDecimal
+
+/** Alias for [SchemaInteger]. */
+internal val INTEGER get() = SchemaInteger
+
+/** Alias for [SchemaString]. */
+internal val STRING get() = SchemaString
+
+/** Alias for [QueryType.ByID]. */
+internal val BY_ID get() = QueryType.ByID
+
+/** Alias for [QueryType.ByPage]. */
+internal val BY_PAGE get() = QueryType.ByPage
+
+/** Alias for [QueryType.ByIDs]. */
+internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
+
+/** Alias for [QueryType.ByIDs]. */
+internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
 
 @APIGenDSL
 internal class SchemaConditionalBuilder : SchemaBuilder {
@@ -210,15 +229,3 @@ internal class SchemaRecordPropertyBuilder(
     }
 
 }
-
-/** See [QueryType.ByID]. */
-internal val BY_ID get() = QueryType.ByID
-
-/** See [QueryType.ByPage]. */
-internal val BY_PAGE get() = QueryType.ByPage
-
-/** See [QueryType.ByIDs]. */
-internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
-
-/** See [QueryType.ByIDs]. */
-internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
