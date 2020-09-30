@@ -31,7 +31,7 @@ plugins {
 }
 
 val artifactName = "api-generator"
-val nextVersion = "0.1.0"
+val nextVersion = "0.2.0"
 
 group = "com.gw2tb.api-generator"
 version = when (deployment.type) {
