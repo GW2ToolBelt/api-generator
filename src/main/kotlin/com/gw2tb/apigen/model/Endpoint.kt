@@ -28,7 +28,7 @@ import java.util.*
 import kotlin.time.*
 
 /**
- * TODO doc
+ * An API endpoint.
  *
  * The [route] may contain `:` prefixed segments. These segments represent the
  * [pathParameters]. A real URL can be constructed by replacing all such
@@ -68,13 +68,13 @@ public data class Endpoint internal constructor(
         }
     }
 
-    /** TODO doc */
+    /** Returns the [V2SchemaVersion.V2_SCHEMA_CLASSIC] schema. */
     public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
 
-    /** TODO doc */
+    /** Returns the schema versions. */
     public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
 
-    /** TODO doc */
+    /** Returns the appropriate schema for the given [version]. */
     public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
         return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
     }

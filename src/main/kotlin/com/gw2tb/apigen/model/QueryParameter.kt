@@ -25,7 +25,13 @@ package com.gw2tb.apigen.model
 import com.gw2tb.apigen.schema.*
 
 /**
- * TODO doc
+ * An http query parameter.
+ *
+ * @param key   the name of the parameter (as used in the query)
+ * @param type          the type of the parameter
+ * @param description   the description of the parameter
+ * @param name          the name of the parameter in _TitleCase_
+ * @param isOptional    whether or not the parameter is optional
  *
  * @since   0.1.0
  */
