@@ -129,18 +129,22 @@ public data class SchemaRecord(
 
 }
 
+/** A property's optionality. */
 public sealed class Optionality {
 
     public abstract val isOptional: Boolean
 
+    /** The property is optional. */
     public object OPTIONAL : Optionality() {
         override val isOptional = true
     }
 
+    /** The property is required for a key with the appropriate [scope]. */
     public class MANDATED(public val scope: TokenScope) : Optionality() {
         override val isOptional = true
     }
 
+    /** The property is required. */
     public object REQUIRED : Optionality() {
         override val isOptional = false
     }
