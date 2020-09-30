@@ -75,7 +75,9 @@ public data class SchemaMap internal constructor(
  *
  * @param disambiguationBy              the serial name of the disambiguation-
  *                                      property
- * @param disambiguationBySideProperty  TODO
+ * @param disambiguationBySideProperty  `true` if the disambiguation-property
+ *                                      is on the same level as the conditional,
+ *                                      or `false` if it is a member
  * @param sharedProperties              the properties available in all
  *                                      interpretations of this conditional
  * @param interpretations               the available interpretations
