@@ -29,7 +29,7 @@ import java.util.*
 import kotlin.time.*
 
 @DslMarker
-annotation class APIGenDSL
+internal annotation class APIGenDSL
 
 @Suppress("FunctionName")
 internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Set<Endpoint> {
