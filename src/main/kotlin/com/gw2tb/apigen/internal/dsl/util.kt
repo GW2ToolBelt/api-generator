@@ -19,26 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.schema.*
+internal fun String.firstToLowerCase(): String =
+    "${toCharArray()[0].toLowerCase()}${substring(1)}"
 
-/**
- * A parameter that is part of a queries path.
- *
- * See [Endpoint] for further information.
- *
- * @param key           the key of the parameter (that is used in the route definition)
- * @param type          the type of the parameter
- * @param description   the description of the parameter
- * @param name          the name of the parameter in _TitleCase_
- * @param camelCaseName the name of the parameter in _camelCase_
- */
-public data class PathParameter internal constructor(
-    public val key: String,
-    public val type: SchemaPrimitive,
-    public val description: String,
-    public val name: String,
-    public val camelCaseName: String
-)
+internal fun String.firstToUpperCase(): String =
+    "${toCharArray()[0].toUpperCase()}${substring(1)}"
+
+internal fun String.prependIndentNonEmpty(indent: String = "    "): String =
+    lineSequence()
+        .map {
+            when {
+                it.isBlank() -> it
+                else -> indent + it
+            }
+        }
+        .joinToString("\n")

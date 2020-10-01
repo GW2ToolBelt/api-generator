@@ -27,10 +27,11 @@ import com.gw2tb.apigen.schema.*
 /**
  * An http query parameter.
  *
- * @param key   the name of the parameter (as used in the query)
+ * @param key           the name of the parameter (as used in the query)
  * @param type          the type of the parameter
  * @param description   the description of the parameter
  * @param name          the name of the parameter in _TitleCase_
+ * @param camelCaseName the name of the parameter in _camelCase_
  * @param isOptional    whether or not the parameter is optional
  *
  * @since   0.1.0
@@ -40,5 +41,6 @@ public data class QueryParameter internal constructor(
     public val type: SchemaPrimitive,
     public val description: String,
     public val name: String,
+    public val camelCaseName: String,
     public val isOptional: Boolean
 )

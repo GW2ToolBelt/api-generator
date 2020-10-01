@@ -297,7 +297,7 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a character's inventory."
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
 
-        pathParameter("ID", STRING, "the character's ID")
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
         schema(record(name = "CharactersInventorySlot", description = "Information about a bag in a character's inventory.") {
             "Bags"(
                 description = "the character's inventory bags",

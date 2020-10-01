@@ -217,17 +217,17 @@ internal class GW2APIEndpointBuilder(private val route: String) {
         queryTypes = types.toSet()
     }
 
-    fun pathParameter(key: String, type: SchemaPrimitive, description: String, name: String = key) {
+    fun pathParameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(Locale.ENGLISH), camelCase: String = name.firstToLowerCase()) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
 
-        pathParameters[key] = PathParameter(key, type, description, name)
+        pathParameters[key] = PathParameter(key, type, description, name, camelCase)
     }
 
-    fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(Locale.ENGLISH), isOptional: Boolean = false) {
+    fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(Locale.ENGLISH), camelCase: String = name.firstToLowerCase(), isOptional: Boolean = false) {
         check(key !in queryParameters)
 
-        queryParameters[key] = QueryParameter(key, type, description, name, isOptional)
+        queryParameters[key] = QueryParameter(key, type, description, name, camelCase, isOptional)
     }
 
 }
