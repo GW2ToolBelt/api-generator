@@ -526,6 +526,24 @@ internal val GW2v2 = GW2APIVersion {
             "Icon"(STRING, "the URL to the image")
         })
     }
+    "/Gliders" {
+        summary = "Returns information about gliders."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Glider", description = "Information about a glider.") {
+            "Id"(INTEGER, "the glider's ID")
+            "Name"(STRING, "the glider's name")
+            "Description"(STRING, "the glider's description")
+            "Icon"(STRING, "the URL for the glider's icon")
+            "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of gliders")
+            SerialName("default_dyes").."DefaultDyes"(
+                description = "the IDs of the dyes that are applied to the glider by default",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours
