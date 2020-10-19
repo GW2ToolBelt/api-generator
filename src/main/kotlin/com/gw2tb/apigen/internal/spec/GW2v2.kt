@@ -720,6 +720,19 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(INTEGER, "the ID of the mapchest")
         })
     }
+    "/Materials" {
+        summary = "Returns information about the categories in the material storage."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "MaterialCategory", description = "Information about a material category.") {
+            CamelCase("id").."ID"(INTEGER, "the category's ID")
+            "Name"(STRING, "the category's name")
+            "Items"(array(INTEGER), "the IDs of this category's items")
+            "Order"(INTEGER, "the category's sorting key")
+        })
+    }
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
