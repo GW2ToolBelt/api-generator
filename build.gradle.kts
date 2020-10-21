@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
     kotlin("jvm") version "1.3.72"
-    id("org.jetbrains.dokka") version "1.4.10"
+    id("org.jetbrains.dokka") version "1.4.10.2"
     signing
     `maven-publish`
 }
