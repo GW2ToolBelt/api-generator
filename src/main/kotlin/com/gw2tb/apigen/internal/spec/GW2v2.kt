@@ -529,6 +529,7 @@ internal val GW2v2 = GW2APIVersion {
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours
+        isLocalized = true
 
         @APIGenDSL
         fun SchemaRecordBuilder.INFIX_UPGRADE() = record(description = "Information about an item's infix upgrade.") {
