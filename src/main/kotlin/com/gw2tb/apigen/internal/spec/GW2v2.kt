@@ -776,6 +776,27 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(INTEGER, "the ID of the mapchest")
         })
     }
+    "/Maps" {
+        summary = "Returns information about maps."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Map", description = "Information about a map.") {
+            CamelCase("id").."ID"(INTEGER, "the map's ID")
+            "Name"(STRING, "the map's name")
+            SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
+            SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
+            SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
+            "Floors"(array(INTEGER), "the IDs of the floors available on the map")
+            SerialName("region_id").."RegionID"(INTEGER, "the ID of the region the map belongs to")
+            optional..SerialName("region_name").."RegionName"(STRING, "the name of the region the map belongs to")
+            SerialName("continent_id").."ContinentID"(INTEGER, "the ID of the continent the map belongs to")
+            optional..SerialName("continent_name").."ContinentName"(STRING, "the name of the continent the map belongs to")
+            SerialName("map_rect").."MapRect"(array(INTEGER), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
+            SerialName("continent_rect").."ContinentRect"(array(INTEGER), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+        })
+    }
     "/Materials" {
         summary = "Returns information about the categories in the material storage."
         cache = 1.hours
