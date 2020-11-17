@@ -595,7 +595,8 @@ internal val GW2v2 = GW2APIVersion {
                         SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
                         optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
                         optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     })
@@ -603,7 +604,8 @@ internal val GW2v2 = GW2APIVersion {
                         SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
                         optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
                         optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     })
@@ -648,7 +650,8 @@ internal val GW2v2 = GW2APIVersion {
                         SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
                         optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
                         optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     })
@@ -670,7 +673,8 @@ internal val GW2v2 = GW2APIVersion {
                         SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
                         optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                        optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
                         optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     })
