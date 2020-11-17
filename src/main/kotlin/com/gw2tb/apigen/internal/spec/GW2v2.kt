@@ -74,7 +74,7 @@ internal val GW2v2 = GW2APIVersion {
             description = "A list of slots in a player's bank.",
             nullableItems = true,
             items = record(name = "AccountBankSlot", description = "Information about a bank slot.") {
-                "ID"(INTEGER, "the item's ID")
+                CamelCase("id").."ID"(INTEGER, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                 optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
@@ -566,7 +566,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Glider", description = "Information about a glider.") {
-            "Id"(INTEGER, "the glider's ID")
+            CamelCase("id").."ID"(INTEGER, "the glider's ID")
             "Name"(STRING, "the glider's name")
             "Description"(STRING, "the glider's description")
             "Icon"(STRING, "the URL for the glider's icon")
