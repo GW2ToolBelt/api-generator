@@ -904,6 +904,38 @@ internal val GW2v2 = GW2APIVersion {
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
     }
+    "/Recipes" {
+        summary = "Returns information about the crafting recipes in the game."
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(record(name = "Recipe", description = "Information about a crafting recipe.") {
+            CamelCase("id").."ID"(STRING, "the recipe's ID")
+            "Type"(STRING, "the recipe's type")
+            SerialName("output_item_id").."OutputItemID"(INTEGER, "the ID of the produced item")
+            SerialName("output_item_count").."OutputItemCount"(INTEGER, "the amount of items produced")
+            SerialName("time_to_craft_ms").."CraftTimeMillis"(INTEGER, "the time in milliseconds it takes to craft the item")
+            "Disciplines"(array(STRING), "the crafting disciplines that can use the recipe")
+            SerialName("min_rating").."MinRating"(INTEGER, "the minimum rating required to use the recipe")
+            "Flags"(array(STRING), "the flags applying to the recipe")
+            "Ingredients"(
+                description = "the recipe's ingredients",
+                type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
+                    CamelCase("item_id").."ItemID"(STRING, "the ingredient's item ID")
+                    "Count"(INTEGER, "the quantity of this ingredient")
+                })
+            )
+            optional..SerialName("guild_ingredients").."GuildIngredients"(
+                description = "the recipe's guild ingredients",
+                type = array(record(name = "Ingredient", description = "Information about a recipe guild ingredient.") {
+                    CamelCase("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
+                    "Count"(INTEGER, "the quantity of this guild ingredient")
+                })
+            )
+            optional..SerialName("output_upgrade_id").."OutputUpgradeID"(INTEGER, "the ID of the produced guild upgrade")
+            SerialName("chat_link").."ChatLink"(STRING, "the recipe's chat code")
+        })
+    }
     "/Specializations" {
         summary = "Returns information about the specializations in the game."
         cache = 1.hours
