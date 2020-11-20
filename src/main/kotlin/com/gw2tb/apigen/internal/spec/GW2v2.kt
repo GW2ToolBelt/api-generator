@@ -498,6 +498,21 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Purchased"(STRING, "the ISO-8601 standard timestamp of when the transaction was completed")
         })
     }
+    "/Continents" {
+        summary = "Returns information about continents."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Continent", description = "Information about a continent.") {
+            CamelCase("id").."ID"(INTEGER, "the continent's ID")
+            "Name"(STRING, "the continent's name")
+            SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
+            SerialName("min_zoom").."MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
+            SerialName("max_zoom").."MinZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
+            "Floors"(array(INTEGER), "the IDs of the continent's floors")
+        })
+    }
     "/CreateSubToken" {
         summary = "Creates a new subtoken."
         security(ACCOUNT)
@@ -505,7 +520,7 @@ internal val GW2v2 = GW2APIVersion {
         queryParameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
         queryParameter("permissions", STRING, "a comma separated list of permissions to inherit")
         queryParameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
-        schema(record("SubToken", description = "A created subtoken.") {
+        schema(record(name = "SubToken", description = "A created subtoken.") {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
         })
     }
