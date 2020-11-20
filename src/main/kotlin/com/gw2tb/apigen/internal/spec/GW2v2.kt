@@ -797,6 +797,32 @@ internal val GW2v2 = GW2APIVersion {
             SerialName("continent_rect").."ContinentRect"(array(INTEGER), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
         })
     }
+    "/Masteries" {
+        summary = "Returns information about masteries."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Mastery", description = "Information about a mastery.") {
+            CamelCase("id").."ID"(INTEGER, "the mastery's ID")
+            "Name"(STRING, "the mastery's name")
+            "Requirement"(STRING, "the written out requirement to unlock the mastery track")
+            "Order"(INTEGER, "the order in which the mastery track appears in a list")
+            "Background"(STRING, "the URL for the mastery track's background graphic")
+            "Region"(STRING, "the mastery region the track belongs to")
+            "Levels"(
+                description = "information about each mastery level",
+                type = array(record(name = "Level", description = "Information about a mastery level.") {
+                    "Name"(STRING, "the mastery level's name")
+                    "Description"(STRING, "the mastery level's description")
+                    "Instruction"(STRING, "the in-game instruction for the mastery level")
+                    "Icon"(STRING, "the URL for the mastery level's icon")
+                    "PointCost"(INTEGER, "the amount of mastery points required to unlock the level")
+                    "ExpCost"(INTEGER, "the amount of experience required to unlock the level")
+                })
+            )
+        })
+    }
     "/Materials" {
         summary = "Returns information about the categories in the material storage."
         cache = 1.hours
