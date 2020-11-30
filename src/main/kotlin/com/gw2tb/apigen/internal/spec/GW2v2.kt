@@ -547,6 +547,23 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(INTEGER, "the ID of the dailycrafting")
         })
     }
+    "/Emblem" {
+        summary = "Returns information about guild emblem assets."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
+    "/Emblem/:Type" {
+        summary = "Returns information about guild emblem assets."
+        cache = 1.hours
+
+        pathParameter("Type", STRING, "the layer for the emblem parts")
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "EmblemPart", description = "Information about an emblem part.") {
+            CamelCase("id").."ID"(STRING, "the emblem part's ID")
+            "Layers"(array(STRING), "an array of URLs to images that make up the various parts of the emblem")
+        })
+    }
     "/Emotes" {
         summary = "Returns information about unlockable emotes."
         cache = 1.hours
