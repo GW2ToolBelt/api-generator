@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("UnstableApiUsage")
+
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.tasks.*
@@ -40,8 +42,9 @@ version = when (deployment.type) {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
 kotlin {
@@ -55,6 +58,10 @@ kotlin {
 }
 
 tasks {
+    withType<JavaCompile> {
+        options.release.set(8)
+    }
+
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
