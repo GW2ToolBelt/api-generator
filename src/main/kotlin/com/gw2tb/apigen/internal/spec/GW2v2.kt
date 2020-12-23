@@ -609,6 +609,44 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Guild/:ID" {
+        summary = "Returns information about a guild."
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(record(name = "Guild", description = "Information about a guild.") {
+            CamelCase("id").."ID"(STRING, "the guild's ID")
+            "Name"(STRING, "the guild's name")
+            "Tag"(STRING, "the guild's tag")
+            "Level"(INTEGER, "the guild's level")
+            optional(GUILDS)..SerialName("motd").."MotD"(STRING, "the guild's message of the day")
+            optional(GUILDS).."Influence"(INTEGER, "the guild's current influence")
+            optional(GUILDS).."Aetherium"(INTEGER, "the guild's current aetherium")
+            optional(GUILDS).."Favor"(INTEGER, "the guild's current favor")
+            optional(GUILDS).."Resonance"(INTEGER, "the guild's current resonance")
+            optional(GUILDS)..SerialName("member_count").."MemberCount"(INTEGER, "the guild's current member count")
+            optional(GUILDS)..SerialName("member_capacity").."MemberCapacity"(INTEGER, "the guild's current member capacity")
+            "Emblem"(
+                description = "the guild's emblem",
+                type = record(name = "Emblem", description = "") {
+                    "Background"(
+                        description = "the emblem's background",
+                        type = record(name = "Background", description = "Information about a guild emblem's background.") {
+                            CamelCase("id").."ID"(STRING, "the background's ID")
+                            "Colors"(array(INTEGER), "the background's colors")
+                        }
+                    )
+                    "Foreground"(
+                        description = "the emblem's foreground",
+                        type = record(name = "Foreground", description = "Information about a guild emblem's forground.") {
+                            CamelCase("id").."ID"(STRING, "the foreground's ID")
+                            "Colors"(array(INTEGER), "the foreground's colors")
+                        }
+                    )
+                    "Flags"(array(STRING), "the manipulations applied to the emblem")
+                }
+            )
+        })
+    }
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours
