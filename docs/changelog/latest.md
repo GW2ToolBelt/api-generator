@@ -1,3 +1,14 @@
+### 0.2.1
+
+_Released 2020 Dec 23_
+
+#### Fixes
+
+- Fixed a bug in parameter validation that made `0.2.0` unusable.
+
+
+---
+
 ### 0.2.0
 
 _Released 2020 Dec 23_
