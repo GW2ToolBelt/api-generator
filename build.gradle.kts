@@ -23,10 +23,9 @@
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
-import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.21"
     id("org.jetbrains.dokka") version "1.4.20"
     signing
     `maven-publish`
@@ -55,17 +54,22 @@ kotlin {
             }
         }
     }
+
+    target {
+        compilations.all {
+            kotlinOptions {
+                languageVersion = "1.3"
+                apiVersion = "1.3"
+
+                jvmTarget = "1.8"
+            }
+        }
+    }
 }
 
 tasks {
     withType<JavaCompile> {
         options.release.set(8)
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
     }
 
     create<Jar>("sourcesJar") {
