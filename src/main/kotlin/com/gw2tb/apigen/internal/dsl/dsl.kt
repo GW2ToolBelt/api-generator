@@ -167,6 +167,51 @@ internal class GW2APIEndpointBuilder(private val route: String) {
         val tmp = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
             fun SchemaType.copyOrGet(superIncluded: Boolean = false): SchemaType? {
                 return when (this) {
+                    is SchemaConditional -> {
+                        fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
+                            is SchemaConditional -> {
+                                val sharedPropertiesChanged = sharedProperties.any { (_, property) ->
+                                    property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
+                                }
+
+                                val interpretationsChanged = interpretations.any { (_, interpretation) ->
+                                    interpretation.since === version || interpretation.until === V2SchemaVersion.values()[version.ordinal - 1] || interpretation.type.hasChangedInVersion()
+                                }
+
+                                sharedPropertiesChanged || interpretationsChanged
+                            }
+                            is SchemaRecord -> properties.any { (_, property) ->
+                                property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
+                            }
+                            else -> false
+                        }
+
+                        val includeVersion = version === V2SchemaVersion.V2_SCHEMA_CLASSIC || hasChangedInVersion()
+                        val copiedSharedProperties = sharedProperties.mapValues { (_, property) ->
+                            val includedSinceVersion = property.since?.let { it === version } ?: false
+                            val includedInVersion = ((includedSinceVersion || property.since?.let { version >= it } ?: true)) && (property.until?.let { it < version } ?: true)
+
+                            when {
+                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> property.copy(type = property.type.copyOrGet(superIncluded = true)!!)
+                                else -> null
+                            }
+                        }.filterValues { it !== null }.mapValues { it.value!! }
+
+                        val copiedInterpretations = interpretations.mapValues { (_, interpretation) ->
+                            val includedSinceVersion = interpretation.since?.let { it === version } ?: false
+                            val includedInVersion = ((includedSinceVersion || interpretation.since?.let { version >= it } ?: true)) && (interpretation.until?.let { it < version } ?: true)
+
+                            when {
+                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> interpretation.copy(type = interpretation.type.copyOrGet(superIncluded = true)!!)
+                                else -> null
+                            }
+                        }.filterValues { it !== null }.mapValues { it.value!! }
+
+                        return when {
+                            !superIncluded && copiedSharedProperties.isEmpty() && copiedInterpretations.isEmpty() -> null
+                            else -> copy(sharedProperties = copiedSharedProperties, interpretations = copiedInterpretations)
+                        }
+                    }
                     is SchemaRecord -> {
                         fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
                             is SchemaRecord -> properties.any { (_, property) ->
@@ -188,7 +233,7 @@ internal class GW2APIEndpointBuilder(private val route: String) {
 
                         return when {
                             !superIncluded && copiedProperties.isEmpty() -> null
-                            else -> SchemaRecord(name, copiedProperties, description)
+                            else -> copy(properties = copiedProperties)
                         }
                     }
                     else -> this

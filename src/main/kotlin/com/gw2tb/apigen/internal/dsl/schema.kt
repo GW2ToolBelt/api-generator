@@ -53,6 +53,9 @@ internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
 @APIGenDSL
 internal class SchemaConditionalBuilder : SchemaBuilder {
 
+    private val _interpretations = mutableMapOf<String, SchemaConditionalInterpretationBuilder>()
+    val interpretations get() = _interpretations.mapValues { it.value.interpretation }
+
     /**
      * Registers a conditional interpretation using the @receiver as key.
      *
@@ -61,11 +64,73 @@ internal class SchemaConditionalBuilder : SchemaBuilder {
      * @param type  the type of the interpretation
      */
     @APIGenDSL
-    operator fun String.invoke(type: SchemaType) {
-        interpretations[this] = type
+    operator fun String.invoke(type: SchemaType): SchemaConditionalInterpretationBuilder {
+        return SchemaConditionalInterpretationBuilder(this, type).also { _interpretations[this] = it }
     }
 
-    val interpretations = mutableMapOf<String, SchemaType>()
+    /** Marks a deprecated interpretation. */
+    val deprecated = Modifiers.deprecated
+
+    /** The minimal [V2SchemaVersion] (inclusive) required for the interpretation. */
+    fun since(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
+        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
+            interpretation.since = version
+        }
+    }
+
+    /** The maximum [V2SchemaVersion] (exclusive) required for the interpretation. */
+    fun until(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
+        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
+            interpretation.until = version
+        }
+    }
+
+    operator fun IInterpretationModifier.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(this, modifier)
+    operator fun Set<IInterpretationModifier>.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(modifier, *this.toTypedArray())
+
+    operator fun IInterpretationModifier.rangeTo(interpretation: SchemaConditionalInterpretationBuilder): SchemaConditionalInterpretationBuilder = interpretation.also { this.applyTo(it) }
+    operator fun Set<IInterpretationModifier>.rangeTo(interpretation: SchemaConditionalInterpretationBuilder): SchemaConditionalInterpretationBuilder = interpretation.also { forEach { mod -> mod.applyTo(it) } }
+
+}
+
+internal class SchemaConditionalInterpretationBuilder(
+    private val interpretationKey: String,
+    private val type: SchemaType
+) {
+
+    private var isUnused = true
+
+
+    var isDeprecated = false
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var since: V2SchemaVersion? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+    var until: V2SchemaVersion? = null
+        set(value) {
+            require(isUnused)
+            field = value
+        }
+
+
+    val interpretation by lazy {
+        isUnused = false
+
+        SchemaConditional.Interpretation(
+            interpretationKey = interpretationKey,
+            type = type,
+            isDeprecated = isDeprecated,
+            since = since,
+            until = until
+        )
+    }
 
 }
 
@@ -96,10 +161,10 @@ internal class SchemaRecordBuilder : SchemaBuilder {
     }
 
     /** Marks a deprecated property. */
-    val deprecated = PropertyModifier.deprecated
+    val deprecated = Modifiers.deprecated
 
     /** Marks an optional property. */
-    val optional = PropertyModifier.optional
+    val optional = Modifiers.optional
 
     /** Marks an optional property whose presents is mandated by the given `scope`. */
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
@@ -143,24 +208,6 @@ internal class SchemaRecordBuilder : SchemaBuilder {
 
     operator fun IPropertyModifier.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { this.applyTo(it) }
     operator fun Set<IPropertyModifier>.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
-
-    interface IPropertyModifier {
-        fun applyTo(property: SchemaRecordPropertyBuilder)
-    }
-
-    @Suppress("EnumEntryName")
-    enum class PropertyModifier : IPropertyModifier {
-        deprecated {
-            override fun applyTo(property: SchemaRecordPropertyBuilder) {
-                property.isDeprecated = true
-            }
-        },
-        optional {
-            override fun applyTo(property: SchemaRecordPropertyBuilder) {
-                property.optionality = Optionality.OPTIONAL
-            }
-        }
-    }
 
 }
 
@@ -228,4 +275,35 @@ internal class SchemaRecordPropertyBuilder(
         )
     }
 
+}
+
+internal interface IInterpretationModifier {
+    fun applyTo(interpretation: SchemaConditionalInterpretationBuilder)
+}
+
+internal interface IPropertyModifier {
+    fun applyTo(property: SchemaRecordPropertyBuilder)
+}
+
+internal object Modifiers {
+    abstract class PropertyModifier : IPropertyModifier
+    abstract class SharedModifier : IInterpretationModifier, IPropertyModifier
+
+    val deprecated = object : SharedModifier() {
+
+        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
+            interpretation.isDeprecated = true
+        }
+
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isDeprecated = true
+        }
+
+    }
+
+    val optional = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.optionality = Optionality.OPTIONAL
+        }
+    }
 }

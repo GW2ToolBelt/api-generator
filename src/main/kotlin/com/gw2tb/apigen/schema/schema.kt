@@ -90,9 +90,28 @@ public data class SchemaConditional internal constructor(
     public val disambiguationBy: String,
     public val disambiguationBySideProperty: Boolean,
     public val sharedProperties: Map<String, SchemaRecord.Property>,
-    public val interpretations: Map<String, SchemaType>,
+    public val interpretations: Map<String, Interpretation>,
     public val description: String
-) : SchemaType()
+) : SchemaType() {
+
+    /**
+     * A conditional interpretation.
+     *
+     * @param interpretationKey the key used to identify the interpretation
+     * @param type              the schema definition for this interpretation
+     * @param isDeprecated      whether or not the interpretation is deprecated
+     * @param since             the minimum [V2SchemaVersion] required for the interpretation
+     * @param until             the [V2SchemaVersion] up to which the interpretation existed
+     */
+    public data class Interpretation internal constructor(
+        public val interpretationKey: String,
+        public val type: SchemaType,
+        public val isDeprecated: Boolean,
+        public val since: V2SchemaVersion?,
+        public val until: V2SchemaVersion?
+    )
+
+}
 
 /**
  * A schema for records.
