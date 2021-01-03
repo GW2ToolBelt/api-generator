@@ -27,6 +27,8 @@ import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.*
 
+private val DURATION_INFINITE = Double.POSITIVE_INFINITY.minutes
+
 internal val GW2v2 = GW2APIVersion {
     "/Account" {
         summary = "Returns information about a player's account."
@@ -414,7 +416,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Commerce/Exchange" {
         summary = "Returns information about the gem exchange."
-        cache = Duration.INFINITE // We don't expect this to change. Ever.
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "")) // TODO
     }
@@ -470,14 +472,14 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Commerce/Transactions" {
         summary = "Returns information about an account's transactions."
-        cache = Duration.INFINITE // We don't expect this to change. Ever.
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
         security(ACCOUNT, TRADINGPOST)
 
         schema(array(STRING, "")) // TODO
     }
     "/Commerce/Transactions/:Relevance" {
         summary = "Returns information about an account's transactions."
-        cache = Duration.INFINITE // We don't expect this to change. Ever.
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
 
         pathParameter("Relevance", STRING, "the temporal relevance")
         schema(array(STRING, "")) // TODO
@@ -549,7 +551,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Emblem" {
         summary = "Returns information about guild emblem assets."
-        cache = Duration.INFINITE // We don't expect this to change. Ever.
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
