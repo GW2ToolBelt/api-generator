@@ -75,6 +75,10 @@ tasks {
         options.release.set(8)
     }
 
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
     create<Jar>("sourcesJar") {
         archiveBaseName.set(artifactName)
         archiveClassifier.set("sources")
@@ -154,4 +158,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.7.0")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.7.0")
 }
