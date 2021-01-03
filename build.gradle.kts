@@ -23,6 +23,7 @@
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
+import org.jetbrains.kotlin.gradle.dsl.*
 
 plugins {
     kotlin("jvm") version "1.4.21"
@@ -47,6 +48,8 @@ java {
 }
 
 kotlin {
+    explicitApi = ExplicitApiMode.Strict
+
     sourceSets {
         all {
             languageSettings.apply {

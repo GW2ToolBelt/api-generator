@@ -162,17 +162,17 @@ public sealed class Optionality {
 
     /** The property is optional. */
     public object OPTIONAL : Optionality() {
-        override val isOptional = true
+        override val isOptional: Boolean = true
     }
 
     /** The property is required for a key with the appropriate [scope]. */
     public class MANDATED(public val scope: TokenScope) : Optionality() {
-        override val isOptional = true
+        override val isOptional: Boolean = true
     }
 
     /** The property is required. */
     public object REQUIRED : Optionality() {
-        override val isOptional = false
+        override val isOptional: Boolean = false
     }
 
 }
