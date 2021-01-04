@@ -65,6 +65,8 @@ kotlin {
                 apiVersion = "1.3"
 
                 jvmTarget = "1.8"
+
+                freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
             }
         }
     }
