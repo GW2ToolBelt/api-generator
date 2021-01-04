@@ -480,6 +480,7 @@ internal val GW2v2 = GW2APIVersion {
     "/Commerce/Transactions/:Relevance" {
         summary = "Returns information about an account's transactions."
         cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        security(ACCOUNT, TRADINGPOST)
 
         pathParameter("Relevance", STRING, "the temporal relevance")
         schema(array(STRING, "")) // TODO
@@ -487,6 +488,7 @@ internal val GW2v2 = GW2APIVersion {
     "/Commerce/Transactions/:Relevance/:Type" {
         summary = "Returns information about an account's transactions."
         cache = 1.minutes
+        security(ACCOUNT, TRADINGPOST)
 
         pathParameter("Relevance", STRING, "the temporal relevance")
         pathParameter("Type", STRING, "the transaction type")
