@@ -25,17 +25,30 @@ package com.gw2tb.apigen.model
 /** A query type. */
 public sealed class QueryType {
 
+    internal companion object {
+
+        @Suppress("FunctionName")
+        @JvmStatic
+        internal fun ByIDs(supportsAll: Boolean): ByIDs =
+            if (supportsAll) ByIDs.All else ByIDs.NotAll
+
+    }
+
     /** Queries by ID `?id={id}`. */
     public object ByID : QueryType()
 
     /** Queries by page `?page={index}&page_size={size}`. */
     public object ByPage : QueryType()
 
-    /**
-     * Queries by IDs `?ids={ids}`.
-     *
-     * @param supportsAll   whether or not `?ids=all` is supported
-     */
-    public class ByIDs(public val supportsAll: Boolean) : QueryType()
+    /** Queries by IDs `?ids={ids}`. */
+    public sealed class ByIDs : QueryType() {
+
+        /** Whether or not `?ids=all` is supported. */
+        public abstract val supportsAll: Boolean
+
+        internal object All : ByIDs() { override val supportsAll = true }
+        internal object NotAll : ByIDs() { override val supportsAll = false }
+
+    }
 
 }
