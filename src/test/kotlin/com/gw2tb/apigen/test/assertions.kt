@@ -44,7 +44,7 @@ fun assertNotNull(actual: Any?, message: String?) {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun assertNotNull(actual: Any?, messageSupplier: Supplier<String?>?) {
+fun assertNotNull(actual: Any?, messageSupplier: () -> String) {
     contract {
         returns() implies (actual != null)
     }

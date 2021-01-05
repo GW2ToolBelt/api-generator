@@ -21,6 +21,10 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
+import kotlin.time.*
+
+internal val DURATION_INFINITE = Double.POSITIVE_INFINITY.minutes
+
 internal fun String.firstToLowerCase(): String =
     "${toCharArray()[0].toLowerCase()}${substring(1)}"
 
