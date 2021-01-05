@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.gradle.dsl.*
 
 plugins {
     kotlin("jvm") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.21"
     id("org.jetbrains.dokka") version "1.4.20"
     signing
     `maven-publish`
@@ -161,6 +162,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
+    testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.0.1")
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.7.0")
     testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.7.0")
 }
