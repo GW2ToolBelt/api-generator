@@ -35,10 +35,14 @@ public sealed class QueryType {
     }
 
     /** Queries by ID `?id={id}`. */
-    public object ByID : QueryType()
+    public object ByID : QueryType() {
+        override fun toString(): String = "ByID"
+    }
 
     /** Queries by page `?page={index}&page_size={size}`. */
-    public object ByPage : QueryType()
+    public object ByPage : QueryType() {
+        override fun toString(): String = "ByPage"
+    }
 
     /** Queries by IDs `?ids={ids}`. */
     public sealed class ByIDs : QueryType() {
@@ -48,6 +52,8 @@ public sealed class QueryType {
 
         internal object All : ByIDs() { override val supportsAll = true }
         internal object NotAll : ByIDs() { override val supportsAll = false }
+
+        override fun toString(): String = "ByIDs(all = $supportsAll)"
 
     }
 
