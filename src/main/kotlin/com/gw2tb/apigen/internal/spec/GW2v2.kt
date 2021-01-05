@@ -27,8 +27,6 @@ import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.*
 
-private val DURATION_INFINITE = Double.POSITIVE_INFINITY.minutes
-
 internal val GW2v2 = GW2APIVersion {
     "/Account" {
         summary = "Returns information about a player's account."
@@ -521,9 +519,9 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Creates a new subtoken."
         security(ACCOUNT)
 
-        queryParameter("expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
-        queryParameter("permissions", STRING, "a comma separated list of permissions to inherit")
-        queryParameter("urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
+        queryParameter("Expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
+        queryParameter("Permissions", STRING, "a comma separated list of permissions to inherit")
+        queryParameter("URLs", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true, camelCase = "urls")
         schema(record(name = "SubToken", description = "A created subtoken.") {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
         })
