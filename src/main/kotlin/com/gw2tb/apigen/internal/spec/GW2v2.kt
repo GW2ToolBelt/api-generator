@@ -1049,6 +1049,26 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/Mounts/Skins" {
+        summary = "Returns information about mount skins."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "MountSkin", description = "Information about a mount skin.") {
+            CamelCase("id").."ID"(INTEGER, "the mount skin's ID")
+            "Name"(STRING, "the mount skin's name")
+            "Icon"(STRING, "a render service URL for the mount skin's icon")
+            "Mount"(STRING, "the mount type id for the mount skin")
+            SerialName("dye_slots").."DyeSlots"(
+                description = "the mount skin's dye slots",
+                type = array(record(name = "DyeSlot", description = "Information about a dye slot.") {
+                    CamelCase("color_id").."ColorID"(STRING, "the ID of the color")
+                    "Material"(STRING, "the slot's material")
+                })
+            )
+        })
+    }
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
