@@ -1,0 +1,142 @@
+[
+    {
+        "hint": "chicken",
+        "id": 1
+    },
+    {
+        "hint": "grilled_chicken",
+        "id": 2
+    },
+    {
+        "hint": "spicy_flank",
+        "id": 3
+    },
+    {
+        "hint": "spicier_flank",
+        "id": 4
+    },
+    {
+        "hint": "fire_flank",
+        "id": 5
+    },
+    {
+        "hint": "prickley_pear_sorbet",
+        "id": 6
+    },
+    {
+        "hint": "ginger_lime_icecream",
+        "id": 7
+    },
+    {
+        "hint": "saffron_mango_icecream",
+        "id": 8
+    },
+    {
+        "hint": "peach_raspberry_icecream",
+        "id": 9
+    },
+    {
+        "hint": "chicken_day",
+        "id": 10
+    },
+    {
+        "hint": "chicken_night",
+        "id": 11
+    },
+    {
+        "hint": "warrior",
+        "id": 12
+    },
+    {
+        "hint": "mesmer",
+        "id": 13
+    },
+    {
+        "hint": "ranger",
+        "id": 14
+    },
+    {
+        "hint": "guardian",
+        "id": 15
+    },
+    {
+        "hint": "elementalist",
+        "id": 16
+    },
+    {
+        "hint": "engineer",
+        "id": 17
+    },
+    {
+        "hint": "revenant",
+        "id": 18
+    },
+    {
+        "hint": "thief",
+        "id": 19
+    },
+    {
+        "hint": "necromancer",
+        "id": 20
+    },
+    {
+        "hint": "lava_skritt",
+        "id": 21
+    },
+    {
+        "hint": "ghost_peppers",
+        "id": 22
+    },
+    {
+        "hint": "halloween",
+        "id": 23
+    },
+    {
+        "hint": "snow_leopard",
+        "id": 24
+    },
+    {
+        "hint": "frozen",
+        "id": 25
+    },
+    {
+        "hint": "ice",
+        "id": 26
+    },
+    {
+        "hint": "freezer",
+        "id": 27
+    },
+    {
+        "hint": "cold",
+        "id": 28
+    },
+    {
+        "hint": "cadeucus",
+        "id": 29
+    },
+    {
+        "hint": "ghost",
+        "id": 32
+    },
+    {
+        "hint": "sab",
+        "id": 33
+    },
+    {
+        "hint": "holographic",
+        "id": 34
+    },
+    {
+        "hint": "simon",
+        "id": 35
+    },
+    {
+        "hint": "wvw_alpine",
+        "id": 36
+    },
+    {
+        "hint": "wvw_desert",
+        "id": 37
+    }
+]

@@ -1,0 +1,71 @@
+[
+    {
+        "commands": [
+            "/geargrind",
+            "/coureur",
+            "/Endlos",
+            "/corredor"
+        ],
+        "id": "geargrind",
+        "unlock_items": [
+            20312
+        ]
+    },
+    {
+        "commands": [
+            "/playdead",
+            "/faitlemort",
+            "/Yacer"
+        ],
+        "id": "playdead",
+        "unlock_items": [
+            93507
+        ]
+    },
+    {
+        "commands": [
+            "/rockout",
+            "/hardrock",
+            "/Abrocken",
+            "/rockear"
+        ],
+        "id": "rockout",
+        "unlock_items": [
+            91956
+        ]
+    },
+    {
+        "commands": [
+            "/shiver",
+            "/tremble",
+            "/zittern",
+            "/tiritar"
+        ],
+        "id": "shiver",
+        "unlock_items": [
+            92787
+        ]
+    },
+    {
+        "commands": [
+            "/shuffle",
+            "/mezclador"
+        ],
+        "id": "shuffle",
+        "unlock_items": [
+            20312
+        ]
+    },
+    {
+        "commands": [
+            "/step",
+            "/esquive",
+            "/Schritt",
+            "/paso"
+        ],
+        "id": "step",
+        "unlock_items": [
+            20312
+        ]
+    }
+]

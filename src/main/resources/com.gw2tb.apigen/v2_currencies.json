@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Münze",
+        "description": "Die Hauptwährung in Tyria. Können bei Händlern in der ganzen Welt ausgegeben werden.",
+        "order": 101,
+        "icon": "https://render.guildwars2.com/file/98457F504BA2FAC8457F532C4B30EDC23929ACF9/619316.png"
+    },
+    {
+        "id": 2,
+        "name": "Karma",
+        "description": "Kann durch verschiedene Aktivitäten verdient und bei Händlern in der ganzen Welt ausgegeben werden.",
+        "order": 102,
+        "icon": "https://render.guildwars2.com/file/94953FA23D3E0D23559624015DFEA4CFAA07F0E5/155026.png"
+    },
+    {
+        "id": 3,
+        "name": "Lorbeer",
+        "description": "Kann durch Login-Belohnungstruhen verdient werden. Kann in den großen Städten ausgegeben werden. Verwendbar zum Kauf verschiedener Belohnungen.",
+        "order": 104,
+        "icon": "https://render.guildwars2.com/file/A1BD345AD9192C3A585BE2F6CB0617C5A797A1E2/619317.png"
+    },
+    {
+        "id": 4,
+        "name": "Edelstein",
+        "description": "Können über die Schwarzlöwen-Handelsgesellschaft gekauft und ausgegeben werden.",
+        "order": 100,
+        "icon": "https://render.guildwars2.com/file/220061640ECA41C0577758030357221B4ECCE62C/502065.png"
+    },
+    {
+        "id": 5,
+        "name": "Ascalonische Träne",
+        "description": "Können in den Katakomben von Ascalon verdient werden. Können in Löwenstein ausgegeben werden, um seltene und exotische Ausrüstung, Runen und Sigille, Handwerksmaterialien und \"Gabe Ascalons\"-Komponenten zu kaufen, die zur Herstellung legendärer Waffen verwendet werden.",
+        "order": 402,
+        "icon": "https://render.guildwars2.com/file/2AA9C0B030BE152B915E0174D7F0495FDA711C54/619318.png"
+    }
+]

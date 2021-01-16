@@ -1,0 +1,170 @@
+[
+    {
+        "id": "advanced_cloth_rack"
+    },
+    {
+        "id": "advanced_leather_rack"
+    },
+    {
+        "id": "airship_cargo"
+    },
+    {
+        "id": "ancient_wood_node"
+    },
+    {
+        "id": "aurilium_node"
+    },
+    {
+        "id": "bandit_chest"
+    },
+    {
+        "id": "basic_cloth_rack"
+    },
+    {
+        "id": "basic_harvesting_nodes"
+    },
+    {
+        "id": "basic_leather_rack"
+    },
+    {
+        "id": "basic_lumber_nodes"
+    },
+    {
+        "id": "basic_ore_nodes"
+    },
+    {
+        "id": "bauble_gathering_system"
+    },
+    {
+        "id": "black_lion_expedition_board"
+    },
+    {
+        "id": "black_lion_expedition_board_s4"
+    },
+    {
+        "id": "black_lion_hunters_board"
+    },
+    {
+        "id": "black_lion_industry_board"
+    },
+    {
+        "id": "bloodstone_crystals"
+    },
+    {
+        "id": "bound_hatched_chili_pepper_node"
+    },
+    {
+        "id": "brandstone_node"
+    },
+    {
+        "id": "candy_corn_node"
+    },
+    {
+        "id": "commemorative_dragon_pinata"
+    },
+    {
+        "id": "crystallized_supply_cache"
+    },
+    {
+        "id": "difluorite_crystal_cluster_node"
+    },
+    {
+        "id": "dragon_crystal"
+    },
+    {
+        "id": "elder_wood_node"
+    },
+    {
+        "id": "enchanted_treasure_chest"
+    },
+    {
+        "id": "eternal_ice_shard_node"
+    },
+    {
+        "id": "exalted_chest"
+    },
+    {
+        "id": "flaxseed_node"
+    },
+    {
+        "id": "garden_plot_01"
+    },
+    {
+        "id": "garden_plot_02"
+    },
+    {
+        "id": "garden_plot_03"
+    },
+    {
+        "id": "ghost_pepper_node"
+    },
+    {
+        "id": "hard_wood_node"
+    },
+    {
+        "id": "iron_ore_node"
+    },
+    {
+        "id": "jade_fragment"
+    },
+    {
+        "id": "king_sized_candy_corn"
+    },
+    {
+        "id": "kournan_supply_cache"
+    },
+    {
+        "id": "krait_obelisk"
+    },
+    {
+        "id": "lotus_node"
+    },
+    {
+        "id": "mistborn_mote"
+    },
+    {
+        "id": "mistonium_node"
+    },
+    {
+        "id": "mithril_ore_node"
+    },
+    {
+        "id": "omnomberry_node"
+    },
+    {
+        "id": "orichalcum_ore_node"
+    },
+    {
+        "id": "orrian_oyster_node"
+    },
+    {
+        "id": "orrian_truffle_node"
+    },
+    {
+        "id": "petrified_stump"
+    },
+    {
+        "id": "platinum_ore_node"
+    },
+    {
+        "id": "primordial_orchid"
+    },
+    {
+        "id": "quartz_node"
+    },
+    {
+        "id": "salvage_pile"
+    },
+    {
+        "id": "snow_truffle_node"
+    },
+    {
+        "id": "sprocket_generator"
+    },
+    {
+        "id": "winterberry_bush"
+    },
+    {
+        "id": "wintersday_tree"
+    }
+]

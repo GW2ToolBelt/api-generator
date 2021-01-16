@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "Eindringling",
+        "min_rank": 1
+    },
+    {
+        "id": 2,
+        "title": "Angreifer",
+        "min_rank": 5
+    },
+    {
+        "id": 3,
+        "title": "Plünderer",
+        "min_rank": 10
+    },
+    {
+        "id": 4,
+        "title": "Rekrut",
+        "min_rank": 15
+    },
+    {
+        "id": 5,
+        "title": "Späher",
+        "min_rank": 20
+    },
+    {
+        "id": 6,
+        "title": "Soldat",
+        "min_rank": 30
+    }
+]

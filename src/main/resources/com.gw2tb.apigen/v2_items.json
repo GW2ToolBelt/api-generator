@@ -1,0 +1,36 @@
+[
+    {
+        "name": "((208738))",
+        "description": "",
+        "type": "Weapon",
+        "level": 0,
+        "rarity": "Basic",
+        "vendor_value": 0,
+        "default_skin": 2809,
+        "game_types": [
+            "Activity",
+            "Wvw",
+            "Dungeon",
+            "Pve"
+        ],
+        "flags": [
+            "NoSell",
+            "SoulbindOnAcquire",
+            "SoulBindOnUse"
+        ],
+        "restrictions": [],
+        "id": 6,
+        "chat_link": "[&AgEGAAAA]",
+        "icon": "https://render.guildwars2.com/file/CC2E01E0F566A6EEF4F2EC2B19AA7A3E1FEFB1B4/60984.png",
+        "details": {
+            "type": "SmallBundle",
+            "damage_type": "Choking",
+            "min_power": 105,
+            "max_power": 117,
+            "defense": 0,
+            "infusion_slots": [],
+            "attribute_adjustment": 7.8,
+            "secondary_suffix_item_id": ""
+        }
+    }
+]

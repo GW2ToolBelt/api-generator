@@ -1,0 +1,54 @@
+[
+    {
+        "id": "94-112",
+        "name": "Grenze von",
+        "sector_id": 967,
+        "type": "Spawn",
+        "map_type": "RedHome",
+        "map_id": 94,
+        "upgrade_id": 7,
+        "chat_link": "[&DHAAAABeAAAA]"
+    },
+    {
+        "id": "94-66",
+        "name": "Aufstieg des Schnitzers",
+        "sector_id": 1385,
+        "type": "Ruins",
+        "map_type": "RedHome",
+        "map_id": 94,
+        "marker": "https://render.guildwars2.com/file/52B43242E55961770D78B80ED77BC764F0E57BF2/1635237.png",
+        "chat_link": "[&DEIAAABeAAAA]"
+    },
+    {
+        "id": "968-129",
+        "name": "Ödland-Docks",
+        "sector_id": 1492,
+        "type": "Spawn",
+        "map_type": "EdgeOfTheMists",
+        "map_id": 968,
+        "label_coord": [
+            6445.02,
+            11245.3
+        ],
+        "chat_link": "[&DIEAAADIAwAA]"
+    },
+    {
+        "id": "968-92",
+        "name": "Statue",
+        "sector_id": 1159,
+        "type": "Generic",
+        "map_type": "EdgeOfTheMists",
+        "map_id": 968,
+        "coord": [
+            7557.21,
+            9391.91,
+            -4784.89
+        ],
+        "label_coord": [
+            7511.39,
+            9421.59
+        ],
+        "marker": "https://render.guildwars2.com/file/4C0113B6DF2E4E2CBB93244AD50DA49456D5014E/730412.png",
+        "chat_link": "[&DFwAAADIAwAA]"
+    }
+]

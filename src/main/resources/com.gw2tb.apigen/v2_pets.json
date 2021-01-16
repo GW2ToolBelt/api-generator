@@ -1,0 +1,60 @@
+[
+    {
+        "id": 1,
+        "name": "Junger Dschungelpirscher",
+        "description": "Dschungelpirscher erlegen ihre Beute durch schiere Kraft. Sie stürzen sich mit einem mächtigen, ihre Verbündete antreibenden Gebrüll ins Gefecht und zerfetzen ihre Beute mit Zähnen und Klauen. Sie lieben es auch, wenn man ihnen den Bauch krault. Acht",
+        "icon": "https://render.guildwars2.com/file/EF1CBC60372CC60E420AD479A3504D90207A9A3F/52535.png",
+        "skills": [
+            {
+                "id": 12658
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Junger Eber",
+        "description": "Dieser Eber ist ein zäher, starker Kämpfer mit bösen Hauern. Seine Attacken hauen die meisten Gegner von den Beinen. In feiner Gesellschaft ist er wahrscheinlich fehl am Platz, aber der Waldläufer schätzt ihn als besten Freund. Acht",
+        "icon": "https://render.guildwars2.com/file/F4A7D5033C6BBB14F4EDE9F0946190047D2AA96F/52537.png",
+        "skills": [
+            {
+                "id": 12754
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Junger Schneeluchs",
+        "description": "Luchse sind ausdauernde Jäger, die bei der Verfolgung ihrer Beute über große Entfernungen springen können. Wenn sie sich sicher fühlen, rollen sie sich manchmal auf den Rücken und strecken ihre Pfoten in die Luft. Acht",
+        "icon": "https://render.guildwars2.com/file/6C1D64F7D34D073A7E1860B754A33DBCBFCC6CE6/52539.png",
+        "skills": [
+            {
+                "id": 12680
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Junger Kryta-Spürhund",
+        "description": "Dieser krytanische Hund ist ein treuer Gefährte mit ausgeprägtem Beschützerinstinkt. Er nutzt seine außerordentliche Kraft und Zähigkeit im Kampf für seinen Herrn und kann durch sein Heulen Gegner vor Angst erstarren lassen. Acht",
+        "icon": "https://render.guildwars2.com/file/76E6FF0DCD60DFC7287FB14542234EFAAA92194F/52541.png",
+        "skills": [
+            {
+                "id": 12715
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Junger Braunbär",
+        "description": "Braunbären sind unglaublich stark und haben einen ausgeprägten Beschützerinstinkt. Sie gehen selbstlos in den Kampf, um die Aufmerksamkeit von ihren Herren abzulenken, und können Angriffe abschütteln, die jede andere Kreatur sofort töten würden. Acht",
+        "icon": "https://render.guildwars2.com/file/1B51DCA656B8ED7A2C1C48AC03A4BCD6EDA66901/52543.png",
+        "skills": [
+            {
+                "id": 12666
+            },
+            {
+                "id": 12691
+            }
+        ]
+    }
+]

@@ -1,0 +1,30 @@
+[
+    {
+        "id": "map_complete",
+        "icon": "https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png"
+    },
+    {
+        "id": "map_dungeon",
+        "icon": "https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png"
+    },
+    {
+        "id": "map_heart_empty",
+        "icon": "https://render.guildwars2.com/file/09ACBA53B7412CC3C76E7FEF39929843C20CB0E4/102440.png"
+    },
+    {
+        "id": "map_heart_full",
+        "icon": "https://render.guildwars2.com/file/B3DEEC72BBEF0C6FC6FEF835A0E275FCB1151BB7/102439.png"
+    },
+    {
+        "id": "map_node_harvesting",
+        "icon": "https://render.guildwars2.com/file/995534EBE5D26804AE605E205E50539821C0CBCB/157332.png"
+    },
+    {
+        "id": "map_node_logging",
+        "icon": "https://render.guildwars2.com/file/FC01BB452D5327A0E5B2E4A3F5EFDF03F8264A7B/157333.png"
+    },
+    {
+        "id": "map_node_mining",
+        "icon": "https://render.guildwars2.com/file/A89EB66C39C7C006A4A6CBEDA28061F16847E9BC/157334.png"
+    }
+]

@@ -1,0 +1,27 @@
+[
+    {
+        "id": 5521,
+        "bits": [
+            0,
+            1,
+            2,
+            3
+        ],
+        "current": 4,
+        "max": 5,
+        "done": false
+    },
+    {
+        "id": 5534,
+        "current": 1,
+        "max": 1,
+        "done": true
+    },
+    {
+        "id": 5537,
+        "bits": [],
+        "current": 16,
+        "max": 16,
+        "done": true
+    }
+]

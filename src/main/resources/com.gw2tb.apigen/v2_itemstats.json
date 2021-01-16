@@ -1,0 +1,86 @@
+[
+    {
+        "id": 50,
+        "name": "",
+        "attributes": []
+    },
+    {
+        "id": 112,
+        "name": "",
+        "attributes": []
+    },
+    {
+        "id": 175,
+        "name": "Heilender",
+        "attributes": [
+            {
+                "attribute": "Healing",
+                "multiplier": 0.35,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "id": 631,
+        "name": "Spendabler",
+        "attributes": [
+            {
+                "attribute": "ConditionDuration",
+                "multiplier": 0.35,
+                "value": 0
+            }
+        ]
+    },
+    {
+        "id": 1345,
+        "name": "Verheerender",
+        "attributes": [
+            {
+                "attribute": "Power",
+                "multiplier": 0.35,
+                "value": 32
+            },
+            {
+                "attribute": "Healing",
+                "multiplier": 0.25,
+                "value": 18
+            },
+            {
+                "attribute": "BoonDuration",
+                "multiplier": 0.25,
+                "value": 18
+            }
+        ]
+    },
+    {
+        "id": 1548,
+        "name": "",
+        "attributes": []
+    },
+    {
+        "id": 1566,
+        "name": "Wahrsagerischer",
+        "attributes": [
+            {
+                "attribute": "Power",
+                "multiplier": 0.3,
+                "value": 25
+            },
+            {
+                "attribute": "Precision",
+                "multiplier": 0.165,
+                "value": 12
+            },
+            {
+                "attribute": "CritDamage",
+                "multiplier": 0.165,
+                "value": 12
+            },
+            {
+                "attribute": "BoonDuration",
+                "multiplier": 0.3,
+                "value": 25
+            }
+        ]
+    }
+]

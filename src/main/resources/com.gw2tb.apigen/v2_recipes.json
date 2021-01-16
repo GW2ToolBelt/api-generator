@@ -1,0 +1,101 @@
+[
+    {
+        "type": "Refinement",
+        "output_item_id": 19713,
+        "output_item_count": 1,
+        "min_rating": 75,
+        "time_to_craft_ms": 2000,
+        "disciplines": [
+            "Artificer",
+            "Weaponsmith",
+            "Scribe",
+            "Huntsman"
+        ],
+        "flags": [
+            "AutoLearned"
+        ],
+        "ingredients": [
+            {
+                "item_id": 19726,
+                "count": 2
+            }
+        ],
+        "id": 1,
+        "chat_link": "[&CQEAAAA=]"
+    },
+    {
+        "type": "Insignia",
+        "output_item_id": 19801,
+        "output_item_count": 1,
+        "min_rating": 50,
+        "time_to_craft_ms": 1000,
+        "disciplines": [
+            "Leatherworker",
+            "Armorsmith",
+            "Tailor"
+        ],
+        "flags": [
+            "AutoLearned"
+        ],
+        "ingredients": [
+            {
+                "item_id": 71307,
+                "count": 1
+            },
+            {
+                "item_id": 24284,
+                "count": 8
+            }
+        ],
+        "id": 50,
+        "chat_link": "[&CTIAAAA=]"
+    },
+    {
+        "type": "Speargun",
+        "output_item_id": 14667,
+        "output_item_count": 1,
+        "min_rating": 300,
+        "time_to_craft_ms": 1000,
+        "disciplines": [
+            "Huntsman"
+        ],
+        "flags": [],
+        "ingredients": [
+            {
+                "item_id": 19786,
+                "count": 1
+            },
+            {
+                "item_id": 12950,
+                "count": 1
+            },
+            {
+                "item_id": 13052,
+                "count": 1
+            }
+        ],
+        "id": 5042,
+        "chat_link": "[&CbITAAA=]"
+    },
+    {
+        "type": "Component",
+        "output_item_id": 13058,
+        "output_item_count": 1,
+        "min_rating": 225,
+        "time_to_craft_ms": 1000,
+        "disciplines": [
+            "Huntsman"
+        ],
+        "flags": [
+            "AutoLearned"
+        ],
+        "ingredients": [
+            {
+                "item_id": 19681,
+                "count": 2
+            }
+        ],
+        "id": 5087,
+        "chat_link": "[&Cd8TAAA=]"
+    }
+]

@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Verschönerter Lenkdrachen",
+        "description": "<c=@abilitytype>Getragener Gegenstand.</c> Rüstet ein Bündel als Dekoration aus, oder um Fertigkeiten einzusetzen, die nichts mit Kämpfen zu tun haben.",
+        "icon": "https://render.guildwars2.com/file/7B043D640ED57517051D5FC038D7CDDDE5F82933/2015154.png",
+        "slot": "HeldItem",
+        "unlock_item": [
+            88124
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Melodische Bassgitarre",
+        "description": "<c=@abilitytype>Musikinstrument.</c> Rüstet ein Instrument aus und spielt eine Melodie.",
+        "icon": "https://render.guildwars2.com/file/2FD55ABA480D23E3740145B5802800554245DB11/960182.png",
+        "slot": "Music",
+        "unlock_item": [
+            36174
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Duskks Welt 2 Super-Ghettoblaster",
+        "description": "<c=@abilitytype>Musikinstrument.</c> Rüstet ein Instrument aus und spielt eine Melodie.",
+        "icon": "https://render.guildwars2.com/file/49126005BA2E197E5A60F9CFDA530EE432307776/1664072.png",
+        "slot": "Music",
+        "unlock_item": [
+            80932
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Wackelkopf-Labor",
+        "description": "<c=@abilitytype>Spielzeug.</c> Setzt einen Extra-Gegenstand zum Interagieren ein.",
+        "icon": "https://render.guildwars2.com/file/37E7F8187724466DF3E9C1D2AE03BD5D6F034BC4/819618.png",
+        "slot": "Miscellaneous",
+        "unlock_item": [
+            36172
+        ]
+    }
+]

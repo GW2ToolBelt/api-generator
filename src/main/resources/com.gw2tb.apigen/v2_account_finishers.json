@@ -1,0 +1,43 @@
+[
+    {
+        "id": 1,
+        "permanent": true
+    },
+    {
+        "id": 2,
+        "permanent": true
+    },
+    {
+        "id": 3,
+        "permanent": true
+    },
+    {
+        "id": 4,
+        "permanent": true
+    },
+    {
+        "id": 6,
+        "permanent": true
+    },
+    {
+        "id": 17,
+        "permanent": true
+    },
+    {
+        "id": 18,
+        "permanent": true
+    },
+    {
+        "id": 19,
+        "permanent": false,
+        "quantity": 233
+    },
+    {
+        "id": 62,
+        "permanent": true
+    },
+    {
+        "id": 71,
+        "permanent": true
+    }
+]

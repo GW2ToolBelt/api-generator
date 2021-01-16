@@ -1,0 +1,27 @@
+[
+    {
+        "id": 44602,
+        "count": 1,
+        "charges": 1,
+        "binding": "Account"
+    },
+    {
+        "id": 92585,
+        "count": 1,
+        "binding": "Account"
+    },
+    {
+        "id": 85016,
+        "count": 145
+    },
+    {
+        "id": 12430,
+        "count": 55
+    },
+    {
+        "id": 87443,
+        "count": 1,
+        "skin": 2395,
+        "binding": "Account"
+    }
+]

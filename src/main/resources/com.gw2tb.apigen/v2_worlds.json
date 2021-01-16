@@ -1,0 +1,257 @@
+[
+    {
+        "id": 1001,
+        "name": "Amboss-Stein",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 1002,
+        "name": "Borlis-Pass",
+        "population": "High"
+    },
+    {
+        "id": 1003,
+        "name": "Yakbiegung",
+        "population": "High"
+    },
+    {
+        "id": 1004,
+        "name": "Steinkreis von Denravi",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 1005,
+        "name": "Maguuma",
+        "population": "Full"
+    },
+    {
+        "id": 1006,
+        "name": "Hochofen der Betrübnis",
+        "population": "Medium"
+    },
+    {
+        "id": 1007,
+        "name": "Tor des Wahnsinns",
+        "population": "Medium"
+    },
+    {
+        "id": 1008,
+        "name": "Jade-Steinbruch",
+        "population": "Full"
+    },
+    {
+        "id": 1009,
+        "name": "Fort Espenwald",
+        "population": "Full"
+    },
+    {
+        "id": 1010,
+        "name": "Ehmry-Bucht",
+        "population": "High"
+    },
+    {
+        "id": 1011,
+        "name": "Sturmklippen-Insel",
+        "population": "Full"
+    },
+    {
+        "id": 1012,
+        "name": "Finsterfreistatt",
+        "population": "High"
+    },
+    {
+        "id": 1013,
+        "name": "Heilige Halle von Rall",
+        "population": "High"
+    },
+    {
+        "id": 1014,
+        "name": "Kristallwüste",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 1015,
+        "name": "Janthir-Insel",
+        "population": "Medium"
+    },
+    {
+        "id": 1016,
+        "name": "Meer des Leids",
+        "population": "Full"
+    },
+    {
+        "id": 1017,
+        "name": "Befleckte Küste",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 1018,
+        "name": "Nördliche Zittergipfel",
+        "population": "High"
+    },
+    {
+        "id": 1019,
+        "name": "Schwarztor",
+        "population": "Full"
+    },
+    {
+        "id": 1020,
+        "name": "Fergusons Kreuzung",
+        "population": "Full"
+    },
+    {
+        "id": 1021,
+        "name": "Drachenbrand",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 1022,
+        "name": "Kaineng",
+        "population": "High"
+    },
+    {
+        "id": 1023,
+        "name": "Devonas Ruh",
+        "population": "Medium"
+    },
+    {
+        "id": 1024,
+        "name": "Eredon-Terrasse",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 2001,
+        "name": "Riss des Kummers",
+        "population": "High"
+    },
+    {
+        "id": 2002,
+        "name": "Ödnis",
+        "population": "Full"
+    },
+    {
+        "id": 2003,
+        "name": "Gandara",
+        "population": "Full"
+    },
+    {
+        "id": 2004,
+        "name": "Schwarzwasser",
+        "population": "Medium"
+    },
+    {
+        "id": 2005,
+        "name": "Feuerring",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 2006,
+        "name": "Unterwelt",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 2007,
+        "name": "Ferne Zittergipfel",
+        "population": "Full"
+    },
+    {
+        "id": 2008,
+        "name": "Weißflankgrat",
+        "population": "Medium"
+    },
+    {
+        "id": 2009,
+        "name": "Ruinen von Surmia",
+        "population": "High"
+    },
+    {
+        "id": 2010,
+        "name": "Seemannsruh",
+        "population": "Full"
+    },
+    {
+        "id": 2011,
+        "name": "Vaabi",
+        "population": "Medium"
+    },
+    {
+        "id": 2012,
+        "name": "Piken-Platz",
+        "population": "Full"
+    },
+    {
+        "id": 2013,
+        "name": "Auroralichtung",
+        "population": "High"
+    },
+    {
+        "id": 2014,
+        "name": "Gunnars Feste",
+        "population": "High"
+    },
+    {
+        "id": 2101,
+        "name": "Jademeer [FR]",
+        "population": "High"
+    },
+    {
+        "id": 2102,
+        "name": "Fort Ranik [FR]",
+        "population": "Medium"
+    },
+    {
+        "id": 2103,
+        "name": "Fels der Weissagung [FR]",
+        "population": "High"
+    },
+    {
+        "id": 2104,
+        "name": "Vizunah-Platz [FR]",
+        "population": "Medium"
+    },
+    {
+        "id": 2105,
+        "name": "Arborstein [FR]",
+        "population": "High"
+    },
+    {
+        "id": 2201,
+        "name": "Kodasch [DE]",
+        "population": "High"
+    },
+    {
+        "id": 2202,
+        "name": "Flussufer [DE]",
+        "population": "Full"
+    },
+    {
+        "id": 2203,
+        "name": "Elonaspitze [DE]",
+        "population": "Full"
+    },
+    {
+        "id": 2204,
+        "name": "Abaddons Maul [DE]",
+        "population": "High"
+    },
+    {
+        "id": 2205,
+        "name": "Drakkar-See [DE]",
+        "population": "VeryHigh"
+    },
+    {
+        "id": 2206,
+        "name": "Millersund [DE]",
+        "population": "High"
+    },
+    {
+        "id": 2207,
+        "name": "Dzagonur [DE]",
+        "population": "Full"
+    },
+    {
+        "id": 2301,
+        "name": "Baruch-Bucht [ES]",
+        "population": "VeryHigh"
+    }
+]
