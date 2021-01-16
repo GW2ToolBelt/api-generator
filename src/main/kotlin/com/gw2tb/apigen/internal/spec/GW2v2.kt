@@ -1175,6 +1175,24 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Novelties" {
+        summary = "Returns information about novelties."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Novelty", description = "Information about a novelty.") {
+            CamelCase("id").."ID"(INTEGER, "the novelty's ID")
+            "Name"(STRING, "the novelty's name")
+            "Icon"(STRING, "a render service URL for the novelty's icon")
+            "Description"(STRING, "the novelty's description")
+            "Slot"(STRING, "the novelty's slot")
+            SerialName("unlock_items").."UnlockItems"(
+                description = "the IDs of the items that unlock the novelty",
+                type = array(INTEGER)
+            )
+        })
+    }
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
