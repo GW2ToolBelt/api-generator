@@ -1293,7 +1293,7 @@ internal val GW2v2 = GW2APIVersion {
             "Skins"(
                 description = "the hero's skins",
                 type = array(record(name = "Skin", description = "Information about a PvP hero's skin.") {
-                    CamelCase("id").."ID"(STRING, "the PvP hero skin's ID")
+                    CamelCase("id").."ID"(INTEGER, "the PvP hero skin's ID")
                     "Name"(STRING, "the hero skin's localized name")
                     "Icon"(STRING, "a render service URL for the skin's icon")
                     "Default"(BOOLEAN, "whether or not the skin is the champion's default skin")
@@ -1309,7 +1309,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "PvPRank", description = "Information about a PvP rank.") {
-            CamelCase("id").."ID"(STRING, "the PvP rank's ID")
+            CamelCase("id").."ID"(INTEGER, "the PvP rank's ID")
             SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
             "Name"(STRING, "the rank's localized name")
             "Icon"(STRING, "a render service URL for the rank's icon")
