@@ -1069,6 +1069,26 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Mounts/Types" {
+        summary = "Returns information about mount types."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "MountType", description = "Information about a mount type.") {
+            CamelCase("id").."ID"(INTEGER, "the mount type's ID")
+            "Name"(STRING, "the mount type's name")
+            SerialName("default_skin").."DefaultSkin"(INTEGER, "the ID of the mount type's default skin")
+            "Skins"(array(INTEGER), "the IDs of the skins available for the mount type")
+            "Skills"(
+                description = "the mount type's skills",
+                type = array(record(name = "Skill", description = "Information about a mount skill.") {
+                    CamelCase("id").."ID"(INTEGER, "the mount skill's ID")
+                    "Slot"(INTEGER, "the mount skill's slot")
+                })
+            )
+        })
+    }
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
