@@ -1030,6 +1030,21 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Mailcarriers" {
+        summary = "Returns information about mailcarriers."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Mailcarrier", description = "Information about a mailcarrier.") {
+            CamelCase("id").."ID"(INTEGER, "the mailcarrier's ID")
+            "Icon"(STRING, "the URL for the mailcarrier's icon")
+            "Name"(STRING, "the mailcarrier's name")
+            "Order"(INTEGER, "a number that can be used to sort the list of mailcarriers")
+            SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array containing the IDs of the items used to unlock the mailcarrier")
+            "Flags"(array(STRING), "additional flags describing the mailcarrier")
+        })
+    }
     "/MapChests" {
         summary = "Returns information about the Hero's Choice Chests that can be acquired once per day."
         cache = 1.hours

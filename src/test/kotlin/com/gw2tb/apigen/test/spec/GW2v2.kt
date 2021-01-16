@@ -258,6 +258,11 @@ class GW2v2 : SpecTest(
             .cacheTime(1.hours)
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
 
+        expectEndpoint("/Mailcarriers")
+            .cacheTime(1.hours)
+            .localized()
+            .queryTypes(BY_ID, BY_IDS, BY_PAGE)
+
         expectEndpoint("/MapChests")
             .cacheTime(1.hours)
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
