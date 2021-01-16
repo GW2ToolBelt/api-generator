@@ -785,6 +785,12 @@ internal val GW2v2 = GW2APIVersion {
             "Unlock"(record("Information about permanent unlocks, such as merchants and arena decorations.") {})
         })
     }
+    "/Home" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours

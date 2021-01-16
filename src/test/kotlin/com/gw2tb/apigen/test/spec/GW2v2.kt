@@ -224,6 +224,9 @@ class GW2v2 : SpecTest(
             .localized()
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
 
+        expectEndpoint("/Home")
+            .cacheTime(DURATION_INFINITE)
+
         expectEndpoint("/Items")
             .cacheTime(1.hours)
             .localized()
