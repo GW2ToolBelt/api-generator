@@ -232,6 +232,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(INTEGER, "an array of IDs containing the ID of each miniature unlocked by the player"))
     }
+    "/Account/Mounts" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     "/Account/Mounts/Skins" {
         summary = "Returns information about a player's unlocked mount skins."
         security = setOf(ACCOUNT, UNLOCKS)

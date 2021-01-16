@@ -82,6 +82,9 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Account/Minis")
             .security(ACCOUNT, UNLOCKS)
 
+        expectEndpoint("/Account/Mounts")
+            .cacheTime(DURATION_INFINITE)
+
         expectEndpoint("/Account/Mounts/Skins")
             .security(ACCOUNT, UNLOCKS)
 
