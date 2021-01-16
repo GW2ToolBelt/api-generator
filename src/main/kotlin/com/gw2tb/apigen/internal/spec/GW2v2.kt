@@ -378,6 +378,21 @@ internal val GW2v2 = GW2APIVersion {
             "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
         })
     }
+    "/Achievements/Groups" {
+        summary = "Returns information about achievement groups."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "AchievementGroups", description = "Information about an achievement group.") {
+            CamelCase("id").."ID"(INTEGER, "the achievement group's ID")
+            "Icon"(STRING, "the URL for the achievement group's icon")
+            "Name"(STRING, "the achievement group's name")
+            "Description"(STRING, "the achievement group's description")
+            "Order"(INTEGER, "a number that can be used to sort the list of groups")
+            "Achievements"(array(INTEGER), "an array containing the IDs of the categories that this group contains")
+        })
+    }
     "/Build" {
         summary = "Returns the current build ID."
 
