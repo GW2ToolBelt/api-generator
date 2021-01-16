@@ -227,6 +227,10 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Home")
             .cacheTime(DURATION_INFINITE)
 
+        expectEndpoint("/Home/Nodes")
+            .cacheTime(1.hours)
+            .queryTypes(BY_ID, BY_IDS, BY_PAGE)
+
         expectEndpoint("/Items")
             .cacheTime(1.hours)
             .localized()
