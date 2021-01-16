@@ -1051,6 +1051,16 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Quaggans" {
+        summary = "Returns images of quaggans."
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Finisher", description = "Information about a finisher.") {
+            CamelCase("id").."ID"(STRING, "the quaggans's ID")
+            CamelCase("URL").."URL"(STRING, "the URL to the quaggan image")
+        })
+    }
     "/Races" {
         summary = "Returns information about the game's playable races."
         cache = 1.hours
