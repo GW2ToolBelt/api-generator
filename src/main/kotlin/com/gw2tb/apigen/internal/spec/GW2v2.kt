@@ -791,6 +791,16 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/Home/Cats" {
+        summary = "Returns information about home-instance cats."
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "HomeInstanceCat", description = "Information about a home-instance cat.") {
+            CamelCase("id").."ID"(INTEGER, "the cat's ID")
+            "Hint"(INTEGER, "the unlock hint")
+        })
+    }
     "/Home/Nodes" {
         summary = "Returns information about home-instance nodes."
         cache = 1.hours
