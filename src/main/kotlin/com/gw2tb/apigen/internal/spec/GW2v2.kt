@@ -1073,6 +1073,28 @@ internal val GW2v2 = GW2APIVersion {
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
     }
+    "/Raids" {
+        summary = "Returns information about the raids in the game."
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Raid", description = "Information about a raid.") {
+            CamelCase("id").."ID"(STRING, "the raid's ID")
+            "Wings"(
+                description = "the raid's wings",
+                type = array(record("Wing", "Information about a wing.") {
+                    CamelCase("id").."ID"(STRING, "the wing's ID")
+                    "Events"(
+                        description = "the wing's events",
+                        type = array(record("Event", "Information about an event.") {
+                            CamelCase("id").."ID"(STRING, "the event's ID")
+                            "Type"(STRING, "the event's type")
+                        })
+                    )
+                })
+            )
+        })
+    }
     "/Recipes" {
         summary = "Returns information about the crafting recipes in the game."
         cache = 1.hours
