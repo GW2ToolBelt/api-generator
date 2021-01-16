@@ -1277,6 +1277,31 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/PvP/Heroes" {
+        summary = "Returns information about the PvP heroes."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "PvPHero", description = "Information about a PvP hero.") {
+            CamelCase("id").."ID"(STRING, "the PvP hero's ID")
+            SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
+            "Name"(STRING, "the hero's localized name")
+            "Type"(STRING, "the flavor type describing the hero")
+            "Overlay"(STRING, "the render service URL for the hero's overlay art")
+            "Underlay"(STRING, "the render service URL for the hero's underlay art")
+            "Skins"(
+                description = "the hero's skins",
+                type = array(record(name = "Skin", description = "Information about a PvP hero's skin.") {
+                    CamelCase("id").."ID"(STRING, "the PvP hero skin's ID")
+                    "Name"(STRING, "the hero skin's localized name")
+                    "Icon"(STRING, "a render service URL for the skin's icon")
+                    "Default"(BOOLEAN, "whether or not the skin is the champion's default skin")
+                    SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the finisher")
+                })
+            )
+        })
+    }
     "/PvP/Ranks" {
         summary = "Returns information about the PvP ranks."
         cache = 1.hours
