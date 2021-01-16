@@ -115,6 +115,11 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Account/WorldBosses")
             .security(ACCOUNT, PROGRESSION)
 
+        expectEndpoint("/Achievements")
+            .cacheTime(1.hours)
+            .localized()
+            .queryTypes(BY_ID, BY_IDS(all = false), BY_PAGE)
+
         expectEndpoint("/Build")
 
         expectEndpoint("/Characters/:ID/Inventory")

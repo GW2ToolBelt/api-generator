@@ -304,6 +304,59 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
+    "/Achievements" {
+        summary = "Returns information about achievements."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(record(name = "Achievement", description = "Information about an achievement.") {
+            CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+            "Icon"(STRING, "the URL for the achievement's icon")
+            "Name"(STRING, "the achievement's name")
+            "Description"(STRING, "the achievement's description")
+            "Requirement"(STRING, "the achievement's requirement as listed in-game")
+            SerialName("locked_text").."LockedText"(STRING, "the achievement's in-game description prior to unlocking it")
+            "Type"(STRING, "the achievement's type")
+            "Flags"(array(STRING), "the achievement's categories")
+            "Tiers"(
+                description = "the achievement's tiers",
+                type = array(record(name = "Tier", description = "Information about an achievement's tier.") {
+                    "Count"(INTEGER, "the number of \"things\" (achievement-specific) that must be completed to achieve this tier")
+                    "Points"(INTEGER, "the amount of AP awarded for completing this tier")
+                })
+            )
+            optional.."Prerequisites"(array(INTEGER), "the IDs of the achievements that are required to progress this achievement")
+            optional.."Rewards"(
+                description = "the achievement's rewards",
+                type = array(conditional(name = "Reward", description = "Information about an achievement reward.") {
+                    "Coins"(record("Information about a coin reward.") {
+                        "Count"(INTEGER, "the amount of coins")
+                    })
+                    "Items"(record("Information about an item reward.") {
+                        CamelCase("id").."ID"(INTEGER, "the item's ID")
+                        "Count"(INTEGER, "the amount of the item")
+                    })
+                    "Mastery"(record("Information about a mastery point reward.") {
+                        CamelCase("id").."ID"(INTEGER, "the mastery point's ID")
+                        "Region"(STRING, "the mastery point's region")
+                    })
+                    "Title"(record("Information about a title reward") {
+                        CamelCase("id").."ID"(INTEGER, "the title's ID")
+                    })
+                })
+            )
+            optional.."Bits"(
+                description = "the achievement's bits",
+                type = array(record(name = "Bit", description = "Information about an achievement bit.") {
+                    "Type"(STRING, "the bit's type")
+                    optional..CamelCase("id").."ID"(INTEGER, "the ID of the bit's object")
+                    optional.."Text"(STRING, "the bit's text")
+                })
+            )
+            optional..SerialName("point_cap").."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
+        })
+    }
     "/Build" {
         summary = "Returns the current build ID."
 
