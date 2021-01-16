@@ -75,6 +75,7 @@ public data class SchemaMap internal constructor(
  *
  * The interpretation is chosen based on a "disambiguation-property".
  *
+ * @param name                          the name of the conditional in _TitleCase_
  * @param disambiguationBy              the serial name of the disambiguation-
  *                                      property
  * @param disambiguationBySideProperty  `true` if the disambiguation-property
@@ -87,6 +88,7 @@ public data class SchemaMap internal constructor(
  *                                      sentence "This field holds {description}.")
  */
 public data class SchemaConditional internal constructor(
+    public val name: String?,
     public val disambiguationBy: String,
     public val disambiguationBySideProperty: Boolean,
     public val sharedProperties: Map<String, SchemaRecord.Property>,
@@ -116,7 +118,7 @@ public data class SchemaConditional internal constructor(
 /**
  * A schema for records.
  *
- * @param name          the name of the record in _TitleCase_.
+ * @param name          the name of the record in _TitleCase_
  * @param properties    the properties of this record
  * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
  *                      holds {description}.")

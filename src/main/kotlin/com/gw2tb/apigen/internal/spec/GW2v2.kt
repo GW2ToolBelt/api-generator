@@ -649,6 +649,52 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Guild/Upgrades" {
+        summary = "Returns information about available guild hall upgrades."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(conditional(
+            name = "GuildUpgrade",
+            description = "Information about a guild upgrade.",
+            sharedConfigure = {
+                CamelCase("id").."ID"(INTEGER, "the upgrade's ID")
+                "Name"(STRING, "the upgrade's name")
+                "Description"(STRING, "the upgrade's description")
+                "Type"(STRING, "the upgrade's type")
+                "Icon"(STRING, "the URL for the upgrade's icon")
+                SerialName("build_time").."BuildTime"(INTEGER, "the time it takes to build the upgrade")
+                SerialName("required_level").."RequiredLevel"(INTEGER, "the prerequisite level the guild must be at to build the upgrade")
+                "Experience"(INTEGER, "the amount of guild experience that will be awarded upon building the upgrade")
+                "Prerequisites"(array(INTEGER), "an array of upgrade IDs that must be completed before this can be built")
+                "Costs"(
+                    description = "an array of objects describing the upgrade's cost",
+                    type = array(record("Cost", "Information about an upgrade's cost.") {
+                        "Type"(STRING, "the cost's type")
+                        "Name"(STRING, "the cost's name")
+                        "Count"(STRING, "the amount needed")
+                        optional..SerialName("item_id").."ItemID"(INTEGER, "the ID of the cost's item")
+                    })
+                )
+            }
+        ) {
+            "AccumulatingCurrency"(record("Information about a mine capacity upgrade.") {})
+            "BankBag"(record("Information about a guild bank upgrades.") {
+                SerialName("bag_max_items").."BagMaxItems"(INTEGER, "the maximum item slots of the guild bank tab")
+                SerialName("bag_max_coins").."BagMaxCoins"(INTEGER, "the maximum amount of coins that can be stored in the bank tab")
+            })
+            "Boost"(record("Information about a permanent guild buffs upgrade.") {})
+            "Claimable"(record("Information about a guild WvW tactics.") {})
+            "Consumable"(record("Information about a banners and guild siege.") {})
+            "Decoration"(record("Information about a decoration that must be crafted by a Scribe.") {})
+            "GuildHall"(record("Information about claiming a Guild Hall.") {})
+            "GuildHallExpedition"(record("Information about an expedition unlock.") {})
+            "Hub"(record("Information about Guild Initiative office unlock.") {})
+            "Queue"(record("Information about Workshop Restoration 1.") {})
+            "Unlock"(record("Information about permanent unlocks, such as merchants and arena decorations.") {})
+        })
+    }
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours

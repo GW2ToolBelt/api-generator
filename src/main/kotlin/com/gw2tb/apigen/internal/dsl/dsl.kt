@@ -72,6 +72,7 @@ internal class GW2APIVersionBuilder {
 
     @APIGenDSL
     fun conditional(
+        name: String,
         description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
@@ -79,6 +80,7 @@ internal class GW2APIVersionBuilder {
         configure: SchemaConditionalBuilder.() -> Unit
     ): SchemaType =
         SchemaConditional(
+            name,
             disambiguationBy,
             disambiguationBySideProperty,
             sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
@@ -117,12 +119,14 @@ internal interface SchemaBuilder {
     @APIGenDSL
     fun conditional(
         description: String,
+        name: String? = null,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
         configure: SchemaConditionalBuilder.() -> Unit
     ): SchemaType =
         SchemaConditional(
+            name,
             disambiguationBy,
             disambiguationBySideProperty,
             sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
