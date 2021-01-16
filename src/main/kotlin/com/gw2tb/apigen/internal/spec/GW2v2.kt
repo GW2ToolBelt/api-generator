@@ -1220,7 +1220,12 @@ internal val GW2v2 = GW2APIVersion {
             "Name"(STRING, "the pet's name")
             "Description"(STRING, "the pet's description")
             "Icon"(STRING, "a render service URL for the pet's icon")
-            "Skills"(array(INTEGER), "the pet's skills")
+            "Skills"(
+                description = "the pet's skills",
+                type = array(record(name = "Skill", description = "Information about a pet's skill.") {
+                    CamelCase("id").."ID"(STRING, "the skill's ID")
+                })
+            )
         })
     }
     "/Professions" {
