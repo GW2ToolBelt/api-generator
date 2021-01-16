@@ -593,6 +593,21 @@ internal val GW2v2 = GW2APIVersion {
             "Icon"(STRING, "the URL to the image")
         })
     }
+    "/Finishers" {
+        summary = "Returns information about finishers."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Finisher", description = "Information about a finisher.") {
+            CamelCase("id").."ID"(STRING, "the finisher's ID")
+            "Name"(STRING, "the finisher's name")
+            "Icon"(STRING, "the URL for the finisher's icon")
+            "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of finishers")
+            SerialName("unlock_details").."UnlockDetails"(STRING, "a description explaining how to acquire the finisher")
+            SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the finisher")
+        })
+    }
     "/Gliders" {
         summary = "Returns information about gliders."
         cache = 1.hours
