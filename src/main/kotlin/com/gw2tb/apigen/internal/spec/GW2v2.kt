@@ -985,6 +985,20 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Pets" {
+        summary = "Returns information about pets."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Pet", description = "Information about a pet.") {
+            CamelCase("id").."ID"(STRING, "the pet's ID")
+            "Name"(STRING, "the pet's name")
+            "Description"(STRING, "the pet's description")
+            "Icon"(STRING, "a render service URL for the pet's icon")
+            "Skills"(array(INTEGER), "the pet's skills")
+        })
+    }
     "/Professions" {
         summary = "Returns information about the game's playable professions."
         cache = 1.hours
