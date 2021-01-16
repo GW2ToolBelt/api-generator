@@ -363,6 +363,21 @@ internal val GW2v2 = GW2APIVersion {
             optional..SerialName("point_cap").."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
         })
     }
+    "/Achievements/Categories" {
+        summary = "Returns information about achievement categories."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "AchievementCategory", description = "Information about an achievement category.") {
+            CamelCase("id").."ID"(INTEGER, "the achievement category's ID")
+            "Icon"(STRING, "the URL for the achievement category's icon")
+            "Name"(STRING, "the achievement category's name")
+            "Description"(STRING, "the achievement category's description")
+            "Order"(INTEGER, "a number that can be used to sort the list of categories")
+            "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
+        })
+    }
     "/Build" {
         summary = "Returns the current build ID."
 
