@@ -969,6 +969,21 @@ internal val GW2v2 = GW2APIVersion {
             "Order"(INTEGER, "the category's sorting key")
         })
     }
+    "/Minis" {
+        summary = "Returns information about minis."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Mini", description = "Information about a mini.") {
+            CamelCase("id").."ID"(STRING, "the mini's ID")
+            "Name"(STRING, "the mini's name")
+            optional.."Description"(STRING, "the description of how to unlock the mini")
+            "Icon"(STRING, "the URL for the mini's icon")
+            "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
+            CamelCase("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini")
+        })
+    }
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
