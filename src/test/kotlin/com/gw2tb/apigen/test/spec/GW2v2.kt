@@ -186,6 +186,10 @@ class GW2v2 : SpecTest(
             .cacheTime(1.hours)
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
 
+        expectEndpoint("/Dungeons")
+            .cacheTime(1.hours)
+            .queryTypes(BY_ID, BY_IDS, BY_PAGE)
+
         expectEndpoint("/Emblem")
             .cacheTime(DURATION_INFINITE)
 
