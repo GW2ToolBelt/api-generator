@@ -1277,6 +1277,29 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/PvP/Ranks" {
+        summary = "Returns information about the PvP ranks."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "PvPRank", description = "Information about a PvP rank.") {
+            CamelCase("id").."ID"(STRING, "the PvP rank's ID")
+            SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
+            "Name"(STRING, "the rank's localized name")
+            "Icon"(STRING, "a render service URL for the rank's icon")
+            SerialName("min_rank").."MinRank"(INTEGER, "the minimum PvP level required for the rank")
+            SerialName("max_rank").."MaxRank"(INTEGER, "the maximum PvP level for the rank")
+            "Levels"(
+                description = "the rank's levels",
+                type = array(record(name = "Level", description = "Information about a PvP rank's level.") {
+                    SerialName("min_rank").."MinRank"(INTEGER, "the minimum PvP level required for the level")
+                    SerialName("max_rank").."MaxRank"(INTEGER, "the maximum PvP level for the level")
+                    "Points"(INTEGER, "the amount of PvP experience needed to go from the given minimum rank to maximum rank")
+                })
+            )
+        })
+    }
     "/Quaggans" {
         summary = "Returns images of quaggans."
         cache = 1.hours
