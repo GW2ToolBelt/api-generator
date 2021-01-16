@@ -285,6 +285,9 @@ class GW2v2 : SpecTest(
             .localized()
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
 
+        expectEndpoint("/PvP")
+            .cacheTime(DURATION_INFINITE)
+
         expectEndpoint("/Quaggans")
             .cacheTime(1.hours)
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)

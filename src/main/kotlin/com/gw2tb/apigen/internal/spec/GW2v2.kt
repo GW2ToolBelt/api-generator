@@ -1185,6 +1185,12 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/PvP" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     "/Quaggans" {
         summary = "Returns images of quaggans."
         cache = 1.hours
