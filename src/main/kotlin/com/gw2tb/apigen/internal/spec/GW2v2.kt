@@ -325,7 +325,7 @@ internal val GW2v2 = GW2APIVersion {
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "Achievement", description = "Information about an achievement.") {
             CamelCase("id").."ID"(INTEGER, "the achievement's ID")
-            "Icon"(STRING, "the URL for the achievement's icon")
+            optional.."Icon"(STRING, "the URL for the achievement's icon")
             "Name"(STRING, "the achievement's name")
             "Description"(STRING, "the achievement's description")
             "Requirement"(STRING, "the achievement's requirement as listed in-game")
@@ -342,7 +342,13 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Prerequisites"(array(INTEGER), "the IDs of the achievements that are required to progress this achievement")
             optional.."Rewards"(
                 description = "the achievement's rewards",
-                type = array(conditional(name = "Reward", description = "Information about an achievement reward.") {
+                type = array(conditional(
+                    name = "Reward",
+                    description = "Information about an achievement reward.",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of reward")
+                    }
+                ) {
                     "Coins"(record("Information about a coin reward.") {
                         "Count"(INTEGER, "the amount of coins")
                     })
