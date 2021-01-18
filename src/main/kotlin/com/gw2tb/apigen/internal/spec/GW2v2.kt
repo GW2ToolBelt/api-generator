@@ -1429,14 +1429,14 @@ internal val GW2v2 = GW2APIVersion {
             "Ingredients"(
                 description = "the recipe's ingredients",
                 type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
-                    CamelCase("item_id").."ItemID"(STRING, "the ingredient's item ID")
+                    SerialName("item_id").."ItemID"(STRING, "the ingredient's item ID")
                     "Count"(INTEGER, "the quantity of this ingredient")
                 })
             )
             optional..SerialName("guild_ingredients").."GuildIngredients"(
                 description = "the recipe's guild ingredients",
                 type = array(record(name = "Ingredient", description = "Information about a recipe guild ingredient.") {
-                    CamelCase("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
+                    SerialName("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
                     "Count"(INTEGER, "the quantity of this guild ingredient")
                 })
             )
