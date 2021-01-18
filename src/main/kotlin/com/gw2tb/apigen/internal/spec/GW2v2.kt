@@ -657,7 +657,7 @@ internal val GW2v2 = GW2APIVersion {
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Dungeon", description = "Information about a dungeon.") {
             CamelCase("id").."ID"(STRING, "the dungeon's ID")
-            "Path"(
+            "Paths"(
                 description = "the dungeon's paths",
                 type = array(record("Path", "Information about a dungeon path.") {
                     CamelCase("id").."ID"(STRING, "the path's ID")
