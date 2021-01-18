@@ -1321,9 +1321,16 @@ internal val GW2v2 = GW2APIVersion {
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "PvPHero", description = "Information about a PvP hero.") {
             CamelCase("id").."ID"(STRING, "the PvP hero's ID")
-            SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
             "Name"(STRING, "the hero's localized name")
             "Type"(STRING, "the flavor type describing the hero")
+            "Stats"(
+                description = "the hero's stats",
+                type = record(name = "Stats", description = "Information about a hero's stats.") {
+                    "Offense"(INTEGER, "the offense stat")
+                    "Defense"(INTEGER, "the defense stat")
+                    "Speed"(INTEGER, "the speed stat")
+                }
+            )
             "Overlay"(STRING, "the render service URL for the hero's overlay art")
             "Underlay"(STRING, "the render service URL for the hero's underlay art")
             "Skins"(
