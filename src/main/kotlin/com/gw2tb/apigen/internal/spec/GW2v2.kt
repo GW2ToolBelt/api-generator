@@ -1200,7 +1200,7 @@ internal val GW2v2 = GW2APIVersion {
             "Icon"(STRING, "a render service URL for the novelty's icon")
             "Description"(STRING, "the novelty's description")
             "Slot"(STRING, "the novelty's slot")
-            SerialName("unlock_items").."UnlockItems"(
+            SerialName("unlock_item").."UnlockItems"(
                 description = "the IDs of the items that unlock the novelty",
                 type = array(INTEGER)
             )
