@@ -50,11 +50,54 @@ internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
 /** Alias for [QueryType.ByIDs]. */
 internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
 
+internal fun SchemaConditional.Interpretation.hasChangedInVersion(version: V2SchemaVersion): Boolean =
+    since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
+
+internal fun SchemaRecord.Property.hasChangedInVersion(version: V2SchemaVersion): Boolean =
+    since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
+
+internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean = when (this) {
+    is SchemaBlueprint -> version in versions
+    is SchemaArray -> items.hasChangedInVersion(version)
+    is SchemaConditional -> sharedProperties.any { (_, property) -> property.hasChangedInVersion(version) }
+        || interpretations.any { (_, property) -> property.hasChangedInVersion(version) }
+    is SchemaMap -> values.hasChangedInVersion(version)
+    is SchemaRecord -> properties.any { (_, property) -> property.hasChangedInVersion(version) }
+    is SchemaPrimitive -> false
+}
+
+internal fun SchemaType.copyForVersion(version: V2SchemaVersion): SchemaType = when (this) {
+    is SchemaBlueprint -> versions.filterKeys { it <= version }.toList().maxBy { it.first.ordinal }!!.second!!
+    is SchemaArray -> copy(items = items.copyForVersion(version))
+    is SchemaConditional -> copy(
+        sharedProperties = sharedProperties.filterValues { property ->
+            (property.since === null || property.since <= version) && (property.until === null || version < property.until)
+        },
+        interpretations = interpretations.filterValues { interpretation ->
+            (interpretation.since === null || interpretation.since <= version) && (interpretation.until === null || version < interpretation.until)
+        }
+    )
+    is SchemaMap -> copy(values = values.copyForVersion(version))
+    is SchemaRecord -> copy(properties = properties.filterValues { property ->
+        (property.since === null || property.since <= version) && (property.until === null || version < property.until)
+    })
+    is SchemaPrimitive -> this
+}
+
+internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, untilSelector: (T) -> V2SchemaVersion?, keySelector: (T) -> String, version: V2SchemaVersion): Map<String, T> =
+    filter {
+        val since = sinceSelector(it)
+        if (since !== null && version < since) return@filter false
+
+        val until = untilSelector(it)
+        until === null || until.ordinal <= version.ordinal
+    }.associateBy { keySelector(it) }
+
 @APIGenDSL
 internal class SchemaConditionalBuilder : SchemaBuilder {
 
-    private val _interpretations = mutableMapOf<String, SchemaConditionalInterpretationBuilder>()
-    val interpretations get() = _interpretations.mapValues { it.value.interpretation }
+    private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
+    val interpretations get() = _interpretations.map { it.interpretation }
 
     /**
      * Registers a conditional interpretation using the @receiver as key.
@@ -65,7 +108,7 @@ internal class SchemaConditionalBuilder : SchemaBuilder {
      */
     @APIGenDSL
     operator fun String.invoke(type: SchemaType): SchemaConditionalInterpretationBuilder {
-        return SchemaConditionalInterpretationBuilder(this, type).also { _interpretations[this] = it }
+        return SchemaConditionalInterpretationBuilder(this, type).also { _interpretations += it }
     }
 
     /** Marks a deprecated interpretation. */
@@ -137,8 +180,8 @@ internal class SchemaConditionalInterpretationBuilder(
 @APIGenDSL
 internal class SchemaRecordBuilder : SchemaBuilder {
 
-    private val _properties = mutableMapOf<String, SchemaRecordPropertyBuilder>()
-    val properties get() = _properties.mapValues { it.value.property }
+    private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
+    val properties get() = _properties.map { it.property }
 
     /**
      * Registers a new record property with the @receiver as name.
@@ -157,7 +200,7 @@ internal class SchemaRecordBuilder : SchemaBuilder {
         type: SchemaType,
         description: String
     ): SchemaRecordPropertyBuilder {
-        return SchemaRecordPropertyBuilder(this, type, description).also { _properties[this] = it }
+        return SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
     }
 
     /** Marks a deprecated property. */

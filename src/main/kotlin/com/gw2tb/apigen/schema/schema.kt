@@ -123,7 +123,7 @@ public data class SchemaConditional internal constructor(
  * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
  *                      holds {description}.")
  */
-public data class SchemaRecord(
+public data class SchemaRecord internal constructor(
     public val name: String?,
     public val properties: Map<String, Property>,
     public val description: String
@@ -156,6 +156,10 @@ public data class SchemaRecord(
     )
 
 }
+
+internal class SchemaBlueprint internal constructor(
+    internal val versions: Map<V2SchemaVersion, SchemaType?>
+) : SchemaType()
 
 /** A property's optionality. */
 public sealed class Optionality {

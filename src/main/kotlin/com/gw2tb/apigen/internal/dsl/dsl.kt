@@ -67,8 +67,43 @@ internal class GW2APIVersionBuilder {
         name: String,
         description: String,
         configure: SchemaRecordBuilder.() -> Unit
-    ): SchemaType =
-        SchemaRecord(name, SchemaRecordBuilder().also(configure).properties, description)
+    ): SchemaType {
+        val properties = SchemaRecordBuilder().also(configure).properties
+        val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
+            name,
+            properties.getForVersion(
+                SchemaRecord.Property::since,
+                SchemaRecord.Property::until,
+                SchemaRecord.Property::serialName,
+                V2SchemaVersion.V2_SCHEMA_CLASSIC
+            ),
+            description
+        )
+
+        V2SchemaVersion.values().forEachIndexed { index, version ->
+            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+            if (properties.any { it.hasChangedInVersion(version) }) {
+                versions[version] = SchemaRecord(
+                    name,
+                    properties.getForVersion(
+                        SchemaRecord.Property::since,
+                        SchemaRecord.Property::until,
+                        SchemaRecord.Property::serialName,
+                        version
+                    ),
+                    description
+                )
+            }
+        }
+
+        return if (versions.size == 1) {
+            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+        } else {
+            SchemaBlueprint(versions)
+        }
+    }
 
     @APIGenDSL
     fun conditional(
@@ -78,15 +113,70 @@ internal class GW2APIVersionBuilder {
         disambiguationBySideProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
         configure: SchemaConditionalBuilder.() -> Unit
-    ): SchemaType =
-        SchemaConditional(
+    ): SchemaType {
+        val sharedProps = if (sharedConfigure !== null) SchemaRecordBuilder().also(sharedConfigure).properties else emptyList()
+        val interpretations = SchemaConditionalBuilder().also(configure).interpretations
+
+        val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
+        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
+            SchemaRecord.Property::since,
+            SchemaRecord.Property::until,
+            SchemaRecord.Property::serialName,
+            V2SchemaVersion.V2_SCHEMA_CLASSIC
+        )
+
+        val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
             name,
             disambiguationBy,
             disambiguationBySideProperty,
-            sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
-            SchemaConditionalBuilder().also(configure).interpretations,
+            propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+            interpretations.getForVersion(
+                SchemaConditional.Interpretation::since,
+                SchemaConditional.Interpretation::until,
+                SchemaConditional.Interpretation::interpretationKey,
+                V2SchemaVersion.V2_SCHEMA_CLASSIC
+            ),
             description
         )
+
+        V2SchemaVersion.values().forEachIndexed { index, version ->
+            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+            if (sharedProps.any { it.hasChangedInVersion(version) }) {
+                propVersions[version] = sharedProps.getForVersion(
+                    SchemaRecord.Property::since,
+                    SchemaRecord.Property::until,
+                    SchemaRecord.Property::serialName,
+                    version
+                )
+            } else {
+                propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
+            }
+
+            if (interpretations.any { it.hasChangedInVersion(version) }) {
+                versions[version] = SchemaConditional(
+                    name,
+                    disambiguationBy,
+                    disambiguationBySideProperty,
+                    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+                    interpretations.getForVersion(
+                        SchemaConditional.Interpretation::since,
+                        SchemaConditional.Interpretation::until,
+                        SchemaConditional.Interpretation::interpretationKey,
+                        version
+                    ),
+                    description
+                )
+            }
+        }
+
+        return if (versions.size == 1) {
+            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+        } else {
+            SchemaBlueprint(versions)
+        }
+    }
 
 }
 
@@ -113,8 +203,43 @@ internal interface SchemaBuilder {
         description: String,
         name: String? = null,
         configure: SchemaRecordBuilder.() -> Unit
-    ): SchemaType =
-        SchemaRecord(name, SchemaRecordBuilder().also(configure).properties, description)
+    ): SchemaType {
+        val properties = SchemaRecordBuilder().also(configure).properties
+        val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
+            name,
+            properties.getForVersion(
+                SchemaRecord.Property::since,
+                SchemaRecord.Property::until,
+                SchemaRecord.Property::serialName,
+                V2SchemaVersion.V2_SCHEMA_CLASSIC
+            ),
+            description
+        )
+
+        V2SchemaVersion.values().forEachIndexed { index, version ->
+            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+            if (properties.any { it.hasChangedInVersion(version) }) {
+                versions[version] = SchemaRecord(
+                    name,
+                    properties.getForVersion(
+                        SchemaRecord.Property::since,
+                        SchemaRecord.Property::until,
+                        SchemaRecord.Property::serialName,
+                        version
+                    ),
+                    description
+                )
+            }
+        }
+
+        return if (versions.size == 1) {
+            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+        } else {
+            SchemaBlueprint(versions)
+        }
+    }
 
     @APIGenDSL
     fun conditional(
@@ -124,15 +249,70 @@ internal interface SchemaBuilder {
         disambiguationBySideProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
         configure: SchemaConditionalBuilder.() -> Unit
-    ): SchemaType =
-        SchemaConditional(
+    ): SchemaType {
+        val sharedProps = if (sharedConfigure !== null) SchemaRecordBuilder().also(sharedConfigure).properties else emptyList()
+        val interpretations = SchemaConditionalBuilder().also(configure).interpretations
+
+        val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
+        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
+            SchemaRecord.Property::since,
+            SchemaRecord.Property::until,
+            SchemaRecord.Property::serialName,
+            V2SchemaVersion.V2_SCHEMA_CLASSIC
+        )
+
+        val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
             name,
             disambiguationBy,
             disambiguationBySideProperty,
-            sharedConfigure?.let(SchemaRecordBuilder()::also)?.properties ?: emptyMap(),
-            SchemaConditionalBuilder().also(configure).interpretations,
+            propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+            interpretations.getForVersion(
+                SchemaConditional.Interpretation::since,
+                SchemaConditional.Interpretation::until,
+                SchemaConditional.Interpretation::interpretationKey,
+                V2SchemaVersion.V2_SCHEMA_CLASSIC
+            ),
             description
         )
+
+        V2SchemaVersion.values().forEachIndexed { index, version ->
+            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+            if (sharedProps.any { it.hasChangedInVersion(version) }) {
+                propVersions[version] = sharedProps.getForVersion(
+                    SchemaRecord.Property::since,
+                    SchemaRecord.Property::until,
+                    SchemaRecord.Property::serialName,
+                    version
+                )
+            } else {
+                propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
+            }
+
+            if (interpretations.any { it.hasChangedInVersion(version) }) {
+                versions[version] = SchemaConditional(
+                    name,
+                    disambiguationBy,
+                    disambiguationBySideProperty,
+                    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+                    interpretations.getForVersion(
+                        SchemaConditional.Interpretation::since,
+                        SchemaConditional.Interpretation::until,
+                        SchemaConditional.Interpretation::interpretationKey,
+                        version
+                    ),
+                    description
+                )
+            }
+        }
+
+        return if (versions.size == 1) {
+            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+        } else {
+            SchemaBlueprint(versions)
+        }
+    }
 
 }
 
@@ -168,91 +348,9 @@ internal class GW2APIEndpointBuilder(private val route: String) {
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
     fun schema(schema: SchemaType) {
-        val tmp = V2SchemaVersion.values().toList().associateWithTo(EnumMap(V2SchemaVersion::class.java)) { version ->
-            fun SchemaType.copyOrGet(superIncluded: Boolean = false): SchemaType? {
-                return when (this) {
-                    is SchemaConditional -> {
-                        fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
-                            is SchemaConditional -> {
-                                val sharedPropertiesChanged = sharedProperties.any { (_, property) ->
-                                    property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
-                                }
-
-                                val interpretationsChanged = interpretations.any { (_, interpretation) ->
-                                    interpretation.since === version || interpretation.until === V2SchemaVersion.values()[version.ordinal - 1] || interpretation.type.hasChangedInVersion()
-                                }
-
-                                sharedPropertiesChanged || interpretationsChanged
-                            }
-                            is SchemaRecord -> properties.any { (_, property) ->
-                                property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
-                            }
-                            else -> false
-                        }
-
-                        val includeVersion = version === V2SchemaVersion.V2_SCHEMA_CLASSIC || hasChangedInVersion()
-                        val copiedSharedProperties = sharedProperties.mapValues { (_, property) ->
-                            val includedSinceVersion = property.since?.let { it === version } ?: false
-                            val includedInVersion = ((includedSinceVersion || property.since?.let { version >= it } ?: true)) && (property.until?.let { it < version } ?: true)
-
-                            when {
-                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> property.copy(type = property.type.copyOrGet(superIncluded = true)!!)
-                                else -> null
-                            }
-                        }.filterValues { it !== null }.mapValues { it.value!! }
-
-                        val copiedInterpretations = interpretations.mapValues { (_, interpretation) ->
-                            val includedSinceVersion = interpretation.since?.let { it === version } ?: false
-                            val includedInVersion = ((includedSinceVersion || interpretation.since?.let { version >= it } ?: true)) && (interpretation.until?.let { it < version } ?: true)
-
-                            when {
-                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> interpretation.copy(type = interpretation.type.copyOrGet(superIncluded = true)!!)
-                                else -> null
-                            }
-                        }.filterValues { it !== null }.mapValues { it.value!! }
-
-                        return when {
-                            !superIncluded && copiedSharedProperties.isEmpty() && copiedInterpretations.isEmpty() -> null
-                            else -> copy(sharedProperties = copiedSharedProperties, interpretations = copiedInterpretations)
-                        }
-                    }
-                    is SchemaRecord -> {
-                        fun SchemaType.hasChangedInVersion(): Boolean = when (this) {
-                            is SchemaRecord -> properties.any { (_, property) ->
-                                property.since === version || property.until === V2SchemaVersion.values()[version.ordinal - 1] || property.type.hasChangedInVersion()
-                            }
-                            else -> false
-                        }
-
-                        val includeVersion = version === V2SchemaVersion.V2_SCHEMA_CLASSIC || hasChangedInVersion()
-                        val copiedProperties = properties.mapValues { (_, property) ->
-                            val includedSinceVersion = property.since?.let { it === version } ?: false
-                            val includedInVersion = ((includedSinceVersion || property.since?.let { version >= it } ?: true)) && (property.until?.let { it < version } ?: true)
-
-                            when {
-                                includedInVersion && (includeVersion || includedSinceVersion || superIncluded) -> property.copy(type = property.type.copyOrGet(superIncluded = true)!!)
-                                else -> null
-                            }
-                        }.filterValues { it !== null }.mapValues { it.value!! }
-
-                        return when {
-                            !superIncluded && copiedProperties.isEmpty() -> null
-                            else -> copy(properties = copiedProperties)
-                        }
-                    }
-                    else -> this
-                }
-            }
-
-            schema.copyOrGet()
-        }
-
-        this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
-            tmp.forEach { (key, value) ->
-                // TODO the compiler trips here without casts. Try this with NI once it is out
-                if (value !== null) map[key as V2SchemaVersion] = value as SchemaType
-            }
-        }
+        this.schema = V2SchemaVersion.values()
+            .filter { it === V2SchemaVersion.V2_SCHEMA_CLASSIC || schema.hasChangedInVersion(it) }
+            .associateWithTo(EnumMap(V2SchemaVersion::class.java)) { schema.copyForVersion(it) }
     }
 
     fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
