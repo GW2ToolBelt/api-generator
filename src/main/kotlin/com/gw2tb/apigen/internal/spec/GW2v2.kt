@@ -525,7 +525,7 @@ internal val GW2v2 = GW2APIVersion {
         pathParameter("Type", STRING, "the exchange type")
         queryParameter("Quantity", INTEGER, "the amount to exchange")
         schema(record(name = "CommerceExchange", description = "Information about an exchange.") {
-            "CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
+            SerialName("coins_per_gem").."CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
             "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
         })
     }
