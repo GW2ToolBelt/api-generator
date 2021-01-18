@@ -1547,7 +1547,7 @@ internal val GW2v2 = GW2APIVersion {
         schema(record(name = "WvWRank", description = "Information about an achievable rank in the World versus World game mode.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the rank")
             "Title"(STRING, "the title of the rank")
-            SerialName("min_level").."MinLevel"(INTEGER, "the WvW level required to unlock this rank")
+            SerialName("min_rank").."MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
     "/WvW/Upgrades" {
