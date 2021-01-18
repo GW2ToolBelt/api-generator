@@ -1139,7 +1139,7 @@ internal val GW2v2 = GW2APIVersion {
             optional.."Description"(STRING, "the description of how to unlock the mini")
             "Icon"(STRING, "the URL for the mini's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
-            CamelCase("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini")
+            SerialName("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini")
         })
     }
     "/Mounts" {
