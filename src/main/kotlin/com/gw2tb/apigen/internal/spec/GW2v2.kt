@@ -482,7 +482,7 @@ internal val GW2v2 = GW2APIVersion {
             "Hue"(INTEGER, "the hue in HSL colorspace")
             "Saturation"(DECIMAL, "the saturation in HSL colorspace")
             "Lightness"(DECIMAL, "the lightness in HSL colorspace")
-            "RBG"(array(INTEGER), "a list containing precalculated RGB values")
+            "RGB"(array(INTEGER), "a list containing precalculated RGB values")
         }
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
@@ -494,7 +494,7 @@ internal val GW2v2 = GW2APIVersion {
             "Leather"(APPEARANCE(), "detailed information on its appearance when applied on leather armor")
             "Metal"(APPEARANCE(), "detailed information on its appearance when applied on metal armor")
             optional.."Fur"(APPEARANCE(), "detailed information on its appearance when applied on fur armor")
-            "Item"(INTEGER, "the ID of the dye item")
+            optional.."Item"(INTEGER, "the ID of the dye item")
             "Categories"(array(STRING), "the categories of the color")
         })
     }
