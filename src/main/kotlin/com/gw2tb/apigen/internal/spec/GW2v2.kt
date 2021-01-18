@@ -1162,7 +1162,7 @@ internal val GW2v2 = GW2APIVersion {
             SerialName("dye_slots").."DyeSlots"(
                 description = "the mount skin's dye slots",
                 type = array(record(name = "DyeSlot", description = "Information about a dye slot.") {
-                    CamelCase("color_id").."ColorID"(STRING, "the ID of the color")
+                    SerialName("color_id").."ColorID"(STRING, "the ID of the color")
                     "Material"(STRING, "the slot's material")
                 })
             )
