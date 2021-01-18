@@ -24,6 +24,7 @@ package com.gw2tb.apigen.test
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
+import kotlinx.serialization.json.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import kotlin.time.*
@@ -49,7 +50,6 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
                     && it.queryParameters.all { actualParam -> expected.queryParameters.any { actualParam.key == it.key } }
             }
 
-            actual?.let(unexpectedEndpoints::remove)
             yield(DynamicTest.dynamicTest(name) {
                 assertNotNull(actual, name)
 
@@ -69,6 +69,32 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
                     assertEquals(expectedParam.type, actualParam.type, name)
                 }
             })
+
+
+            if (actual == null) {
+                yield(DynamicTest.dynamicTest("EndpointNotFound/$prefix${expected.route}") {
+                    fail()
+                })
+                return@forEach
+            }
+
+            actual.let(unexpectedEndpoints::remove)
+            if (spec == API_V2_DEFINITION && expected.route == "/CreateSubToken") return@forEach
+
+            actual.versions.forEach { version ->
+                val schema = actual[version].second
+
+                yield(DynamicTest.dynamicTest("SchemaTest/$prefix${expected.route}@${version.identifier}") {
+                    val data = assertDoesNotThrow("Failed to load test data for ${actual.route}@${version}") {
+                        TestData[spec, actual.route, version]
+                    }
+
+                    val element = Json.parseToJsonElement(data)
+
+                    (if (actual.queryTypes.isNotEmpty()) SchemaArray(schema, false, null) else schema)
+                        .assertSchemaMatches(element)
+                })
+            }
         }
 
         unexpectedEndpoints.forEach { actual ->
@@ -77,6 +103,83 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
             })
         }
     }.iterator()
+
+    private fun SchemaType.assertSchemaMatches(element: JsonElement, nullable: Boolean = false, interpretation: String? = null) {
+        fun <T> JsonPrimitive.validate(required: JsonPrimitive.() -> T, optional: JsonPrimitive.() -> T?) =
+            assertDoesNotThrow { if (nullable) optional() else required() }
+
+        when (this) {
+            is SchemaPrimitive -> {
+                val primitive = assertDoesNotThrow("$this") { element.jsonPrimitive }
+
+                when (this) {
+                    is SchemaBoolean -> primitive.validate(JsonPrimitive::booleanOrNull, JsonPrimitive::boolean)
+                    is SchemaDecimal -> primitive.validate(JsonPrimitive::doubleOrNull, JsonPrimitive::double)
+                    is SchemaInteger -> primitive.validate(JsonPrimitive::longOrNull, JsonPrimitive::long)
+                    is SchemaString -> primitive.validate(JsonPrimitive::contentOrNull, JsonPrimitive::content)
+                    else -> error("Should not happen")
+                }
+            }
+            is SchemaArray -> {
+                val array = assertDoesNotThrow<JsonArray> { element.jsonArray }
+                array.forEach { items.assertSchemaMatches(it, nullableItems) }
+            }
+            is SchemaConditional -> {
+                if (nullable && element is JsonNull) return
+                val record = assertDoesNotThrow<JsonObject> { element.jsonObject }
+
+                sharedProperties.forEach { (_, property) ->
+                    val value = assertDoesNotThrow<JsonElement?>("$this") { record[property.serialName]!! }
+                    if (value === null) {
+                        if (property.optionality.isOptional)
+                            return@forEach
+                        else
+                            fail()
+                    }
+
+                    val type = property.type
+                    val intrp = (if (type is SchemaConditional && type.disambiguationBySideProperty)
+                        assertDoesNotThrow<String> { record[type.disambiguationBy]!!.jsonPrimitive.content }
+                    else
+                        null)
+
+                    property.type.assertSchemaMatches(value, property.optionality.isOptional, intrp)
+                }
+
+                /* If the interpretation is not null, the disambiguation happens by side property. */
+                val interpretationRecord = interpretations[interpretation ?: assertDoesNotThrow("$this") { record[disambiguationBy]!!.jsonPrimitive.content }]
+                assertNotNull(interpretationRecord)
+
+                interpretationRecord.type.assertSchemaMatches(record)
+            }
+            is SchemaMap -> {
+                val map = assertDoesNotThrow<JsonObject> { element.jsonObject }
+                if (map.isNotEmpty()) values.assertSchemaMatches(map.values.first(), nullableValues)
+            }
+            is SchemaRecord -> {
+                if (nullable && element is JsonNull) return
+                val record = assertDoesNotThrow("$this") { element.jsonObject }
+
+                properties.forEach { (_, property) ->
+                    val value = assertDoesNotThrow<JsonElement?> { record[property.serialName] }
+                    if (value === null) {
+                        if (property.optionality.isOptional)
+                            return@forEach
+                        else
+                            fail("Could not find required property \"${property.serialName}\"")
+                    }
+
+                    val type = property.type
+                    val intrp = (if (type is SchemaConditional && type.disambiguationBySideProperty)
+                        assertDoesNotThrow("$this") { record[type.disambiguationBy]!!.jsonPrimitive.content }
+                    else
+                        null)
+
+                    property.type.assertSchemaMatches(value, property.optionality.isOptional, intrp)
+                }
+            }
+        }
+    }
 
     data class ExpectedEndpoint(
         val route: String,

@@ -1,0 +1,115 @@
+{
+    "langs": [
+        "en",
+        "es",
+        "de",
+        "fr"
+    ],
+    "routes": [
+        {
+            "path": "/v1/build",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/colors",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/continents",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/event_details",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/event_names",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/events",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/files",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/guild_details",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/item_details",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/items",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/map_floor",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/map_names",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/maps",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/recipe_details",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/recipes",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/skin_details",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/skins",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/world_names",
+            "lang": true,
+            "active": false
+        },
+        {
+            "path": "/v1/wvw/match_details",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/wvw/matches",
+            "lang": false,
+            "active": false
+        },
+        {
+            "path": "/v1/wvw/objective_names",
+            "lang": true,
+            "active": false
+        }
+    ]
+}
