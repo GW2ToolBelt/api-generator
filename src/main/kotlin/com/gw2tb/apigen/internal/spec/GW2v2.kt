@@ -1568,18 +1568,18 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(INTEGER, "the ID of the upgrade")
             "Tiers"(
                 description = "the different tiers of the upgrade",
-                type = record(description = "Information about an upgrade tier.") {
+                type = array(record(description = "Information about an upgrade tier.") {
                     "Name"(STRING, "the name of the upgrade tier")
                     SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "Upgrades"(
                         description = "the upgrades available at the tier",
-                        type = record(description = "Information about an upgrade.") {
+                        type = array(record(description = "Information about an upgrade.") {
                             "Name"(STRING, "the name of the upgrade")
                             "Description"(STRING, "the description for the upgrade")
                             "Icon"(STRING, "the icon link")
-                        }
+                        })
                     )
-                }
+                })
             )
         })
     }
