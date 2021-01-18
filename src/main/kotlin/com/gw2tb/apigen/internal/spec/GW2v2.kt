@@ -127,7 +127,14 @@ internal val GW2v2 = GW2APIVersion {
         summary = "Returns information about a player's unlocked finishers."
         security = setOf(ACCOUNT, UNLOCKS)
 
-        schema(array(INTEGER, "an array of IDs containing the ID of each finisher unlocked by the player"))
+        schema(array(
+            description = "the finishers unlocked by the account",
+            items = record(name = "AccountFinisher", description = "Information about finishers unlocked by an account.") {
+                CamelCase("id").."ID"(INTEGER, "the finisher's ID")
+                "Permanent"(BOOLEAN, "whether or not the finisher is unlock permanently")
+                optional.."Quantity"(INTEGER, "the remaining uses")
+            }
+        ))
     }
     "/Account/Gliders" {
         summary = "Returns information about a player's unlocked gliders."
