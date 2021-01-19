@@ -710,7 +710,7 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(STRING, "the emote's ID")
             "Commands"(
                 description = "the commands that may be used to trigger the emote",
-                type = array(INTEGER)
+                type = array(STRING)
             )
             SerialName("unlock_items").."UnlockItems"(
                 description = "the IDs of the items that unlock the emote",
