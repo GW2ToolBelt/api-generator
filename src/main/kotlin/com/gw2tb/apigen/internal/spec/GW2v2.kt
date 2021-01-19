@@ -192,7 +192,7 @@ internal val GW2v2 = GW2APIVersion {
         schema(array(
             description = "the account's luck",
             items = record(name = "Luck", description = "Information about a plyer's luck.") {
-                CamelCase("id").."ID"(INTEGER, "the type of luck (always \"luck\")")
+                CamelCase("id").."ID"(STRING, "the type of luck (always \"luck\")")
                 "Value"(INTEGER, "the amount of luck")
             }
         ))
