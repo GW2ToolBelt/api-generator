@@ -185,6 +185,18 @@ internal val GW2v2 = GW2APIVersion {
             }
         ))
     }
+    "/Account/Luck" {
+        summary = "Returns information about a player's luck."
+        security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
+
+        schema(array(
+            description = "the account's luck",
+            items = record(name = "Luck", description = "Information about a plyer's luck.") {
+                CamelCase("id").."ID"(INTEGER, "the type of luck (always \"luck\")")
+                "Value"(INTEGER, "the amount of luck")
+            }
+        ))
+    }
     "/Account/Mailcarriers" {
         summary = "Returns information about a player's unlocked mail carriers."
         security = setOf(ACCOUNT, UNLOCKS)

@@ -67,6 +67,9 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Account/Inventory")
             .security(ACCOUNT, INVENTORIES)
 
+        expectEndpoint("/Account/Luck")
+            .security(ACCOUNT, PROGRESSION, UNLOCKS)
+
         expectEndpoint("/Account/Mailcarriers")
             .security(ACCOUNT, UNLOCKS)
 
