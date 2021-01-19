@@ -1081,7 +1081,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "MapChest", description = "Information about a Hero's Choice Chests that can be acquired once per day.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the mapchest")
+            CamelCase("id").."ID"(STRING, "the ID of the chest")
         })
     }
     "/Maps" {
