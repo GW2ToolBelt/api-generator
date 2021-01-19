@@ -1564,6 +1564,26 @@ internal val GW2v2 = GW2APIVersion {
             "Population"(STRING, "the population level of the world")
         })
     }
+    "/WvW/Abilities" {
+        summary = "Returns information about the achievable ranks in the World versus World game mode."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "WvWAbility", description = "Information about an ability in the World versus World game mode.") {
+            CamelCase("id").."ID"(INTEGER, "the ID of the ability")
+            "Name"(STRING, "the ability's name")
+            "Description"(STRING, "the ability's description")
+            "Icon"(STRING, "a render service URL for the mount ability's icon")
+            "Ranks"(
+                description = "the ability's ranks",
+                type = array(record(name = "Rank", description = "Information about an ability's rank.") {
+                    "Cost"(INTEGER, "the WvW experience points required to unlock the rank")
+                    "Effect"(STRING, "the rank's effect")
+                })
+            )
+        })
+    }
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache = 1.hours
