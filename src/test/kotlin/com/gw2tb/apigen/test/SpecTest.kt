@@ -105,7 +105,7 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
     }.iterator()
 
     private fun SchemaType.assertSchemaMatches(element: JsonElement, nullable: Boolean = false, interpretation: String? = null) {
-        fun <T> JsonPrimitive.validate(required: JsonPrimitive.() -> T, optional: JsonPrimitive.() -> T?) =
+        fun <T> JsonPrimitive.validate(optional: JsonPrimitive.() -> T, required: JsonPrimitive.() -> T?) =
             assertDoesNotThrow { if (nullable) optional() else required() }
 
         when (this) {
