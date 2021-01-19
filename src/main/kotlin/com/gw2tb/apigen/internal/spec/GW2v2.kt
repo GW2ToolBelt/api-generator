@@ -1378,6 +1378,26 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("URL").."URL"(STRING, "the URL to the quaggan image")
         })
     }
+    "/Quests" {
+        summary = "Returns information about Story Journal missions."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "Quest", description = "Information about a quest.") {
+            CamelCase("id").."ID"(STRING, "the quest's ID")
+            "Name"(STRING, "the quest's localized name")
+            "Level"(INTEGER, "the minimum level required to begin the quest")
+            "Story"(INTEGER, "the story's ID")
+            "Goals"(
+                description = "the quest's goals",
+                type = array(record(name = "Goal", description = "Information about a quest's goal.") {
+                    "Active"(STRING, "the text displayed for the quest step if it is active")
+                    "Complete"(STRING, "the text displayed for the quest step if it is complete")
+                })
+            )
+        })
+    }
     "/Races" {
         summary = "Returns information about the game's playable races."
         cache = 1.hours
