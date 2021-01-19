@@ -40,6 +40,9 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Account/Bank")
             .security(ACCOUNT, INVENTORIES)
 
+        expectEndpoint("/Account/BuildStorage")
+            .security(ACCOUNT)
+
         expectEndpoint("/Account/DailyCrafting")
             .security(ACCOUNT, PROGRESSION, UNLOCKS)
 

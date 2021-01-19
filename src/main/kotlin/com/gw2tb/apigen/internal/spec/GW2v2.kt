@@ -71,7 +71,7 @@ internal val GW2v2 = GW2APIVersion {
         security = setOf(ACCOUNT, INVENTORIES)
 
         schema(array(
-            description = "A list of slots in a player's bank.",
+            description = "a list of slots in a player's bank.",
             nullableItems = true,
             items = record(name = "AccountBankSlot", description = "Information about a bank slot.") {
                 CamelCase("id").."ID"(INTEGER, "the item's ID")
@@ -96,6 +96,46 @@ internal val GW2v2 = GW2APIVersion {
                 )
                 optional.."Binding"(STRING, "the binding of the material")
                 optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+            }
+        ))
+    }
+    "/Account/BuildStorage" {
+        summary = "Returns an account's build storage."
+        security = setOf(ACCOUNT)
+
+        schema(array(
+            description = "the builds in the account's storage",
+            items = record(name = "AccountBuildStorageSlot", description = "Information about a build in an account's storage.") {
+                "Name"(STRING, "the build's name")
+                "Profession"(STRING, "the profession's ID")
+                "Specializations"(
+                    description = "the build's specializations",
+                    type = array(
+                        nullableItems = true,
+                        items = record(name = "Specialization", description = "Information about a build's specialization.") {
+                            CamelCase("id").."ID"(INTEGER, "the specializations ID")
+                            "Traits"(array(INTEGER, nullableItems = true), "the trait IDs")
+                        }
+                    )
+                )
+                optional.."Skills"(
+                    description = "the build's skills",
+                    type = record(name = "Skills", description = "Information about a build's skills.") {
+                        optional.."Heal"(INTEGER, "the heal skill's ID")
+                        "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
+                        optional.."Elite"(INTEGER, "the elite skill's ID")
+                    }
+                )
+                optional..SerialName("aquatic_skills").."AuqaticSkills"(
+                    description = "the build's aquatic skills",
+                    type = record(name = "AuqaticSkills", description = "Information about a build's aquatic skills.") {
+                        optional.."Heal"(INTEGER, "the heal skill's ID")
+                        "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
+                        optional.."Elite"(INTEGER, "the elite skill's ID")
+                    }
+                )
+                optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
+                optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
             }
         ))
     }

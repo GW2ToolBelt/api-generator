@@ -1,0 +1,106 @@
+[
+    {
+        "name": "",
+        "profession": "Revenant",
+        "specializations": [
+            {
+                "id": 3,
+                "traits": [
+                    1761,
+                    1774,
+                    1719
+                ]
+            },
+            {
+                "id": 15,
+                "traits": [
+                    1767,
+                    1802,
+                    1715
+                ]
+            },
+            {
+                "id": 52,
+                "traits": [
+                    1806,
+                    1738,
+                    1772
+                ]
+            }
+        ],
+        "skills": {
+            "heal": 45686,
+            "utilities": [
+                41220,
+                42949,
+                40485
+            ],
+            "elite": 45773
+        },
+        "aquatic_skills": {
+            "heal": null,
+            "utilities": [
+                null,
+                null,
+                null
+            ],
+            "elite": null
+        },
+        "legends": [
+            null,
+            null
+        ],
+        "aquatic_legends": [
+            null,
+            null
+        ]
+    },
+    {
+        "name": "Test",
+        "profession": "Necromancer",
+        "specializations": [
+            {
+                "id": 53,
+                "traits": [
+                    914,
+                    829,
+                    853
+                ]
+            },
+            {
+                "id": 50,
+                "traits": [
+                    875,
+                    894,
+                    893
+                ]
+            },
+            {
+                "id": 34,
+                "traits": [
+                    2020,
+                    1969,
+                    2021
+                ]
+            }
+        ],
+        "skills": {
+            "heal": 10548,
+            "utilities": [
+                10546,
+                29414,
+                10622
+            ],
+            "elite": 30105
+        },
+        "aquatic_skills": {
+            "heal": 10548,
+            "utilities": [
+                10546,
+                10545,
+                10612
+            ],
+            "elite": 30105
+        }
+    }
+]
