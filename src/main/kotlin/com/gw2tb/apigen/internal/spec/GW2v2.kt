@@ -665,7 +665,7 @@ internal val GW2v2 = GW2APIVersion {
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "DailyCrafting", description = "Information about an item that can be crafted once per day.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the dailycrafting")
+            CamelCase("id").."ID"(STRING, "the ID of the dailycrafting")
         })
     }
     "/Dungeons" {
