@@ -858,7 +858,7 @@ internal val GW2v2 = GW2APIVersion {
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "HomeInstanceCat", description = "Information about a home-instance cat.") {
             CamelCase("id").."ID"(INTEGER, "the cat's ID")
-            "Hint"(INTEGER, "the unlock hint")
+            "Hint"(STRING, "the unlock hint")
         })
     }
     "/Home/Nodes" {
