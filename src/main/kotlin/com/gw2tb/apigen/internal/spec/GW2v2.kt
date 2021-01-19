@@ -1542,6 +1542,19 @@ internal val GW2v2 = GW2APIVersion {
             optional..SerialName("profession_icon_big").."BigProfessionIcon"(STRING, "a render service URL for a large variant of the elite specialization's icon")
         })
     }
+    "/Stories/Seasons" {
+        summary = "Returns information about the Story Journal seasons."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "StorySeason", description = "Information about a Story Journal season.") {
+            CamelCase("id").."ID"(STRING, "the ID of the season")
+            "Name"(STRING, "the localized name of the season")
+            "Order"(INTEGER, "a number that can be used to sort the list of seasons")
+            "Stories"(array(INTEGER), "the IDs of the stories in the season")
+        })
+    }
     "/Titles" {
         summary = "Returns information about the titles that are in the game."
         cache = 1.hours
