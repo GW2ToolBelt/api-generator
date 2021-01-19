@@ -58,6 +58,9 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Account/Gliders")
             .security(ACCOUNT, UNLOCKS)
 
+        expectEndpoint("/Account/Home")
+            .cacheTime(DURATION_INFINITE)
+
         expectEndpoint("/Account/Home/Nodes")
             .security(ACCOUNT, PROGRESSION)
 

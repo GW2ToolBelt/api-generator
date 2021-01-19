@@ -142,6 +142,12 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(INTEGER, "an array of IDs containing the ID of each glider unlocked by the player"))
     }
+    "/Account/Home" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     "/Account/Home/Nodes" {
         summary = "Returns information about a player's unlocked home instance nodes."
         security = setOf(ACCOUNT, PROGRESSION)
