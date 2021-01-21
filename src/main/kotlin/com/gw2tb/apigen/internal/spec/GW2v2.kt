@@ -919,6 +919,12 @@ internal val GW2v2 = GW2APIVersion {
             }
         ))
     }
+    "/Guild/:ID/Upgrades" {
+        summary = "Returns information about a guild's upgrades."
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(INTEGER, "the IDs of the guild's unlocked upgrades"))
+    }
     "/Guild/Permissions" {
         summary = "Returns information about available guild permissions."
         cache = 1.hours
