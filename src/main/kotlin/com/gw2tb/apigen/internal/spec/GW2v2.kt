@@ -1787,7 +1787,7 @@ internal val GW2v2 = GW2APIVersion {
         isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(name = "StorySeason", description = "Information about a Story Journal season.") {
+        schema(record(name = "Story", description = "Information about a Story Journal season.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the story")
             "Season"(STRING, "the ID of the story's season")
             "Name"(STRING, "the localized name of the story")
