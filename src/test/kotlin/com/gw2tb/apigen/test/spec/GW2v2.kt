@@ -236,6 +236,9 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Guild/:ID")
             .pathParameter("ID", STRING)
 
+        expectEndpoint("/Guild/:ID/Ranks")
+            .pathParameter("ID", STRING)
+
         expectEndpoint("/Guild/Permissions")
             .cacheTime(1.hours)
             .localized()

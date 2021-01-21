@@ -845,6 +845,20 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Guild/:ID/Ranks" {
+        summary = "Returns information about a guild's ranks."
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(
+            description = "the guild's ranks",
+            items = record(name = "GuildRank", description = "Information about a guild rank.") {
+                CamelCase("id").."ID"(STRING, "the rank's ID")
+                "Order"(INTEGER, "a number that can be used to sort the list of ranks")
+                "Permissions"(array(STRING), "the rank's permissions")
+                "Icon"(STRING, "a render service URL for the rank's icon")
+            }
+        ))
+    }
     "/Guild/Permissions" {
         summary = "Returns information about available guild permissions."
         cache = 1.hours

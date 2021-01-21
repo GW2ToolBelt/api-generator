@@ -1,0 +1,95 @@
+[
+    {
+        "id": "Kohl Kopf",
+        "order": 1,
+        "permissions": [
+            "Admin",
+            "EditRoles",
+            "ClaimableEditOptions",
+            "EditBGM",
+            "ActivatePlaceables",
+            "DepositItemsTrove",
+            "WithdrawItemsStash",
+            "WithdrawItemsTrove",
+            "EditAssemblyQueue",
+            "WithdrawCoinsStash",
+            "ActivateWorldEvent",
+            "PlaceArenaDecoration",
+            "DepositItemsStash",
+            "EditMonument",
+            "SpendFuel",
+            "TeamAdmin",
+            "WithdrawCoinsTrove",
+            "DepositCoinsTrove",
+            "PurchaseUpgrades",
+            "EditEmblem",
+            "ClaimableActivate",
+            "MissionControl",
+            "OpenPortal",
+            "SetGuildHall",
+            "DepositCoinsStash",
+            "PlaceDecoration",
+            "ClaimableSpend",
+            "EditMOTD",
+            "EditAnthem",
+            "DecorationAdmin",
+            "ClaimableClaim"
+        ],
+        "icon": "https://render.guildwars2.com/file/EB3B3BC73EE3252092F162A855FA0A4425232A03/156377.png"
+    },
+    {
+        "id": "Kohlmmandeur",
+        "order": 3,
+        "permissions": [],
+        "icon": "https://render.guildwars2.com/file/2F25BCE10A3A0AA3F8DA282148C8652060DA94C9/156379.png"
+    },
+    {
+        "id": "Kohltist",
+        "order": 2,
+        "permissions": [
+            "Admin",
+            "ClaimableEditOptions",
+            "EditBGM",
+            "ActivatePlaceables",
+            "DepositItemsTrove",
+            "WithdrawItemsStash",
+            "WithdrawItemsTrove",
+            "EditAssemblyQueue",
+            "WithdrawCoinsStash",
+            "ActivateWorldEvent",
+            "PlaceArenaDecoration",
+            "DepositItemsStash",
+            "SpendFuel",
+            "TeamAdmin",
+            "WithdrawCoinsTrove",
+            "DepositCoinsTrove",
+            "PurchaseUpgrades",
+            "EditEmblem",
+            "ClaimableActivate",
+            "MissionControl",
+            "OpenPortal",
+            "SetGuildHall",
+            "DepositCoinsStash",
+            "PlaceDecoration",
+            "ClaimableSpend",
+            "EditMOTD",
+            "EditAnthem",
+            "ClaimableClaim"
+        ],
+        "icon": "https://render.guildwars2.com/file/396104DEF6981E1906804678F7F9CEEB96C26E32/156378.png"
+    },
+    {
+        "id": "Lauch",
+        "order": 5,
+        "permissions": [
+            "StartingRole"
+        ],
+        "icon": "https://render.guildwars2.com/file/B7E3FD3210E9E2E80C917E0F9E0FA85CE2EC052B/156370.png"
+    },
+    {
+        "id": "Spargeltarzan",
+        "order": 4,
+        "permissions": [],
+        "icon": "https://render.guildwars2.com/file/30EB1BDA3850EF59AFEFAA005DA19605250D3620/156373.png"
+    }
+]
