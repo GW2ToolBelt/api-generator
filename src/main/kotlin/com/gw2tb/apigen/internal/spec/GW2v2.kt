@@ -481,8 +481,24 @@ internal val GW2v2 = GW2APIVersion {
             "Description"(STRING, "the answer's localized description")
             "Journal"(STRING, "the answer's journal entry")
             "Question"(INTEGER, "the ID of the biography question the answer answers")
-            optional.."Professions"(array(STRING), "the IDs of the professions that this answer is available for")
-            optional.."Races"(array(STRING), "the IDs of the races that this answer is available for")
+            optional.."Professions"(array(STRING), "the IDs of the professions that the answer is available for")
+            optional.."Races"(array(STRING), "the IDs of the races that the answer is available for")
+        })
+    }
+    "/Backstory/Questions" {
+        summary = "Returns information about biography questions."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "BackstoryQuestion", description = "Information about a biography question.") {
+            CamelCase("id").."ID"(INTEGER, "the question's ID")
+            "Title"(STRING, "the question's localized title")
+            "Description"(STRING, "the question's localized description")
+            "Answers"(array(STRING), "the IDs of the possible answers to the question")
+            "Order"(INTEGER, "a number that can be used to sort the list of questions")
+            optional.."Professions"(array(STRING), "the IDs of the professions that the question is presented to")
+            optional.."Races"(array(STRING), "the IDs of the races that the question is presented to")
         })
     }
     "/Build" {
