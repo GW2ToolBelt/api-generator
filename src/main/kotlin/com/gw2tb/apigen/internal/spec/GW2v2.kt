@@ -845,6 +845,18 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Guild/Permissions" {
+        summary = "Returns information about available guild permissions."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "GuildPermission", description = "Information about a guild permission.") {
+            CamelCase("id").."ID"(STRING, "the permission's ID")
+            "Name"(STRING, "the permission's localized name")
+            "Description"(STRING, "the permission's localized description")
+        })
+    }
     "/Guild/Upgrades" {
         summary = "Returns information about available guild hall upgrades."
         cache = 1.hours

@@ -1,0 +1,162 @@
+[
+    {
+        "id": "ClaimableEditOptions",
+        "name": "Beanspruchungsoptionen bearbeiten",
+        "description": "Berechtigt, bei beanspruchbaren Elementen im Besitz der Gilde Optionen zu bearbeiten."
+    },
+    {
+        "id": "EditBGM",
+        "name": "Gilden-Hallen-Musik wechseln",
+        "description": "Wählt eine andere Hintergrundmusik für die Gilden-Halle aus."
+    },
+    {
+        "id": "ActivatePlaceables",
+        "name": "Platzierbare Verbrauchsgüter verwenden",
+        "description": "Benutzt platzierbare Verbrauchsgüter, die in der Werkstatt hergestellt wurden."
+    },
+    {
+        "id": "DepositItemsTrove",
+        "name": "Schatzgrube – Einlage von Gegenständen",
+        "description": "Ihr könnt die größere Schatzgrube der Gilde durchsuchen und Gegenstände darin deponieren."
+    },
+    {
+        "id": "WithdrawItemsStash",
+        "name": "Gilden-Geheimvorrat – Entnahme von Gegenständen",
+        "description": "Ihr könnt dem kleinen Gilden-Geheimvorrat Gegenstände entnehmen."
+    },
+    {
+        "id": "WithdrawItemsTrove",
+        "name": "Schatzgrube – Entnahme von Gegenständen",
+        "description": "Ihr könnt der größeren Schatzgrube der Gilde Gegenstände entnehmen."
+    },
+    {
+        "id": "EditAssemblyQueue",
+        "name": "Zusammenbau-Warteschlange bearbeiten",
+        "description": "Reiht Pläne für den Zusammenbau in der Werkstatt ein und ordnet sie neu."
+    },
+    {
+        "id": "WithdrawCoinsStash",
+        "name": "Gilden-Geheimvorrat – Entnahme von Gold",
+        "description": "Ihr könnt dem kleinen Gilden-Geheimvorrat Geld entnehmen."
+    },
+    {
+        "id": "ActivateWorldEvent",
+        "name": "Gilden-Welt-Events",
+        "description": "Ihr könnt Gilden-Welt-Events aktivieren."
+    },
+    {
+        "id": "PlaceArenaDecoration",
+        "name": "Arena-Gestalter",
+        "description": "Ihr könnt Dekorationen in der Arena platzieren, sie umstellen und aus ihr entfernen."
+    },
+    {
+        "id": "DepositItemsStash",
+        "name": "Gilden-Geheimvorrat – Einlage von Gegenständen",
+        "description": "Ihr könnt den kleinen Gilden-Geheimvorrat durchsuchen und Gegenstände darin deponieren."
+    },
+    {
+        "id": "EditMonument",
+        "name": "Monument-Gestalter",
+        "description": "Die Fähigkeit, der Gilden-Halle Monumente hinzuzufügen und sie daraus zu entfernen."
+    },
+    {
+        "id": "StartingRole",
+        "name": "Neue Mitglieder hier",
+        "description": "Neue Mitglieder beginnen mit diesem Rang. Diese Berechtigung kann nur in einem Rang bestehen."
+    },
+    {
+        "id": "SpendFuel",
+        "name": "Resonanz einsetzen",
+        "description": "Schließt aktuelle Pläne durch Verbrauch von Resonanz sofort ab."
+    },
+    {
+        "id": "TeamAdmin",
+        "name": "Team-Verwalter",
+        "description": "Ihr könnt Teams erstellen oder löschen und Mitglieder hinzufügen oder entfernen."
+    },
+    {
+        "id": "EditRoles",
+        "name": "Ränge bearbeiten",
+        "description": "Erstellt, entfernt oder ändert die Eigenschaften von Rängen, die niedriger als dieser sind."
+    },
+    {
+        "id": "Admin",
+        "name": "Niedrigere Ränge verwalten",
+        "description": "Ladet neue Spieler zum Beitritt in Eure Gilde ein. Befördert, degradiert und entlasst aktuelle Mitglieder niedrigerer Ränge."
+    },
+    {
+        "id": "WithdrawCoinsTrove",
+        "name": "Schatzgrube – Entnahme von Gold",
+        "description": "Ihr könnt der größeren Schatzgrube der Gilde Geld entnehmen."
+    },
+    {
+        "id": "DepositCoinsTrove",
+        "name": "Schatzgrube – Einlage von Gold",
+        "description": "Ihr könnt die größere Schatzgrube der Gilde durchsuchen und Geld darin deponieren."
+    },
+    {
+        "id": "PurchaseUpgrades",
+        "name": "Aufwertungen erwerben",
+        "description": "Erwerbt Aufwertungen für die Gilde."
+    },
+    {
+        "id": "EditEmblem",
+        "name": "Gilden-Wappen bearbeiten",
+        "description": "Ändert das Aussehen des Gilden-Wappens auf allen Rüstungen, Fahnen, Bannern und Objekten."
+    },
+    {
+        "id": "ClaimableActivate",
+        "name": "Beanspruchungstaktik aktivieren",
+        "description": "Berechtigt, bei einem beanspruchbaren Element Aufwertungen zu aktivieren."
+    },
+    {
+        "id": "MissionControl",
+        "name": "Missions-Kommando",
+        "description": "Aktiviert Gilden-Missionen."
+    },
+    {
+        "id": "OpenPortal",
+        "name": "Gilden-Portal öffnen",
+        "description": "Ihr könnt das Gilden-Portal zur Teleportation von Gruppen nutzen."
+    },
+    {
+        "id": "SetGuildHall",
+        "name": "Gilden-Halle beanspruchen",
+        "description": "Ihr könnt eine neue Gilden-Halle für Eure Gilde beanspruchen."
+    },
+    {
+        "id": "DepositCoinsStash",
+        "name": "Gilden-Geheimvorrat – Einlage von Gold",
+        "description": "Ihr könnt den kleinen Gilden-Geheimvorrat durchsuchen und Geld darin deponieren."
+    },
+    {
+        "id": "PlaceDecoration",
+        "name": "Gestalter",
+        "description": "Ihr könnt Dekorationen in der Gilden-Halle platzieren, sie umstellen und aus ihr entfernen."
+    },
+    {
+        "id": "ClaimableSpend",
+        "name": "Aufwertungen für beanspruchbare Elemente verbrauchen",
+        "description": "Berechtigt, Ziele zu beanspruchen."
+    },
+    {
+        "id": "EditMOTD",
+        "name": "Nachricht des Tages bearbeiten",
+        "description": "Ändert die Nachricht des Tages, die an alle Gilden-Mitglieder verschickt wird."
+    },
+    {
+        "id": "EditAnthem",
+        "name": "Gilden-Hymne wechseln",
+        "description": "Wählt eine andere Gilden-Hymne aus."
+    },
+    {
+        "id": "DecorationAdmin",
+        "name": "Alle Dekorationen entfernen",
+        "description": "Der Spieler kann alle Dekorationen aus der Gilden-Halle entfernen und wieder im Gilden-Lager deponieren."
+    },
+    {
+        "id": "ClaimableClaim",
+        "name": "Ziele beanspruchen",
+        "description": "Berechtigt, Ziele zu beanspruchen."
+    }
+]
