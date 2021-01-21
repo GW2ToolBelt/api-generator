@@ -845,6 +845,19 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Guild/:ID/Members" {
+        summary = "Returns information about a guild's members."
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(
+            description = "the guild's members",
+            items = record(name = "GuildMember", description = "Information about a guild member.") {
+                "Name"(STRING, "the member's account name")
+                "Rank"(STRING, "the member's rank")
+                "Joined"(STRING, "the ISO8601 timestamp of when the member joined the guild")
+            }
+        ))
+    }
     "/Guild/:ID/Ranks" {
         summary = "Returns information about a guild's ranks."
 
