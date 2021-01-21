@@ -942,6 +942,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Guild/:ID/Members" {
         summary = "Returns information about a guild's members."
+        security(ACCOUNT, GUILDS)
 
         pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
         schema(array(
@@ -955,6 +956,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Guild/:ID/Ranks" {
         summary = "Returns information about a guild's ranks."
+        security(ACCOUNT, GUILDS)
 
         pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
         schema(array(
@@ -969,6 +971,7 @@ internal val GW2v2 = GW2APIVersion {
     }
     "/Guild/:ID/Upgrades" {
         summary = "Returns information about a guild's upgrades."
+        security(ACCOUNT, GUILDS)
 
         pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
         schema(array(INTEGER, "the IDs of the guild's unlocked upgrades"))

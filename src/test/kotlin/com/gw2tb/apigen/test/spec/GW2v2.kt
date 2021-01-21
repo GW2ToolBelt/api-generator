@@ -254,12 +254,15 @@ class GW2v2 : SpecTest(
             .pathParameter("ID", STRING)
 
         expectEndpoint("/Guild/:ID/Members")
+            .security(ACCOUNT, GUILDS)
             .pathParameter("ID", STRING)
 
         expectEndpoint("/Guild/:ID/Ranks")
+            .security(ACCOUNT, GUILDS)
             .pathParameter("ID", STRING)
 
         expectEndpoint("/Guild/:ID/Upgrades")
+            .security(ACCOUNT, GUILDS)
             .pathParameter("ID", STRING)
 
         expectEndpoint("/Guild/Permissions")
