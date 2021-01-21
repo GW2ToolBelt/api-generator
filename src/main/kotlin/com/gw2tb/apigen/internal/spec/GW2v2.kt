@@ -188,6 +188,21 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/Account/Home/Cats" {
+        summary = "Returns information about a player's unlock home instance cats."
+        security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
+
+        schema(
+            V2_SCHEMA_CLASSIC to array(
+                description = "the IDs of the player's unlocked home instance cats",
+                items = record(name = "AccountHomeInstanceCat", description = "Information about a player's unlocked home-instance cat.") {
+                    CamelCase("id").."ID"(INTEGER, "the cat's ID")
+                    "Hint"(STRING, "the unlock hint")
+                }
+            ),
+            V2_SCHEMA_2019_03_22T00_00_00_000Z to array(INTEGER, "the IDs of the player's unlocked home instance cats")
+        )
+    }
     "/Account/Home/Nodes" {
         summary = "Returns information about a player's unlocked home instance nodes."
         security = setOf(ACCOUNT, PROGRESSION)
