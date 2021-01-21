@@ -62,7 +62,11 @@ public data class Endpoint internal constructor(
     /** Returns the ID type of the endpoint, or `null` if the endpoint's values do not have a form of IDs. */
     public val idType: SchemaType? by lazy {
         if (QueryType.ByID in queryTypes || queryTypes.any { it is QueryType.ByIDs }) {
-            (schema as? SchemaRecord)?.properties?.get("id")?.type
+            when (val schema = schema) {
+                is SchemaConditional -> schema.sharedProperties["id"]?.type
+                is SchemaRecord -> schema.properties["id"]?.type
+                else -> TODO()
+            }
         } else {
             null
         }
