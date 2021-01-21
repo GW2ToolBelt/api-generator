@@ -1463,8 +1463,35 @@ internal val GW2v2 = GW2APIVersion {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
+    "/PvP/Amulets" {
+        summary = "Returns information about available PvP amulets."
+        cache = 1.hours
+        isLocalized = true
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "PvPAmulet", description = "Information about a PvP amulet.") {
+            CamelCase("id").."ID"(INTEGER, "the amulet's ID")
+            "Name"(STRING, "the amulet's localized name")
+            "Icon"(STRING, "a render service URL for the amulet's icon")
+            "Attributes"(
+                description = "the amulet's stats",
+                type = record(name = "Stats", description = "Information about an amulet's stats.") {
+                    optional..SerialName("AgonyResistance").."AgonyResistance"(INTEGER, "the amount of agony resistance given by the amulet")
+                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the amulet")
+                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the amulet")
+                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the amulet")
+                    optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the amulet")
+                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the amulet")
+                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the amulet")
+                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the amulet")
+                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the amulet")
+                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the amulet")
+                }
+            )
+        })
+    }
     "/PvP/Heroes" {
-        summary = "Returns information about the PvP heroes."
+        summary = "Returns information about available PvP heroes."
         cache = 1.hours
         isLocalized = true
 
