@@ -771,7 +771,7 @@ internal val GW2v2 = GW2APIVersion {
             "Name"(STRING, "the continent's name")
             SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
             SerialName("min_zoom").."MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
-            SerialName("max_zoom").."MinZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
+            SerialName("max_zoom").."MaxZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
             "Floors"(array(INTEGER), "the IDs of the continent's floors")
         })
     }
