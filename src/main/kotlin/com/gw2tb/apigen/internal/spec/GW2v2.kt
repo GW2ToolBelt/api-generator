@@ -1698,6 +1698,69 @@ internal val GW2v2 = GW2APIVersion {
             SerialName("chat_link").."ChatLink"(STRING, "the recipe's chat code")
         })
     }
+    "/Skins" {
+        summary = "Returns information about the skins in the game."
+        cache = 1.hours
+        isLocalized = true
+
+        @APIGenDSL
+        fun SchemaRecordBuilder.DYE_SLOTS() = array(
+            nullableItems = true,
+            items =  record(name = "DyeSlot", description = "Information about a dye slot.") {
+                SerialName("color_id").."ColorID"(INTEGER, "the default color's ID")
+                "Material"(STRING, "the material type")
+            }
+        )
+
+        supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
+        schema(record(name = "Skin", description = "Information about a skin.") {
+            CamelCase("id").."ID"(STRING, "the skin's ID")
+            "Name"(STRING, "the skin's localized name")
+            "Type"(STRING, "the skin's type")
+            "Flags"(array(STRING), "additional skin flags (ShowInWardrobe, NoCost, HideIfLocked, OverrideRarity)")
+            "Restrictions"(array(STRING), "the IDs of the races that can use this skin, or empty if it can be used by any race")
+            "Icon"(STRING, "a render service URL for the skin's icon")
+            "Rarity"(STRING, "the skin's rarity")
+            optional.."Description"(STRING, "the skin's description")
+            optional.."Details"(
+                description = "additional information about the skin",
+                type = conditional(description = "Additional information about a skin.", disambiguationBySideProperty = true) {
+                    "Armor"(record(name = "Armor", description = "Additional information about an armor skin.") {
+                        "Type"(STRING, "the skin's armor slot")
+                        SerialName("weight_class").."WeightClass"(STRING, "the skin's armor weight")
+                        SerialName("dye_slots").."DyeSlots"(
+                            description = "the skin's dye slots",
+                            type = record(name = "DyeSlots", description = "Information about a skin's sye slots.") {
+                                "Default"(DYE_SLOTS(), "the default dye slots")
+                                "Overrides"(
+                                    description = "the race/gender dye slot overrides",
+                                    type = record(name = "Overrides", description = "Information about race/gender dye slot overrides.") {
+                                        optional.."AsuraMale"(DYE_SLOTS(), "the dye slot overrides for asuarn male characters")
+                                        optional.."AsuraFemale"(DYE_SLOTS(), "the dye slot overrides for asuarn female characters")
+                                        optional.."CharrMale"(DYE_SLOTS(), "the dye slot overrides for charr male characters")
+                                        optional.."CharrFemale"(DYE_SLOTS(), "the dye slot overrides for charr female characters")
+                                        optional.."HumanMale"(DYE_SLOTS(), "the dye slot overrides for human male characters")
+                                        optional.."HumanFemale"(DYE_SLOTS(), "the dye slot overrides for human female characters")
+                                        optional.."NornMale"(DYE_SLOTS(), "the dye slot overrides for norn male characters")
+                                        optional.."NornFemale"(DYE_SLOTS(), "the dye slot overrides for norn female characters")
+                                        optional.."SylvariMale"(DYE_SLOTS(), "the dye slot overrides for sylvari male characters")
+                                        optional.."SylvariFemale"(DYE_SLOTS(), "the dye slot overrides for sylvari female characters")
+                                    }
+                                )
+                            }
+                        )
+                    })
+                    "Gathering"(record(name = "Gathering", description = "Additional information about a gathering tool skin.") {
+                        "Type"(STRING, "the skin's tool type")
+                    })
+                    "Weapon"(record(name = "Weapon", description = "Additional information about a weapon skin.") {
+                        "Type"(STRING, "the skin's weapon type")
+                        SerialName("damage_type").."DamageType"(STRING, "the skin's damage type")
+                    })
+                }
+            )
+        })
+    }
     "/Specializations" {
         summary = "Returns information about the specializations in the game."
         cache = 1.hours

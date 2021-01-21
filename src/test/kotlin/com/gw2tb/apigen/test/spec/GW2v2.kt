@@ -406,6 +406,11 @@ class GW2v2 : SpecTest(
             .cacheTime(1.hours)
             .queryTypes(BY_ID, BY_IDS(all = false), BY_PAGE)
 
+        expectEndpoint("/Skins")
+            .cacheTime(1.hours)
+            .localized()
+            .queryTypes(BY_ID, BY_IDS(all = false), BY_PAGE)
+
         expectEndpoint("/Specializations")
             .cacheTime(1.hours)
             .localized()
