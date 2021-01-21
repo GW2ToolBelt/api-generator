@@ -140,6 +140,10 @@ class GW2v2 : SpecTest(
             .localized()
             .queryTypes(BY_ID, BY_IDS, BY_PAGE)
 
+        expectEndpoint("/Achievements/Daily")
+
+        expectEndpoint("/Achievements/Daily/Tomorrow")
+
         expectEndpoint("/Achievements/Groups")
             .cacheTime(1.hours)
             .localized()

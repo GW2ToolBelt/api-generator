@@ -464,6 +464,54 @@ internal val GW2v2 = GW2APIVersion {
             "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
         })
     }
+    "/Achievements/Daily" {
+        summary = "Returns information about daily achievements."
+
+        @APIGenDSL
+        fun SchemaRecordBuilder.DAILY_ACHIEVEMENT() = record(name = "Achievement", description = "Information about a daily achievement.") {
+            CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+            "Level"(
+                description = "the level requirement for the daily achievement to appear",
+                type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
+                    "Min"(INTEGER, "the minimum level for a character to the daily achievement")
+                    "Max"(INTEGER, "the maximum level for a character to the daily achievement")
+                }
+            )
+            SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
+        }
+
+        schema(record(name = "AchievementsDaily", description = "Information about daily achievements.") {
+            CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT()), "the PvE achievements")
+            CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT()), "the PvP achievements")
+            CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT()), "the WvW achievements")
+            "Fractals"(array(DAILY_ACHIEVEMENT()), "the fractal achievements")
+            "Special"(array(DAILY_ACHIEVEMENT()), "the special achievements (e.g. festival dailies)")
+        })
+    }
+    "/Achievements/Daily/Tomorrow" {
+        summary = "Returns information about tomorrow's daily achievements."
+
+        @APIGenDSL
+        fun SchemaRecordBuilder.DAILY_ACHIEVEMENT() = record(name = "Achievement", description = "Information about a daily achievement.") {
+            CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+            "Level"(
+                description = "the level requirement for the daily achievement to appear",
+                type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
+                    "Min"(INTEGER, "the minimum level for a character to the daily achievement")
+                    "Max"(INTEGER, "the maximum level for a character to the daily achievement")
+                }
+            )
+            SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
+        }
+
+        schema(record(name = "AchievementsDailyTomorrow", description = "Information about daily achievements.") {
+            CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT()), "the PvE achievements")
+            CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT()), "the PvP achievements")
+            CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT()), "the WvW achievements")
+            "Fractals"(array(DAILY_ACHIEVEMENT()), "the fractal achievements")
+            "Special"(array(DAILY_ACHIEVEMENT()), "the special achievements (e.g. festival dailies)")
+        })
+    }
     "/Achievements/Groups" {
         summary = "Returns information about achievement groups."
         cache = 1.hours
