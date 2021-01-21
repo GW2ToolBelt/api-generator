@@ -145,6 +145,11 @@ class GW2v2 : SpecTest(
         expectEndpoint("/Backstory")
             .cacheTime(DURATION_INFINITE)
 
+        expectEndpoint("/Backstory/Answers")
+            .cacheTime(1.hours)
+            .localized()
+            .queryTypes(BY_ID, BY_IDS, BY_PAGE)
+
         expectEndpoint("/Build")
 
         expectEndpoint("/Characters/:ID/Inventory")

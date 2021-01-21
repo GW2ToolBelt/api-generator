@@ -1,0 +1,43 @@
+[
+    {
+        "id": "7-54",
+        "title": "Würde",
+        "description": "Ich bewahre meine Würde, selbst wenn ich bis zu den Ohren im Schlamm stecke. Aus diesem Grund werde ich respektiert. Ernsthaftes, rücksichtsvolles Benehmen ebnet den Weg zum Erfolg.",
+        "journal": "Auch schwierige Situationen meistere ich mit Würde.",
+        "question": 7
+    },
+    {
+        "id": "36-158",
+        "title": "Kormir",
+        "description": "Kormir ist die Göttin der Ordnung, des Geistes und der Wahrheit. Sie war einst sterblich wie ich. Sie inspiriert mich täglich, mutiger zu werden und Herz, Geist und Handeln auf den rechten Weg zu bringen.",
+        "journal": "Kormir, die Göttin der Wahrheit, hat mich gesegnet, als ich noch ein Kind war.",
+        "question": 36,
+        "races": [
+            "Human"
+        ]
+    },
+    {
+        "id": "185-163",
+        "title": "Spangenhelm",
+        "description": "Mein Spangenhelm schüchtert meine Feinde ein und verschafft mir bei Verbündeten Respekt. Wenn ich ihn trage, bin ich fast unverwundbar.",
+        "journal": "<br><br>Ich bin ein Krieger und auf dem Schlachtfeld trage ich einen Spangenhelm. Deshalb bin ich nahezu unverwundbar.<br><br>Dies ist meine Geschichte.<br>",
+        "question": 185,
+        "professions": [
+            "Warrior"
+        ]
+    },
+    {
+        "id": "183-172",
+        "title": "Bär",
+        "description": "Mein Bär und ich bilden eine Einheit im Kampf. Es bedarf nur einer winzigen Geste meinerseits, und schon stürzen wir uns gemeinsam auf den Feind.",
+        "journal": "<br><br>Ich bin ein Waldläufer, und ich habe einen Bären, der an meiner Seite kämpft und mich beschützt.<br><br>Dies ist meine Geschichte.<br>",
+        "question": 183,
+        "professions": [
+            "Ranger"
+        ],
+        "races": [
+            "Human",
+            "Norn"
+        ]
+    }
+]
