@@ -1607,7 +1607,7 @@ internal val GW2v2 = GW2APIVersion {
         cache = 1.hours
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(name = "Finisher", description = "Information about a finisher.") {
+        schema(record(name = "Quaggan", description = "Information about a finisher.") {
             CamelCase("id").."ID"(STRING, "the quaggans's ID")
             CamelCase("URL").."URL"(STRING, "the URL to the quaggan image")
         })
