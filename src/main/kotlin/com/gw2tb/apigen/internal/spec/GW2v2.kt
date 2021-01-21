@@ -818,7 +818,7 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(STRING, "the dungeon's ID")
             "Paths"(
                 description = "the dungeon's paths",
-                type = array(record("Path", "Information about a dungeon path.") {
+                type = array(record(name = "Path", description = "Information about a dungeon path.") {
                     CamelCase("id").."ID"(STRING, "the path's ID")
                     "Type"(STRING, "the path's type")
                 })
@@ -1009,7 +1009,7 @@ internal val GW2v2 = GW2APIVersion {
                 "Prerequisites"(array(INTEGER), "an array of upgrade IDs that must be completed before this can be built")
                 "Costs"(
                     description = "an array of objects describing the upgrade's cost",
-                    type = array(record("Cost", "Information about an upgrade's cost.") {
+                    type = array(record(name = "Cost", description = "Information about an upgrade's cost.") {
                         "Type"(STRING, "the cost's type")
                         "Name"(STRING, "the cost's name")
                         "Count"(STRING, "the amount needed")
@@ -1653,11 +1653,11 @@ internal val GW2v2 = GW2APIVersion {
             CamelCase("id").."ID"(STRING, "the raid's ID")
             "Wings"(
                 description = "the raid's wings",
-                type = array(record("Wing", "Information about a wing.") {
+                type = array(record(name = "Wing", description = "Information about a wing.") {
                     CamelCase("id").."ID"(STRING, "the wing's ID")
                     "Events"(
                         description = "the wing's events",
-                        type = array(record("Event", "Information about an event.") {
+                        type = array(record(name = "Event", description = "Information about an event.") {
                             CamelCase("id").."ID"(STRING, "the event's ID")
                             "Type"(STRING, "the event's type")
                         })
