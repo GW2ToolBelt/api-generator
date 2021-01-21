@@ -36,6 +36,22 @@ internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Se
     return fun() = GW2APIVersionBuilder().also(configure).endpoints
 }
 
+private fun SchemaConditional.Interpretation.copyForVersion(version: V2SchemaVersion): SchemaConditional.Interpretation = copy(
+    type = if (type is SchemaBlueprint) {
+        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+    } else {
+        type
+    }
+)
+
+private fun SchemaRecord.Property.copyForVersion(version: V2SchemaVersion): SchemaRecord.Property = copy(
+    type = if (type is SchemaBlueprint) {
+        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+    } else {
+        type
+    }
+)
+
 @APIGenDSL
 internal class GW2APIVersionBuilder {
 
@@ -77,11 +93,11 @@ internal class GW2APIVersionBuilder {
                 SchemaRecord.Property::until,
                 SchemaRecord.Property::serialName,
                 V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ),
+            ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
             description
         )
 
-        V2SchemaVersion.values().forEachIndexed { index, version ->
+        V2SchemaVersion.values().forEachIndexed { _, version ->
             if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
 
             if (properties.any { it.hasChangedInVersion(version) }) {
@@ -92,7 +108,7 @@ internal class GW2APIVersionBuilder {
                         SchemaRecord.Property::until,
                         SchemaRecord.Property::serialName,
                         version
-                    ),
+                    ).mapValues { (_, property) -> property.copyForVersion(version) },
                     description
                 )
             }
@@ -123,7 +139,7 @@ internal class GW2APIVersionBuilder {
             SchemaRecord.Property::until,
             SchemaRecord.Property::serialName,
             V2SchemaVersion.V2_SCHEMA_CLASSIC
-        )
+        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
 
         val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
         versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
@@ -136,7 +152,7 @@ internal class GW2APIVersionBuilder {
                 SchemaConditional.Interpretation::until,
                 SchemaConditional.Interpretation::interpretationKey,
                 V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ),
+            ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
             description
         )
 
@@ -149,7 +165,7 @@ internal class GW2APIVersionBuilder {
                     SchemaRecord.Property::until,
                     SchemaRecord.Property::serialName,
                     version
-                )
+                ).mapValues { (_, property) -> property.copyForVersion(version) }
             } else {
                 propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
             }
@@ -165,7 +181,7 @@ internal class GW2APIVersionBuilder {
                         SchemaConditional.Interpretation::until,
                         SchemaConditional.Interpretation::interpretationKey,
                         version
-                    ),
+                    ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
                     description
                 )
             }
@@ -213,11 +229,11 @@ internal interface SchemaBuilder {
                 SchemaRecord.Property::until,
                 SchemaRecord.Property::serialName,
                 V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ),
+            ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
             description
         )
 
-        V2SchemaVersion.values().forEachIndexed { index, version ->
+        V2SchemaVersion.values().forEachIndexed { _, version ->
             if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
 
             if (properties.any { it.hasChangedInVersion(version) }) {
@@ -228,7 +244,7 @@ internal interface SchemaBuilder {
                         SchemaRecord.Property::until,
                         SchemaRecord.Property::serialName,
                         version
-                    ),
+                    ).mapValues { (_, property) -> property.copyForVersion(version) },
                     description
                 )
             }
@@ -259,7 +275,7 @@ internal interface SchemaBuilder {
             SchemaRecord.Property::until,
             SchemaRecord.Property::serialName,
             V2SchemaVersion.V2_SCHEMA_CLASSIC
-        )
+        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
 
         val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
         versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
@@ -272,7 +288,7 @@ internal interface SchemaBuilder {
                 SchemaConditional.Interpretation::until,
                 SchemaConditional.Interpretation::interpretationKey,
                 V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ),
+            ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
             description
         )
 
@@ -285,7 +301,7 @@ internal interface SchemaBuilder {
                     SchemaRecord.Property::until,
                     SchemaRecord.Property::serialName,
                     version
-                )
+                ).mapValues { (_, property) -> property.copyForVersion(version) }
             } else {
                 propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
             }
@@ -301,7 +317,7 @@ internal interface SchemaBuilder {
                         SchemaConditional.Interpretation::until,
                         SchemaConditional.Interpretation::interpretationKey,
                         version
-                    ),
+                    ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
                     description
                 )
             }
