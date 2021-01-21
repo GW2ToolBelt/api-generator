@@ -463,6 +463,12 @@ internal val GW2v2 = GW2APIVersion {
             "Categories"(array(INTEGER), "an array containing the IDs of the categories that this group contains")
         })
     }
+    "/Backstory" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     "/Build" {
         summary = "Returns the current build ID."
 
