@@ -26,8 +26,8 @@ import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.dsl.*
 
 plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("org.jetbrains.dokka") version "1.4.20"
     signing
     `maven-publish`
