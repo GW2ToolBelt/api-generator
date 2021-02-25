@@ -163,6 +163,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.1.0")
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.7.0")
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.7.0")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.7.1")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.7.1")
 }
