@@ -586,6 +586,23 @@ internal val GW2v2 = GW2APIVersion {
 //            "Guild"(STRING, "")
 //        })
 //    }
+    "/Characters/:ID/Crafting" {
+        summary = "Returns information about a character's crafting disciplines."
+        security = setOf(ACCOUNT, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersCrafting", description = "Information about a character's crafting disciplines.") {
+            "Crafting"(
+                description = "the character's crafting disciplines",
+                type = array(record(name = "Discipline", description = "Information about a character's crafting discipline.") {
+                    "Discipline"(STRING, "the name of the discipline")
+                    "Rating"(INTEGER, "the character's crafting level for the discipline")
+                    "Active"(BOOLEAN, "a flag indicating whether or not the discipline is currently active on the character")
+                })
+            )
+
+        })
+    }
     "/Characters/:ID/HeroPoints" {
         summary = "Returns information about a character's unlock hero points."
         security = setOf(ACCOUNT, CHARACTERS, PROGRESSION)

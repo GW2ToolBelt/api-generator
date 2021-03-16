@@ -1,0 +1,24 @@
+{
+    "crafting": [
+        {
+            "discipline": "Artificer",
+            "rating": 500,
+            "active": true
+        },
+        {
+            "discipline": "Tailor",
+            "rating": 500,
+            "active": true
+        },
+        {
+            "discipline": "Armorsmith",
+            "rating": 425,
+            "active": false
+        },
+        {
+            "discipline": "Jeweler",
+            "rating": 400,
+            "active": false
+        }
+    ]
+}
