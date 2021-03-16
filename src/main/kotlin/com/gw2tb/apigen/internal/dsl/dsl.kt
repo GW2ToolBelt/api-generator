@@ -58,8 +58,12 @@ internal class GW2APIVersionBuilder {
     private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
     val endpoints get() = _endpoints.map { it.endpoint }.toSet()
 
-    operator fun String.invoke(configure: GW2APIEndpointBuilder.() -> Unit) =
-        GW2APIEndpointBuilder(this).also(configure).also { _endpoints.add(it) }
+    operator fun String.invoke(
+        since: V2SchemaVersion? = null,
+        until: V2SchemaVersion? = null,
+        configure: GW2APIEndpointBuilder.() -> Unit
+    ) =
+        GW2APIEndpointBuilder(this, since, until).also(configure).also { _endpoints.add(it) }
 
     @APIGenDSL
     fun array(
@@ -332,11 +336,17 @@ internal interface SchemaBuilder {
 
 }
 
-internal class GW2APIEndpointBuilder(private val route: String) {
+internal class GW2APIEndpointBuilder(
+    private val route: String,
+    private val since: V2SchemaVersion?,
+    private val until: V2SchemaVersion?
+) {
 
     val endpoint get() =
         Endpoint(
             route = route,
+            since = since,
+            until = until,
             summary = summary,
             cache = cache,
             security = security ?: emptySet(),

@@ -35,6 +35,8 @@ import kotlin.time.*
  * segments with the value for the parameter with the segment as key.
  *
  * @param route             the path of the endpoint
+ * @param since             the minimum schema version supported by the endpoint (inclusive)
+ * @param until             the schema version up to which the endpoint is supported (exclusive)
  * @param summary           a summary of the endpoint's purpose
  * @param cache             the expect cache duration (as suggested by the Cache-Control header), or [Duration.INFINITE]
  *                          if the resource is expect to never change
@@ -46,6 +48,8 @@ import kotlin.time.*
  */
 public data class Endpoint internal constructor(
     public val route: String,
+    public val since: V2SchemaVersion?,
+    public val until: V2SchemaVersion?,
     public val summary: String,
     public val cache: Duration?,
     public val security: Set<TokenScope>,
