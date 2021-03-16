@@ -696,6 +696,22 @@ internal val GW2v2 = GW2APIVersion {
             "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
         })
     }
+    "/Characters/:ID/Training" {
+        summary = "Returns information about a character's (skill-tree) training."
+        security = setOf(ACCOUNT, BUILDS, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersTraining", description = "Information about a character's (skill-tree) training.") {
+            "Training"(
+                description = "the training information for a character's trained skill-trees",
+                type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
+                    CamelCase("id").."ID"(INTEGER, "the skill tree's ID")
+                    "Spent"(INTEGER, "the amount of hero points spent in the tree")
+                    "Done"(BOOLEAN, "a flag indicating whether or not the tree is fully trained")
+                })
+            )
+        })
+    }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache = 1.hours
