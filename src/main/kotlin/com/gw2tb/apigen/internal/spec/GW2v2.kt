@@ -696,6 +696,37 @@ internal val GW2v2 = GW2APIVersion {
             "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
         })
     }
+    "/Characters/:ID/SAB" {
+        summary = "Returns information about a character's Super Adventure Box (SAB) progression."
+        security = setOf(ACCOUNT, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersSAB", description = "Information about a character's Super Adventure Box (SAB) progression.") {
+            "Zones"(
+                description = "the character's completed zones",
+                type = array(record(name = "Zone", description = "Information about a zone completed by a character.") {
+                    CamelCase("id").."ID"(INTEGER, "the zone's ID")
+                    "Mode"(STRING, "the mode used when completing this zone")
+                    "World"(INTEGER, "the world this zone is in")
+                    "Zone"(INTEGER, "the zone's number")
+                })
+            )
+            "Unlocks"(
+                description = "the character's unlocked unlocks",
+                type = array(record(name = "Unlock", description = "Information about an unlock unlocked by a character.") {
+                    CamelCase("id").."ID"(INTEGER, "the unlock's ID")
+                    optional.."Name"(STRING, "an unlocalized name describing the unlock")
+                })
+            )
+            "Songs"(
+                description = "the character's unlocked songs",
+                type = array(record(name = "Song", description = "Information about a song unlocked by a character.") {
+                    CamelCase("id").."ID"(INTEGER, "the song's ID")
+                    optional.."Name"(STRING, "an unlocalized name describing the song")
+                })
+            )
+        })
+    }
     "/Characters/:ID/Training" {
         summary = "Returns information about a character's (skill-tree) training."
         security = setOf(ACCOUNT, BUILDS, CHARACTERS)
