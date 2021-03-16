@@ -164,6 +164,10 @@ class GW2v2 : SpecTest(
 
         expectEndpoint("/Build")
 
+        expectEndpoint("/Characters/:ID/HeroPoints")
+            .security(ACCOUNT, CHARACTERS, PROGRESSION)
+            .pathParameter("ID", STRING)
+
         expectEndpoint("/Characters/:ID/Inventory")
             .security(ACCOUNT, CHARACTERS, INVENTORIES)
             .pathParameter("ID", STRING)

@@ -586,6 +586,13 @@ internal val GW2v2 = GW2APIVersion {
 //            "Guild"(STRING, "")
 //        })
 //    }
+    "/Characters/:ID/HeroPoints" {
+        summary = "Returns information about a character's unlock hero points."
+        security = setOf(ACCOUNT, CHARACTERS, PROGRESSION)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(array(STRING, "the IDs of the heropoints unlocked by the character"))
+    }
     "/Characters/:ID/Inventory" {
         summary = "Returns information about a character's inventory."
         security = setOf(ACCOUNT, CHARACTERS, INVENTORIES)
