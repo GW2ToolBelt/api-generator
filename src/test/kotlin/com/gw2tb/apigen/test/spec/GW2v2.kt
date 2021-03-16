@@ -172,6 +172,10 @@ class GW2v2 : SpecTest(
             .security(ACCOUNT, CHARACTERS, INVENTORIES)
             .pathParameter("ID", STRING)
 
+        expectEndpoint("/Characters/:ID/Quests")
+            .security(ACCOUNT, CHARACTERS, PROGRESSION)
+            .pathParameter("ID", STRING)
+
         expectEndpoint("/Colors")
             .cacheTime(1.hours)
             .localized()

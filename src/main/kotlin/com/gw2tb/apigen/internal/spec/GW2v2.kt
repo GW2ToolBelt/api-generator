@@ -636,6 +636,13 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Characters/:ID/Quests" {
+        summary = "Returns information about a character's selected quests."
+        security = setOf(ACCOUNT, CHARACTERS, PROGRESSION)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(array(INTEGER, "the IDs of the quests selected by the character"))
+    }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache = 1.hours
