@@ -595,6 +595,25 @@ internal val GW2v2 = GW2APIVersion {
             "Backstory"(array(STRING), "the IDs of the character's backstory answers")
         })
     }
+    "/Characters/:ID/Core" {
+        summary = "Returns general information about a character."
+        security = setOf(ACCOUNT, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersCore", description = "General Information about a character.") {
+            "Name"(STRING, "the character's name")
+            "Race"(STRING, "the ID of the character's race")
+            "Gender"(STRING, "the character's gender")
+            "Profession"(STRING, "the ID of the characters's profession")
+            "Level"(INTEGER, "the character's level")
+            optional.."Guild"(STRING, "the ID of the character's represented guild")
+            "Age"(INTEGER, "the amount of seconds the character was played")
+            "Created"(STRING, "the ISO-8601 standard timestamp of when the character was created")
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
+            "Deaths"(INTEGER, "the amount of times the character has been defeated")
+            optional.."Title"(INTEGER, "the ID of the character's selected title")
+        })
+    }
     "/Characters/:ID/Crafting" {
         summary = "Returns information about a character's crafting disciplines."
         security = setOf(ACCOUNT, CHARACTERS)
@@ -609,7 +628,6 @@ internal val GW2v2 = GW2APIVersion {
                     "Active"(BOOLEAN, "a flag indicating whether or not the discipline is currently active on the character")
                 })
             )
-
         })
     }
     "/Characters/:ID/HeroPoints" {

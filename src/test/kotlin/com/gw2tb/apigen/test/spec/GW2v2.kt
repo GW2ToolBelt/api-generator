@@ -168,6 +168,10 @@ class GW2v2 : SpecTest(
             .security(ACCOUNT, CHARACTERS)
             .pathParameter("ID", STRING)
 
+        expectEndpoint("/Characters/:ID/Core")
+            .security(ACCOUNT, CHARACTERS)
+            .pathParameter("ID", STRING)
+
         expectEndpoint("/Characters/:ID/Crafting")
             .security(ACCOUNT, CHARACTERS)
             .pathParameter("ID", STRING)
