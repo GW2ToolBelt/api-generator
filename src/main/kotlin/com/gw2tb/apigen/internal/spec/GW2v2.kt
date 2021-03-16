@@ -586,6 +586,15 @@ internal val GW2v2 = GW2APIVersion {
 //            "Guild"(STRING, "")
 //        })
 //    }
+    "/Characters/:ID/Backstory" {
+        summary = "Returns information about a character's backstory."
+        security = setOf(ACCOUNT, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersBackstory", description = "Information about a character's backstory.") {
+            "Backstory"(array(STRING), "the IDs of the character's backstory answers")
+        })
+    }
     "/Characters/:ID/Crafting" {
         summary = "Returns information about a character's crafting disciplines."
         security = setOf(ACCOUNT, CHARACTERS)
