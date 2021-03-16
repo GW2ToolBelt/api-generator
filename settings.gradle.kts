@@ -22,8 +22,22 @@
 rootProject.name = "api-generator"
 
 pluginManagement {
+    /*
+     * Workaround since Dokka is not published under the expected coordinates to Central [1] and not yet published to
+     * the plugin portal again [2].
+     *
+     * [1] https://github.com/Kotlin/dokka/issues/1779
+     * [2] https://github.com/Kotlin/dokka/issues/1775
+     */
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "org.jetbrains.dokka") {
+                useModule("org.jetbrains.dokka:dokka-gradle-plugin:${requested.version}")
+            }
+        }
+    }
     repositories {
-        maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/dokka/dev")
+        mavenCentral()
         gradlePluginPortal()
     }
 }
