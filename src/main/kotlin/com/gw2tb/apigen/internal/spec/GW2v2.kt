@@ -660,6 +660,15 @@ internal val GW2v2 = GW2APIVersion {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
         schema(array(INTEGER, "the IDs of the quests selected by the character"))
     }
+    "/Characters/:ID/Recipes" {
+        summary = "Returns information about a character's crafting recipes."
+        security = setOf(ACCOUNT, UNLOCKS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersRecipes", description = "Information about a character's crafting recipes.") {
+            "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
+        })
+    }
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache = 1.hours
