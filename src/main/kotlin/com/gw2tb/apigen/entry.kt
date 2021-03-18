@@ -19,15 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("unused")
 @file:JvmName("GW2APIGen")
 package com.gw2tb.apigen
 
 import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.internal.spec.*
-import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
-import java.util.*
 
 /** The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol. */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {

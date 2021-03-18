@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
 package com.gw2tb.apigen.model
 
 import com.gw2tb.apigen.model.v2.*
@@ -47,16 +46,16 @@ import kotlin.time.*
  * @param pathParameters    the path parameters for the endpoint
  */
 public data class Endpoint internal constructor(
-    public val route: String,
-    public val since: V2SchemaVersion?,
-    public val until: V2SchemaVersion?,
-    public val summary: String,
-    public val cache: Duration?,
-    public val security: Set<TokenScope>,
-    public val isLocalized: Boolean,
-    public val queryTypes: Set<QueryType>,
-    public val queryParameters: List<QueryParameter>,
-    public val pathParameters: List<PathParameter>,
+    val route: String,
+    val since: V2SchemaVersion?,
+    val until: V2SchemaVersion?,
+    val summary: String,
+    val cache: Duration?,
+    val security: Set<TokenScope>,
+    val isLocalized: Boolean,
+    val queryTypes: Set<QueryType>,
+    val queryParameters: List<QueryParameter>,
+    val pathParameters: List<PathParameter>,
     private val _schema: EnumMap<V2SchemaVersion, SchemaType>
 ) {
 

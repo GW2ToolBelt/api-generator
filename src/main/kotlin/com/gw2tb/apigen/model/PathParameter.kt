@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
 package com.gw2tb.apigen.model
 
 import com.gw2tb.apigen.schema.*
@@ -36,9 +35,9 @@ import com.gw2tb.apigen.schema.*
  * @param camelCaseName the name of the parameter in _camelCase_
  */
 public data class PathParameter internal constructor(
-    public val key: String,
-    public val type: SchemaPrimitive,
-    public val description: String,
-    public val name: String,
-    public val camelCaseName: String
+    val key: String,
+    val type: SchemaPrimitive,
+    val description: String,
+    val name: String,
+    val camelCaseName: String
 )

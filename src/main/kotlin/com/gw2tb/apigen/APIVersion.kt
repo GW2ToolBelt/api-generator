@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
 package com.gw2tb.apigen
 
 import com.gw2tb.apigen.internal.spec.*
@@ -33,8 +32,8 @@ import java.util.*
  * @param supportedLanguages    the version's supported languages
  */
 public data class APIVersion internal constructor(
-    public val endpoints: Set<Endpoint>,
-    public val supportedLanguages: EnumSet<Language>
+    val endpoints: Set<Endpoint>,
+    val supportedLanguages: EnumSet<Language>
 ) {
 
     public companion object {

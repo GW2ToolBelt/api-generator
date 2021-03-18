@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("RedundantVisibilityModifier")
 package com.gw2tb.apigen.model
 
 import com.gw2tb.apigen.schema.*
@@ -37,10 +36,10 @@ import com.gw2tb.apigen.schema.*
  * @since   0.1.0
  */
 public data class QueryParameter internal constructor(
-    public val key: String,
-    public val type: SchemaPrimitive,
-    public val description: String,
-    public val name: String,
-    public val camelCaseName: String,
-    public val isOptional: Boolean
+    val key: String,
+    val type: SchemaPrimitive,
+    val description: String,
+    val name: String,
+    val camelCaseName: String,
+    val isOptional: Boolean
 )
