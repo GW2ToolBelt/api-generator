@@ -29,7 +29,7 @@ public object TestData {
     public operator fun get(api: APIVersion, key: String, version: V2SchemaVersion): String {
         val resource = buildString {
             append("/com/gw2tb/apigen/")
-            append(if (api == API_V2_DEFINITION) "v2" else "v1")
+            append(if (api == APIVersion.API_V2) "v2" else "v1")
             append(key.toLowerCase().split("/").joinToString(separator = "_") { if (it.startsWith(":")) "{${it.substring(1)}}" else it })
 
             if (version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {

@@ -29,14 +29,6 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 import java.util.*
 
-/** The definition for the API version 2 of the Guild Wars 2 API. */
-public val API_V2_DEFINITION: APIVersion by lazy {
-    APIVersion(
-        endpoints = GW2v2(),
-        supportedLanguages = EnumSet.allOf(Language::class.java)
-    )
-}
-
 /** The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol. */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
     SchemaRecord("MumbleLinkIdentity", SchemaRecordBuilder().apply {

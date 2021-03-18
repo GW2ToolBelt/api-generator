@@ -22,6 +22,7 @@
 @file:Suppress("RedundantVisibilityModifier")
 package com.gw2tb.apigen
 
+import com.gw2tb.apigen.internal.spec.*
 import com.gw2tb.apigen.model.*
 import java.util.*
 
@@ -34,4 +35,18 @@ import java.util.*
 public data class APIVersion internal constructor(
     public val endpoints: Set<Endpoint>,
     public val supportedLanguages: EnumSet<Language>
-)
+) {
+
+    public companion object {
+
+        /** The definition for the API version 2 of the Guild Wars 2 API. */
+        public val API_V2: APIVersion by lazy {
+            APIVersion(
+                endpoints = GW2v2(),
+                supportedLanguages = EnumSet.allOf(Language::class.java)
+            )
+        }
+
+    }
+
+}

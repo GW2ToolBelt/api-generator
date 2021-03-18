@@ -29,7 +29,7 @@ import kotlin.time.*
 
 class GW2v2 : SpecTest(
     "GW2v2",
-    API_V2_DEFINITION,
+    APIVersion.API_V2,
     {
         expectEndpoint("/Account")
             .security(ACCOUNT)
