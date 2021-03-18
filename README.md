@@ -182,6 +182,9 @@ refer to the documentation of the [DSL](src/main/kotlin/com/gw2tb/apigen/interna
 |----------------------------------------------------------------|-----------------------------------|
 | [GW2APIClient](https://github.com/GW2ToolBelt/GW2APIClient)    | Kotlin (Multiplatform)            |
 
+Your project uses the api generator and is not listed here?
+Feel free to open a pull request to have it added!
+
 
 ## License
 
