@@ -196,6 +196,10 @@ class GW2v2 : SpecTest(
             .security(ACCOUNT, CHARACTERS)
             .pathParameter("ID", STRING)
 
+        expectEndpoint("/Characters/:ID/Specializations")
+            .security(ACCOUNT, BUILDS, CHARACTERS)
+            .pathParameter("ID", STRING)
+
         expectEndpoint("/Characters/:ID/Training")
             .security(ACCOUNT, BUILDS, CHARACTERS)
             .pathParameter("ID", STRING)

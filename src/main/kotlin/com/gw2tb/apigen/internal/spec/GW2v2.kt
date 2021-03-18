@@ -727,6 +727,29 @@ internal val GW2v2 = GW2APIVersion {
             )
         })
     }
+    "/Characters/:ID/Specializations"(until = V2_SCHEMA_2019_12_19T00_00_00_000Z) {
+        summary = "Returns information about a character's equipped specializations."
+        security = setOf(ACCOUNT, BUILDS, CHARACTERS)
+
+
+        @APIGenDSL
+        fun SchemaRecordBuilder.SPECIALIZATION() = record(description = "Information about an equipped specialization.") {
+            optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
+            "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
+        }
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersSpecializations", description = "Information about a character's equipped specializations.") {
+            "Specializations"(
+                description = "the character's equipped specializations",
+                type = record(description = "Information about a character's equipped specializations.") {
+                    CamelCase("pve").."PvE"(array(SPECIALIZATION()), "the character's PvE specializations")
+                    CamelCase("pvp").."PvP"(array(SPECIALIZATION()), "the character's PvP specializations")
+                    CamelCase("wvw").."WvW"(array(SPECIALIZATION()), "the character's WvW specializations")
+                }
+            )
+        })
+    }
     "/Characters/:ID/Training" {
         summary = "Returns information about a character's (skill-tree) training."
         security = setOf(ACCOUNT, BUILDS, CHARACTERS)
