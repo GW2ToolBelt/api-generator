@@ -123,7 +123,7 @@ For a better understanding of schema types, please refer to their [documentation
 
 ### Setup
 
-This project uses [Gradle's toolchain support](https://docs.gradle.org/6.7/userguide/toolchains.html)
+This project uses [Gradle's toolchain support](https://docs.gradle.org/6.8.3/userguide/toolchains.html)
 to detect and select the JDKs required to run the build. Please refer to the
 build scripts to find out which toolchains are requested.
 
