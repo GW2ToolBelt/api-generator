@@ -47,8 +47,8 @@ differ based on the API version).
 
 Localized data can be accessed by setting the `lang` query parameter to the
 language code. (The API makes some effort to guess the language based on your
-IP geolocation. Hence, it is recommended to always pass request a language
-explicitly for consistent results.)
+IP geolocation. Hence, it is recommended to always request a language explicitly
+for consistent results.)
 
 E.g. use `https://api.guildwars2.com/v2/items?id=43766&lang=en` to request
 english information:
