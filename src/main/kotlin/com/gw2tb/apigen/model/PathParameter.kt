@@ -26,7 +26,7 @@ import com.gw2tb.apigen.schema.*
 /**
  * A parameter that is part of a queries path.
  *
- * See [Endpoint] for further information.
+ * See [APIQuery] for further information.
  *
  * @param key           the key of the parameter (that is used in the route definition)
  * @param type          the type of the parameter

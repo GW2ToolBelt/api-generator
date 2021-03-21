@@ -19,30 +19,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen
+package com.gw2tb.apigen.model
 
 import com.gw2tb.apigen.model.v2.*
+import com.gw2tb.apigen.schema.*
+import java.util.*
 
-/** Provides access to data that may be used for testing. */
-public object TestData {
+public sealed class APIType {
 
-    public operator fun get(api: APIVersion<*, *>, key: String, version: V2SchemaVersion? = null): String {
-        val resource = buildString {
-            append("/com/gw2tb/apigen/")
-            append(if (api == APIVersion.API_V2) "v2" else "v1")
-            append(key.toLowerCase().split("/").joinToString(separator = "_") { if (it.startsWith(":")) "{${it.substring(1)}}" else it })
+    public data class V1(
+        val schema: SchemaClass
+    ) : APIType()
 
-            if (api == APIVersion.API_V2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
-                append("+")
-                append(version.identifier!!.replace(':', '_'))
-            }
+    public data class V2(
+        private val _schema: EnumMap<V2SchemaVersion, SchemaClass>
+    ) : APIType() {
 
-            append(".json")
+        /** Returns the [V2SchemaVersion.V2_SCHEMA_CLASSIC] schema. */
+        public val schema: SchemaClass get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+
+        /** Returns the schema versions. */
+        public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
+
+        /** Returns the appropriate schema for the given [version]. */
+        public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaClass> {
+            return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
         }
 
-        return TestData::class.java.getResourceAsStream(resource).use {
-            it.reader().readText()
-        }
     }
 
 }

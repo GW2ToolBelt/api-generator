@@ -33,6 +33,11 @@ public sealed class QueryType {
 
     }
 
+    /** Queries all available IDs. */
+    public object IDs : QueryType() {
+        override fun toString(): String = "IDs"
+    }
+
     /** Queries by ID `?id={id}`. */
     public object ByID : QueryType() {
         override fun toString(): String = "ByID"

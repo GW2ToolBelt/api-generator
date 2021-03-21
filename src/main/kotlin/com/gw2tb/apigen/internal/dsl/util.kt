@@ -27,16 +27,3 @@ internal val DURATION_INFINITE = Double.POSITIVE_INFINITY.minutes
 
 internal fun String.firstToLowerCase(): String =
     "${toCharArray()[0].toLowerCase()}${substring(1)}"
-
-internal fun String.firstToUpperCase(): String =
-    "${toCharArray()[0].toUpperCase()}${substring(1)}"
-
-internal fun String.prependIndentNonEmpty(indent: String = "    "): String =
-    lineSequence()
-        .map {
-            when {
-                it.isBlank() -> it
-                else -> indent + it
-            }
-        }
-        .joinToString("\n")

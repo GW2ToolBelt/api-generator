@@ -28,21 +28,37 @@ import java.util.*
 /**
  * A Guild Wars 2 API version.
  *
- * @param endpoints             the version's supported endpoints
  * @param supportedLanguages    the version's supported languages
+ * @param supportedQueries      the version's supported queries
+ * @param supportedTypes        the version's supported types
  */
-public data class APIVersion internal constructor(
-    val endpoints: Set<Endpoint>,
-    val supportedLanguages: EnumSet<Language>
+public data class APIVersion<Q : APIQuery, T : APIType> internal constructor(
+    val supportedLanguages: EnumSet<Language>,
+    val supportedQueries: Set<Q>,
+    val supportedTypes: Map<TypeLocation, List<T>>
 ) {
 
     public companion object {
 
-        /** The definition for the API version 2 of the Guild Wars 2 API. */
-        public val API_V2: APIVersion by lazy {
+        /** The definition for the API version 1 of the Guild Wars 2 API. */
+        public val API_V1: APIVersion<APIQuery.V1, APIType.V1> by lazy {
+            val (types, queries) = GW2v1()
+
             APIVersion(
-                endpoints = GW2v2(),
-                supportedLanguages = EnumSet.allOf(Language::class.java)
+                supportedLanguages = EnumSet.of(Language.ENGLISH, Language.FRENCH, Language.GERMAN, Language.SPANISH),
+                supportedQueries = queries,
+                supportedTypes = types
+            )
+        }
+
+        /** The definition for the API version 2 of the Guild Wars 2 API. */
+        public val API_V2: APIVersion<APIQuery.V2, APIType.V2> by lazy {
+            val (types, queries) = GW2v2()
+
+            APIVersion(
+                supportedLanguages = EnumSet.allOf(Language::class.java),
+                supportedQueries = queries,
+                supportedTypes = types
             )
         }
 

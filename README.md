@@ -83,6 +83,7 @@ return all relevant data (e.g. `/v2/build`) and 2. _indexed_ endpoints which ret
 
 Indexed endpoints provide a couple of different parameters to retrieve the data for a given set of IDs. These are
 referred to as `QueryTypes` throughout documentation and source of this project. Possible query types are:
+- querying IDs (e.g. `/v2/items`),
 - querying by ID (e.g. `/v2/items?id={id}`),
 - querying by IDs (e.g. `/v2/items?ids={ids; ","-separated}`), and
 - querying by page (e.g. `/v2/items?page={index}&page_size={size}`).
@@ -102,21 +103,23 @@ When querying by page, the response contains additional header elements:
 
 ### Generating implementations
 
-The library defines one entry-point for retrieving all the information necessary
-to generate implementations for each API version:
-- API version 1 is not yet implemented,
-- `API_V2_DEFINITION`,
+The library defines several entry-points for retrieving all the information
+necessary to generate implementations for each API version:
+- `com.gw2tb.apigen.APIVersion.API_V1`,
+- `com.gw2tb.apigen.APIVersion.API_V2`
 
 and the data exposed by Guild Wars 2 via MumbleLink:
 
-- `MUMBLELINK_IDENTITY_DEFINITION`.
+- `com.gw2tb.apigen.MumbleLink.MUMBLELINK_IDENTITY_DEFINITION`.
 
-These entry-points expose the structure of the API a data as "schema types".
-Schema types are an abstraction roughly representing the data-types and
-data-structures exposed by the API. It is recommended to generate a one-to-one
-mapping between schema mappings and appropriate language or library constructs.
+These entry-points expose the types and queries supported by the API. Types are
+defined as "schema types" - an abstraction that contains necessary information
+about the structure of the APIs data-types. It is recommended to generate a
+one-to-one  mapping between schema mappings and appropriate language or library
+constructs.
 
-For a better understanding of schema types, please refer to their [documentation](src/main/kotlin/com/gw2tb/apigen/schema/schema.kt).
+For a better understanding of schema types and how to work with them, please
+refer to the [user guide](docs/userguide).
 
 
 ## Building from source
@@ -173,7 +176,7 @@ Each endpoint definition must contain a `summary` describing what the endpoint
 does, and a `schema` which defines the shape of the returned data.
 
 For further information on which functions to use in what situations, please
-refer to the documentation of the [DSL](src/main/kotlin/com/gw2tb/apigen/internal/dsl).
+refer to the documentation of the [developer guide](docs/devguide).
 
 
 ## Implementations

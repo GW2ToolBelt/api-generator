@@ -94,7 +94,9 @@ internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, u
     }.associateBy { keySelector(it) }
 
 @APIGenDSL
-internal class SchemaConditionalBuilder : SchemaBuilder {
+internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
+
+    override val nestedTypes: MutableMap<String, MutableList<T>> = mutableMapOf()
 
     private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
     val interpretations get() = _interpretations.map { it.interpretation }
@@ -109,6 +111,12 @@ internal class SchemaConditionalBuilder : SchemaBuilder {
     @APIGenDSL
     operator fun String.invoke(type: SchemaType): SchemaConditionalInterpretationBuilder {
         return SchemaConditionalInterpretationBuilder(this, type).also { _interpretations += it }
+    }
+
+    /** Registers a conditional interpretation using the @receiver's name as key. */
+    @APIGenDSL
+    operator fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder {
+        return SchemaConditionalInterpretationBuilder(name, this).also { _interpretations += it }
     }
 
     /** Marks a deprecated interpretation. */
@@ -142,7 +150,6 @@ internal class SchemaConditionalInterpretationBuilder(
 ) {
 
     private var isUnused = true
-
 
     var isDeprecated = false
         set(value) {
@@ -178,7 +185,9 @@ internal class SchemaConditionalInterpretationBuilder(
 }
 
 @APIGenDSL
-internal class SchemaRecordBuilder : SchemaBuilder {
+internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilder<T> {
+
+    override val nestedTypes: MutableMap<String, MutableList<T>> = mutableMapOf()
 
     private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
     val properties get() = _properties.map { it.property }

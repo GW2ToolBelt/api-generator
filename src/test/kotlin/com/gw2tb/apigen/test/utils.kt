@@ -19,30 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen
+package com.gw2tb.apigen.test
 
-import com.gw2tb.apigen.model.v2.*
+import com.gw2tb.apigen.schema.*
 
-/** Provides access to data that may be used for testing. */
-public object TestData {
-
-    public operator fun get(api: APIVersion<*, *>, key: String, version: V2SchemaVersion? = null): String {
-        val resource = buildString {
-            append("/com/gw2tb/apigen/")
-            append(if (api == APIVersion.API_V2) "v2" else "v1")
-            append(key.toLowerCase().split("/").joinToString(separator = "_") { if (it.startsWith(":")) "{${it.substring(1)}}" else it })
-
-            if (api == APIVersion.API_V2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
-                append("+")
-                append(version.identifier!!.replace(':', '_'))
-            }
-
-            append(".json")
-        }
-
-        return TestData::class.java.getResourceAsStream(resource).use {
-            it.reader().readText()
-        }
-    }
-
-}
+val SchemaType.array get() = SchemaArray(this, false, null)

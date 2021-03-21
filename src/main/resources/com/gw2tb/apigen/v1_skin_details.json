@@ -1,0 +1,168 @@
+{
+    "skin_id": "1350",
+    "name": "Zodiac Light Vest",
+    "type": "Armor",
+    "flags": [
+        "ShowInWardrobe"
+    ],
+    "restrictions": [],
+    "rarity": "Basic",
+    "icon_file_id": "740312",
+    "icon_file_signature": "021048C317DFFFB6727E0955A2D6C7EFFBE9425B",
+    "armor": {
+        "type": "Coat",
+        "weight_class": "Light",
+        "dye_slots": {
+            "asura_female": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "asura_male": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "charr_female": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "charr_male": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "human_female": [
+                {
+                    "color_id": 1,
+                    "material": "Leather"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "human_male": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "norn_female": [
+                {
+                    "color_id": 1,
+                    "material": "Leather"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "norn_male": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "sylvari_female": [
+                {
+                    "color_id": 1,
+                    "material": "Leather"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ],
+            "sylvari_male": [
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Metal"
+                },
+                {
+                    "color_id": 1,
+                    "material": "Cloth"
+                },
+                null
+            ]
+        }
+    }
+}

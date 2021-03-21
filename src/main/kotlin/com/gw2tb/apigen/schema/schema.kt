@@ -28,6 +28,10 @@ import com.gw2tb.apigen.model.v2.*
 public sealed class SchemaType
 public sealed class SchemaPrimitive : SchemaType()
 
+public sealed class SchemaClass : SchemaType() {
+    public abstract val name: String
+}
+
 /** A schema representing primitive boolean types. */
 public object SchemaBoolean : SchemaPrimitive()
 
@@ -88,13 +92,13 @@ public data class SchemaMap internal constructor(
  *                                      sentence "This field holds {description}.")
  */
 public data class SchemaConditional internal constructor(
-    public val name: String?,
+    public override val name: String,
     public val disambiguationBy: String,
     public val disambiguationBySideProperty: Boolean,
     public val sharedProperties: Map<String, SchemaRecord.Property>,
     public val interpretations: Map<String, Interpretation>,
     public val description: String
-) : SchemaType() {
+) : SchemaClass() {
 
     /**
      * A conditional interpretation.
@@ -124,10 +128,10 @@ public data class SchemaConditional internal constructor(
  *                      holds {description}.")
  */
 public data class SchemaRecord internal constructor(
-    public val name: String?,
+    public override val name: String,
     public val properties: Map<String, Property>,
     public val description: String
-) : SchemaType() {
+) : SchemaClass() {
 
     /**
      * A record property.
@@ -158,8 +162,9 @@ public data class SchemaRecord internal constructor(
 }
 
 internal class SchemaBlueprint internal constructor(
+    override val name: String,
     internal val versions: Map<V2SchemaVersion, SchemaType?>
-) : SchemaType()
+) : SchemaClass()
 
 /** A property's optionality. */
 public sealed class Optionality {

@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("unused")
+@file:Suppress("PropertyName")
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.model.*
@@ -32,38 +32,20 @@ import kotlin.time.*
 internal annotation class APIGenDSL
 
 @Suppress("FunctionName")
-internal fun GW2APIVersion(configure: GW2APIVersionBuilder.() -> Unit): () -> Set<Endpoint> {
-    return fun() = GW2APIVersionBuilder().also(configure).endpoints
-}
-
-private fun SchemaConditional.Interpretation.copyForVersion(version: V2SchemaVersion): SchemaConditional.Interpretation = copy(
-    type = if (type is SchemaBlueprint) {
-        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
-    } else {
-        type
-    }
-)
-
-private fun SchemaRecord.Property.copyForVersion(version: V2SchemaVersion): SchemaRecord.Property = copy(
-    type = if (type is SchemaBlueprint) {
-        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
-    } else {
-        type
-    }
-)
+internal fun <Q : APIQuery, B : APIVersionBuilder<Q, T>, T : APIType> GW2APIVersion(
+    builder: () -> B,
+    configure: B.() -> Unit
+): () -> Pair<Map<TypeLocation, List<T>>, Set<Q>> =
+    fun() = builder().also(configure).let { it.types to it.queries }
 
 @APIGenDSL
-internal class GW2APIVersionBuilder {
+internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
 
-    private val _endpoints = mutableListOf<GW2APIEndpointBuilder>()
-    val endpoints get() = _endpoints.map { it.endpoint }.toSet()
+    protected val _queries = mutableListOf<APIQueryBuilder<Q, T>>()
+    val queries get() = _queries.flatMap { it.finalize() }.toSet()
 
-    operator fun String.invoke(
-        since: V2SchemaVersion? = null,
-        until: V2SchemaVersion? = null,
-        configure: GW2APIEndpointBuilder.() -> Unit
-    ) =
-        GW2APIEndpointBuilder(this, since, until).also(configure).also { _endpoints.add(it) }
+    private val _types = mutableMapOf<TypeLocation, List<T>>()
+    val types get(): Map<TypeLocation, List<T>> = HashMap(_types)
 
     @APIGenDSL
     fun array(
@@ -86,43 +68,26 @@ internal class GW2APIVersionBuilder {
     fun record(
         name: String,
         description: String,
-        configure: SchemaRecordBuilder.() -> Unit
-    ): SchemaType {
-        val properties = SchemaRecordBuilder().also(configure).properties
-        val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
-            name,
-            properties.getForVersion(
-                SchemaRecord.Property::since,
-                SchemaRecord.Property::until,
-                SchemaRecord.Property::serialName,
-                V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-            description
-        )
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = recordImpl(name, description, types, ::createType, configure)
+        _types += types.mapKeys { TypeLocation(null, it.key) }
 
-        V2SchemaVersion.values().forEachIndexed { _, version ->
-            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+        return type
+    }
 
-            if (properties.any { it.hasChangedInVersion(version) }) {
-                versions[version] = SchemaRecord(
-                    name,
-                    properties.getForVersion(
-                        SchemaRecord.Property::since,
-                        SchemaRecord.Property::until,
-                        SchemaRecord.Property::serialName,
-                        version
-                    ).mapValues { (_, property) -> property.copyForVersion(version) },
-                    description
-                )
-            }
-        }
+    @APIGenDSL
+    fun APIQueryBuilder<Q, T>.record(
+        name: String,
+        description: String,
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = recordImpl(name, description, types, ::createType, configure)
+        _types += types.mapKeys { TypeLocation(endpoint, it.key) }
 
-        return if (versions.size == 1) {
-            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-        } else {
-            SchemaBlueprint(versions)
-        }
+        return type
     }
 
     @APIGenDSL
@@ -131,77 +96,226 @@ internal class GW2APIVersionBuilder {
         description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder.() -> Unit
-    ): SchemaType {
-        val sharedProps = if (sharedConfigure !== null) SchemaRecordBuilder().also(sharedConfigure).properties else emptyList()
-        val interpretations = SchemaConditionalBuilder().also(configure).interpretations
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, ::createType, configure)
+        _types += types.mapKeys { TypeLocation(null, it.key) }
 
-        val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
-        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
-            SchemaRecord.Property::since,
-            SchemaRecord.Property::until,
-            SchemaRecord.Property::serialName,
-            V2SchemaVersion.V2_SCHEMA_CLASSIC
-        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
+        return type
+    }
 
-        val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
-            name,
-            disambiguationBy,
-            disambiguationBySideProperty,
-            propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-            interpretations.getForVersion(
-                SchemaConditional.Interpretation::since,
-                SchemaConditional.Interpretation::until,
-                SchemaConditional.Interpretation::interpretationKey,
-                V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-            description
-        )
+    @APIGenDSL
+    fun APIQueryBuilder<Q, T>.conditional(
+        name: String,
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, ::createType, configure)
 
-        V2SchemaVersion.values().forEachIndexed { index, version ->
-            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+        _types.putAll(types.mapKeys { TypeLocation(endpoint, it.key) })
 
-            if (sharedProps.any { it.hasChangedInVersion(version) }) {
-                propVersions[version] = sharedProps.getForVersion(
-                    SchemaRecord.Property::since,
-                    SchemaRecord.Property::until,
-                    SchemaRecord.Property::serialName,
-                    version
-                ).mapValues { (_, property) -> property.copyForVersion(version) }
-            } else {
-                propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
-            }
+        return type
+    }
 
-            if (interpretations.any { it.hasChangedInVersion(version) }) {
-                versions[version] = SchemaConditional(
-                    name,
-                    disambiguationBy,
-                    disambiguationBySideProperty,
-                    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-                    interpretations.getForVersion(
-                        SchemaConditional.Interpretation::since,
-                        SchemaConditional.Interpretation::until,
-                        SchemaConditional.Interpretation::interpretationKey,
-                        version
-                    ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
-                    description
-                )
-            }
+    abstract fun createType(type: SchemaClass): T
+
+    class V1 : APIVersionBuilder<APIQuery.V1, APIType.V1>() {
+
+        operator fun String.invoke(
+            endpoint: String = this,
+            configure: APIQueryBuilder.V1.() -> Unit
+        ) =
+            APIQueryBuilder.V1(::createType, this, endpoint)
+                .also(configure)
+                .also { _queries.add(it) }
+
+        override fun createType(type: SchemaClass): APIType.V1 {
+            require(type !is SchemaBlueprint)
+            return APIType.V1(type)
         }
 
-        return if (versions.size == 1) {
-            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-        } else {
-            SchemaBlueprint(versions)
+    }
+
+    class V2 : APIVersionBuilder<APIQuery.V2, APIType.V2>() {
+
+        operator fun String.invoke(
+            endpoint: String = this,
+            since: V2SchemaVersion? = null,
+            until: V2SchemaVersion? = null,
+            configure: APIQueryBuilder.V2.() -> Unit
+        ) =
+            APIQueryBuilder.V2(::createType, this, endpoint, since, until)
+                .also(configure)
+                .also { _queries.add(it) }
+
+        override fun createType(type: SchemaClass): APIType.V2 = when (type) {
+            is SchemaBlueprint -> APIType.V2(EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).apply {
+                type.versions.forEach { (key, value) -> this[key] = value }
+            })
+            else -> APIType.V2(EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to type)))
         }
+
     }
 
 }
 
+private fun SchemaConditional.Interpretation.copyForVersion(version: V2SchemaVersion): SchemaConditional.Interpretation = copy(
+    type = if (type is SchemaBlueprint) {
+        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+    } else {
+        type
+    }
+)
+
+private fun SchemaRecord.Property.copyForVersion(version: V2SchemaVersion): SchemaRecord.Property = copy(
+    type = if (type is SchemaBlueprint) {
+        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+    } else {
+        type
+    }
+)
+
+private fun <T : APIType> conditionalImpl(
+    name: String,
+    description: String,
+    disambiguationBy: String,
+    disambiguationBySideProperty: Boolean,
+    sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
+    types: MutableMap<String, MutableList<T>>,
+    apiTypeFactory: (SchemaClass) -> T,
+    configure: SchemaConditionalBuilder<T>.() -> Unit
+): SchemaClass {
+    val bSharedProps = sharedConfigure?.let { SchemaRecordBuilder<T>(name).also(it) }
+    val bInterpretations = SchemaConditionalBuilder<T>().also(configure)
+
+    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+    bInterpretations.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+
+    val sharedProps = bSharedProps?.properties ?: emptyList()
+    val interpretations = bInterpretations.interpretations
+
+    val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
+    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
+        SchemaRecord.Property::since,
+        SchemaRecord.Property::until,
+        SchemaRecord.Property::serialName,
+        V2SchemaVersion.V2_SCHEMA_CLASSIC
+    ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
+
+    val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
+    versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
+        name,
+        disambiguationBy,
+        disambiguationBySideProperty,
+        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+        interpretations.getForVersion(
+            SchemaConditional.Interpretation::since,
+            SchemaConditional.Interpretation::until,
+            SchemaConditional.Interpretation::interpretationKey,
+            V2SchemaVersion.V2_SCHEMA_CLASSIC
+        ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
+        description
+    )
+
+    V2SchemaVersion.values().forEachIndexed { index, version ->
+        if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+        if (sharedProps.any { it.hasChangedInVersion(version) }) {
+            propVersions[version] = sharedProps.getForVersion(
+                SchemaRecord.Property::since,
+                SchemaRecord.Property::until,
+                SchemaRecord.Property::serialName,
+                version
+            ).mapValues { (_, property) -> property.copyForVersion(version) }
+        } else {
+            propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
+        }
+
+        if (interpretations.any { it.hasChangedInVersion(version) }) {
+            versions[version] = SchemaConditional(
+                name,
+                disambiguationBy,
+                disambiguationBySideProperty,
+                propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
+                interpretations.getForVersion(
+                    SchemaConditional.Interpretation::since,
+                    SchemaConditional.Interpretation::until,
+                    SchemaConditional.Interpretation::interpretationKey,
+                    version
+                ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
+                description
+            )
+        }
+    }
+
+    return (if (versions.size == 1) {
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+    } else {
+        SchemaBlueprint(name, versions)
+    }).also {
+        types.computeIfAbsent("") { mutableListOf() }.add(apiTypeFactory(it))
+    }
+}
+
+private fun <T : APIType> recordImpl(
+    name: String,
+    description: String,
+    types: MutableMap<String, MutableList<T>>,
+    apiTypeFactory: (SchemaClass) -> T,
+    configure: SchemaRecordBuilder<T>.() -> Unit
+): SchemaClass {
+    val bProperties = SchemaRecordBuilder<T>(name).also(configure)
+    bProperties.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+
+    val properties = bProperties.properties
+    val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
+    versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
+        name,
+        properties.getForVersion(
+            SchemaRecord.Property::since,
+            SchemaRecord.Property::until,
+            SchemaRecord.Property::serialName,
+            V2SchemaVersion.V2_SCHEMA_CLASSIC
+        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
+        description
+    )
+
+    V2SchemaVersion.values().forEachIndexed { _, version ->
+        if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
+
+        if (properties.any { it.hasChangedInVersion(version) }) {
+            versions[version] = SchemaRecord(
+                name,
+                properties.getForVersion(
+                    SchemaRecord.Property::since,
+                    SchemaRecord.Property::until,
+                    SchemaRecord.Property::serialName,
+                    version
+                ).mapValues { (_, property) -> property.copyForVersion(version) },
+                description
+            )
+        }
+    }
+
+    return (if (versions.size == 1) {
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!! as SchemaClass
+    } else {
+        SchemaBlueprint(name, versions)
+    }).also {
+        types.computeIfAbsent("") { mutableListOf() }.add(apiTypeFactory(it))
+    }
+}
+
 @APIGenDSL
-internal interface SchemaBuilder {
+internal interface SchemaBuilder<T : APIType> {
+
+    val nestedTypes: MutableMap<String, MutableList<T>>
 
     @APIGenDSL
     fun array(
@@ -218,178 +332,23 @@ internal interface SchemaBuilder {
     ): SchemaType =
         SchemaMap(keys, values, nullableValues, null)
 
-    @APIGenDSL
-    fun record(
-        description: String,
-        name: String? = null,
-        configure: SchemaRecordBuilder.() -> Unit
-    ): SchemaType {
-        val properties = SchemaRecordBuilder().also(configure).properties
-        val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
-            name,
-            properties.getForVersion(
-                SchemaRecord.Property::since,
-                SchemaRecord.Property::until,
-                SchemaRecord.Property::serialName,
-                V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-            description
-        )
-
-        V2SchemaVersion.values().forEachIndexed { _, version ->
-            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
-
-            if (properties.any { it.hasChangedInVersion(version) }) {
-                versions[version] = SchemaRecord(
-                    name,
-                    properties.getForVersion(
-                        SchemaRecord.Property::since,
-                        SchemaRecord.Property::until,
-                        SchemaRecord.Property::serialName,
-                        version
-                    ).mapValues { (_, property) -> property.copyForVersion(version) },
-                    description
-                )
-            }
-        }
-
-        return if (versions.size == 1) {
-            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-        } else {
-            SchemaBlueprint(versions)
-        }
-    }
-
-    @APIGenDSL
-    fun conditional(
-        description: String,
-        name: String? = null,
-        disambiguationBy: String = "type",
-        disambiguationBySideProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder.() -> Unit
-    ): SchemaType {
-        val sharedProps = if (sharedConfigure !== null) SchemaRecordBuilder().also(sharedConfigure).properties else emptyList()
-        val interpretations = SchemaConditionalBuilder().also(configure).interpretations
-
-        val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
-        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
-            SchemaRecord.Property::since,
-            SchemaRecord.Property::until,
-            SchemaRecord.Property::serialName,
-            V2SchemaVersion.V2_SCHEMA_CLASSIC
-        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
-
-        val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
-            name,
-            disambiguationBy,
-            disambiguationBySideProperty,
-            propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-            interpretations.getForVersion(
-                SchemaConditional.Interpretation::since,
-                SchemaConditional.Interpretation::until,
-                SchemaConditional.Interpretation::interpretationKey,
-                V2SchemaVersion.V2_SCHEMA_CLASSIC
-            ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-            description
-        )
-
-        V2SchemaVersion.values().forEachIndexed { index, version ->
-            if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
-
-            if (sharedProps.any { it.hasChangedInVersion(version) }) {
-                propVersions[version] = sharedProps.getForVersion(
-                    SchemaRecord.Property::since,
-                    SchemaRecord.Property::until,
-                    SchemaRecord.Property::serialName,
-                    version
-                ).mapValues { (_, property) -> property.copyForVersion(version) }
-            } else {
-                propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
-            }
-
-            if (interpretations.any { it.hasChangedInVersion(version) }) {
-                versions[version] = SchemaConditional(
-                    name,
-                    disambiguationBy,
-                    disambiguationBySideProperty,
-                    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-                    interpretations.getForVersion(
-                        SchemaConditional.Interpretation::since,
-                        SchemaConditional.Interpretation::until,
-                        SchemaConditional.Interpretation::interpretationKey,
-                        version
-                    ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
-                    description
-                )
-            }
-        }
-
-        return if (versions.size == 1) {
-            versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-        } else {
-            SchemaBlueprint(versions)
-        }
-    }
-
 }
 
-internal class GW2APIEndpointBuilder(
-    private val route: String,
-    private val since: V2SchemaVersion?,
-    private val until: V2SchemaVersion?
-) {
+internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val createTypeFun: (SchemaClass) -> T) {
 
-    val endpoint get() =
-        Endpoint(
-            route = route,
-            since = since,
-            until = until,
-            summary = summary,
-            cache = cache,
-            security = security ?: emptySet(),
-            isLocalized = isLocalized,
-            queryTypes = if (this::queryTypes.isInitialized) queryTypes else emptySet(),
-            queryParameters = queryParameters.values.toList(),
-            pathParameters = pathParameters.values.toList(),
-            _schema = schema
-        )
+    protected abstract val route: String
+    abstract val endpoint: String
 
-    private lateinit var schema: EnumMap<V2SchemaVersion, SchemaType>
+    var summary: String = ""
 
-    /** A short summary describing the endpoint. This should be a single, complete sentence. */
-    lateinit var summary: String
+    var isLocalized: Boolean = false
 
     var cache: Duration? = null
     var security: Set<TokenScope>? = null
 
-    var isLocalized: Boolean = false
-
-    private lateinit var queryTypes: Set<QueryType>
-    private val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
-    private val queryParameters: MutableMap<String, QueryParameter> = mutableMapOf()
-
     fun security(vararg required: TokenScope) { security = required.toSet() }
 
-    fun schema(schema: SchemaType) {
-        this.schema = V2SchemaVersion.values()
-            .filter { it === V2SchemaVersion.V2_SCHEMA_CLASSIC || schema.hasChangedInVersion(it) }
-            .associateWithTo(EnumMap(V2SchemaVersion::class.java)) { schema.copyForVersion(it) }
-    }
-
-    fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
-        this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
-            schemas.forEach { map[it.first] = it.second }
-        }
-    }
-
-    fun supportedQueries(vararg types: QueryType) {
-        check(!this::queryTypes.isInitialized)
-        queryTypes = types.toSet()
-    }
-
+    protected val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
     fun pathParameter(name: String, type: SchemaPrimitive, description: String, key: String = name, camelCase: String = name.firstToLowerCase()) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
@@ -397,10 +356,157 @@ internal class GW2APIEndpointBuilder(
         pathParameters[key] = PathParameter(key, type, description, name, camelCase)
     }
 
-    fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String = name, camelCase: String = name.firstToLowerCase(), isOptional: Boolean = false) {
+    protected val queryParameters: MutableMap<String, QueryParameter> = mutableMapOf()
+    fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String = name.toLowerCase(Locale.ENGLISH), camelCase: String = name.firstToLowerCase(), isOptional: Boolean = false) {
         check(key !in queryParameters)
 
         queryParameters[key] = QueryParameter(key, type, description, name, camelCase, isOptional)
+    }
+
+    protected lateinit var queryTypes: Set<QueryType>
+
+    fun supportedQueries(vararg types: QueryType) {
+        check(!this::queryTypes.isInitialized)
+        queryTypes = types.toSet()
+    }
+
+    protected lateinit var schema: EnumMap<V2SchemaVersion, SchemaType>
+    fun schema(schema: SchemaType) {
+        this.schema = V2SchemaVersion.values()
+            .filter { it === V2SchemaVersion.V2_SCHEMA_CLASSIC || schema.hasChangedInVersion(it) }
+            .associateWithTo(EnumMap(V2SchemaVersion::class.java)) { schema.copyForVersion(it) }
+    }
+
+    abstract fun finalize(): Collection<Q>
+
+    @APIGenDSL
+    fun SchemaBuilder<T>.record(
+        name: String,
+        description: String,
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = recordImpl(name, description, types, createTypeFun, configure)
+        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
+
+        return type
+    }
+
+    @APIGenDSL
+    fun SchemaBuilder<T>.conditional(
+        name: String,
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, createTypeFun, configure)
+        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
+
+        return type
+    }
+
+    class V1(
+        createTypeFun: (SchemaClass) -> APIType.V1,
+        override val route: String,
+        override val endpoint: String
+    ) : APIQueryBuilder<APIQuery.V1, APIType.V1>(createTypeFun) {
+
+        override fun finalize(): Collection<APIQuery.V1> = listOf(
+            APIQuery.V1(
+                route = route,
+                endpoint = endpoint,
+                summary = summary,
+                pathParameters = pathParameters,
+                queryParameters = queryParameters,
+                isLocalized = isLocalized,
+                cache = cache,
+                schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+            )
+        )
+
+    }
+
+    class V2(
+        createTypeFun: (SchemaClass) -> APIType.V2,
+        override val route: String,
+        override val endpoint: String,
+        private val since: V2SchemaVersion?,
+        private val until: V2SchemaVersion?
+    ) : APIQueryBuilder<APIQuery.V2, APIType.V2>(createTypeFun) {
+
+        init {
+            require((since == null || until == null) || since < until)
+        }
+
+        fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
+            this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
+                schemas.forEach { map[it.first] = it.second }
+            }
+        }
+
+        private fun buildQuery(
+            queryParameters: Map<String, QueryParameter>? = null,
+            queryDetails: QueryDetails? = null
+        ) = APIQuery.V2(
+            route = route,
+            endpoint = endpoint,
+            summary = summary,
+            pathParameters = pathParameters,
+            queryParameters = queryParameters ?: this.queryParameters,
+            queryDetails = queryDetails,
+            isLocalized = isLocalized && (queryDetails?.queryType != QueryType.IDs),
+            cache = cache,
+            since = since,
+            until = until,
+            security = security ?: emptySet(),
+            _schema = schema
+        )
+
+        @OptIn(ExperimentalStdlibApi::class)
+        override fun finalize(): Collection<APIQuery.V2> = buildList {
+            if (this@V2::queryTypes.isInitialized) {
+                val idType: SchemaPrimitive = when (val schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]) {
+                    is SchemaConditional -> schema.sharedProperties["id"]?.type
+                    is SchemaRecord -> schema.properties["id"]?.type
+                    else -> TODO()
+                } as? SchemaPrimitive ?: TODO()
+
+                add(buildQuery(
+                    queryParameters = queryParameters,
+                    queryDetails = QueryDetails(QueryType.IDs, idType)
+                ))
+
+                queryTypes.forEach { queryType ->
+                    val queryParameters = mutableMapOf<String, QueryParameter>()
+                    queryParameters += this@V2.queryParameters
+
+                    when (queryType) {
+                        is QueryType.ByID -> {
+                            queryParameters["id"] = QueryParameter("id", idType, "", "ID", "ID", false)
+                        }
+                        is QueryType.ByIDs -> {
+                            queryParameters["ids"] = QueryParameter("ids", SchemaArray(idType, false, null), "", "IDs", "IDs", false)
+                        }
+                        is QueryType.ByPage -> {
+                            queryParameters["page"] = QueryParameter("page", INTEGER, "", "Page", "page", false)
+                            queryParameters["page_size"] = QueryParameter("page_size", INTEGER, "", "PageSize", "pageSize", true)
+                        }
+                        else -> error("")
+                    }
+
+                    add(buildQuery(
+                        queryParameters = queryParameters,
+                        queryDetails = QueryDetails(queryType, idType)
+                    ))
+                }
+            } else {
+                add(buildQuery())
+            }
+        }
+
     }
 
 }

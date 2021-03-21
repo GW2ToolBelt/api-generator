@@ -32,12 +32,10 @@ import com.gw2tb.apigen.schema.*
  * @param name          the name of the parameter in _TitleCase_
  * @param camelCaseName the name of the parameter in _camelCase_
  * @param isOptional    whether or not the parameter is optional
- *
- * @since   0.1.0
  */
 public data class QueryParameter internal constructor(
     val key: String,
-    val type: SchemaPrimitive,
+    val type: SchemaType,
     val description: String,
     val name: String,
     val camelCaseName: String,
