@@ -44,8 +44,8 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     protected val _queries = mutableListOf<APIQueryBuilder<Q, T>>()
     val queries get() = _queries.flatMap { it.finalize() }.toSet()
 
-    private val _types = mutableMapOf<TypeLocation, List<T>>()
-    val types get(): Map<TypeLocation, List<T>> = HashMap(_types)
+    protected val _types = mutableMapOf<TypeLocation, MutableList<T>>()
+    val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList<T>(v) })
 
     @APIGenDSL
     fun array(
@@ -72,7 +72,7 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     ): SchemaClass {
         val types = mutableMapOf<String, MutableList<T>>()
         val type = recordImpl(name, description, types, ::createType, configure)
-        _types += types.mapKeys { TypeLocation(null, it.key) }
+        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
 
         return type
     }
@@ -85,7 +85,7 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     ): SchemaClass {
         val types = mutableMapOf<String, MutableList<T>>()
         val type = recordImpl(name, description, types, ::createType, configure)
-        _types += types.mapKeys { TypeLocation(endpoint, it.key) }
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
 
         return type
     }
@@ -96,12 +96,13 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
         description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): SchemaClass {
         val types = mutableMapOf<String, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, ::createType, configure)
-        _types += types.mapKeys { TypeLocation(null, it.key) }
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
 
         return type
     }
@@ -112,13 +113,13 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
         description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): SchemaClass {
         val types = mutableMapOf<String, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, ::createType, configure)
-
-        _types.putAll(types.mapKeys { TypeLocation(endpoint, it.key) })
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
 
         return type
     }
@@ -150,13 +151,18 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
             until: V2SchemaVersion? = null,
             configure: APIQueryBuilder.V2.() -> Unit
         ) =
-            APIQueryBuilder.V2(::createType, this, endpoint, since, until)
+            APIQueryBuilder.V2(::createType, this, endpoint, since, until, _types)
                 .also(configure)
                 .also { _queries.add(it) }
 
         override fun createType(type: SchemaClass): APIType.V2 = when (type) {
-            is SchemaBlueprint -> APIType.V2(EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).apply {
-                type.versions.forEach { (key, value) -> this[key] = value }
+            is SchemaBlueprint -> APIType.V2(EnumMap<V2SchemaVersion, SchemaClass>(V2SchemaVersion::class.java).apply {
+                type.versions.forEach { (version, type) ->
+                    if (type !is SchemaClass) return@forEach
+                    // TODO Should we try to extract the first (possibly nested) class here?
+
+                    this[version] = type
+                }
             })
             else -> APIType.V2(EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to type)))
         }
@@ -186,6 +192,7 @@ private fun <T : APIType> conditionalImpl(
     description: String,
     disambiguationBy: String,
     disambiguationBySideProperty: Boolean,
+    interpretationInNestedProperty: Boolean,
     sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
     types: MutableMap<String, MutableList<T>>,
     apiTypeFactory: (SchemaClass) -> T,
@@ -213,6 +220,7 @@ private fun <T : APIType> conditionalImpl(
         name,
         disambiguationBy,
         disambiguationBySideProperty,
+        interpretationInNestedProperty,
         propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
         interpretations.getForVersion(
             SchemaConditional.Interpretation::since,
@@ -242,6 +250,7 @@ private fun <T : APIType> conditionalImpl(
                 name,
                 disambiguationBy,
                 disambiguationBySideProperty,
+                interpretationInNestedProperty,
                 propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
                 interpretations.getForVersion(
                     SchemaConditional.Interpretation::since,
@@ -398,11 +407,12 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         description: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): SchemaClass {
         val types = mutableMapOf<String, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, sharedConfigure, types, createTypeFun, configure)
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, createTypeFun, configure)
         types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
 
         return type
@@ -434,7 +444,8 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         override val route: String,
         override val endpoint: String,
         private val since: V2SchemaVersion?,
-        private val until: V2SchemaVersion?
+        private val until: V2SchemaVersion?,
+        private val _types: MutableMap<TypeLocation, MutableList<APIType.V2>>
     ) : APIQueryBuilder<APIQuery.V2, APIType.V2>(createTypeFun) {
 
         init {
@@ -442,12 +453,29 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         }
 
         fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
+            val loc = TypeLocation(endpoint, null)
+            val types = _types[loc]
+
+            if (types != null) {
+                for ((_, schema) in schemas) types.removeIf { it.schema == schema }
+
+                types += APIType.V2(EnumMap<V2SchemaVersion, SchemaClass>(V2SchemaVersion::class.java).apply {
+                    schemas.forEach { (version, type) ->
+                        if (type !is SchemaClass) return@forEach
+                        // TODO Should we try to extract the first (possibly nested) class here?
+
+                        this[version] = type
+                    }
+                })
+            }
+
             this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
                 schemas.forEach { map[it.first] = it.second }
             }
         }
 
         private fun buildQuery(
+            schema: EnumMap<V2SchemaVersion, SchemaType>,
             queryParameters: Map<String, QueryParameter>? = null,
             queryDetails: QueryDetails? = null
         ) = APIQuery.V2(
@@ -475,22 +503,28 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                 } as? SchemaPrimitive ?: TODO()
 
                 add(buildQuery(
+                    schema = EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to SchemaArray(idType, false, description = "the available IDs"))),
                     queryParameters = queryParameters,
                     queryDetails = QueryDetails(QueryType.IDs, idType)
                 ))
 
                 queryTypes.forEach { queryType ->
+                    val schema: EnumMap<V2SchemaVersion, SchemaType>
+
                     val queryParameters = mutableMapOf<String, QueryParameter>()
                     queryParameters += this@V2.queryParameters
 
                     when (queryType) {
                         is QueryType.ByID -> {
+                            schema = this@V2.schema
                             queryParameters["id"] = QueryParameter("id", idType, "", "ID", "ID", false)
                         }
                         is QueryType.ByIDs -> {
+                            schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
                             queryParameters["ids"] = QueryParameter("ids", SchemaArray(idType, false, null), "", "IDs", "IDs", false)
                         }
                         is QueryType.ByPage -> {
+                            schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
                             queryParameters["page"] = QueryParameter("page", INTEGER, "", "Page", "page", false)
                             queryParameters["page_size"] = QueryParameter("page_size", INTEGER, "", "PageSize", "pageSize", true)
                         }
@@ -498,12 +532,13 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                     }
 
                     add(buildQuery(
+                        schema = schema,
                         queryParameters = queryParameters,
                         queryDetails = QueryDetails(queryType, idType)
                     ))
                 }
             } else {
-                add(buildQuery())
+                add(buildQuery(schema))
             }
         }
 

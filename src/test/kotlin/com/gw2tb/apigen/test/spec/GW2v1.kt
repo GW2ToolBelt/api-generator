@@ -24,8 +24,9 @@ package com.gw2tb.apigen.test.spec
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.*
+import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
-import kotlinx.serialization.json.*
+import org.junit.jupiter.api.*
 import kotlin.time.*
 
 class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
@@ -35,22 +36,44 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         expectQuery(
             "/SkinDetails",
             isLocalized = true,
+            cache = 60.minutes,
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
         )
 
-        expectQuery("/Skins")
+        expectQuery(
+            "/Skins",
+            cache = 60.minutes
+        )
     }
 ) {
 
     override fun assertProperties(expected: ExpectedAPIv1Query, actual: APIQuery.V1) {}
 
-    override fun assertSchema(expected: ExpectedAPIv1Query, actual: APIQuery.V1) {
-        val schema = actual.schema
-        val data = TestData[spec, actual.route]
+    override fun testTypes(queries: Collection<APIQuery.V1>) = sequence<DynamicTest> {
+        if (queries.size != 1) error("")
 
-        val element = Json.parseToJsonElement(data)
-        schema.assertMatches(element)
-    }
+        val query = queries.first()
+
+        fun SchemaType.firstPossiblyNestedClassOrNull(): SchemaClass? = when (this) {
+            is SchemaClass -> this
+            is SchemaArray -> items.firstPossiblyNestedClassOrNull()
+            else -> null
+        }
+
+        fun SchemaType.isClassOrArrayOfClasses() = firstPossiblyNestedClassOrNull() != null
+        if (!query.schema.isClassOrArrayOfClasses()) return@sequence
+
+        val supportedType = spec.supportedTypes.filter { (key, _) -> key.endpoint == query.endpoint }
+            .flatMap { (_, value) -> value }
+            .find { it.schema == query.schema.firstPossiblyNestedClassOrNull() }
+
+        yield(DynamicTest.dynamicTest("$prefix${query.route}") {
+            assertNotNull(supportedType)
+
+            val data = TestData[spec, query.route]
+            assertSchema(query.schema, data)
+        })
+    }.asIterable()
 
     data class ExpectedAPIv1Query(
         override val route: String,

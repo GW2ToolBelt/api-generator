@@ -26,85 +26,79 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.Assertions.*
 import kotlin.time.*
 
-abstract class SpecTest(private val prefix: String, private val spec: APIVersion, builder: SpecBuilder.() -> Unit) {
+abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuery>(
+    protected val prefix: String,
+    protected val spec: APIVersion<Q, T>,
+    private val expectedQueries: List<EQ>
+) {
 
-    private val expectedEndpoints: List<ExpectedEndpoint>
-
-    init {
-        expectedEndpoints = SpecBuilder().apply(builder).endpoints
-    }
+    abstract fun assertProperties(expected: EQ, actual: Q)
 
     @TestFactory
-    fun testSpec(): Iterator<DynamicTest> = sequence<DynamicTest> {
-        val unexpectedEndpoints = HashSet(spec.endpoints)
+    fun testQueries(): Iterator<DynamicTest> = sequence<DynamicTest> {
+        val expectedQueries = ArrayList(expectedQueries)
+        val actualQueries = HashSet(spec.supportedQueries)
 
-        expectedEndpoints.forEach { expected ->
-            val name = "SpecTest/$prefix${expected.route}"
-
-            val actual = spec.endpoints.find {
-                it.route == expected.route
-                    && it.pathParameters.all { actualParam -> expected.pathParameters.any { actualParam.key == it.key } }
-                    && it.queryParameters.all { actualParam -> expected.queryParameters.any { actualParam.key == it.key } }
-            }
-
-            yield(DynamicTest.dynamicTest(name) {
-                assertNotNull(actual, name)
-
-                assertEquals(expected.cache, actual.cache, name)
-                assertEquals(expected.security, actual.security, name)
-                assertEquals(expected.isLocalized, actual.isLocalized, name)
-                assertEquals(expected.queryTypes, actual.queryTypes, name)
-
-                actual.pathParameters.forEach { actualParam ->
-                    val expectedParam = expected.pathParameters.find { actualParam.key == it.key }
-                    assertNotNull(expectedParam, name)
-                    assertEquals(expectedParam.type, actualParam.type, name)
+        with(expectedQueries.iterator()) {
+            while (hasNext()) {
+                val expectedQuery = next()
+                val actualQuery = actualQueries.find {
+                    it.route == expectedQuery.route
+                        && it.pathParameters.all { p -> expectedQuery.pathParameters.any { p.key == it.key } }
+                        && it.queryParameters.all { p -> expectedQuery.queryParameters.any { p.key == it.key } }
+                        && expectedQuery.pathParameters.all { p -> it.pathParameters.any { p.key == it.key } }
+                        && expectedQuery.queryParameters.all { p -> it.queryParameters.any { p.key == it.key } }
                 }
-                actual.queryParameters.forEach { actualParam ->
-                    val expectedParam = expected.queryParameters.find { actualParam.key == it.key }
-                    assertNotNull(expectedParam, name)
-                    assertEquals(expectedParam.type, actualParam.type, name)
-                }
-            })
+                if (actualQuery != null) actualQueries.remove(actualQuery)
 
+                yield(DynamicTest.dynamicTest("$prefix${expectedQuery.route}") {
+                    if (actualQuery == null) fail("Could not find matching actual query for: $expectedQuery")
 
-            if (actual == null) {
-                yield(DynamicTest.dynamicTest("EndpointNotFound/$prefix${expected.route}") {
-                    fail()
-                })
-                return@forEach
-            }
+                    assertEquals(expectedQuery.isLocalized, actualQuery.isLocalized, "Mismatched 'isLocalized' flag for ${actualQuery.route}")
+                    assertEquals(expectedQuery.cache, actualQuery.cache, "Mismatched 'cache' flag for ${actualQuery.route}")
+                    assertProperties(expectedQuery, actualQuery)
 
-            actual.let(unexpectedEndpoints::remove)
-            if (spec == API_V2_DEFINITION && expected.route == "/CreateSubToken") return@forEach
-
-            actual.versions.forEach { version ->
-                val schema = actual[version].second
-
-                yield(DynamicTest.dynamicTest("SchemaTest/$prefix${expected.route}@${version.identifier}") {
-                    val data = assertDoesNotThrow("Failed to load test data for ${actual.route}@${version}") {
-                        TestData[spec, actual.route, version]
+                    actualQuery.pathParameters.forEach { (_, actualParam) ->
+                        val expectedParam = expectedQuery.pathParameters.find { actualParam.key == it.key }!!
+                        assertEquals(expectedParam.type, actualParam.type)
                     }
-
-                    val element = Json.parseToJsonElement(data)
-
-                    (if (actual.queryTypes.isNotEmpty()) SchemaArray(schema, false, null) else schema)
-                        .assertSchemaMatches(element)
+                    actualQuery.queryParameters.forEach { (_, actualParam) ->
+                        val expectedParam = expectedQuery.queryParameters.find { actualParam.key == it.key }!!
+                        assertEquals(expectedParam.type, actualParam.type)
+                        assertEquals(expectedParam.isOptional, actualParam.isOptional)
+                    }
                 })
+
+                remove()
             }
         }
 
-        unexpectedEndpoints.forEach { actual ->
-            yield(DynamicTest.dynamicTest("SpecTest/$prefix${actual.route}") {
-                fail("Unexpected endpoint: ${actual.route}")
+        actualQueries.forEach {
+            yield(DynamicTest.dynamicTest("$prefix${it.route}") {
+                fail("Did not expect query: $it")
             })
         }
     }.iterator()
 
-    private fun SchemaType.assertSchemaMatches(element: JsonElement, nullable: Boolean = false, interpretation: String? = null) {
+    fun assertSchema(schema: SchemaType, data: String) {
+        val element = Json.parseToJsonElement(data)
+        schema.assertMatches(element)
+    }
+
+    abstract fun testTypes(queries: Collection<Q>): Iterable<DynamicTest>
+
+    @TestFactory
+    fun testTypes(): Iterator<DynamicTest> = sequence {
+        spec.supportedQueries.groupBy { it.endpoint }.values.forEach { endpointQueries ->
+            yieldAll(testTypes(endpointQueries))
+        }
+    }.iterator()
+
+    private fun SchemaType.assertMatches(element: JsonElement, nullable: Boolean = false, interpretation: String? = null) {
         fun <T> JsonPrimitive.validate(optional: JsonPrimitive.() -> T, required: JsonPrimitive.() -> T?) =
             assertDoesNotThrow { if (nullable) optional() else required() }
 
@@ -122,7 +116,7 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
             }
             is SchemaArray -> {
                 val array = assertDoesNotThrow<JsonArray> { element.jsonArray }
-                array.forEach { items.assertSchemaMatches(it, nullableItems) }
+                array.forEach { items.assertMatches(it, nullableItems) }
             }
             is SchemaConditional -> {
                 if (nullable && element is JsonNull) return
@@ -143,18 +137,19 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
                     else
                         null)
 
-                    property.type.assertSchemaMatches(value, property.optionality.isOptional, intrp)
+                    property.type.assertMatches(value, property.optionality.isOptional, intrp)
                 }
 
                 /* If the interpretation is not null, the disambiguation happens by side property. */
-                val interpretationRecord = interpretations[interpretation ?: assertDoesNotThrow("$this") { record[disambiguationBy]!!.jsonPrimitive.content }]
-                assertNotNull(interpretationRecord)
+                val interpretationID = interpretation ?: assertDoesNotThrow("$this") { record[disambiguationBy]!!.jsonPrimitive.content }
+                val interpretation = interpretations[interpretationID]
+                assertNotNull(interpretation)
 
-                interpretationRecord.type.assertSchemaMatches(record)
+                interpretation.type.assertMatches(if (interpretationInNestedProperty) record[interpretation.interpretationNestProperty]!! else record)
             }
             is SchemaMap -> {
                 val map = assertDoesNotThrow<JsonObject> { element.jsonObject }
-                if (map.isNotEmpty()) values.assertSchemaMatches(map.values.first(), nullableValues)
+                if (map.isNotEmpty()) values.assertMatches(map.values.first(), nullableValues)
             }
             is SchemaRecord -> {
                 if (nullable && element is JsonNull) return
@@ -175,87 +170,29 @@ abstract class SpecTest(private val prefix: String, private val spec: APIVersion
                     else
                         null)
 
-                    property.type.assertSchemaMatches(value, property.optionality.isOptional, intrp)
+                    property.type.assertMatches(value, property.optionality.isOptional, intrp)
                 }
             }
         }
     }
 
-    data class ExpectedEndpoint(
-        val route: String,
-        val cache: Duration?,
-        val security: Set<TokenScope>,
-        val isLocalized: Boolean,
-        val queryTypes: Set<QueryType>,
-        val pathParameters: List<Parameter>,
-        val queryParameters: List<Parameter>
-    ) {
-
-        data class Parameter(
-            val key: String,
-            val type: SchemaType
-        )
-
+    interface ExpectedAPIQuery {
+        val route: String
+        val isLocalized: Boolean
+        val cache: Duration?
+        val pathParameters: List<ExpectedPathParameter>
+        val queryParameters: List<ExpectedQueryParameter>
     }
 
-    class SpecBuilder {
+    data class ExpectedPathParameter(
+        val key: String,
+        val type: SchemaType
+    )
 
-        private val endpointBuilders = mutableListOf<EndpointSpecBuilder>()
-
-        val endpoints by lazy {
-            endpointBuilders.map { builder ->
-                ExpectedEndpoint(
-                    builder.route,
-                    builder.cache,
-                    builder.security,
-                    builder.isLocalized,
-                    builder.queryTypes,
-                    builder.pathParameters,
-                    builder.queryParameters
-                )
-            }
-        }
-
-        fun expectEndpoint(route: String): EndpointSpecBuilder =
-            EndpointSpecBuilder(route)
-                .also { endpointBuilders.add(it) }
-
-    }
-
-    class EndpointSpecBuilder(val route: String) {
-
-        var cache: Duration? = null
-        var security = emptySet<TokenScope>()
-        var isLocalized = false
-        var queryTypes = emptySet<QueryType>()
-        var pathParameters = emptyList<ExpectedEndpoint.Parameter>()
-        var queryParameters = emptyList<ExpectedEndpoint.Parameter>()
-
-        fun cacheTime(value: Duration) = apply {
-            cache = value
-        }
-
-        fun security(vararg scope: TokenScope) = apply {
-            security = setOf(*scope)
-        }
-
-        fun localized() = apply {
-            isLocalized = true
-        }
-
-        fun queryTypes(vararg queryTypes: QueryType) = apply {
-            this.queryTypes = setOf(*queryTypes)
-        }
-
-        fun pathParameter(name: String, type: SchemaType) = apply {
-            pathParameters += ExpectedEndpoint.Parameter(name, type)
-        }
-
-        fun queryParameter(name: String, type: SchemaType) = apply {
-            queryParameters += ExpectedEndpoint.Parameter(name, type)
-        }
-
-    }
+    data class ExpectedQueryParameter(
+        val key: String,
+        val type: SchemaType,
+        val isOptional: Boolean = false
+    )
 
 }
-

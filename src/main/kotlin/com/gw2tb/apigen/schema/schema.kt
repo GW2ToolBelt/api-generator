@@ -79,22 +79,24 @@ public data class SchemaMap internal constructor(
  *
  * The interpretation is chosen based on a "disambiguation-property".
  *
- * @param name                          the name of the conditional in _TitleCase_
- * @param disambiguationBy              the serial name of the disambiguation-
- *                                      property
- * @param disambiguationBySideProperty  `true` if the disambiguation-property
- *                                      is on the same level as the conditional,
- *                                      or `false` if it is a member
- * @param sharedProperties              the properties available in all
- *                                      interpretations of this conditional
- * @param interpretations               the available interpretations
- * @param description                   the description of the type or `null`. (Should be worded to complete the
- *                                      sentence "This field holds {description}.")
+ * @param name                              the name of the conditional in _TitleCase_
+ * @param disambiguationBy                  the serial name of the disambiguation-
+ *                                          property
+ * @param disambiguationBySideProperty      `true` if the disambiguation-property
+ *                                          is on the same level as the conditional,
+ *                                          or `false` if it is a member
+ * @param interpretationInNestedProperty    TODO doc
+ * @param sharedProperties                  the properties available in all
+ *                                          interpretations of this conditional
+ * @param interpretations                   the available interpretations
+ * @param description                       the description of the type or `null`. (Should be worded to complete the
+ *                                          sentence "This field holds {description}.")
  */
 public data class SchemaConditional internal constructor(
     public override val name: String,
     public val disambiguationBy: String,
     public val disambiguationBySideProperty: Boolean,
+    public val interpretationInNestedProperty: Boolean,
     public val sharedProperties: Map<String, SchemaRecord.Property>,
     public val interpretations: Map<String, Interpretation>,
     public val description: String
@@ -103,14 +105,16 @@ public data class SchemaConditional internal constructor(
     /**
      * A conditional interpretation.
      *
-     * @param interpretationKey the key used to identify the interpretation
-     * @param type              the schema definition for this interpretation
-     * @param isDeprecated      whether or not the interpretation is deprecated
-     * @param since             the minimum [V2SchemaVersion] required for the interpretation
-     * @param until             the [V2SchemaVersion] up to which the interpretation existed
+     * @param interpretationKey             the key used to identify the interpretation
+     * @param interpretationNestProperty    TODO doc
+     * @param type                          the schema definition for this interpretation
+     * @param isDeprecated                  whether or not the interpretation is deprecated
+     * @param since                         the minimum [V2SchemaVersion] required for the interpretation
+     * @param until                         the [V2SchemaVersion] up to which the interpretation existed
      */
     public data class Interpretation internal constructor(
         public val interpretationKey: String,
+        public val interpretationNestProperty: String?,
         public val type: SchemaType,
         public val isDeprecated: Boolean,
         public val since: V2SchemaVersion?,

@@ -109,14 +109,14 @@ internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
      * @param type  the type of the interpretation
      */
     @APIGenDSL
-    operator fun String.invoke(type: SchemaType): SchemaConditionalInterpretationBuilder {
-        return SchemaConditionalInterpretationBuilder(this, type).also { _interpretations += it }
+    operator fun String.invoke(type: SchemaType, nestProperty: String = this.toLowerCase()): SchemaConditionalInterpretationBuilder {
+        return SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
     }
 
     /** Registers a conditional interpretation using the @receiver's name as key. */
     @APIGenDSL
     operator fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder {
-        return SchemaConditionalInterpretationBuilder(name, this).also { _interpretations += it }
+        return SchemaConditionalInterpretationBuilder(name, name.toLowerCase(), this).also { _interpretations += it }
     }
 
     /** Marks a deprecated interpretation. */
@@ -146,6 +146,7 @@ internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
 
 internal class SchemaConditionalInterpretationBuilder(
     private val interpretationKey: String,
+    private val interpretationNestProperty: String,
     private val type: SchemaType
 ) {
 
@@ -175,6 +176,7 @@ internal class SchemaConditionalInterpretationBuilder(
 
         SchemaConditional.Interpretation(
             interpretationKey = interpretationKey,
+            interpretationNestProperty = interpretationNestProperty,
             type = type,
             isDeprecated = isDeprecated,
             since = since,
