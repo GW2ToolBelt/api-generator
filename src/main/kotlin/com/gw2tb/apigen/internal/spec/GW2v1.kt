@@ -45,6 +45,18 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/map_names"(endpoint = "MapNames") {
+        summary = "Returns information about maps."
+        isLocalized = true
+
+        schema(array(
+            description = "the available maps",
+            items = record(name = "MapName", description = "Information about a map.") {
+                CamelCase("id").."ID"(INTEGER, "the map's ID")
+                "Name"(STRING, "the map's name")
+            }
+        ))
+    }
     "/skin_details"(endpoint = "SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours

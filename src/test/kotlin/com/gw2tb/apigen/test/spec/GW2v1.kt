@@ -38,6 +38,11 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         expectQuery("/Files")
 
         expectQuery(
+            "/map_names",
+            isLocalized = true
+        )
+
+        expectQuery(
             "/skin_details",
             isLocalized = true,
             cache = 60.minutes,
