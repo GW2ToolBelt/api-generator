@@ -879,6 +879,11 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Guild/Search",
+            queryParameters = listOf(ExpectedQueryParameter("name", STRING))
+        )
+
+        expectQuery(
             "/Guild/Upgrades",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, INTEGER)

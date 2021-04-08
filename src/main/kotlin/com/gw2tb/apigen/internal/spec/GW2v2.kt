@@ -1110,6 +1110,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
         schema(array(INTEGER, "the IDs of the guild's unlocked upgrades"))
     }
+    "/Guild/Search" {
+        summary = "Returns an array of guild IDs for a given guild name."
+
+        queryParameter("Name", STRING, "the guild name to search for")
+        schema(array(STRING, "the IDs of the found guilds"))
+    }
     "/Guild/Permissions" {
         summary = "Returns information about available guild permissions."
         cache = 1.hours
