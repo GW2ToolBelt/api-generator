@@ -1685,6 +1685,15 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Recipes/Search",
+            queryParameters = listOf(ExpectedQueryParameter("input", INTEGER))
+        )
+        expectQuery(
+            "/Recipes/Search",
+            queryParameters = listOf(ExpectedQueryParameter("output", INTEGER))
+        )
+
+        expectQuery(
             "/Skins",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, INTEGER)

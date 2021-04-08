@@ -1838,6 +1838,18 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             SerialName("chat_link").."ChatLink"(STRING, "the recipe's chat code")
         })
     }
+    "/Recipes/Search" {
+        summary = "Returns an array of item IDs for recipes using a given item as ingredient."
+
+        queryParameter("Input", INTEGER, "the item ID of the crafting ingredient")
+        schema(array(INTEGER, "the IDs of the found recipes"))
+    }
+    "/Recipes/Search" {
+        summary = "Returns an array of item IDs for recipes to craft a given item."
+
+        queryParameter("Output", INTEGER, "the item ID of the crafting result")
+        schema(array(INTEGER, "the IDs of the found recipes"))
+    }
     "/Skins" {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
