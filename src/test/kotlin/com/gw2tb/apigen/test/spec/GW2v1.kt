@@ -35,6 +35,8 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     V1SpecBuilder {
         expectQuery("/Build")
 
+        expectQuery("/Files")
+
         expectQuery(
             "/skin_details",
             isLocalized = true,

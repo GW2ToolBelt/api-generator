@@ -33,6 +33,18 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
+    "/Files" {
+        summary = "Returns commonly requested in-game assets."
+
+        schema(map(
+            description = "the available in-game assets",
+            keys = STRING,
+            values = record(name = "File", description = "Information about an in-game asset.") {
+                SerialName("file_id").."FileID"(INTEGER, "the file identifier")
+                "Signature"(STRING, "the file signature")
+            }
+        ))
+    }
     "/skin_details"(endpoint = "SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
