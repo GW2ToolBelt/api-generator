@@ -727,6 +727,29 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/Characters/:ID/Skills"(until = V2_SCHEMA_2019_12_19T00_00_00_000Z) {
+        summary = "Returns information about a character's equipped skills."
+        security = setOf(ACCOUNT, BUILDS, CHARACTERS)
+
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        schema(record(name = "CharactersSkills", description = "Information about a character's equipped skills.") {
+            "Skills"(
+                description = "the character's equipped skills",
+                type = record(name = "Skills", description = "Information about a character's equipped skills.") {
+                    val SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
+                        optional.."Heal"(INTEGER, "the heal skill's ID")
+                        "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
+                        optional.."Elite"(INTEGER, "the elite skill's ID")
+                        optional.."Legends"(array(STRING, nullableItems = true), "the legend IDs")
+                    }
+
+                    CamelCase("pve").."PvE"(SKILLS, "the character's PvE skills")
+                    CamelCase("pvp").."PvP"(SKILLS, "the character's PvP skills")
+                    CamelCase("wvw").."WvW"(SKILLS, "the character's WvW skills")
+                }
+            )
+        })
+    }
     "/Characters/:ID/Specializations"(until = V2_SCHEMA_2019_12_19T00_00_00_000Z) {
         summary = "Returns information about a character's equipped specializations."
         security = setOf(ACCOUNT, BUILDS, CHARACTERS)
