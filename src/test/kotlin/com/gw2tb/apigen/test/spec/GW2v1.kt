@@ -34,7 +34,7 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     APIVersion.API_V1,
     V1SpecBuilder {
         expectQuery(
-            "/SkinDetails",
+            "/skin_details",
             isLocalized = true,
             cache = 60.minutes,
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
