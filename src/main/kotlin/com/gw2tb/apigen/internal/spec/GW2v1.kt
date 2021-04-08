@@ -26,6 +26,13 @@ import com.gw2tb.apigen.internal.dsl.*
 import kotlin.time.*
 
 internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
+    "/Build" {
+        summary = "Returns the current build ID."
+
+        schema(record(name = "Build", description = "Information about the current game build.") {
+            SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
+        })
+    }
     "/skin_details"(endpoint = "SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
