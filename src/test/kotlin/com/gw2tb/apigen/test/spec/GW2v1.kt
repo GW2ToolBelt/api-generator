@@ -46,6 +46,11 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
             "/Skins",
             cache = 60.minutes
         )
+
+        expectQuery(
+            "/world_names",
+            isLocalized = true
+        )
     }
 ) {
 

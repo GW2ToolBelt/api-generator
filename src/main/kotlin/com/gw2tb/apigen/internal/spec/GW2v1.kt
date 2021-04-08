@@ -89,4 +89,16 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
 
         schema(array(INTEGER, "the IDs of the available skins"))
     }
+    "/world_names"(endpoint = "WorldNames") {
+        summary = "Returns information about the available worlds (or servers)."
+        isLocalized = true
+
+        schema(array(
+            description = "the available worlds",
+            items = record(name = "WorldName", description = "Information about an available world (or server).") {
+                CamelCase("id").."ID"(INTEGER, "the ID of the world")
+                "Name"(STRING, "the name of the world")
+            }
+        ))
+    }
 }
