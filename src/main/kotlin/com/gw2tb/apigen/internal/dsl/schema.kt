@@ -67,7 +67,7 @@ internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean =
 }
 
 internal fun SchemaType.copyForVersion(version: V2SchemaVersion): SchemaType = when (this) {
-    is SchemaBlueprint -> versions.filterKeys { it <= version }.toList().maxBy { it.first.ordinal }!!.second!!
+    is SchemaBlueprint -> versions.filterKeys { it <= version }.toList().maxByOrNull { it.first.ordinal }!!.second!!
     is SchemaArray -> copy(items = items.copyForVersion(version))
     is SchemaConditional -> copy(
         sharedProperties = sharedProperties.filterValues { property ->
