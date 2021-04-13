@@ -1746,7 +1746,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Quaggan", description = "Information about an image of a quaggan.") {
             CamelCase("id").."ID"(STRING, "the quaggans's ID")
-            CamelCase("URL").."URL"(STRING, "the URL to the quaggan image")
+            CamelCase("url").."URL"(STRING, "the URL to the quaggan image")
         })
     }
     "/Quests" {
