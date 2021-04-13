@@ -136,12 +136,6 @@ internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
         }
     }
 
-    operator fun IInterpretationModifier.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(this, modifier)
-    operator fun Set<IInterpretationModifier>.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(modifier, *this.toTypedArray())
-
-    operator fun IInterpretationModifier.rangeTo(interpretation: SchemaConditionalInterpretationBuilder): SchemaConditionalInterpretationBuilder = interpretation.also { this.applyTo(it) }
-    operator fun Set<IInterpretationModifier>.rangeTo(interpretation: SchemaConditionalInterpretationBuilder): SchemaConditionalInterpretationBuilder = interpretation.also { forEach { mod -> mod.applyTo(it) } }
-
 }
 
 internal class SchemaConditionalInterpretationBuilder(
@@ -260,12 +254,6 @@ internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilde
         }
     }
 
-    operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
-    operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
-
-    operator fun IPropertyModifier.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { this.applyTo(it) }
-    operator fun Set<IPropertyModifier>.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
-
 }
 
 internal class SchemaRecordPropertyBuilder(
@@ -354,41 +342,4 @@ internal class SchemaRecordPropertyBuilder(
         )
     }
 
-}
-
-internal interface IInterpretationModifier {
-    fun applyTo(interpretation: SchemaConditionalInterpretationBuilder)
-}
-
-internal interface IPropertyModifier {
-    fun applyTo(property: SchemaRecordPropertyBuilder)
-}
-
-internal object Modifiers {
-    abstract class PropertyModifier : IPropertyModifier
-    abstract class SharedModifier : IInterpretationModifier, IPropertyModifier
-
-    val deprecated = object : SharedModifier() {
-
-        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
-            interpretation.isDeprecated = true
-        }
-
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.isDeprecated = true
-        }
-
-    }
-
-    val localized = object : PropertyModifier() {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.isLocalized = true
-        }
-    }
-
-    val optional = object : PropertyModifier() {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.optionality = Optionality.OPTIONAL
-        }
-    }
 }
