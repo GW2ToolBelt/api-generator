@@ -45,7 +45,7 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     val queries get() = _queries.flatMap { it.finalize() }.toSet()
 
     protected val _types = mutableMapOf<TypeLocation, MutableList<T>>()
-    val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList<T>(v) })
+    val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList(v) })
 
     @APIGenDSL
     fun array(
