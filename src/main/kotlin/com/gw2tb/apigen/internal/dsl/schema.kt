@@ -275,7 +275,7 @@ internal class SchemaRecordPropertyBuilder(
 ) {
 
     init {
-        require(propertyName[0].isUpperCase()) { "propertyName should be in TitleCase" }
+        requireTitleCase(propertyName, "propertyName")
     }
 
     private var isUnused = true
@@ -283,42 +283,57 @@ internal class SchemaRecordPropertyBuilder(
     var isDeprecated = false
         set(value) {
             check(isUnused)
+            require(value) { "Property::isDeprecated is `false` by default and should only be set to `true`." }
+
             field = value
         }
 
     var isLocalized = false
         set(value) {
             check(isUnused)
+            require(value) { "Property::isLocalized is `false` by default and should only be set to `true`." }
+
             field = value
         }
 
     var optionality: Optionality? = null
         set(value) {
             check(isUnused)
+            requireNotNull(value)
+
             field = value
         }
 
     var since: V2SchemaVersion? = null
         set(value) {
             check(isUnused)
+            requireNotNull(value)
+
             field = value
         }
 
     var until: V2SchemaVersion? = null
         set(value) {
             check(isUnused)
+            requireNotNull(value)
+
             field = value
         }
 
     var serialName: String? = null
         set(value) {
             check(isUnused)
+            requireNotNull(value)
+
             field = value
         }
 
     var camelCase: String? = null
         set(value) {
             check(isUnused)
+            requireNotNull(value)
+            requireCamelCase(value, "Property::camelCase")
+
             field = value
         }
 
