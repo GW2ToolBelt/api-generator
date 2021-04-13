@@ -2074,10 +2074,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
             val supportedType = spec.supportedTypes.filter { (key, _) -> key.endpoint == query.endpoint }
                 .flatMap { (_, value) -> value }
-                .find {
-                    println(it.versions)
-                    it[version].second == schema.firstPossiblyNestedClassOrNull()
-                }
+                .find { it[version].second == schema.firstPossiblyNestedClassOrNull() }
 
             yield(DynamicTest.dynamicTest("$prefix${query.route}") {
                 assertNotNull(supportedType)
