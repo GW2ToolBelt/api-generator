@@ -21,5 +21,5 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
-internal fun requireCamelCase(str: String, ctx: String) = require(str[0].isLowerCase()) { "$ctx should be in camelCase" }
-internal fun requireTitleCase(str: String, ctx: String) = require(str[0].isUpperCase()) { "$ctx should be in TitleCase" }
+internal fun requireCamelCase(str: String, ctx: String) = require(str[0].isLowerCase()) { "$ctx should be in camelCase: $str" }
+internal fun requireTitleCase(str: String, ctx: String) = require(str[0].isUpperCase()) { "$ctx should be in TitleCase: $str" }
