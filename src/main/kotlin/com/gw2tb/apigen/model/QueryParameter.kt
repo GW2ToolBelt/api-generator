@@ -40,4 +40,22 @@ public data class QueryParameter internal constructor(
     val name: String,
     val camelCaseName: String,
     val isOptional: Boolean
-)
+) {
+
+    public companion object {
+
+        /** Key for ID query-parameter for ByID queries. */
+        public const val BY_ID_KEY: String = "id"
+
+        /** Key for IDs query-parameter for ByIDs queries. */
+        public const val BY_IDS_KEY: String = "ids"
+
+        /** Key for page query-parameter for ByPage queries. */
+        public const val PAGE_KEY: String = "page"
+
+        /** Key for page-size query-parameter for ByPage queries. */
+        public const val PAGE_SIZE_KEY: String = "page_size"
+
+    }
+
+}

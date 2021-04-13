@@ -513,16 +513,20 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                     when (queryType) {
                         is QueryType.ByID -> {
                             schema = this@V2.schema
-                            queryParameters["id"] = QueryParameter("id", idType, "", "ID", "id", false)
+                            QueryParameter(QueryParameter.BY_ID_KEY, idType, "", "ID", "id", false)
+                                .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByIDs -> {
                             schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
-                            queryParameters["ids"] = QueryParameter("ids", SchemaArray(idType, false, null), "", "IDs", "ids", false)
+                            QueryParameter(QueryParameter.BY_IDS_KEY, SchemaArray(idType, false, null), "", "IDs", "ids", false)
+                                .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByPage -> {
                             schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
-                            queryParameters["page"] = QueryParameter("page", INTEGER, "", "Page", "page", false)
-                            queryParameters["page_size"] = QueryParameter("page_size", INTEGER, "", "PageSize", "pageSize", true)
+                            QueryParameter(QueryParameter.PAGE_KEY, INTEGER, "", "Page", "page", false)
+                                .also { queryParameters[it.key] = it }
+                            QueryParameter(QueryParameter.PAGE_SIZE_KEY, INTEGER, "", "PageSize", "pageSize", true)
+                                .also { queryParameters[it.key] = it }
                         }
                         else -> error("")
                     }
