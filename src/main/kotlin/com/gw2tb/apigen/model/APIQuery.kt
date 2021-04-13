@@ -38,7 +38,6 @@ import kotlin.time.*
  * @property summary            a short description of the query's purpose
  * @property pathParameters     the path parameters
  * @property queryParameters    the query parameters
- * @property isLocalized        whether or not the query is localized
  * @property cache              TODO
  */
 public sealed class APIQuery {
@@ -48,7 +47,6 @@ public sealed class APIQuery {
     public abstract val summary: String
     public abstract val pathParameters: Map<String, PathParameter>
     public abstract val queryParameters: Map<String, QueryParameter>
-    public abstract val isLocalized: Boolean
     public abstract val cache: Duration?
 
     /**
@@ -62,7 +60,6 @@ public sealed class APIQuery {
         override val summary: String,
         override val pathParameters: Map<String, PathParameter>,
         override val queryParameters: Map<String, QueryParameter>,
-        override val isLocalized: Boolean,
         override val cache: Duration?,
         val schema: SchemaType
     ) : APIQuery()
@@ -81,7 +78,6 @@ public sealed class APIQuery {
         override val summary: String,
         override val pathParameters: Map<String, PathParameter>,
         override val queryParameters: Map<String, QueryParameter>,
-        override val isLocalized: Boolean,
         override val cache: Duration?,
         val queryDetails: QueryDetails?,
         val since: V2SchemaVersion?,

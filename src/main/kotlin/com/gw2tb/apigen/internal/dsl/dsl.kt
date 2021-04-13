@@ -350,8 +350,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
 
     var summary: String = ""
 
-    var isLocalized: Boolean = false
-
     var cache: Duration? = null
     var security: Set<TokenScope>? = null
 
@@ -431,7 +429,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                 summary = summary,
                 pathParameters = pathParameters,
                 queryParameters = queryParameters,
-                isLocalized = isLocalized,
                 cache = cache,
                 schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
             )
@@ -485,7 +482,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             pathParameters = pathParameters,
             queryParameters = queryParameters ?: this.queryParameters,
             queryDetails = queryDetails,
-            isLocalized = isLocalized && (queryDetails?.queryType != QueryType.IDs),
             cache = cache,
             since = since,
             until = until,

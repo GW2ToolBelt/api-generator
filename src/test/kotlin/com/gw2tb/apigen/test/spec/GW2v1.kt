@@ -26,7 +26,9 @@ import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
+import com.gw2tb.apigen.test.assertNotNull
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.*
 import kotlin.time.*
 
 class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
@@ -61,7 +63,9 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     }
 ) {
 
-    override fun assertProperties(expected: ExpectedAPIv1Query, actual: APIQuery.V1) {}
+    override fun assertProperties(expected: ExpectedAPIv1Query, actual: APIQuery.V1) {
+        assertEquals(expected.isLocalized, actual.schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
+    }
 
     override fun testTypes(queries: Collection<APIQuery.V1>) = sequence<DynamicTest> {
         if (queries.size != 1) error("")

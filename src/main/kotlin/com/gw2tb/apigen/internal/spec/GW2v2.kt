@@ -395,16 +395,15 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Achievements" {
         summary = "Returns information about achievements."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "Achievement", description = "Information about an achievement.") {
             CamelCase("id").."ID"(INTEGER, "the achievement's ID")
             optional.."Icon"(STRING, "the URL for the achievement's icon")
-            "Name"(STRING, "the achievement's name")
-            "Description"(STRING, "the achievement's description")
-            "Requirement"(STRING, "the achievement's requirement as listed in-game")
-            SerialName("locked_text").."LockedText"(STRING, "the achievement's in-game description prior to unlocking it")
+            localized.."Name"(STRING, "the achievement's localized name")
+            localized.."Description"(STRING, "the achievement's localized description")
+            localized.."Requirement"(STRING, "the achievement's requirement as listed in-game")
+            localized..SerialName("locked_text").."LockedText"(STRING, "the achievement's in-game description prior to unlocking it")
             "Type"(STRING, "the achievement's type")
             "Flags"(array(STRING), "the achievement's categories")
             "Tiers"(
@@ -454,14 +453,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Achievements/Categories" {
         summary = "Returns information about achievement categories."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "AchievementCategory", description = "Information about an achievement category.") {
             CamelCase("id").."ID"(INTEGER, "the achievement category's ID")
             "Icon"(STRING, "the URL for the achievement category's icon")
-            "Name"(STRING, "the achievement category's name")
-            "Description"(STRING, "the achievement category's description")
+            localized.."Name"(STRING, "the achievement category's localized name")
+            localized.."Description"(STRING, "the achievement category's localized description")
             "Order"(INTEGER, "a number that can be used to sort the list of categories")
             "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
         })
@@ -515,13 +513,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Achievements/Groups" {
         summary = "Returns information about achievement groups."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "AchievementGroups", description = "Information about an achievement group.") {
             CamelCase("id").."ID"(STRING, "the achievement group's ID")
-            "Name"(STRING, "the achievement group's name")
-            "Description"(STRING, "the achievement group's description")
+            localized.."Name"(STRING, "the achievement group's localized name")
+            localized.."Description"(STRING, "the achievement group's localized description")
             "Order"(INTEGER, "a number that can be used to sort the list of groups")
             "Categories"(array(INTEGER), "an array containing the IDs of the categories that this group contains")
         })
@@ -535,14 +532,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Backstory/Answers" {
         summary = "Returns information about biography answers."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "BackstoryAnswer", description = "Information about a biography answer.") {
             CamelCase("id").."ID"(STRING, "the answer's ID")
-            "Title"(STRING, "the answer's localized title")
-            "Description"(STRING, "the answer's localized description")
-            "Journal"(STRING, "the answer's journal entry")
+            localized.."Title"(STRING, "the answer's localized title")
+            localized.."Description"(STRING, "the answer's localized description")
+            localized.."Journal"(STRING, "the answer's localized journal entry")
             "Question"(INTEGER, "the ID of the biography question the answer answers")
             optional.."Professions"(array(STRING), "the IDs of the professions that the answer is available for")
             optional.."Races"(array(STRING), "the IDs of the races that the answer is available for")
@@ -551,13 +547,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Backstory/Questions" {
         summary = "Returns information about biography questions."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "BackstoryQuestion", description = "Information about a biography question.") {
             CamelCase("id").."ID"(INTEGER, "the question's ID")
-            "Title"(STRING, "the question's localized title")
-            "Description"(STRING, "the question's localized description")
+            localized.."Title"(STRING, "the question's localized title")
+            localized.."Description"(STRING, "the question's localized description")
             "Answers"(array(STRING), "the IDs of the possible answers to the question")
             "Order"(INTEGER, "a number that can be used to sort the list of questions")
             optional.."Professions"(array(STRING), "the IDs of the professions that the question is presented to")
@@ -790,7 +785,6 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Colors" {
         summary = "Returns information about all dye colors in the game."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Color", description = "Information about a dye color.") {
@@ -804,7 +798,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             }
 
             CamelCase("id").."ID"(INTEGER, "the color's ID")
-            "Name"(STRING, "the color's name")
+            localized.."Name"(STRING, "the color's name")
             SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
             "Cloth"(APPEARANCE, "detailed information on its appearance when applied on cloth armor")
             "Leather"(APPEARANCE, "detailed information on its appearance when applied on leather armor")
@@ -920,12 +914,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Continents" {
         summary = "Returns information about continents."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Continent", description = "Information about a continent.") {
             CamelCase("id").."ID"(INTEGER, "the continent's ID")
-            "Name"(STRING, "the continent's name")
+            localized.."Name"(STRING, "the continent's name")
             SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
             SerialName("min_zoom").."MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
             SerialName("max_zoom").."MaxZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
@@ -946,13 +939,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Currencies" {
         summary = "Returns information about currencies contained in the account wallet."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Currency", description = "Information about a currency.") {
             CamelCase("id").."ID"(INTEGER, "the currency's ID")
-            "Name"(STRING, "the currency's name")
-            "Description"(STRING, "a description of the currency")
+            localized.."Name"(STRING, "the currency's name")
+            localized.."Description"(STRING, "a description of the currency")
             "Icon"(STRING, "the currency's icon")
             "Order"(INTEGER, "a number that can be used to sort the list of currencies")
         })
@@ -1029,12 +1021,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Finishers" {
         summary = "Returns information about finishers."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Finisher", description = "Information about a finisher.") {
             CamelCase("id").."ID"(INTEGER, "the finisher's ID")
-            "Name"(STRING, "the finisher's name")
+            localized.."Name"(STRING, "the finisher's name")
             "Icon"(STRING, "the URL for the finisher's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of finishers")
             SerialName("unlock_details").."UnlockDetails"(STRING, "a description explaining how to acquire the finisher")
@@ -1044,13 +1035,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Gliders" {
         summary = "Returns information about gliders."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Glider", description = "Information about a glider.") {
             CamelCase("id").."ID"(INTEGER, "the glider's ID")
-            "Name"(STRING, "the glider's name")
-            "Description"(STRING, "the glider's description")
+            localized.."Name"(STRING, "the glider's name")
+            localized.."Description"(STRING, "the glider's description")
             "Icon"(STRING, "the URL for the glider's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of gliders")
             SerialName("default_dyes").."DefaultDyes"(
@@ -1142,19 +1132,17 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Guild/Permissions" {
         summary = "Returns information about available guild permissions."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "GuildPermission", description = "Information about a guild permission.") {
             CamelCase("id").."ID"(STRING, "the permission's ID")
-            "Name"(STRING, "the permission's localized name")
-            "Description"(STRING, "the permission's localized description")
+            localized.."Name"(STRING, "the permission's localized name")
+            localized.."Description"(STRING, "the permission's localized description")
         })
     }
     "/Guild/Upgrades" {
         summary = "Returns information about available guild hall upgrades."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(conditional(
@@ -1162,8 +1150,8 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             description = "Information about a guild upgrade.",
             sharedConfigure = {
                 CamelCase("id").."ID"(INTEGER, "the upgrade's ID")
-                "Name"(STRING, "the upgrade's name")
-                "Description"(STRING, "the upgrade's description")
+                localized.."Name"(STRING, "the upgrade's name")
+                localized.."Description"(STRING, "the upgrade's description")
                 "Type"(STRING, "the upgrade's type")
                 "Icon"(STRING, "the URL for the upgrade's icon")
                 SerialName("build_time").."BuildTime"(INTEGER, "the time it takes to build the upgrade")
@@ -1174,7 +1162,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     description = "an array of objects describing the upgrade's cost",
                     type = array(record(name = "Cost", description = "Information about an upgrade's cost.") {
                         "Type"(STRING, "the cost's type")
-                        "Name"(STRING, "the cost's name")
+                        localized.."Name"(STRING, "the cost's name")
                         "Count"(STRING, "the amount needed")
                         optional..SerialName("item_id").."ItemID"(INTEGER, "the ID of the cost's item")
                     })
@@ -1225,7 +1213,6 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Items" {
         summary = "Returns information about items in the game."
         cache = 1.hours
-        isLocalized = true
 
         @APIGenDSL
         fun SchemaRecordBuilder<APIType.V2>.INFIX_UPGRADE() = record(name = "InfixUpgrade", description = "Information about an item's infix upgrade.") {
@@ -1255,11 +1242,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "Item", description = "Information about an item.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
-            "Name"(STRING, "the item's name")
+            localized.."Name"(STRING, "the item's name")
             "Type"(STRING, "the item's type")
             SerialName("chat_link").."ChatLink"(STRING, "the chat link")
             optional.."Icon"(STRING, "the URL for the item's icon")
-            optional.."Description"(STRING, "the item's description")
+            optional..localized.."Description"(STRING, "the item's description")
             "Rarity"(STRING, "the item's rarity")
             "Level"(INTEGER, "the level required to use the item")
             SerialName("vendor_value").."VendorValue"(INTEGER, "the value in coins when selling the item to a vendor")
@@ -1415,13 +1402,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Mailcarriers" {
         summary = "Returns information about mailcarriers."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Mailcarrier", description = "Information about a mailcarrier.") {
             CamelCase("id").."ID"(INTEGER, "the mailcarrier's ID")
             "Icon"(STRING, "the URL for the mailcarrier's icon")
-            "Name"(STRING, "the mailcarrier's name")
+            localized.."Name"(STRING, "the mailcarrier's name")
             "Order"(INTEGER, "a number that can be used to sort the list of mailcarriers")
             SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array containing the IDs of the items used to unlock the mailcarrier")
             "Flags"(array(STRING), "additional flags describing the mailcarrier")
@@ -1439,21 +1425,20 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Maps" {
         summary = "Returns information about maps."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Map", description = "Information about a map.") {
             CamelCase("id").."ID"(INTEGER, "the map's ID")
-            "Name"(STRING, "the map's name")
+            localized.."Name"(STRING, "the map's name")
             "Type"(STRING, "the type of map")
             SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
             SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
             SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
             "Floors"(array(INTEGER), "the IDs of the floors available on the map")
             SerialName("region_id").."RegionID"(INTEGER, "the ID of the region the map belongs to")
-            optional..SerialName("region_name").."RegionName"(STRING, "the name of the region the map belongs to")
+            optional..localized..SerialName("region_name").."RegionName"(STRING, "the name of the region the map belongs to")
             SerialName("continent_id").."ContinentID"(INTEGER, "the ID of the continent the map belongs to")
-            optional..SerialName("continent_name").."ContinentName"(STRING, "the name of the continent the map belongs to")
+            optional..localized..SerialName("continent_name").."ContinentName"(STRING, "the name of the continent the map belongs to")
             SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
             SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
         })
@@ -1461,22 +1446,21 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Masteries" {
         summary = "Returns information about masteries."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Mastery", description = "Information about a mastery.") {
             CamelCase("id").."ID"(INTEGER, "the mastery's ID")
-            "Name"(STRING, "the mastery's name")
-            "Requirement"(STRING, "the written out requirement to unlock the mastery track")
+            localized.."Name"(STRING, "the mastery's name")
+            localized.."Requirement"(STRING, "the written out requirement to unlock the mastery track")
             "Order"(INTEGER, "the order in which the mastery track appears in a list")
             "Background"(STRING, "the URL for the mastery track's background graphic")
             "Region"(STRING, "the mastery region the track belongs to")
             "Levels"(
                 description = "information about each mastery level",
                 type = array(record(name = "Level", description = "Information about a mastery level.") {
-                    "Name"(STRING, "the mastery level's name")
-                    "Description"(STRING, "the mastery level's description")
-                    "Instruction"(STRING, "the in-game instruction for the mastery level")
+                    localized.."Name"(STRING, "the mastery level's name")
+                    localized.."Description"(STRING, "the mastery level's description")
+                    localized.."Instruction"(STRING, "the in-game instruction for the mastery level")
                     "Icon"(STRING, "the URL for the mastery level's icon")
                     SerialName("point_cost").."PointCost"(INTEGER, "the amount of mastery points required to unlock the level")
                     SerialName("exp_cost").."ExpCost"(INTEGER, "the amount of experience required to unlock the level")
@@ -1487,12 +1471,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Materials" {
         summary = "Returns information about the categories in the material storage."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "MaterialCategory", description = "Information about a material category.") {
             CamelCase("id").."ID"(INTEGER, "the category's ID")
-            "Name"(STRING, "the category's name")
+            localized.."Name"(STRING, "the category's name")
             "Items"(array(INTEGER), "the IDs of this category's items")
             "Order"(INTEGER, "the category's sorting key")
         })
@@ -1500,16 +1483,15 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Minis" {
         summary = "Returns information about minis."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Mini", description = "Information about a mini.") {
             CamelCase("id").."ID"(INTEGER, "the mini's ID")
-            "Name"(STRING, "the mini's name")
-            optional.."Description"(STRING, "the description of how to unlock the mini")
+            localized.."Name"(STRING, "the mini's name")
+            optional..localized.."Description"(STRING, "the description of how to unlock the mini")
             "Icon"(STRING, "the URL for the mini's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
-            SerialName("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini")
+            SerialName("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini") // TODO
         })
     }
     "/Mounts" {
@@ -1521,12 +1503,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Mounts/Skins" {
         summary = "Returns information about mount skins."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "MountSkin", description = "Information about a mount skin.") {
             CamelCase("id").."ID"(INTEGER, "the mount skin's ID")
-            "Name"(STRING, "the mount skin's name")
+            localized.."Name"(STRING, "the mount skin's name")
             "Icon"(STRING, "a render service URL for the mount skin's icon")
             "Mount"(STRING, "the mount type id for the mount skin")
             SerialName("dye_slots").."DyeSlots"(
@@ -1541,12 +1522,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Mounts/Types" {
         summary = "Returns information about mount types."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "MountType", description = "Information about a mount type.") {
             CamelCase("id").."ID"(STRING, "the mount type's ID")
-            "Name"(STRING, "the mount type's name")
+            localized.."Name"(STRING, "the mount type's name")
             SerialName("default_skin").."DefaultSkin"(INTEGER, "the ID of the mount type's default skin")
             "Skins"(array(INTEGER), "the IDs of the skins available for the mount type")
             "Skills"(
@@ -1561,14 +1541,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Novelties" {
         summary = "Returns information about novelties."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Novelty", description = "Information about a novelty.") {
             CamelCase("id").."ID"(INTEGER, "the novelty's ID")
-            "Name"(STRING, "the novelty's name")
+            localized.."Name"(STRING, "the novelty's name")
             "Icon"(STRING, "a render service URL for the novelty's icon")
-            "Description"(STRING, "the novelty's description")
+            localized.."Description"(STRING, "the novelty's description")
             "Slot"(STRING, "the novelty's slot")
             SerialName("unlock_item").."UnlockItems"(
                 description = "the IDs of the items that unlock the novelty",
@@ -1579,12 +1558,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Outfits" {
         summary = "Returns information about outfits."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Outfit", description = "Information about an outfit.") {
             CamelCase("id").."ID"(INTEGER, "the outfit's ID")
-            "Name"(STRING, "the outfit's name")
+            localized.."Name"(STRING, "the outfit's name")
             "Icon"(STRING, "the outfit's icon")
             SerialName("unlock_items").."UnlockItems"(
                 description = "the IDs of the items that unlock the outfit",
@@ -1595,13 +1573,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Pets" {
         summary = "Returns information about pets."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Pet", description = "Information about a pet.") {
             CamelCase("id").."ID"(INTEGER, "the pet's ID")
-            "Name"(STRING, "the pet's name")
-            "Description"(STRING, "the pet's description")
+            localized.."Name"(STRING, "the pet's name")
+            localized.."Description"(STRING, "the pet's description")
             "Icon"(STRING, "a render service URL for the pet's icon")
             "Skills"(
                 description = "the pet's skills",
@@ -1614,12 +1591,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Professions" {
         summary = "Returns information about the game's playable professions."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Profession", description = "Information about a playable profession.") {
             CamelCase("id").."ID"(STRING, "the profession's ID")
-            "Name"(STRING, "the profession's localized name")
+            localized.."Name"(STRING, "the profession's localized name")
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the profession's palette code")
             "Icon"(STRING, "a render service URL for the profession's icon")
             SerialName("icon_big").."BigIcon"(STRING, "a render service URL for a big version of the profession's icon")
@@ -1659,7 +1635,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                 type = array(record(name = "Training", description = "Information about training track.") {
                     CamelCase("id").."ID"(INTEGER, "the training's ID")
                     "Category"(STRING, "the training's category")
-                    "Name"(STRING, "the training's localized name")
+                    localized.."Name"(STRING, "the training's localized name")
                     "Track"(
                         description = "array of skill/trait in the training track",
                         type = array(record(name = "Track", description = "Information about a skill/trait in a track.") {
@@ -1686,12 +1662,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/PvP/Amulets" {
         summary = "Returns information about available PvP amulets."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "PvPAmulet", description = "Information about a PvP amulet.") {
             CamelCase("id").."ID"(INTEGER, "the amulet's ID")
-            "Name"(STRING, "the amulet's localized name")
+            localized.."Name"(STRING, "the amulet's localized name")
             "Icon"(STRING, "a render service URL for the amulet's icon")
             "Attributes"(
                 description = "the amulet's stats",
@@ -1713,13 +1688,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/PvP/Heroes" {
         summary = "Returns information about available PvP heroes."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "PvPHero", description = "Information about a PvP hero.") {
             CamelCase("id").."ID"(STRING, "the PvP hero's ID")
-            "Name"(STRING, "the hero's localized name")
-            "Type"(STRING, "the flavor type describing the hero")
+            localized.."Name"(STRING, "the hero's localized name")
+            localized.."Description"(STRING, "the hero's localized description")
+            localized.."Type"(STRING, "the flavor type describing the hero")
             "Stats"(
                 description = "the hero's stats",
                 type = record(name = "Stats", description = "Information about a hero's stats.") {
@@ -1734,7 +1709,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                 description = "the hero's skins",
                 type = array(record(name = "Skin", description = "Information about a PvP hero's skin.") {
                     CamelCase("id").."ID"(INTEGER, "the PvP hero skin's ID")
-                    "Name"(STRING, "the hero skin's localized name")
+                    localized.."Name"(STRING, "the hero skin's localized name")
                     "Icon"(STRING, "a render service URL for the skin's icon")
                     "Default"(BOOLEAN, "whether or not the skin is the champion's default skin")
                     SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the finisher")
@@ -1745,13 +1720,12 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/PvP/Ranks" {
         summary = "Returns information about the PvP ranks."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "PvPRank", description = "Information about a PvP rank.") {
             CamelCase("id").."ID"(INTEGER, "the PvP rank's ID")
             SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
-            "Name"(STRING, "the rank's localized name")
+            localized.."Name"(STRING, "the rank's localized name")
             "Icon"(STRING, "a render service URL for the rank's icon")
             SerialName("min_rank").."MinRank"(INTEGER, "the minimum PvP level required for the rank")
             SerialName("max_rank").."MaxRank"(INTEGER, "the maximum PvP level for the rank")
@@ -1778,19 +1752,18 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Quests" {
         summary = "Returns information about Story Journal missions."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Quest", description = "Information about a quest.") {
             CamelCase("id").."ID"(INTEGER, "the quest's ID")
-            "Name"(STRING, "the quest's localized name")
+            localized.."Name"(STRING, "the quest's localized name")
             "Level"(INTEGER, "the minimum level required to begin the quest")
             "Story"(INTEGER, "the story's ID")
             "Goals"(
                 description = "the quest's goals",
                 type = array(record(name = "Goal", description = "Information about a quest's goal.") {
-                    "Active"(STRING, "the text displayed for the quest step if it is active")
-                    "Complete"(STRING, "the text displayed for the quest step if it is complete")
+                    localized.."Active"(STRING, "the text displayed for the quest step if it is active")
+                    localized.."Complete"(STRING, "the text displayed for the quest step if it is complete")
                 })
             )
         })
@@ -1798,12 +1771,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Races" {
         summary = "Returns information about the game's playable races."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Race", description = "Information about a playable race.") {
             CamelCase("id").."ID"(STRING, "the race's ID")
-            "Name"(STRING, "the race's localized name")
+            localized.."Name"(STRING, "the race's localized name")
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
     }
@@ -1876,12 +1848,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Skins" {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "Skin", description = "Information about a skin.") {
             CamelCase("id").."ID"(INTEGER, "the skin's ID")
-            "Name"(STRING, "the skin's localized name")
+            localized.."Name"(STRING, "the skin's localized name")
             "Type"(STRING, "the skin's type")
             "Flags"(array(STRING), "additional skin flags (ShowInWardrobe, NoCost, HideIfLocked, OverrideRarity)")
             "Restrictions"(array(STRING), "the IDs of the races that can use this skin, or empty if it can be used by any race")
@@ -1937,12 +1908,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Specializations" {
         summary = "Returns information about the specializations in the game."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Specialization", description = "Information about a specialization.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the specialization")
-            "Name"(STRING, "the localized name of the specialization")
+            localized.."Name"(STRING, "the localized name of the specialization")
             "Profession"(STRING, "the ID of the profession the specialization belongs to")
             "Elite"(BOOLEAN, "a flag indicating whether or not the specialization is an elite specialization")
             "Icon"(STRING, "a render service URL for the specialization's icon")
@@ -1957,14 +1927,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Stories" {
         summary = "Returns information about the Story Journal stories."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Story", description = "Information about a Story Journal season.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the story")
             "Season"(STRING, "the ID of the story's season")
-            "Name"(STRING, "the localized name of the story")
-            "Description"(STRING, "the localized description of the story")
+            localized.."Name"(STRING, "the localized name of the story")
+            localized.."Description"(STRING, "the localized description of the story")
             "Timeline"(STRING, "the in-game date of the story")
             "Level"(INTEGER, "the minimum level required to start to begin the story")
             "Order"(INTEGER, "a number that can be used to sort the list of stories")
@@ -1981,12 +1950,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Stories/Seasons" {
         summary = "Returns information about the Story Journal seasons."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "StorySeason", description = "Information about a Story Journal season.") {
             CamelCase("id").."ID"(STRING, "the ID of the season")
-            "Name"(STRING, "the localized name of the season")
+            localized.."Name"(STRING, "the localized name of the season")
             "Order"(INTEGER, "a number that can be used to sort the list of seasons")
             "Stories"(array(INTEGER), "the IDs of the stories in the season")
         })
@@ -1994,12 +1962,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Titles" {
         summary = "Returns information about the titles that are in the game."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "Title", description = "Information about a title.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the title")
-            "Name"(STRING, "the display name of the title")
+            localized.."Name"(STRING, "the display name of the title")
             deprecated..optional.."Achievement"(INTEGER, "the ID of the achievement that grants this title")
             optional.."Achievements"(array(INTEGER), "the IDs of the achievements that grant this title")
             optional..SerialName("ap_required")..CamelCase("apRequired").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
@@ -2044,31 +2011,29 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/Worlds" {
         summary = "Returns information about the available worlds (or servers)."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "World", description = "Information about an available world (or server).") {
             CamelCase("id").."ID"(INTEGER, "the ID of the world")
-            "Name"(STRING, "the name of the world")
+            localized.."Name"(STRING, "the name of the world")
             "Population"(STRING, "the population level of the world")
         })
     }
     "/WvW/Abilities" {
         summary = "Returns information about the achievable ranks in the World versus World game mode."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "WvWAbility", description = "Information about an ability in the World versus World game mode.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the ability")
-            "Name"(STRING, "the ability's name")
-            "Description"(STRING, "the ability's description")
-            "Icon"(STRING, "a render service URL for the mount ability's icon")
+            localized.."Name"(STRING, "the ability's localized name")
+            localized.."Description"(STRING, "the ability's localized description")
+            "Icon"(STRING, "a render service URL for the ability's icon")
             "Ranks"(
                 description = "the ability's ranks",
                 type = array(record(name = "Rank", description = "Information about an ability's rank.") {
                     "Cost"(INTEGER, "the WvW experience points required to unlock the rank")
-                    "Effect"(STRING, "the rank's effect")
+                    localized.."Effect"(STRING, "the rank's localized effect")
                 })
             )
         })
@@ -2076,12 +2041,11 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "WvWObjective", description = "Information about an objective in the World versus World game mode.") {
             CamelCase("id").."ID"(STRING, "the ID of the objective")
-            "Name"(STRING, "the name of the objective")
+            localized.."Name"(STRING, "the name of the objective")
             "Type"(STRING, "the type of the objective")
             SerialName("sector_id").."SectorId"(INTEGER, "the map sector the objective can be found in")
             SerialName("map_id").."MapId"(INTEGER, "the ID of the map the objective can be found on")
@@ -2096,19 +2060,17 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     "/WvW/Ranks" {
         summary = "Returns information about the achievable ranks in the World versus World game mode."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "WvWRank", description = "Information about an achievable rank in the World versus World game mode.") {
             CamelCase("id").."ID"(INTEGER, "the ID of the rank")
-            "Title"(STRING, "the title of the rank")
+            localized.."Title"(STRING, "the title of the rank")
             SerialName("min_rank").."MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
     "/WvW/Upgrades" {
         summary = "Returns information about available upgrades for objectives in the World versus World game mode."
         cache = 1.hours
-        isLocalized = true
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "WvWUpgrade", description = "Information about an upgrade for objectives in the World versus World game mode.") {
@@ -2116,13 +2078,13 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             "Tiers"(
                 description = "the different tiers of the upgrade",
                 type = array(record(name = "Tier", description = "Information about an upgrade tier.") {
-                    "Name"(STRING, "the name of the upgrade tier")
+                    localized.."Name"(STRING, "the name of the upgrade tier")
                     SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "Upgrades"(
                         description = "the upgrades available at the tier",
                         type = array(record(name = "Upgrade", description = "Information about an upgrade.") {
-                            "Name"(STRING, "the name of the upgrade")
-                            "Description"(STRING, "the description for the upgrade")
+                            localized.."Name"(STRING, "the name of the upgrade")
+                            localized.."Description"(STRING, "the description for the upgrade")
                             "Icon"(STRING, "the icon link")
                         })
                     )

@@ -217,6 +217,9 @@ internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilde
     /** Marks a deprecated property. */
     val deprecated = Modifiers.deprecated
 
+    /** Marks a localized property. */
+    val localized = Modifiers.localized
+
     /** Marks an optional property. */
     val optional = Modifiers.optional
 
@@ -283,6 +286,12 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
+    var isLocalized = false
+        set(value) {
+            check(isUnused)
+            field = value
+        }
+
     var optionality: Optionality? = null
         set(value) {
             check(isUnused)
@@ -322,6 +331,7 @@ internal class SchemaRecordPropertyBuilder(
             description = description,
             optionality = optionality ?: Optionality.REQUIRED,
             isDeprecated = isDeprecated,
+            isLocalized = isLocalized,
             since = since,
             until = until,
             serialName = serialName ?: propertyName.toLowerCase(),
@@ -353,6 +363,12 @@ internal object Modifiers {
             property.isDeprecated = true
         }
 
+    }
+
+    val localized = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isLocalized = true
+        }
     }
 
     val optional = object : PropertyModifier() {

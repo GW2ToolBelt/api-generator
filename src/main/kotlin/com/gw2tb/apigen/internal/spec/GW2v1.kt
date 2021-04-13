@@ -47,25 +47,23 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
     }
     "/map_names"(endpoint = "MapNames") {
         summary = "Returns information about maps."
-        isLocalized = true
 
         schema(array(
             description = "the available maps",
             items = record(name = "MapName", description = "Information about a map.") {
                 CamelCase("id").."ID"(INTEGER, "the map's ID")
-                "Name"(STRING, "the map's name")
+                localized.."Name"(STRING, "the map's name")
             }
         ))
     }
     "/skin_details"(endpoint = "SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
-        isLocalized = true
 
         queryParameter("SkinID", INTEGER, "the amount to exchange", key = "skin_id")
         schema(conditional("SkinDetails", "Information about a skin.", interpretationInNestedProperty = true, sharedConfigure = {
             SerialName("skin_id").."SkinID"(INTEGER, "")
-            "Name"(STRING, "the skin's localized name")
+            localized.."Name"(STRING, "the skin's localized name")
             "Type"(STRING, "the skin's type")
             "Rarity"(STRING, "the skin's rarity")
             "Flags"(array(STRING), "additional skin flags (ShowInWardrobe, NoCost, HideIfLocked, OverrideRarity)")
@@ -115,13 +113,12 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
     }
     "/world_names"(endpoint = "WorldNames") {
         summary = "Returns information about the available worlds (or servers)."
-        isLocalized = true
 
         schema(array(
             description = "the available worlds",
             items = record(name = "WorldName", description = "Information about an available world (or server).") {
                 CamelCase("id").."ID"(INTEGER, "the ID of the world")
-                "Name"(STRING, "the name of the world")
+                localized.."Name"(STRING, "the name of the world")
             }
         ))
     }

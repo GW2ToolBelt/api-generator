@@ -2039,6 +2039,9 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
     override fun assertProperties(expected: ExpectedAPIv2Query, actual: APIQuery.V2) {
         assertEquals(expected.queryDetails, actual.queryDetails)
         assertEquals(expected.security, actual.security)
+
+        // TODO: In the future we might have to check the isLocalized flag specifically for schema versions.
+        assertEquals(expected.isLocalized, actual.schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
     }
 
     override fun testTypes(queries: Collection<APIQuery.V2>) = sequence<DynamicTest> {

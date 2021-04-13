@@ -58,7 +58,6 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                 yield(DynamicTest.dynamicTest("$prefix${expectedQuery.route}") {
                     if (actualQuery == null) fail("Could not find matching actual query for: $expectedQuery")
 
-                    assertEquals(expectedQuery.isLocalized, actualQuery.isLocalized, "Mismatched 'isLocalized' flag for ${actualQuery.route}")
                     assertEquals(expectedQuery.cache, actualQuery.cache, "Mismatched 'cache' flag for ${actualQuery.route}")
                     assertProperties(expectedQuery, actualQuery)
 

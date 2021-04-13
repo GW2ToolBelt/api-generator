@@ -25,8 +25,13 @@ package com.gw2tb.apigen.schema
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 
-public sealed class SchemaType
-public sealed class SchemaPrimitive : SchemaType()
+public sealed class SchemaType {
+    public abstract val isLocalized: Boolean
+}
+
+public sealed class SchemaPrimitive : SchemaType() {
+    override val isLocalized: Boolean = false
+}
 
 public sealed class SchemaClass : SchemaType() {
     public abstract val name: String
@@ -56,7 +61,9 @@ public data class SchemaArray internal constructor(
     public val items: SchemaType,
     public val nullableItems: Boolean,
     public val description: String?
-) : SchemaType()
+) : SchemaType() {
+    override val isLocalized: Boolean get() = items.isLocalized
+}
 
 /**
  * A schema for maps.
@@ -72,7 +79,9 @@ public data class SchemaMap internal constructor(
     public val values: SchemaType,
     public val nullableValues: Boolean,
     public val description: String?
-) : SchemaType()
+) : SchemaType() {
+    override val isLocalized: Boolean get() = values.isLocalized
+}
 
 /**
  * A schema for a sealed hierarchy (i.e. algebraic sum type-like construct).
@@ -101,6 +110,8 @@ public data class SchemaConditional internal constructor(
     public val interpretations: Map<String, Interpretation>,
     public val description: String
 ) : SchemaClass() {
+
+    override val isLocalized: Boolean = sharedProperties.any { (_, v) -> v.isLocalized || v.type.isLocalized } || interpretations.any { (_, v) -> v.type.isLocalized }
 
     /**
      * A conditional interpretation.
@@ -137,6 +148,8 @@ public data class SchemaRecord internal constructor(
     public val description: String
 ) : SchemaClass() {
 
+    override val isLocalized: Boolean = properties.any { (_, v) -> v.isLocalized || v.type.isLocalized }
+
     /**
      * A record property.
      *
@@ -145,6 +158,7 @@ public data class SchemaRecord internal constructor(
      * @param description   the description of the property. (Should be worded to complete the sentence "This field
      *                      holds {description}.")
      * @param isDeprecated  whether or not the property is deprecated
+     * @param isLocalized
      * @param optionality   the [Optionality] of this property
      * @param since         the minimum [V2SchemaVersion] required for the property
      * @param until         the [V2SchemaVersion] up to which the property existed
@@ -156,6 +170,7 @@ public data class SchemaRecord internal constructor(
         public val type: SchemaType,
         public val description: String,
         public val isDeprecated: Boolean,
+        public val isLocalized: Boolean,
         public val optionality: Optionality,
         public val since: V2SchemaVersion?,
         public val until: V2SchemaVersion?,
@@ -168,7 +183,11 @@ public data class SchemaRecord internal constructor(
 internal class SchemaBlueprint internal constructor(
     override val name: String,
     internal val versions: Map<V2SchemaVersion, SchemaType?>
-) : SchemaClass()
+) : SchemaClass() {
+
+    override val isLocalized: Boolean get() = error("isLocalized should never be called for SchemaBlueprint")
+
+}
 
 /** A property's optionality. */
 public sealed class Optionality {
