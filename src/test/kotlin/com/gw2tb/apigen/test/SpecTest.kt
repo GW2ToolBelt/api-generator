@@ -173,6 +173,7 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                     property.type.assertMatches(value, property.optionality.isOptional, intrp)
                 }
             }
+            else -> fail("Unsupported SchemaType reached SpecTest stage: $this")
         }
     }
 
