@@ -279,37 +279,37 @@ internal class SchemaRecordPropertyBuilder(
 
     var isDeprecated = false
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
     var optionality: Optionality? = null
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
     var since: V2SchemaVersion? = null
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
     var until: V2SchemaVersion? = null
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
     var serialName: String? = null
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
     var camelCase: String? = null
         set(value) {
-            require(isUnused)
+            check(isUnused)
             field = value
         }
 
