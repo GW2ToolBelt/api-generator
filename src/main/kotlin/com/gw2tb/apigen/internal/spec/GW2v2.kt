@@ -186,7 +186,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Account/Home" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -316,7 +316,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Account/Mounts" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -525,7 +525,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Backstory" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -825,7 +825,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Commerce/Exchange" {
         summary = "Returns information about the gem exchange."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -881,14 +881,14 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Commerce/Transactions" {
         summary = "Returns information about an account's transactions."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
         security(ACCOUNT, TRADINGPOST)
 
         schema(array(STRING, "the available sub-endpoints"))
     }
     "/Commerce/Transactions/:Relevance" {
         summary = "Returns information about an account's transactions."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
         security(ACCOUNT, TRADINGPOST)
 
         pathParameter("Relevance", STRING, "the temporal relevance")
@@ -976,7 +976,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Emblem" {
         summary = "Returns information about guild emblem assets."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -1187,7 +1187,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Home" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -1496,7 +1496,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Mounts" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -1655,7 +1655,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/PvP" {
         summary = "Returns information about the available sub-endpoints."
-        cache = DURATION_INFINITE // We don't expect this to change. Ever.
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
 
         schema(array(STRING, "the available sub-endpoints"))
     }

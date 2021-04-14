@@ -88,7 +88,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Account/Home",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -143,7 +143,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Account/Mounts",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -297,7 +297,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Backstory",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -487,7 +487,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Commerce/Exchange",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -544,13 +544,13 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Commerce/Transactions",
-            cache = DURATION_INFINITE,
+            cache = Duration.INFINITE,
             security = setOf(ACCOUNT, TRADINGPOST)
         )
 
         expectQuery(
             "/Commerce/Transactions/:Relevance",
-            cache = DURATION_INFINITE,
+            cache = Duration.INFINITE,
             security = setOf(ACCOUNT, TRADINGPOST),
             pathParameters = listOf(ExpectedPathParameter("Relevance", STRING))
         )
@@ -707,7 +707,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Emblem",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -953,7 +953,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Home",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -1273,7 +1273,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Mounts",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
@@ -1458,7 +1458,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/PvP",
-            cache = DURATION_INFINITE
+            cache = Duration.INFINITE
         )
 
         expectQuery(
