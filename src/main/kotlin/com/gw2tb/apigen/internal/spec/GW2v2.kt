@@ -827,7 +827,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         summary = "Returns information about the gem exchange."
         cache = DURATION_INFINITE // We don't expect this to change. Ever.
 
-        schema(array(STRING, "")) // TODO
+        schema(array(STRING, "the available sub-endpoints"))
     }
     "/Commerce/Exchange/:Type" {
         summary = "Returns information about the gem exchange."
@@ -884,7 +884,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         cache = DURATION_INFINITE // We don't expect this to change. Ever.
         security(ACCOUNT, TRADINGPOST)
 
-        schema(array(STRING, "")) // TODO
+        schema(array(STRING, "the available sub-endpoints"))
     }
     "/Commerce/Transactions/:Relevance" {
         summary = "Returns information about an account's transactions."
@@ -892,7 +892,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         security(ACCOUNT, TRADINGPOST)
 
         pathParameter("Relevance", STRING, "the temporal relevance")
-        schema(array(STRING, "")) // TODO
+        schema(array(STRING, "the available sub-endpoints"))
     }
     "/Commerce/Transactions/:Relevance/:Type" {
         summary = "Returns information about an account's transactions."
