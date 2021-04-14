@@ -1552,6 +1552,36 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/PvP/Seasons",
+            cache = 1.hours,
+            queryDetails = QueryDetails(QueryType.IDs, STRING)
+        )
+        expectQuery(
+            "/PvP/Seasons",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryDetails(QueryType.ByID, STRING)
+        )
+        expectQuery(
+            "/PvP/Seasons",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
+            queryDetails = QueryDetails(QueryType.ByIDs.All, STRING)
+        )
+        expectQuery(
+            "/PvP/Seasons",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryDetails(QueryType.ByPage, STRING)
+        )
+
+        expectQuery(
             "/Quaggans",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, STRING)

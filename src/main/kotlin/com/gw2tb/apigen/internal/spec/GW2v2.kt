@@ -1739,6 +1739,86 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/PvP/Seasons" {
+        summary = ""
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "PvPSeason", description = "Information about a PvP season.") {
+            CamelCase("id").."ID"(STRING, "the PvP season's ID")
+            localized.."Name"(STRING, "the season's localized name")
+            "Start"(STRING, "the ISO-8601 standard timestamp of when the season started")
+            "End"(STRING, "the ISO-8601 standard timestamp of when the season ended")
+            "Active"(BOOLEAN, "whether or not the season is currently active")
+            "Divisions"(
+                description = "the season's divisions",
+                type = array(record(name = "Division", description = "Information about a division.") {
+                    localized.."Name"(STRING, "the division's localized name")
+                    "Flags"(array(STRING), "the flags providing additional information about the division")
+                    SerialName("large_icon").."LargeIcon"(STRING, "the render service URL for the division's large icon")
+                    SerialName("small_icon").."SmallIcon"(STRING, "the render service URL for the division's small icon")
+                    SerialName("pip_icon").."PipIcon"(STRING, "the render service URL for the division's pip icon")
+                    "Tiers"(
+                        description = "the division's tiers",
+                        type = array(record(name = "Tier", description = "Information about a division's tier.") {
+                            "Points"(INTEGER, "the number of pips in the tier")
+                        })
+                    )
+                })
+            )
+            optional.."Ranks"(
+                description = "the season's ranks",
+                type = array(record(name = "Ranks", description = "Information about a season's ranks.") {
+                    localized.."Name"(STRING, "the rank's localized name")
+                    localized.."Description"(STRING, "the rank's localized description")
+                    "Icon"(STRING, "the render service URL for the rank's icon")
+                    "Overlay"(STRING, "the render service URL for the rank's overlay icon")
+                    SerialName("overlay_small").."OverlaySmall"(STRING, "the render service URL for the rank's overlay icon")
+                    "Tiers"(
+                        description = "the rank's tiers",
+                        type = array(record(name = "Tier", description = "Information about a rank's tier.") {
+                            "Rating"(INTEGER, "the rating required for the tier")
+                        })
+                    )
+                })
+            )
+            "Leaderboards"(
+                description = "the season's leaderboards",
+                type = record(name = "Leaderboards", description = "Information about a seasons leaderboards.") {
+                    val LEADERBOARD = record(name = "Leaderboard", description = "Information about a leaderboard.") {
+                        "Settings"(
+                            description = "the leaderboard's settings",
+                            type = record(name = "Settings", description = "Information about a leaderboard's settings.") {
+                                "Name"(STRING, "the setting's name")
+                                "Duration"(STRING, "the setting's duration (unknown purpose)")
+                                "Scoring"(STRING, "the ID of the primary scoring component")
+                                "Tiers"(
+                                    description = "the tiers",
+                                    type = array(record(name = "Tier", description = "Information about a leaderboard's tiers.") {
+                                        "Range"(array(DECIMAL), "the tier's scoring range")
+                                    })
+                                )
+                            }
+                        )
+                        "Scorings"(
+                            description = "the leaderboard's scoring information",
+                            type = array(record(name = "Scoring", description = "Information about scoring.") {
+                                CamelCase("id").."ID"(STRING, "the scoring's ID")
+                                "Type"(STRING, "the scoring's type")
+                                localized.."Description"(STRING, "the scoring's localized description")
+                                localized.."Name"(STRING, "the scoring's localized name")
+                                "Ordering"(STRING, "the scoring's ordering (\"MoreIsBetter\" or \"LessIsBetter\")")
+                            })
+                        )
+                    }
+
+                    optional.."Guild"(LEADERBOARD, "the season's guild leaderboard")
+                    optional.."Ladder"(LEADERBOARD, "the season's leaderboard")
+                    optional.."Legendary"(LEADERBOARD, "the season's legendary rank leaderboard")
+                }
+            )
+        })
+    }
     "/Quaggans" {
         summary = "Returns images of quaggans."
         cache = 1.hours
