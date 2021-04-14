@@ -1491,7 +1491,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             optional..localized.."Description"(STRING, "the description of how to unlock the mini")
             "Icon"(STRING, "the URL for the mini's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
-            SerialName("item_id").."ItemID"(STRING, "the ID of the item which unlocks the mini") // TODO
+            SerialName("item_id").."ItemID"(INTEGER, "the ID of the item which unlocks the mini")
         })
     }
     "/Mounts" {
