@@ -371,10 +371,13 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
     }
 
     protected lateinit var queryTypes: Set<QueryType>
+    protected var implicitIDsQuery: Boolean = false
+        private set
 
-    fun supportedQueries(vararg types: QueryType) {
+    fun supportedQueries(vararg types: QueryType, implicitIDsQuery: Boolean = true) {
         check(!this::queryTypes.isInitialized)
         queryTypes = types.toSet()
+        this.implicitIDsQuery = implicitIDsQuery
     }
 
     protected lateinit var schema: EnumMap<V2SchemaVersion, SchemaType>
@@ -449,6 +452,8 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             require((since == null || until == null) || since < until)
         }
 
+        var idTypeKey: String = "id"
+
         fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
             val loc = TypeLocation(endpoint, null)
             val types = _types[loc]
@@ -493,16 +498,18 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         override fun finalize(): Collection<APIQuery.V2> = buildList {
             if (this@V2::queryTypes.isInitialized) {
                 val idType: SchemaPrimitive = when (val schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]) {
-                    is SchemaConditional -> schema.sharedProperties["id"]?.type
-                    is SchemaRecord -> schema.properties["id"]?.type
+                    is SchemaConditional -> schema.sharedProperties[idTypeKey]?.type
+                    is SchemaRecord -> schema.properties[idTypeKey]?.type
                     else -> TODO()
                 } as? SchemaPrimitive ?: TODO()
 
-                add(buildQuery(
-                    schema = EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to SchemaArray(idType, false, description = "the available IDs"))),
-                    queryParameters = queryParameters,
-                    queryDetails = QueryDetails(QueryType.IDs, idType)
-                ))
+                if (implicitIDsQuery) {
+                    add(buildQuery(
+                        schema = EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to SchemaArray(idType, false, description = "the available IDs"))),
+                        queryParameters = queryParameters,
+                        queryDetails = QueryDetails(QueryType.IDs, idType)
+                    ))
+                }
 
                 queryTypes.forEach { queryType ->
                     val schema: EnumMap<V2SchemaVersion, SchemaType>
