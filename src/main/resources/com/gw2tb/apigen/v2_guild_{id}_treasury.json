@@ -1,0 +1,96 @@
+[
+    {
+        "item_id": 9576,
+        "count": 0,
+        "needed_by": [
+            {
+                "upgrade_id": 350,
+                "count": 3
+            }
+        ]
+    },
+    {
+        "item_id": 19663,
+        "count": 0,
+        "needed_by": [
+            {
+                "upgrade_id": 428,
+                "count": 30
+            },
+            {
+                "upgrade_id": 504,
+                "count": 30
+            }
+        ]
+    },
+    {
+        "item_id": 19684,
+        "count": 0,
+        "needed_by": [
+            {
+                "upgrade_id": 169,
+                "count": 300
+            },
+            {
+                "upgrade_id": 234,
+                "count": 50
+            },
+            {
+                "upgrade_id": 322,
+                "count": 100
+            },
+            {
+                "upgrade_id": 354,
+                "count": 100
+            },
+            {
+                "upgrade_id": 434,
+                "count": 300
+            },
+            {
+                "upgrade_id": 450,
+                "count": 100
+            }
+        ]
+    },
+    {
+        "item_id": 19685,
+        "count": 0,
+        "needed_by": [
+            {
+                "upgrade_id": 350,
+                "count": 100
+            }
+        ]
+    },
+    {
+        "item_id": 19709,
+        "count": 0,
+        "needed_by": [
+            {
+                "upgrade_id": 169,
+                "count": 300
+            },
+            {
+                "upgrade_id": 234,
+                "count": 50
+            },
+            {
+                "upgrade_id": 322,
+                "count": 100
+            },
+            {
+                "upgrade_id": 354,
+                "count": 100
+            },
+            {
+                "upgrade_id": 434,
+                "count": 300
+            },
+            {
+                "upgrade_id": 450,
+                "count": 100
+            }
+        ]
+    }
+]

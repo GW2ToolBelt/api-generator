@@ -838,6 +838,14 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Guild/:ID/Treasury",
+            security = setOf(ACCOUNT, GUILDS),
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            )
+        )
+
+        expectQuery(
             "/Guild/:ID/Upgrades",
             security = setOf(ACCOUNT, GUILDS),
             pathParameters = listOf(

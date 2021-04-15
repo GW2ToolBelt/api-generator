@@ -1116,6 +1116,26 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             }
         ))
     }
+    "/Guild/:ID/Treasury" {
+        summary = "Returns information about a guild's treasury."
+        security(ACCOUNT, GUILDS)
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(
+            description = "the guild's treasury items",
+            items = record(name = "GuildTreasurySlot", description = "Information about an item in a guild's treasury.") {
+                SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                "Count"(INTEGER, "the amount of the item in the guild's treasury")
+                SerialName("needed_by").."NeededBy"(
+                    description = "the currently in-progress upgrades requiring the item",
+                    type = array(record(name = "UpgradeRequirement", description = "Information about the usage for an item.") {
+                        SerialName("upgrade_id").."UpgradeID"(INTEGER, "the guild upgrade's ID")
+                        "Count"(INTEGER, "the total amount of the item required for the upgrade")
+                    })
+                )
+            }
+        ))
+    }
     "/Guild/:ID/Upgrades" {
         summary = "Returns information about a guild's upgrades."
         security(ACCOUNT, GUILDS)
