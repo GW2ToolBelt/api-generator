@@ -1116,6 +1116,19 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             }
         ))
     }
+    "/Guild/:ID/Storage" {
+        summary = "Returns information about a guild's storage."
+        security(ACCOUNT, GUILDS)
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(
+            description = "the guild's storage items",
+            items = record(name = "GuildStorageSlot", description = "Information about an item in a guild's storage.") {
+                CamelCase("id").."ID"(INTEGER, "the guild upgrade's ID")
+                "Count"(INTEGER, "the amount of the upgrade in the guild's treasury")
+            }
+        ))
+    }
     "/Guild/:ID/Treasury" {
         summary = "Returns information about a guild's treasury."
         security(ACCOUNT, GUILDS)
