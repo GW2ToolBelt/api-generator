@@ -1481,6 +1481,37 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/PvP/Games",
+            cache = 1.hours,
+            security = setOf(ACCOUNT, PVP),
+            queryDetails = QueryDetails(QueryType.IDs, STRING)
+        )
+        expectQuery(
+            "/PvP/Games",
+            cache = 1.hours,
+            security = setOf(ACCOUNT, PVP),
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryDetails(QueryType.ByID, STRING)
+        )
+        expectQuery(
+            "/PvP/Games",
+            cache = 1.hours,
+            security = setOf(ACCOUNT, PVP),
+            queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
+            queryDetails = QueryDetails(QueryType.ByIDs.All, STRING)
+        )
+        expectQuery(
+            "/PvP/Games",
+            cache = 1.hours,
+            security = setOf(ACCOUNT, PVP),
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryDetails(QueryType.ByPage, STRING)
+        )
+
+        expectQuery(
             "/PvP/Heroes",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, STRING)

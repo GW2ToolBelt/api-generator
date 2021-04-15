@@ -1685,6 +1685,32 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/PvP/Games" {
+        summary = "Returns information about an account's recent PvP games."
+        cache = 1.hours
+        security = setOf(ACCOUNT, PVP)
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "PvPGame", description = "Information about an account's PvP game.") {
+            CamelCase("id").."ID"(STRING, "the game's ID")
+            SerialName("map_id").."MapID"(INTEGER, "the map's ID")
+            "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
+            "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
+            "Result"(STRING, "the game's result for the account (\"Victory\" or \"Defeat\")")
+            "Team"(STRING, "the player's team (\"Blue\" or \"Red\")")
+            "Profession"(STRING, "the ID of the player's profession")
+            SerialName("rating_type").."RatingType"(STRING, "the type of rating of the game")
+            optional..SerialName("rating_change").."RatingChange"(INTEGER, "the change in rating for the account")
+            optional.."Season"(STRING, "the ID of the game's PvP season")
+            "Scores"(
+                description = "the game's final scores",
+                type = record(name = "Scores", description = "Information about a PvP game's scores.") {
+                    "Red"(INTEGER, "the red team's score")
+                    "Blue"(INTEGER, "the blue team's score")
+                }
+            )
+        })
+    }
     "/PvP/Heroes" {
         summary = "Returns information about available PvP heroes."
         cache = 1.hours
