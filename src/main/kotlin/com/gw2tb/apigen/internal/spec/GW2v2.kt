@@ -901,7 +901,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
 
         pathParameter("Relevance", STRING, "the temporal relevance")
         pathParameter("Type", STRING, "the transaction type")
-        supportedQueries(BY_PAGE)
+        supportedQueries(BY_PAGE, implicitIDsQuery = false)
         schema(record(name = "CommerceTransaction", description = "Information about a transaction.") {
             CamelCase("id").."ID"(INTEGER, "the transaction's ID")
             SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
@@ -1816,6 +1816,47 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     optional.."Ladder"(LEADERBOARD, "the season's leaderboard")
                     optional.."Legendary"(LEADERBOARD, "the season's legendary rank leaderboard")
                 }
+            )
+        })
+    }
+    "/PvP/Seasons/:ID/Leaderboards" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+
+        pathParameter("ID", STRING, "the season's ID")
+        schema(array(STRING, "the available sub-endpoints"))
+    }
+    "/PvP/Seasons/:ID/Leaderboards/:Board" {
+        summary = "Returns information about the available sub-endpoints."
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+
+        pathParameter("ID", STRING, "the season's ID")
+        pathParameter("Board", STRING, "the board")
+        schema(array(STRING, "the available sub-endpoints"))
+    }
+    "/PvP/Seasons/:ID/Leaderboards/:Board/:Region" {
+        summary = "Returns information about a PvP leaderboard."
+        cache = 1.hours
+
+        idTypeKey = "rank"
+
+        pathParameter("ID", STRING, "the season's ID")
+        pathParameter("Board", STRING, "the board")
+        pathParameter("Region", STRING, "the region")
+        supportedQueries(BY_PAGE, implicitIDsQuery = false)
+        schema(record(name = "LeaderboardEntry", description = "Information about a leaderboard entry.") {
+            optional.."Name"(STRING, "the account's name")
+            optional..CamelCase("id").."ID"(STRING, "the guild's ID")
+            "Rank"(INTEGER, "the account's rank")
+            optional.."Team"(INTEGER, "the guild team's name")
+            optional.."TeamID"(INTEGER, "the guild team's ID")
+            "Date"(STRING, "the date at which the rank was reached")
+            "Scores"(
+                description = "the entry's scoring values",
+                type = array(record(name = "Scoring", description = "Information about a leaderboard entry's scoring") {
+                    CamelCase("id").."ID"(STRING, "the scoring's ID")
+                    "Value"(STRING, "the scoring's value")
+                })
             )
         })
     }

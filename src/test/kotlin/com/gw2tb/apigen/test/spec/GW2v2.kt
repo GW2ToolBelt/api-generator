@@ -563,17 +563,6 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("Relevance", STRING),
                 ExpectedPathParameter("Type", STRING)
             ),
-            queryDetails = QueryDetails(QueryType.IDs, INTEGER)
-        )
-
-        expectQuery(
-            "/Commerce/Transactions/:Relevance/:Type",
-            cache = 1.minutes,
-            security = setOf(ACCOUNT, TRADINGPOST),
-            pathParameters = listOf(
-                ExpectedPathParameter("Relevance", STRING),
-                ExpectedPathParameter("Type", STRING)
-            ),
             queryParameters = listOf(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
@@ -1579,6 +1568,38 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
             queryDetails = QueryDetails(QueryType.ByPage, STRING)
+        )
+
+        expectQuery(
+            "/PvP/Seasons/:ID/Leaderboards",
+            cache = Duration.INFINITE,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            )
+        )
+
+        expectQuery(
+            "/PvP/Seasons/:ID/Leaderboards/:Board",
+            cache = Duration.INFINITE,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING),
+                ExpectedPathParameter("Board", STRING),
+            )
+        )
+
+        expectQuery(
+            "/PvP/Seasons/:ID/Leaderboards/:Board/:Region",
+            cache = 1.hours,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING),
+                ExpectedPathParameter("Board", STRING),
+                ExpectedPathParameter("Region", STRING)
+            ),
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryDetails(QueryType.ByPage, INTEGER)
         )
 
         expectQuery(
