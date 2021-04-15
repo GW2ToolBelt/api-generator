@@ -1129,6 +1129,66 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             }
         ))
     }
+    "/Guild/:ID/Teams" {
+        summary = "Returns information about a guild's PvP teams."
+        security(ACCOUNT, GUILDS)
+
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        schema(array(
+            description = "the guild's PvP teams",
+            items = record(name = "GuildTeam", description = "Information about a guild's PvP team.") {
+                val STATS = record(name = "Stats", description = "Information about category-specific PvP stats.") {
+                    "Wins"(INTEGER, "the amount of wins")
+                    "Losses"(INTEGER, "the amount of losses")
+                    "Desertions"(INTEGER, "the amount desertions")
+                    "Byes"(INTEGER, "the amount of byes")
+                    "Forfeits"(INTEGER, "the amount of forfeits")
+                }
+
+                CamelCase("id").."ID"(INTEGER, "the team's ID (only unique within the guild)")
+                "Members"(
+                    description = "the team's members",
+                    type = array(record(name = "Member", description = "Information about a team member.") {
+                        "Name"(STRING, "the member's account name")
+                        "Role"(STRING, "the member's role (i.e. \"Captain\" or \"Member\")")
+                    })
+                )
+                "Name"(STRING, "the team's name")
+                "Aggregate"(STATS, "the aggregated statistics")
+                "Ladders"(map(STRING, STATS), "the stats by ladder (e.g. \"ranked\", \"unranked\")")
+                "Games"(
+                    description = "the team's recent PvP games",
+                    type = array(record(name = "PvPGame", description = "Information about a team's PvP game.") {
+                        CamelCase("id").."ID"(STRING, "the game's ID")
+                        SerialName("map_id").."MapID"(INTEGER, "the map's ID")
+                        "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
+                        "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
+                        "Result"(STRING, "the game's result for the team (\"Victory\" or \"Defeat\")")
+                        "Team"(STRING, "the team's color (\"Blue\" or \"Red\")")
+                        SerialName("rating_type").."RatingType"(STRING, "the type of rating of the game")
+                        optional..SerialName("rating_change").."RatingChange"(INTEGER, "the change in rating for the team")
+                        optional.."Season"(STRING, "the ID of the game's PvP season")
+                        "Scores"(
+                            description = "the game's final scores",
+                            type = record(name = "Scores", description = "Information about a PvP game's scores.") {
+                                "Red"(INTEGER, "the red team's score")
+                                "Blue"(INTEGER, "the blue team's score")
+                            }
+                        )
+                    }
+                ))
+                "Seasons"(
+                    description = "the team's season-specific stats",
+                    type = array(record(name = "SeasonStats", description = "Information about a team's PvP season.") {
+                        CamelCase("id").."ID"(STRING, "the season's ID")
+                        "Wins"(INTEGER, "the amount of wins")
+                        "Losses"(INTEGER, "the amount of losses")
+                        "Rating"(INTEGER, "the team's rating")
+                    })
+                )
+            }
+        ))
+    }
     "/Guild/:ID/Treasury" {
         summary = "Returns information about a guild's treasury."
         security(ACCOUNT, GUILDS)
