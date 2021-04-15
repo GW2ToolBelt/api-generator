@@ -2088,6 +2088,33 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/WvW/Matches/Scores",
+            cache = 1.seconds,
+            queryDetails = QueryDetails(QueryType.IDs, STRING)
+        )
+        expectQuery(
+            "/WvW/Matches/Scores",
+            cache = 1.seconds,
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryDetails(QueryType.ByID, STRING)
+        )
+        expectQuery(
+            "/WvW/Matches/Scores",
+            cache = 1.seconds,
+            queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
+            queryDetails = QueryDetails(QueryType.ByIDs.All, STRING)
+        )
+        expectQuery(
+            "/WvW/Matches/Scores",
+            cache = 1.seconds,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryDetails(QueryType.ByPage, STRING)
+        )
+
+        expectQuery(
             "/WvW/Objectives",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, STRING)

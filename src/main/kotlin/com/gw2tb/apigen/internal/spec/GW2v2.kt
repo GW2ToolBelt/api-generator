@@ -2346,6 +2346,39 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
         })
     }
+    "/WvW/Matches/Scores" {
+        summary = "Returns information about the active WvW match scores."
+        cache = 1.seconds
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "WvWMatchScore", description = "Information about a WvW match scores.") {
+            CamelCase("id").."ID"(STRING, "the match's ID")
+            "Scores"(map(STRING, INTEGER), "the total scores by team color")
+            SerialName("victory_points").."VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
+            "Skirmishes"(
+                description = "the match's skirmishes",
+                type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
+                    CamelCase("id").."ID"(STRING, "the skirmish's ID")
+                    "Scores"(map(STRING, INTEGER), "the scores by team color")
+                    SerialName("map_scores").."MapScores"(
+                        description = "the scores by map",
+                        type = array(record(name = "MapScores", description = "Map-specific information about scores.") {
+                            "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                            "Scores"(map(STRING, INTEGER), "the scores by team color")
+                        })
+                    )
+                })
+            )
+            "Maps"(
+                description = "the total scores by map",
+                type = array(record(name = "Map", description = "Map-specific information about scores.") {
+                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                    "Scores"(map(STRING, INTEGER), "the scores by team color")
+                })
+            )
+        })
+    }
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache = 1.hours
