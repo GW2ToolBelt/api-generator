@@ -41,6 +41,13 @@ public object TestData {
         }
 
         return TestData::class.java.getResourceAsStream(resource).use {
+            check(it != null) {
+                """
+                TestData::class.java.getResourceAsStream returned `null` for $resource.
+                When adding an endpoint please make sure to add a sample file in "src/main/resources/com/gw2tb/apigen".
+                """.trimIndent()
+            }
+
             it.reader().readText()
         }
     }
