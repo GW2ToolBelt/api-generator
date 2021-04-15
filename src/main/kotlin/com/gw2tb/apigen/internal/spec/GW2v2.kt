@@ -2333,6 +2333,19 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/WvW/Matches/Overview" {
+        summary = "Returns general information about the active WvW matches."
+        cache = 1.seconds
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "WvWMatchOverview", description = "General information about a WvW match.") {
+            CamelCase("id").."ID"(STRING, "the match's ID")
+            "Worlds"(map(STRING, INTEGER), "the IDs of the three primary servers by team color")
+            SerialName("all_worlds").."AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
+            SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
+            SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+        })
+    }
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache = 1.hours
