@@ -2379,6 +2379,26 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/WvW/Matches/Stats" {
+        summary = "Returns information about the active WvW match stats."
+        cache = 1.seconds
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "WvWMatchStats", description = "Information about a WvW match stats.") {
+            CamelCase("id").."ID"(STRING, "the match's ID")
+            "Deaths"(map(STRING, INTEGER), "the deaths by team color")
+            "Kills"(map(STRING, INTEGER), "the deaths by team color")
+            "Maps"(
+                description = "the stats by map",
+                type = array(record(name = "Map", description = "Map-specific information about scores.") {
+                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                    "Deaths"(map(STRING, INTEGER), "the deaths by team color")
+                    "Kills"(map(STRING, INTEGER), "the deaths by team color")
+                })
+            )
+        })
+    }
     "/WvW/Objectives" {
         summary = "Returns information about the objectives in the World versus World game mode."
         cache = 1.hours
