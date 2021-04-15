@@ -1886,6 +1886,28 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/PvP/Stats" {
+        summary = "Returns information about an account's PvP stats."
+        cache = 1.hours
+        security = setOf(ACCOUNT, PVP)
+
+        schema(record(name = "PvPStats", description = "Information about an account's PvP stats.") {
+            val STATS = record(name = "Stats", description = "Information about category-specific PvP stats.") {
+                "Wins"(INTEGER, "the amount of wins")
+                "Losses"(INTEGER, "the amount of losses")
+                "Desertions"(INTEGER, "the amount desertions")
+                "Byes"(INTEGER, "the amount of byes")
+                "Forfeits"(INTEGER, "the amount of forfeits")
+            }
+
+            SerialName("pvp_rank").."PvPRank"(INTEGER, "the account's PvP rank")
+            SerialName("pvp_rank_points").."PvPRankPoints"(INTEGER, "the account's PvP rank points")
+            SerialName("pvp_rank_rollovers").."PvPRankRollovers"(INTEGER, "the number of times the account leveled up after reaching rank 80")
+            "Aggregate"(STATS, "the aggregated statistics")
+            "Professions"(map(STRING, STATS), "the stats by profession ID")
+            "Ladders"(map(STRING, STATS), "the stats by ladder (e.g. \"ranked\", \"unranked\")")
+        })
+    }
     "/Quaggans" {
         summary = "Returns images of quaggans."
         cache = 1.hours

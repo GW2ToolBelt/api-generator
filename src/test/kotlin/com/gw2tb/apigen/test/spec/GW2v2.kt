@@ -1634,6 +1634,12 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/PvP/Stats",
+            cache = 1.hours,
+            security = setOf(ACCOUNT, PVP)
+        )
+
+        expectQuery(
             "/Quaggans",
             cache = 1.hours,
             queryDetails = QueryDetails(QueryType.IDs, STRING)
