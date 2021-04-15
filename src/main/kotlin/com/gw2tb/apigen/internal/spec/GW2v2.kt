@@ -1886,6 +1886,39 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/PvP/Standings" {
+        summary = "Returns information about an account's PvP standings."
+        security = setOf(ACCOUNT, PVP)
+
+        schema(array(
+            description = "the player's standings information for recent seasons",
+            items = record(name = "PvPStandings", description = "Information about an account's PvP standings.") {
+                "Current"(
+                    description = "the season's current standing",
+                    type = record(name = "Current", description = "Information about the current standing.") {
+                        SerialName("total_points").."TotalPoints"(INTEGER, "the total number of points")
+                        "Division"(INTEGER, "the index of the reached division")
+                        "Tier"(INTEGER, "the index of the reached tier")
+                        "Points"(INTEGER, "the number of pips towards the next tier")
+                        "Repeats"(INTEGER, "the number of times the account maxed out the repeat division")
+                        optional.."Rating"(INTEGER, "the rating level")
+                        optional.."Decay"(INTEGER, "the decay value")
+                    }
+                )
+                "Best"(
+                    description = "the season's best standing",
+                    type = record(name = "Best", description = "Information about the season's best standing.") {
+                        SerialName("total_points").."TotalPoints"(INTEGER, "the total number of points")
+                        "Division"(INTEGER, "the index of the reached division")
+                        "Tier"(INTEGER, "the index of the reached tier")
+                        "Points"(INTEGER, "the number of pips towards the next tier")
+                        "Repeats"(INTEGER, "the number of times the account maxed out the repeat division")
+                    }
+                )
+                SerialName("season_id").."SeasonID"(STRING, "the season's ID")
+            }
+        ))
+    }
     "/PvP/Stats" {
         summary = "Returns information about an account's PvP stats."
         cache = 1.hours
