@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.gradle.dsl.*
 plugins {
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.serialization") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.4.30"
+    id("org.jetbrains.dokka") version "1.4.32"
     signing
     `maven-publish`
 }
@@ -156,7 +156,7 @@ signing {
 
 repositories {
     mavenCentral()
-    jcenter()
+    maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
 dependencies {
