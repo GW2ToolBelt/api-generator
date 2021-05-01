@@ -130,6 +130,28 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
+    "/recipe_details"(endpoint = "/RecipeDetails") {
+        summary = "Returns information about the recipes in the game."
+
+        queryParameter("RecipeID", INTEGER, "the recipe's ID", key = "recipe_id")
+        schema(record(name = "Recipe", description = "Information about a crafting recipe.") {
+            SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe's ID")
+            "Type"(STRING, "the recipe's type")
+            SerialName("output_item_id").."OutputItemID"(INTEGER, "the ID of the produced item")
+            SerialName("output_item_count").."OutputItemCount"(INTEGER, "the amount of items produced")
+            SerialName("time_to_craft_ms").."CraftTimeMillis"(INTEGER, "the time in milliseconds it takes to craft the item")
+            "Disciplines"(array(STRING), "the crafting disciplines that can use the recipe")
+            SerialName("min_rating").."MinRating"(INTEGER, "the minimum rating required to use the recipe")
+            "Flags"(array(STRING), "the flags applying to the recipe")
+            "Ingredients"(
+                description = "the recipe's ingredients",
+                type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
+                    SerialName("item_id").."ItemID"(STRING, "the ingredient's item ID")
+                    "Count"(INTEGER, "the quantity of this ingredient")
+                })
+            )
+        })
+    }
     "/Recipes" {
         summary = "Returns the IDs of the available recipes."
 

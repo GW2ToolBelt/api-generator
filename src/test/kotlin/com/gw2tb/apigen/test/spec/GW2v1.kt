@@ -57,13 +57,18 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         )
 
         expectQuery(
+            "/recipe_details",
+            queryParameters = listOf(ExpectedQueryParameter("recipe_id", INTEGER))
+        )
+
+        expectQuery("/Recipes")
+
+        expectQuery(
             "/skin_details",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
         )
-
-        expectQuery("/Recipes")
 
         expectQuery("/Skins")
 
