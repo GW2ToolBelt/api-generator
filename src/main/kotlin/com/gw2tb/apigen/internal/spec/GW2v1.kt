@@ -86,6 +86,11 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/Items" {
+        summary = "Returns the IDs of the available items."
+
+        schema(array(INTEGER, "the IDs of the available items"))
+    }
     "/map_names"(endpoint = "MapNames") {
         summary = "Returns information about maps."
 
