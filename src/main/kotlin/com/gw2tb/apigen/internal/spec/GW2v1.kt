@@ -141,7 +141,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
 
-        queryParameter("SkinID", INTEGER, "the amount to exchange", key = "skin_id")
+        queryParameter("SkinID", INTEGER, "the the skin's ID", key = "skin_id")
         schema(conditional("SkinDetails", "Information about a skin.", interpretationInNestedProperty = true, sharedConfigure = {
             SerialName("skin_id").."SkinID"(INTEGER, "")
             localized.."Name"(STRING, "the skin's localized name")
