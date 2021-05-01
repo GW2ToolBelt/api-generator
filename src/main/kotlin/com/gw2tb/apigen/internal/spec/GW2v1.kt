@@ -204,6 +204,23 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/WvW/Matches" {
+        summary = "Returns information about WvW matches."
+
+        schema(record(name = "WvWMatches", description = "Information about WvW matches.") {
+            SerialName("wvw_matches").."WvWMatches"(
+                description = "the matches",
+                type = array(record(name = "WvWMatch", description = "Information about a WvW match.") {
+                    SerialName("wvw_match_id").."WvWMatchID"(STRING, "the match's ID")
+                    SerialName("red_world_id").."RedWorldID"(INTEGER, "the ID of the red team's primary server")
+                    SerialName("blue_world_id").."BlueWorldID"(INTEGER, "the ID of the blue team's primary server")
+                    SerialName("green_world_id").."GreenWorldID"(INTEGER, "the ID of the green team's primary server")
+                    SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
+                    SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+                })
+            )
+        })
+    }
     "/wvw/objectives_names"(endpoint = "/WvW/ObjectivesNames") {
         summary = "Returns information about the available WvW objectives."
 

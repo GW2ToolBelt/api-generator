@@ -72,6 +72,8 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
             isLocalized = true
         )
 
+        expectQuery("/WvW/Matches")
+
         expectQuery(
             "/wvw/objectives_names",
             isLocalized = true
