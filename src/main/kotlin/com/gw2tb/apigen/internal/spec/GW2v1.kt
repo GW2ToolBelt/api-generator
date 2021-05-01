@@ -104,6 +104,32 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/Maps" {
+        summary = "Returns information about maps."
+
+        schema(record(name = "Maps", description = "Information about maps.") {
+            "Maps"(
+                description = "the maps",
+                type = map(
+                    keys = STRING,
+                    values = record(name = "Map", description = "Information about a map.") {
+                        localized..SerialName("map_name").."MapName"(STRING, "the map's localized name")
+                        "Type"(STRING, "the type of map")
+                        SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
+                        SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
+                        SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
+                        "Floors"(array(INTEGER), "the IDs of the floors available on the map")
+                        SerialName("region_id").."RegionID"(INTEGER, "the ID of the region the map belongs to")
+                        optional..localized..SerialName("region_name").."RegionName"(STRING, "the name of the region the map belongs to")
+                        SerialName("continent_id").."ContinentID"(INTEGER, "the ID of the continent the map belongs to")
+                        optional..localized..SerialName("continent_name").."ContinentName"(STRING, "the name of the continent the map belongs to")
+                        SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
+                        SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                    }
+                )
+            )
+        })
+    }
     "/Recipes" {
         summary = "Returns the IDs of the available recipes."
 

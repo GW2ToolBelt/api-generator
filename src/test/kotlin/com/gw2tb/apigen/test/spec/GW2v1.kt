@@ -52,9 +52,14 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         )
 
         expectQuery(
+            "/Maps",
+            isLocalized = true
+        )
+
+        expectQuery(
             "/skin_details",
             isLocalized = true,
-            cache = 60.minutes,
+            cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
         )
 
