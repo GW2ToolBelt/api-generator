@@ -89,7 +89,9 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
     "/Items" {
         summary = "Returns the IDs of the available items."
 
-        schema(array(INTEGER, "the IDs of the available items"))
+        schema(record(name = "ItemIDs", description = "Information about the available items.") {
+            "Items"(array(INTEGER), "the IDs of the available items")
+        })
     }
     "/map_names"(endpoint = "MapNames") {
         summary = "Returns information about maps."
@@ -154,7 +156,9 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
     "/Skins" {
         summary = "Returns the IDs of the available skins."
 
-        schema(array(INTEGER, "the IDs of the available skins"))
+        schema(record(name = "SkinIDs", description = "Information about the available skins.") {
+            "Skins"(array(INTEGER), "the IDs of the available skins")
+        })
     }
     "/world_names"(endpoint = "WorldNames") {
         summary = "Returns information about the available worlds (or servers)."
