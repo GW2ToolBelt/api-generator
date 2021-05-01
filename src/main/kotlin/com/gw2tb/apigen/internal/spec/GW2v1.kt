@@ -33,6 +33,47 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
+    "/event_details"(endpoint = "EventDetails") {
+        summary = "Returns information about the events in the game."
+
+        schema(record(name = "EventDetails", description = "Information about events.") {
+            "Events"(
+                description = "the events",
+                type = map(
+                    keys = STRING,
+                    values = record(name = "EventDetails", description = "Information about an event.") {
+                        localized.."Name"(STRING, "the event's name")
+                        "Level"(INTEGER, "the event's level")
+                        SerialName("map_id").."MapID"(INTEGER, "the ID of the map where the event takes place")
+                        "Flags"(array(STRING), "additional information about the event (e.g. group_event, map_wide, meta_event, dungeon_event)")
+                        "Location"(
+                            description = "the event's location",
+                            type = conditional(name = "Location", description = "Information about an event's location.", sharedConfigure = {
+                                "Type"(STRING, "the type of location")
+                            }) {
+                                "cylinder"(record(name = "Cylinder", description = "Information about a cylindrical event location.") {
+                                    "Center"(array(DECIMAL), "the coordinates (x,y,z) of the cylinder's center (in map coordinates)")
+                                    "Height"(DECIMAL, "the cylinder's height")
+                                    "Radius"(DECIMAL, "the cylinder's radius")
+                                    "Rotation"(DECIMAL, "the cylinder's rotation")
+                                })
+                                "poly"(record(name = "Poly", description = "Information about a polygonal event location.") {
+                                    "Center"(array(DECIMAL), "the coordinates (x,y,z) of the polygon's center (in map coordinates)")
+                                    SerialName("z_range").."ZRange"(array(DECIMAL), "the polygon's z-range")
+                                    "Points"(array(array(DECIMAL)), "the polygon's points")
+                                })
+                                "sphere"(record(name = "Sphere", description = "Information about a spherical event location.") {
+                                    "Center"(array(DECIMAL), "the coordinates (x,y,z) of the sphere's center (in map coordinates)")
+                                    "Radius"(DECIMAL, "the sphere's radius")
+                                    "Rotation"(DECIMAL, "the sphere's rotation")
+                                })
+                            }
+                        )
+                    }
+                )
+            )
+        })
+    }
     "/Files" {
         summary = "Returns commonly requested in-game assets."
 
