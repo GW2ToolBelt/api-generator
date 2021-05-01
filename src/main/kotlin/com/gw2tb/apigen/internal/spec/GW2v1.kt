@@ -33,7 +33,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
-    "/event_details"(endpoint = "EventDetails") {
+    "/event_details"(endpoint = "/EventDetails") {
         summary = "Returns information about the events in the game."
 
         schema(record(name = "EventDetails", description = "Information about events.") {
@@ -93,7 +93,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             "Items"(array(INTEGER), "the IDs of the available items")
         })
     }
-    "/map_names"(endpoint = "MapNames") {
+    "/map_names"(endpoint = "/MapNames") {
         summary = "Returns information about maps."
 
         schema(array(
@@ -111,7 +111,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             "Recipes"(array(INTEGER), "the IDs of the available recipes")
         })
     }
-    "/skin_details"(endpoint = "SkinDetails") {
+    "/skin_details"(endpoint = "/SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
 
@@ -167,7 +167,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             "Skins"(array(INTEGER), "the IDs of the available skins")
         })
     }
-    "/world_names"(endpoint = "WorldNames") {
+    "/world_names"(endpoint = "/WorldNames") {
         summary = "Returns information about the available worlds (or servers)."
 
         schema(array(
@@ -175,6 +175,17 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             items = record(name = "WorldName", description = "Information about an available world (or server).") {
                 CamelCase("id").."ID"(INTEGER, "the ID of the world")
                 localized.."Name"(STRING, "the name of the world")
+            }
+        ))
+    }
+    "/wvw/objectives_names"(endpoint = "/WvW/ObjectivesNames") {
+        summary = "Returns information about the available WvW objectives."
+
+        schema(array(
+            description = "the available objectives",
+            items = record(name = "WorldName", description = "Information about a WvW objective.") {
+                CamelCase("id").."ID"(STRING, "the ID of the objective")
+                localized.."Name"(STRING, "the objective's localized name")
             }
         ))
     }
