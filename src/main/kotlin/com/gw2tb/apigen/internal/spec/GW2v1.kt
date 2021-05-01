@@ -148,7 +148,6 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
     }
     "/Skins" {
         summary = "Returns the IDs of the available skins."
-        cache = 1.hours
 
         schema(array(INTEGER, "the IDs of the available skins"))
     }

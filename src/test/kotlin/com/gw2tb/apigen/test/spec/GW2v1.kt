@@ -56,10 +56,7 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
         )
 
-        expectQuery(
-            "/Skins",
-            cache = 60.minutes
-        )
+        expectQuery("/Skins")
 
         expectQuery(
             "/world_names",
