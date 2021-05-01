@@ -104,6 +104,13 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/Recipes" {
+        summary = "Returns the IDs of the available recipes."
+
+        schema(record(name = "RecipeIDs", description = "Information about the available recipes.") {
+            "Recipes"(array(INTEGER), "the IDs of the available recipes")
+        })
+    }
     "/skin_details"(endpoint = "SkinDetails") {
         summary = "Returns information about the skins in the game."
         cache = 1.hours
