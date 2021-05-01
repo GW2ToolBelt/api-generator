@@ -925,6 +925,123 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             "Floors"(array(INTEGER), "the IDs of the continent's floors")
         })
     }
+    "/Continents/:ID/Floors" {
+        summary = "Returns information about a continent's floors."
+        cache = 1.hours
+
+        pathParameter("ID", INTEGER, "the continent's ID", camelCase = "id")
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "ContinentFloor", description = "Information about a continent floor.") {
+            CamelCase("id").."ID"(INTEGER, "the floor's ID")
+            SerialName("texture_dims").."TextureDims"(array(INTEGER), "the width and height of the texture")
+            optional..SerialName("clamped_view").."ClampedView"(array(array(INTEGER)), "a rectangle of downloadable textures (Every tile coordinate outside this rectangle is not available on the tile server.)")
+            "Regions"(
+                description = "the floor's regions",
+                type = map(
+                    keys = STRING,
+                    values = record(name = "Region", description = "Information about a region.") {
+                        CamelCase("id").."ID"(INTEGER, "the region's ID")
+                        localized.."Name"(STRING, "the region's localized name")
+                        SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the region's label")
+                        "Maps"(
+                            description = "the region's maps",
+                            type = map(
+                                keys = STRING,
+                                values = record(name = "Map", description = "Information about a map.") {
+                                    CamelCase("id").."ID"(INTEGER, "the map's ID")
+                                    localized.."Name"(STRING, "the map's localized name")
+                                    SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
+                                    SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
+                                    SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
+                                    SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
+                                    SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                                    SerialName("points_of_interest").."PointsOfInterest"(
+                                        description = "the points of interest on the floor (i.e. landmarks, vistas and waypoints)",
+                                        type = map(
+                                            keys = STRING,
+                                            values = record(name = "PointOfInterest", description = "Information about a point of interest (i.e. a landmark, vista or waypoint).") {
+                                                CamelCase("id").."ID"(INTEGER, "the PoI's ID")
+                                                optional..localized.."Name"(STRING, "the PoI's localized name")
+                                                "Type"(STRING, "the type of the PoI (landmark, vista, or waypoint)")
+                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                                "Floor"(INTEGER, "the PoI's floor")
+                                                "Coord"(array(DECIMAL), "the PoI's coordinates")
+                                                optional.."Icon"(STRING, "the PoI's icon")
+                                            }
+                                        )
+                                    )
+                                    optional.."GodShrines"(
+                                        description = "the god shrines on the floor",
+                                        type = array(record(name = "GodShrine", description = "Information about a god shrine.") {
+                                            CamelCase("id").."ID"(INTEGER, "the god shrine's ID")
+                                            localized.."Name"(STRING, "the god shrine's localized name")
+                                            optional..localized..SerialName("name_contested").."NameContested"(STRING, "the god shrine's localized name (when contested)")
+                                            optional.."Icon"(STRING, "the god shrine's icon")
+                                            optional..SerialName("icon_contested").."IconContested"(STRING, "the god shrine's icon (when contested)")
+                                            SerialName("poi_id").."PoIID"(INTEGER, "the god shrine's PoI ID")
+                                            "Coord"(array(DECIMAL), "the god shrine's coordinates")
+                                        })
+                                    )
+                                    "Tasks"(
+                                        description = "the tasks on the floor",
+                                        type = map(
+                                            keys = STRING,
+                                            values = record(name = "Task", description = "Information about a task.") {
+                                                CamelCase("id").."ID"(INTEGER, "the task's ID")
+                                                localized.."Objective"(STRING, "the adventure's localized objective")
+                                                "Level"(INTEGER, "the task's level")
+                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                                "Coord"(array(DECIMAL), "the task's coordinates")
+                                                "Bounds"(array(array(DECIMAL)), "the task's bounds")
+                                            }
+                                        )
+                                    )
+                                    SerialName("skill_challenges").."SkillChallenges"(
+                                        description = "the skill challenges on the floor",
+                                        type = array(record(name = "SkillChallenge", description = "Information about a skill challenge.") {
+                                            CamelCase("id").."ID"(STRING, "the skill challenge's ID")
+                                            "Coord"(array(DECIMAL), "the skill challenge's coordinates")
+                                        })
+                                    )
+                                    "Sectors"(
+                                        description = "the sectors on the floor",
+                                        type = map(
+                                            keys = STRING,
+                                            values = record(name = "Sector", description = "Information about a sector.") {
+                                                CamelCase("id").."ID"(INTEGER, "the sector's ID")
+                                                optional..localized.."Name"(STRING, "the sector's localized name")
+                                                "Level"(INTEGER, "the sector's level")
+                                                "Coord"(array(DECIMAL), "the sector's coordinates")
+                                                "Bounds"(array(array(DECIMAL)), "the sector's bounds")
+                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                            }
+                                        )
+                                    )
+                                    "Adventures"(
+                                        description = "the adventures on the floor",
+                                        type = array(record(name = "Adventure", description = "Information about an adventure.") {
+                                            CamelCase("id").."ID"(STRING, "the adventure's ID")
+                                            localized.."Name"(STRING, "the adventure's localized name")
+                                            localized.."Description"(STRING, "the adventure's localized description")
+                                            "Coord"(array(DECIMAL), "the adventure's coordinates")
+                                        })
+                                    )
+                                    SerialName("mastery_points").."MasteryPoints"(
+                                        description = "the mastery points on the floor",
+                                        type = array(record(name = "MasteryPoint", description = "Information about a mastery point.") {
+                                            CamelCase("id").."ID"(INTEGER, "the mastery point's ID")
+                                            "Region"(STRING, "the mastery region")
+                                            "Coord"(array(DECIMAL), "the mastery point's coordinates")
+                                        })
+                                    )
+                                }
+                            )
+                        )
+                    }
+                )
+            )
+        })
+    }
     "/CreateSubToken" {
         summary = "Creates a new subtoken."
         security(ACCOUNT)

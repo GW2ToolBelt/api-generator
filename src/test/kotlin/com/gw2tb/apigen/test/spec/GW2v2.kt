@@ -601,6 +601,48 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Continents/:ID/Floors",
+            cache = 1.hours,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", INTEGER)
+            ),
+            queryDetails = QueryDetails(QueryType.IDs, INTEGER)
+        )
+        expectQuery(
+            "/Continents/:ID/Floors",
+            isLocalized = true,
+            cache = 1.hours,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", INTEGER)
+            ),
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryDetails(QueryType.ByID, INTEGER)
+        )
+        expectQuery(
+            "/Continents/:ID/Floors",
+            isLocalized = true,
+            cache = 1.hours,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", INTEGER)
+            ),
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryDetails(QueryType.ByIDs.All, INTEGER)
+        )
+        expectQuery(
+            "/Continents/:ID/Floors",
+            isLocalized = true,
+            cache = 1.hours,
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", INTEGER)
+            ),
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryDetails(QueryType.ByPage, INTEGER)
+        )
+
+        expectQuery(
             "/CreateSubToken",
             security = setOf(ACCOUNT),
             queryParameters = listOf(
