@@ -40,7 +40,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             "Continents"(
                 description = "the continents",
                 type = map(
-                    keys = STRING,
+                    keys = INTEGER,
                     values = record(name = "Map", description = "Information about a continent.") {
                         localized.."Name"(STRING, "the continent's localized name")
                         SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
@@ -130,7 +130,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             "Maps"(
                 description = "the maps",
                 type = map(
-                    keys = STRING,
+                    keys = INTEGER,
                     values = record(name = "Map", description = "Information about a map.") {
                         localized..SerialName("map_name").."MapName"(STRING, "the map's localized name")
                         "Type"(STRING, "the type of map")
