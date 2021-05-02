@@ -33,6 +33,25 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
+    "/Continents" {
+        summary = "Returns information about continents."
+
+        schema(record(name = "Continents", description = "Information about continents.") {
+            "Continents"(
+                description = "the continents",
+                type = map(
+                    keys = STRING,
+                    values = record(name = "Map", description = "Information about a continent.") {
+                        localized.."Name"(STRING, "the continent's localized name")
+                        SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
+                        SerialName("min_zoom").."MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
+                        SerialName("max_zoom").."MaxZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
+                        "Floors"(array(INTEGER), "the IDs of the continent's floors")
+                    }
+                )
+            )
+        })
+    }
     "/event_details"(endpoint = "/EventDetails") {
         summary = "Returns information about the events in the game."
 
