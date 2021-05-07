@@ -1,0 +1,54 @@
+[
+    {
+        "tab": 1,
+        "is_active": false,
+        "build": {
+            "name": "",
+            "profession": "Elementalist",
+            "specializations": [
+                {
+                    "id": 31,
+                    "traits": [
+                        296,
+                        325,
+                        1510
+                    ]
+                },
+                {
+                    "id": 41,
+                    "traits": [
+                        232,
+                        1502,
+                        1503
+                    ]
+                },
+                {
+                    "id": 48,
+                    "traits": [
+                        1886,
+                        2015,
+                        2033
+                    ]
+                }
+            ],
+            "skills": {
+                "heal": 21656,
+                "utilities": [
+                    5536,
+                    5542,
+                    5734
+                ],
+                "elite": 29968
+            },
+            "aquatic_skills": {
+                "heal": 21656,
+                "utilities": [
+                    5639,
+                    5542,
+                    5535
+                ],
+                "elite": 5534
+            }
+        }
+    }
+]

@@ -520,12 +520,12 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                     when (queryType) {
                         is QueryType.ByID -> {
                             schema = this@V2.schema
-                            QueryParameter(QueryParameter.BY_ID_KEY, idType, "", "ID", "id", false)
+                            QueryParameter(queryType.qpKey, idType, queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
                                 .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByIDs -> {
                             schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
-                            QueryParameter(QueryParameter.BY_IDS_KEY, SchemaArray(idType, false, null), "", "IDs", "ids", false)
+                            QueryParameter(queryType.qpKey, SchemaArray(idType, false, null), queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
                                 .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByPage -> {

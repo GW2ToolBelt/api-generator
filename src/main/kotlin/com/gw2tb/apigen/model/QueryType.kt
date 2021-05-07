@@ -26,10 +26,33 @@ public sealed class QueryType {
 
     internal companion object {
 
+        internal val ByID : QueryType get() = QueryType.ByID.Default
+
+        @Suppress("FunctionName")
+        @JvmStatic
+        internal fun ByID(
+            qpKey: String,
+            qpDescription: String,
+            qpName: String,
+            qpCamelCase: String
+        ): ByID =
+            QueryType.ByID.Custom(qpKey, qpDescription, qpName, qpCamelCase)
+
         @Suppress("FunctionName")
         @JvmStatic
         internal fun ByIDs(supportsAll: Boolean): ByIDs =
-            if (supportsAll) ByIDs.All else ByIDs.NotAll
+            if (supportsAll) ByIDs.DefaultAll else ByIDs.Default
+
+        @Suppress("FunctionName")
+        @JvmStatic
+        internal fun ByIDs(
+            supportsAll: Boolean,
+            qpKey: String,
+            qpDescription: String,
+            qpName: String,
+            qpCamelCase: String
+        ): ByIDs =
+            ByIDs.Custom(supportsAll, qpKey, qpDescription, qpName, qpCamelCase)
 
     }
 
@@ -39,8 +62,29 @@ public sealed class QueryType {
     }
 
     /** Queries by ID `?id={id}`. */
-    public object ByID : QueryType() {
+    public sealed class ByID(
+        public val qpKey: String,
+        public val qpDescription: String,
+        public val qpName: String,
+        public val qpCamelCase: String
+    ) : QueryType() {
         override fun toString(): String = "ByID"
+
+        // TODO Add description
+        internal object Default : ByID(
+            QueryParameter.BY_ID_KEY,
+            "",
+            "ID",
+            "id"
+        )
+
+        internal class Custom(
+            qpKey: String,
+            qpDescription: String,
+            qpName: String,
+            qpCamelCase: String
+        ) : ByID(qpKey, qpDescription, qpName, qpCamelCase)
+
     }
 
     /** Queries by page `?page={index}&page_size={size}`. */
@@ -49,15 +93,36 @@ public sealed class QueryType {
     }
 
     /** Queries by IDs `?ids={ids}`. */
-    public sealed class ByIDs : QueryType() {
+    public sealed class ByIDs(
+        public val qpKey: String,
+        public val qpDescription: String,
+        public val qpName: String,
+        public val qpCamelCase: String
+    ) : QueryType() {
 
         /** Whether or not `?ids=all` is supported. */
         public abstract val supportsAll: Boolean
 
-        internal object All : ByIDs() { override val supportsAll = true }
-        internal object NotAll : ByIDs() { override val supportsAll = false }
+        override fun toString(): String = "IDs"
 
-        override fun toString(): String = "ByIDs(all = $supportsAll)"
+        // TODO Add description
+        internal abstract class AbstractDefault : ByIDs(
+            QueryParameter.BY_IDS_KEY,
+            "",
+            "IDs",
+            "ids"
+        )
+
+        internal object Default : AbstractDefault() { override val supportsAll = false }
+        internal object DefaultAll : AbstractDefault() { override val supportsAll = true }
+
+        internal class Custom(
+            override val supportsAll: Boolean,
+            qpKey: String,
+            qpDescription: String,
+            qpName: String,
+            qpCamelCase: String
+        ) : ByIDs(qpKey, qpDescription, qpName, qpCamelCase)
 
     }
 

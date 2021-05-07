@@ -25,6 +25,7 @@ package com.gw2tb.apigen.internal.dsl
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
+import java.util.*
 
 /** Alias for [SchemaBoolean]. */
 internal val BOOLEAN get() = SchemaBoolean
@@ -41,6 +42,19 @@ internal val STRING get() = SchemaString
 /** Alias for [QueryType.ByID]. */
 internal val BY_ID get() = QueryType.ByID
 
+/** Alias for [QueryType.ByID]. */
+internal fun BY_ID(
+    qpName: String,
+    qpDescription: String,
+    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
+    qpCamelCase: String = qpName.firstToLowerCase()
+) = QueryType.ByID(
+    qpKey = qpKey,
+    qpDescription = qpDescription,
+    qpName = qpName,
+    qpCamelCase = qpCamelCase
+)
+
 /** Alias for [QueryType.ByPage]. */
 internal val BY_PAGE get() = QueryType.ByPage
 
@@ -49,6 +63,21 @@ internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
 
 /** Alias for [QueryType.ByIDs]. */
 internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
+
+/** Alias for [QueryType.ByIDs]. */
+internal fun BY_IDS(
+    qpName: String,
+    qpDescription: String,
+    all: Boolean = true,
+    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
+    qpCamelCase: String = qpName.firstToLowerCase()
+) = QueryType.ByIDs(
+    supportsAll = all,
+    qpKey = qpKey,
+    qpDescription = qpDescription,
+    qpName = qpName,
+    qpCamelCase = qpCamelCase
+)
 
 internal fun SchemaConditional.Interpretation.hasChangedInVersion(version: V2SchemaVersion): Boolean =
     since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
