@@ -530,9 +530,9 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                         }
                         is QueryType.ByPage -> {
                             schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
-                            QueryParameter(QueryParameter.PAGE_KEY, INTEGER, "", "Page", "page", false)
+                            QueryParameter(QueryParameter.PAGE_KEY, INTEGER, "the index of the requested page", "Page", "page", false)
                                 .also { queryParameters[it.key] = it }
-                            QueryParameter(QueryParameter.PAGE_SIZE_KEY, INTEGER, "", "PageSize", "pageSize", true)
+                            QueryParameter(QueryParameter.PAGE_SIZE_KEY, INTEGER, "the size of the requested page", "PageSize", "pageSize", true)
                                 .also { queryParameters[it.key] = it }
                         }
                         else -> error("")
