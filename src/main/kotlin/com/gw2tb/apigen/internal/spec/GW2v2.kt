@@ -2276,7 +2276,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
             optional..SerialName("guild_ingredients").."GuildIngredients"(
                 description = "the recipe's guild ingredients",
-                type = array(record(name = "Ingredient", description = "Information about a recipe guild ingredient.") {
+                type = array(record(name = "GuildIngredient", description = "Information about a recipe guild ingredient.") {
                     SerialName("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
                     "Count"(INTEGER, "the quantity of this guild ingredient")
                 })
