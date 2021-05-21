@@ -623,9 +623,9 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     "Profession"(STRING, "the build's profession")
                     "Specializations"(array(SPECIALIZATION), "the build's specializations")
                     "Skills"(SKILLS, "the build's skills")
-                    SerialName("aquatic_skills").."Skills"(SKILLS, "the build's skills")
-                    optional.."Legends"(array(STRING, nullableItems = true), "the legend IDs")
-                    optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the legend IDs")
+                    SerialName("aquatic_skills").."AquaticSkills"(SKILLS, "the build's aquatic skills")
+                    optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
+                    optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
                 }
             )
         })
