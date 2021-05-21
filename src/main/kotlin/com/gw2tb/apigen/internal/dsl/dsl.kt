@@ -201,11 +201,19 @@ private fun <T : APIType> conditionalImpl(
     val bSharedProps = sharedConfigure?.let { SchemaRecordBuilder<T>(name).also(it) }
     val bInterpretations = SchemaConditionalBuilder<T>().also(configure)
 
-    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
-    bInterpretations.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
-
     val sharedProps = bSharedProps?.properties ?: emptyList()
     val interpretations = bInterpretations.interpretations
+
+    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+    bInterpretations.nestedTypes.forEach { (k, v) ->
+        types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }
+            .addAll(v.filter { apiType ->
+                interpretations.none {
+                    it.type is SchemaClass && (apiType.name == it.type.name)
+                }
+            }
+        )
+    }
 
     val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
     propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(

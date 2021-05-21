@@ -27,13 +27,19 @@ import java.util.*
 
 public sealed class APIType {
 
+    internal abstract val name: String
+
     public data class V1(
         val schema: SchemaClass
-    ) : APIType()
+    ) : APIType() {
+        override val name: String get() = schema.name
+    }
 
     public data class V2(
         private val _schema: EnumMap<V2SchemaVersion, SchemaClass>
     ) : APIType() {
+
+        override val name: String get() = schema.name
 
         /** Returns the [V2SchemaVersion.V2_SCHEMA_CLASSIC] schema. */
         public val schema: SchemaClass get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
