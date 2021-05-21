@@ -1464,31 +1464,6 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         summary = "Returns information about items in the game."
         cache = 1.hours
 
-        @APIGenDSL
-        fun SchemaRecordBuilder<APIType.V2>.INFIX_UPGRADE() = record(name = "InfixUpgrade", description = "Information about an item's infix upgrade.") {
-            CamelCase("id").."ID"(INTEGER, "the itemstat ID")
-            "Attributes"(
-                description = "the list of attribute bonuses granted by this item",
-                type = array(record(name = "Attribute", description = "Information about an infix upgrade's attribute bonuses.") {
-                    "Attribute"(STRING, "the attribute this bonus applies to")
-                    "Modifier"(INTEGER, "the modifier value")
-                })
-            )
-            optional.."Buff"(
-                description = "object containing an additional effect",
-                type = record(name = "Buff", description = "Information about an infix upgrade's buffs.") {
-                    SerialName("skill_id").."SkillId"(INTEGER, "the skill ID of the effect")
-                    optional.."Description"(STRING, "the effect's description")
-                }
-            )
-        }
-
-        @APIGenDSL
-        fun SchemaRecordBuilder<APIType.V2>.INFUSION_SLOTS() = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
-            "Flags"(array(STRING), "infusion slot type of infusion upgrades")
-            optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade in the armor piece")
-        })
-
         supportedQueries(BY_ID, BY_IDS(all = false), BY_PAGE)
         schema(record(name = "Item", description = "Information about an item.") {
             CamelCase("id").."ID"(INTEGER, "the item's ID")
@@ -1521,12 +1496,35 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             optional.."Details"(
                 description = "additional information about the item",
                 type = conditional(name = "Details", description = "Additional information about an item.", disambiguationBySideProperty = true) {
+                    val INFIX_UPGRADE = record(name = "InfixUpgrade", description = "Information about an item's infix upgrade.") {
+                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Attributes"(
+                            description = "the list of attribute bonuses granted by this item",
+                            type = array(record(name = "Attribute", description = "Information about an infix upgrade's attribute bonuses.") {
+                                "Attribute"(STRING, "the attribute this bonus applies to")
+                                "Modifier"(INTEGER, "the modifier value")
+                            })
+                        )
+                        optional.."Buff"(
+                            description = "object containing an additional effect",
+                            type = record(name = "Buff", description = "Information about an infix upgrade's buffs.") {
+                                SerialName("skill_id").."SkillId"(INTEGER, "the skill ID of the effect")
+                                optional.."Description"(STRING, "the effect's description")
+                            }
+                        )
+                    }
+
+                    val INFUSION_SLOTS = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
+                        "Flags"(array(STRING), "infusion slot type of infusion upgrades")
+                        optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade in the armor piece")
+                    })
+
                     +record(name = "Armor", description = "Additional information about an armor item.") {
                         "Type"(STRING, "the armor slot type")
                         SerialName("weight_class").."WeightClass"(STRING, "the weight class")
                         "Defense"(INTEGER, "the defense value of the armor piece")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the armor piece")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the armor piece")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
                         until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
                         since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
@@ -1534,8 +1532,8 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     }
                     +record(name = "Back", description = "Additional information about a backpiece.") {
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the back item")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the back item")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
                         until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
                         since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
@@ -1580,8 +1578,8 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     })
                     +record(name = "Trinket", description = "Additional information about a trinket.") {
                         "Type"(STRING, "the trinket type")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the trinket")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the trinket")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
                         until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
                         since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
@@ -1593,7 +1591,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
                         SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
                         "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional.."Bonuses"(array(STRING), "the bonuses from runes")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
                     }
@@ -1603,8 +1601,8 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
                         SerialName("damage_type").."DamageType"(STRING, "the damage type")
                         "Defense"(INTEGER, "the defense value of the weapon")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS(), "infusion slots of the weapon")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE(), "infix upgrade object")
+                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the weapon")
+                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
                         until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
                         since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(INTEGER, "the secondary suffix item ID")
