@@ -423,20 +423,20 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         "Type"(STRING, "the type of reward")
                     }
                 ) {
-                    "Coins"(record(name = "Coins", description = "Information about a coin reward.") {
+                    +record(name = "Coins", description = "Information about a coin reward.") {
                         "Count"(INTEGER, "the amount of coins")
-                    })
-                    "Items"(record(name = "Items", description = "Information about an item reward.") {
+                    }
+                    +record(name = "Items", description = "Information about an item reward.") {
                         CamelCase("id").."ID"(INTEGER, "the item's ID")
                         "Count"(INTEGER, "the amount of the item")
-                    })
-                    "Mastery"(record(name = "Mastery", description = "Information about a mastery point reward.") {
+                    }
+                    +record(name = "Mastery", description = "Information about a mastery point reward.") {
                         CamelCase("id").."ID"(INTEGER, "the mastery point's ID")
                         "Region"(STRING, "the mastery point's region")
-                    })
-                    "Title"(record(name = "Title", description = "Information about a title reward") {
+                    }
+                    +record(name = "Title", description = "Information about a title reward") {
                         CamelCase("id").."ID"(INTEGER, "the title's ID")
-                    })
+                    }
                 })
             )
             optional.."Bits"(
