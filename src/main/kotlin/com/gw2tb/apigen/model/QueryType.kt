@@ -103,7 +103,7 @@ public sealed class QueryType {
         /** Whether or not `?ids=all` is supported. */
         public abstract val supportsAll: Boolean
 
-        override fun toString(): String = "IDs"
+        override fun toString(): String = "ByIDs(all=$supportsAll)"
 
         // TODO Add description
         internal abstract class AbstractDefault : ByIDs(
