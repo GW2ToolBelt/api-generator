@@ -20,3 +20,5 @@
  * SOFTWARE.
  */
 rootProject.name = "api-generator"
+
+enableFeaturePreview("VERSION_CATALOGS")
