@@ -30,4 +30,10 @@ package com.gw2tb.apigen.model
 public data class TypeLocation(
     val endpoint: String?,
     val nest: String?
-)
+) {
+
+    init {
+        require(nest == null || nest.isNotBlank())
+    }
+
+}

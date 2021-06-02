@@ -2326,7 +2326,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         assertEquals(expected.security, actual.security)
 
         // TODO: In the future we might have to check the isLocalized flag specifically for schema versions.
-        assertEquals(expected.isLocalized, actual.schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
+        assertEquals(expected.isLocalized, actual.flatMapData { it.isLocalized }, "Mismatched 'isLocalized' flag for ${actual.route}")
     }
 
     override fun testTypes(queries: Collection<APIQuery.V2>) = sequence<DynamicTest> {
@@ -2356,13 +2356,14 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         fun SchemaType.isClassOrArrayOfClasses() = firstPossiblyNestedClassOrNull() != null
 
-        query.versions.forEach { version ->
-            val schema = query[version].second
+        query.significantVersions.forEach { version ->
+
+            val schema = query[version].data
             if (!schema.isClassOrArrayOfClasses()) return@forEach
 
             val supportedType = spec.supportedTypes.filter { (key, _) -> key.endpoint == query.endpoint }
                 .flatMap { (_, value) -> value }
-                .find { it[version].second == schema.firstPossiblyNestedClassOrNull() }
+                .find { it[version].data == schema.firstPossiblyNestedClassOrNull() }
 
             yield(DynamicTest.dynamicTest("$prefix${query.route}") {
                 assertNotNull(supportedType)

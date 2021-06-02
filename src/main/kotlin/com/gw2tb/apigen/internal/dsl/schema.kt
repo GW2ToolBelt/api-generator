@@ -86,7 +86,7 @@ internal fun SchemaRecord.Property.hasChangedInVersion(version: V2SchemaVersion)
     since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
 
 internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean = when (this) {
-    is SchemaBlueprint -> version in versions
+    is SchemaBlueprint -> versions.hasChangedInVersion(version)
     is SchemaArray -> items.hasChangedInVersion(version)
     is SchemaConditional -> sharedProperties.any { (_, property) -> property.hasChangedInVersion(version) }
         || interpretations.any { (_, property) -> property.hasChangedInVersion(version) }
@@ -96,7 +96,7 @@ internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean =
 }
 
 internal fun SchemaType.copyForVersion(version: V2SchemaVersion): SchemaType = when (this) {
-    is SchemaBlueprint -> versions.filterKeys { it <= version }.toList().maxByOrNull { it.first.ordinal }!!.second!!
+    is SchemaBlueprint -> versions[version].data
     is SchemaArray -> copy(items = items.copyForVersion(version))
     is SchemaConditional -> copy(
         sharedProperties = sharedProperties.filterValues { property ->
@@ -122,10 +122,24 @@ internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, u
         until === null || until.ordinal <= version.ordinal
     }.associateBy { keySelector(it) }
 
+internal fun <T> Iterable<T>.zipSchemaVersionConstraints(): Iterable<Pair<T, T?>> = sequence {
+    val itr = this@zipSchemaVersionConstraints.iterator()
+    var first = itr.next()
+
+    while (itr.hasNext()) {
+        val second = itr.next()
+        yield(first to second)
+
+        first = second
+    }
+
+    yield(first to null)
+}.asIterable()
+
 @APIGenDSL
 internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
 
-    override val nestedTypes: MutableMap<String, MutableList<T>> = mutableMapOf()
+    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
 
     private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
     val interpretations get() = _interpretations.map { it.interpretation }
@@ -212,7 +226,7 @@ internal class SchemaConditionalInterpretationBuilder(
 @APIGenDSL
 internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilder<T> {
 
-    override val nestedTypes: MutableMap<String, MutableList<T>> = mutableMapOf()
+    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
 
     private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
     val properties get() = _properties.map { it.property }

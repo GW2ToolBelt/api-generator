@@ -21,9 +21,9 @@
  */
 package com.gw2tb.apigen.model
 
+import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
-import java.util.*
 import kotlin.time.*
 
 /**
@@ -68,6 +68,7 @@ public sealed class APIQuery {
      * An APIv2 query.
      *
      * @param queryDetails
+     * @param querySuffix
      * @param since
      * @param until
      * @param security
@@ -80,23 +81,11 @@ public sealed class APIQuery {
         override val queryParameters: Map<String, QueryParameter>,
         override val cache: Duration?,
         val queryDetails: QueryDetails?,
-        val since: V2SchemaVersion?,
+        val querySuffix: String?,
+        val since: V2SchemaVersion,
         val until: V2SchemaVersion?,
         val security: Set<TokenScope>,
-        private val _schema: EnumMap<V2SchemaVersion, SchemaType>
-    ) : APIQuery() {
-
-        /** Returns the [V2SchemaVersion.V2_SCHEMA_CLASSIC] schema. */
-        public val schema: SchemaType get() = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
-
-        /** Returns the schema versions. */
-        public val versions: Set<V2SchemaVersion> get() = _schema.keys.toSet()
-
-        /** Returns the appropriate schema for the given [version]. */
-        public operator fun get(version: V2SchemaVersion): Pair<V2SchemaVersion, SchemaType> {
-            return _schema.entries.sortedByDescending { it.key }.first { it.key <= version }.toPair()
-        }
-
-    }
+        private val _schema: SchemaVersionedData<SchemaType>
+    ) : APIQuery(), VersionedData<SchemaType> by _schema
 
 }

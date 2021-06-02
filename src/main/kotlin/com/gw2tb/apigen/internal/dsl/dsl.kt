@@ -64,65 +64,35 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     ): SchemaType =
         SchemaMap(keys, values, nullableValues, description)
 
-    @APIGenDSL
-    fun record(
-        name: String,
-        description: String,
-        configure: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
-        val type = recordImpl(name, description, types, ::createType, configure)
-        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
-
-        return type
-    }
-
-    @APIGenDSL
-    fun APIQueryBuilder<Q, T>.record(
-        name: String,
-        description: String,
-        configure: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
-        val type = recordImpl(name, description, types, ::createType, configure)
-        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
-
-        return type
-    }
-
-    @APIGenDSL
-    fun conditional(
-        name: String,
-        description: String,
-        disambiguationBy: String = "type",
-        disambiguationBySideProperty: Boolean = false,
-        interpretationInNestedProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
-        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
-
-        return type
-    }
-
-    @APIGenDSL
-    fun APIQueryBuilder<Q, T>.conditional(
-        name: String,
-        description: String,
-        disambiguationBy: String = "type",
-        disambiguationBySideProperty: Boolean = false,
-        interpretationInNestedProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
-        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
-
-        return type
-    }
+//    @APIGenDSL
+//    fun record(
+//        name: String,
+//        description: String,
+//        configure: SchemaRecordBuilder<T>.() -> Unit
+//    ): SchemaClass {
+//        val types = mutableMapOf<String, MutableList<T>>()
+//        val type = recordImpl(name, description, types, ::createType, configure)
+//        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
+//
+//        return type
+//    }
+//
+//    @APIGenDSL
+//    fun conditional(
+//        name: String,
+//        description: String,
+//        disambiguationBy: String = "type",
+//        disambiguationBySideProperty: Boolean = false,
+//        interpretationInNestedProperty: Boolean = false,
+//        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+//        configure: SchemaConditionalBuilder<T>.() -> Unit
+//    ): SchemaClass {
+//        val types = mutableMapOf<String, MutableList<T>>()
+//        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
+//        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
+//
+//        return type
+//    }
 
     abstract fun createType(type: SchemaClass): T
 
@@ -134,7 +104,12 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
         ) =
             APIQueryBuilder.V1(::createType, this, endpoint)
                 .also(configure)
-                .also { _queries.add(it) }
+                .also {
+                    _queries.add(it)
+
+                    /* Register the types registered in the queries context. */
+                    it.types.forEach { (loc, types) -> _types.computeIfAbsent(loc) { mutableListOf() }.addAll(types) }
+                }
 
         override fun createType(type: SchemaClass): APIType.V1 {
             require(type !is SchemaBlueprint)
@@ -147,25 +122,45 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
 
         operator fun String.invoke(
             endpoint: String = this,
-            since: V2SchemaVersion? = null,
+            since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
             until: V2SchemaVersion? = null,
             configure: APIQueryBuilder.V2.() -> Unit
         ) =
-            APIQueryBuilder.V2(::createType, this, endpoint, since, until, _types)
+            APIQueryBuilder.V2(::createType, this, endpoint, since, until)
                 .also(configure)
-                .also { _queries.add(it) }
+                .also {
+                    _queries.add(it)
 
-        override fun createType(type: SchemaClass): APIType.V2 = when (type) {
-            is SchemaBlueprint -> APIType.V2(EnumMap<V2SchemaVersion, SchemaClass>(V2SchemaVersion::class.java).apply {
-                type.versions.forEach { (version, type) ->
-                    if (type !is SchemaClass) return@forEach
-                    // TODO Should we try to extract the first (possibly nested) class here?
+                    /* Register the types registered in the queries context. */
+                    it.types.forEach { (loc, types) ->
+                        _types.computeIfAbsent(loc) { mutableListOf() }.addAll(types.map { type ->
+                            /*
+                             * Trim the type's version constraints here using the queries constraints.
+                             *
+                             * 1. The type's "oldest" `since` constraint should match the queries `since` constraint.
+                             * 2. The type's "newest" `until` constraint should match the queries `until` constraint.
+                             */
+                            val versionedData = type._schema
+                            val readjustedVersionedData = versionedData.readjustConstraints(since, until)
 
-                    this[version] = type
+                            if (versionedData == readjustedVersionedData) {
+                                type
+                            } else {
+                                APIType.V2(readjustedVersionedData)
+                            }
+                        })
+                    }
                 }
-            })
-            else -> APIType.V2(EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to type)))
-        }
+
+        override fun createType(type: SchemaClass): APIType.V2 = APIType.V2(buildVersionedSchemaData {
+            when (type) {
+                is SchemaBlueprint -> type.versions.forEach { type, since, until ->
+                    if (type !is SchemaClass) return@forEach // TODO Should we instead extract the first nested class?
+                    add(type, since, until)
+                }
+                else -> add(type)
+            }
+        })
 
     }
 
@@ -173,7 +168,7 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
 
 private fun SchemaConditional.Interpretation.copyForVersion(version: V2SchemaVersion): SchemaConditional.Interpretation = copy(
     type = if (type is SchemaBlueprint) {
-        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+        type.versions[version].data
     } else {
         type
     }
@@ -181,7 +176,7 @@ private fun SchemaConditional.Interpretation.copyForVersion(version: V2SchemaVer
 
 private fun SchemaRecord.Property.copyForVersion(version: V2SchemaVersion): SchemaRecord.Property = copy(
     type = if (type is SchemaBlueprint) {
-        V2SchemaVersion.values().sortedDescending().filter { it <= version }.mapNotNull { type.versions[it] }.first()
+        type.versions[version].data
     } else {
         type
     }
@@ -194,7 +189,7 @@ private fun <T : APIType> conditionalImpl(
     disambiguationBySideProperty: Boolean,
     interpretationInNestedProperty: Boolean,
     sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
-    types: MutableMap<String, MutableList<T>>,
+    types: MutableMap<String?, MutableList<T>>,
     apiTypeFactory: (SchemaClass) -> T,
     configure: SchemaConditionalBuilder<T>.() -> Unit
 ): SchemaClass {
@@ -204,9 +199,9 @@ private fun <T : APIType> conditionalImpl(
     val sharedProps = bSharedProps?.properties ?: emptyList()
     val interpretations = bInterpretations.interpretations
 
-    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }.addAll(v) }
     bInterpretations.nestedTypes.forEach { (k, v) ->
-        types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }
+        types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }
             .addAll(v.filter { apiType ->
                 interpretations.none {
                     it.type is SchemaClass && (apiType.name == it.type.name)
@@ -223,116 +218,92 @@ private fun <T : APIType> conditionalImpl(
         V2SchemaVersion.V2_SCHEMA_CLASSIC
     ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
 
-    val versions = mutableMapOf<V2SchemaVersion, SchemaConditional?>()
-    versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaConditional(
-        name,
-        disambiguationBy,
-        disambiguationBySideProperty,
-        interpretationInNestedProperty,
-        propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-        interpretations.getForVersion(
-            SchemaConditional.Interpretation::since,
-            SchemaConditional.Interpretation::until,
-            SchemaConditional.Interpretation::interpretationKey,
-            V2SchemaVersion.V2_SCHEMA_CLASSIC
-        ).mapValues { (_, intrp) -> intrp.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-        description
-    )
-
-    V2SchemaVersion.values().forEachIndexed { index, version ->
-        if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
-
-        if (sharedProps.any { it.hasChangedInVersion(version) }) {
-            propVersions[version] = sharedProps.getForVersion(
-                SchemaRecord.Property::since,
-                SchemaRecord.Property::until,
-                SchemaRecord.Property::serialName,
-                version
-            ).mapValues { (_, property) -> property.copyForVersion(version) }
-        } else {
-            propVersions[version] = propVersions[V2SchemaVersion.values()[index - 1]]
-        }
-
-        if (interpretations.any { it.hasChangedInVersion(version) }) {
-            versions[version] = SchemaConditional(
-                name,
-                disambiguationBy,
-                disambiguationBySideProperty,
-                interpretationInNestedProperty,
-                propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!,
-                interpretations.getForVersion(
-                    SchemaConditional.Interpretation::since,
-                    SchemaConditional.Interpretation::until,
-                    SchemaConditional.Interpretation::interpretationKey,
-                    version
-                ).mapValues { (_, intrp) -> intrp.copyForVersion(version) },
-                description
-            )
-        }
+    val versions = buildVersionedSchemaData<SchemaType> {
+        V2SchemaVersion.values()
+            .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || sharedProps.any { it.hasChangedInVersion(version) } || interpretations.any { it.hasChangedInVersion(version) } }
+            .zipSchemaVersionConstraints()
+            .forEach { (since, until) ->
+                add(
+                    datum = SchemaConditional(
+                        name,
+                        disambiguationBy,
+                        disambiguationBySideProperty,
+                        interpretationInNestedProperty,
+                        sharedProps.getForVersion(
+                            SchemaRecord.Property::since,
+                            SchemaRecord.Property::until,
+                            SchemaRecord.Property::serialName,
+                            since
+                        ).mapValues { (_, property) -> property.copyForVersion(since) },
+                        interpretations.getForVersion(
+                            SchemaConditional.Interpretation::since,
+                            SchemaConditional.Interpretation::until,
+                            SchemaConditional.Interpretation::interpretationKey,
+                            since
+                        ).mapValues { (_, intrp) -> intrp.copyForVersion(since) },
+                        description
+                    ),
+                    since = since,
+                    until = until
+                )
+            }
     }
 
-    return (if (versions.size == 1) {
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+    return (if (versions.isConsistent) {
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC].data as SchemaConditional
     } else {
         SchemaBlueprint(name, versions)
     }).also {
-        types.computeIfAbsent("") { mutableListOf() }.add(apiTypeFactory(it))
+        types.computeIfAbsent(null) { mutableListOf() }.add(apiTypeFactory(it))
     }
 }
 
 private fun <T : APIType> recordImpl(
     name: String,
     description: String,
-    types: MutableMap<String, MutableList<T>>,
+    types: MutableMap<String?, MutableList<T>>,
     apiTypeFactory: (SchemaClass) -> T,
     configure: SchemaRecordBuilder<T>.() -> Unit
 ): SchemaClass {
     val bProperties = SchemaRecordBuilder<T>(name).also(configure)
-    bProperties.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k.isNotEmpty()) "/" else ""}$k") { mutableListOf() }.addAll(v) }
+    bProperties.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }.addAll(v) }
 
     val properties = bProperties.properties
-    val versions = mutableMapOf<V2SchemaVersion, SchemaType?>()
-    versions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = SchemaRecord(
-        name,
-        properties.getForVersion(
-            SchemaRecord.Property::since,
-            SchemaRecord.Property::until,
-            SchemaRecord.Property::serialName,
-            V2SchemaVersion.V2_SCHEMA_CLASSIC
-        ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) },
-        description
-    )
-
-    V2SchemaVersion.values().forEachIndexed { _, version ->
-        if (version === V2SchemaVersion.V2_SCHEMA_CLASSIC) return@forEachIndexed
-
-        if (properties.any { it.hasChangedInVersion(version) }) {
-            versions[version] = SchemaRecord(
-                name,
-                properties.getForVersion(
-                    SchemaRecord.Property::since,
-                    SchemaRecord.Property::until,
-                    SchemaRecord.Property::serialName,
-                    version
-                ).mapValues { (_, property) -> property.copyForVersion(version) },
-                description
-            )
-        }
+    val versions = buildVersionedSchemaData<SchemaType> {
+        V2SchemaVersion.values()
+            .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || properties.any { it.hasChangedInVersion(version) } }
+            .zipSchemaVersionConstraints()
+            .forEach { (since, until) ->
+                add(
+                    datum = SchemaRecord(
+                        name,
+                        properties.getForVersion(
+                            SchemaRecord.Property::since,
+                            SchemaRecord.Property::until,
+                            SchemaRecord.Property::serialName,
+                            since
+                        ).mapValues { (_, property) -> property.copyForVersion(since) },
+                        description
+                    ),
+                    since = since,
+                    until = until
+                )
+            }
     }
 
-    return (if (versions.size == 1) {
-        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC]!! as SchemaClass
+    return (if (versions.isConsistent) {
+        versions[V2SchemaVersion.V2_SCHEMA_CLASSIC].data as SchemaRecord
     } else {
         SchemaBlueprint(name, versions)
     }).also {
-        types.computeIfAbsent("") { mutableListOf() }.add(apiTypeFactory(it))
+        types.computeIfAbsent(null) { mutableListOf() }.add(apiTypeFactory(it))
     }
 }
 
 @APIGenDSL
 internal interface SchemaBuilder<T : APIType> {
 
-    val nestedTypes: MutableMap<String, MutableList<T>>
+    val nestedTypes: MutableMap<String?, MutableList<T>>
 
     @APIGenDSL
     fun array(
@@ -352,6 +323,9 @@ internal interface SchemaBuilder<T : APIType> {
 }
 
 internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val createTypeFun: (SchemaClass) -> T) {
+
+    protected val _types = mutableMapOf<TypeLocation, MutableList<T>>()
+    val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList(v) })
 
     protected abstract val route: String
     abstract val endpoint: String
@@ -388,14 +362,20 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         this.implicitIDsQuery = implicitIDsQuery
     }
 
-    protected lateinit var schema: EnumMap<V2SchemaVersion, SchemaType>
-    fun schema(schema: SchemaType) {
-        this.schema = V2SchemaVersion.values()
-            .filter { it === V2SchemaVersion.V2_SCHEMA_CLASSIC || schema.hasChangedInVersion(it) }
-            .associateWithTo(EnumMap(V2SchemaVersion::class.java)) { schema.copyForVersion(it) }
-    }
-
     abstract fun finalize(): Collection<Q>
+
+    @APIGenDSL
+    fun record(
+        name: String,
+        description: String,
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = recordImpl(name, description, types, createTypeFun, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
+
+        return type
+    }
 
     @APIGenDSL
     fun SchemaBuilder<T>.record(
@@ -403,9 +383,27 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         description: String,
         configure: SchemaRecordBuilder<T>.() -> Unit
     ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
+        val types = mutableMapOf<String?, MutableList<T>>()
         val type = recordImpl(name, description, types, createTypeFun, configure)
         types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
+
+        return type
+    }
+
+
+    @APIGenDSL
+    fun conditional(
+        name: String,
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, createTypeFun, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
 
         return type
     }
@@ -420,7 +418,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): SchemaClass {
-        val types = mutableMapOf<String, MutableList<T>>()
+        val types = mutableMapOf<String?, MutableList<T>>()
         val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, createTypeFun, configure)
         types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
 
@@ -433,6 +431,11 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         override val endpoint: String
     ) : APIQueryBuilder<APIQuery.V1, APIType.V1>(createTypeFun) {
 
+        private lateinit var schema: SchemaType
+        fun schema(schema: SchemaType) {
+            this.schema = schema
+        }
+
         override fun finalize(): Collection<APIQuery.V1> = listOf(
             APIQuery.V1(
                 route = route,
@@ -441,7 +444,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                 pathParameters = pathParameters,
                 queryParameters = queryParameters,
                 cache = cache,
-                schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]!!
+                schema = schema
             )
         )
 
@@ -451,41 +454,83 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         createTypeFun: (SchemaClass) -> APIType.V2,
         override val route: String,
         override val endpoint: String,
-        private val since: V2SchemaVersion?,
-        private val until: V2SchemaVersion?,
-        private val _types: MutableMap<TypeLocation, MutableList<APIType.V2>>
+        private val since: V2SchemaVersion,
+        private val until: V2SchemaVersion?
     ) : APIQueryBuilder<APIQuery.V2, APIType.V2>(createTypeFun) {
 
         init {
-            require((since == null || until == null) || since < until)
+            require(until == null || since < until)
         }
 
         var idTypeKey: String = "id"
+        var querySuffix: String? = null
 
-        fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
-            val loc = TypeLocation(endpoint, null)
-            val types = _types[loc]
-
-            if (types != null) {
-                for ((_, schema) in schemas) types.removeIf { it.schema == schema }
-
-                types += APIType.V2(EnumMap<V2SchemaVersion, SchemaClass>(V2SchemaVersion::class.java).apply {
-                    schemas.forEach { (version, type) ->
-                        if (type !is SchemaClass) return@forEach
-                        // TODO Should we try to extract the first (possibly nested) class here?
-
-                        this[version] = type
-                    }
-                })
-            }
-
-            this.schema = EnumMap<V2SchemaVersion, SchemaType>(V2SchemaVersion::class.java).also { map ->
-                schemas.forEach { map[it.first] = it.second }
+        private lateinit var schema: SchemaVersionedData<SchemaType>
+        fun schema(schema: SchemaType) {
+            this.schema = buildVersionedSchemaData {
+                V2SchemaVersion.values()
+                    .filter { it == since || ((until == null || it <= until) && schema.hasChangedInVersion(it)) }
+                    .zipSchemaVersionConstraints()
+                    .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
             }
         }
 
+        fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
+            /*
+             * The method only receives `since` constraints. Thus we need to ensure that no two constraints are equal
+             * before we can continue processing.
+             */
+            require(schemas.all { a -> schemas.all { b -> a == b || a.first != b.first } })
+            require(schemas.none { (version, _) -> version < since })
+            require(until == null || schemas.none { (version, _) -> version >= until })
+
+            val versions = buildVersionedSchemaData<SchemaType> {
+                V2SchemaVersion.values()
+                    .sorted()
+                    .zipSchemaVersionConstraints()
+                    .filter { (since, _) -> schemas.any { it.first <= since } }
+
+                schemas.asIterable()
+                    .sortedBy { it.first }
+                    .zipSchemaVersionConstraints()
+                    .forEach { (since, until) ->
+                        val schema = since.second
+                        val sinceBound = since.first
+                        val untilBound = until?.first
+
+                        V2SchemaVersion.values()
+                            .filter { it == sinceBound || ((sinceBound < it) && (untilBound == null || it <= untilBound) && schema.hasChangedInVersion(it)) }
+                            .zipSchemaVersionConstraints()
+                            .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
+                    }
+            }
+
+            val classes = versions.mapDataOrNull { type -> when (type) {
+                is SchemaClass -> type
+                else -> null
+            }}
+
+            val loc = TypeLocation(endpoint, null)
+            var types = _types[loc]
+
+            if (types != null) {
+                for ((_, schema) in schemas) types.removeIf { it._schema.any { it.data == schema } }
+            }
+
+            if (!classes.isEmpty) {
+                if (types == null) {
+                    types = mutableListOf()
+                    _types[loc] = types
+                }
+
+                types.add(APIType.V2(classes))
+            }
+
+            this.schema = versions
+        }
+
         private fun buildQuery(
-            schema: EnumMap<V2SchemaVersion, SchemaType>,
+            schema: SchemaVersionedData<SchemaType>,
             queryParameters: Map<String, QueryParameter>? = null,
             queryDetails: QueryDetails? = null
         ) = APIQuery.V2(
@@ -495,6 +540,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             pathParameters = pathParameters,
             queryParameters = queryParameters ?: this.queryParameters,
             queryDetails = queryDetails,
+            querySuffix = querySuffix,
             cache = cache,
             since = since,
             until = until,
@@ -505,7 +551,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         @OptIn(ExperimentalStdlibApi::class)
         override fun finalize(): Collection<APIQuery.V2> = buildList {
             if (this@V2::queryTypes.isInitialized) {
-                val idType: SchemaPrimitive = when (val schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC]) {
+                val idType: SchemaPrimitive = when (val schema = schema[V2SchemaVersion.V2_SCHEMA_CLASSIC].data) {
                     is SchemaConditional -> schema.sharedProperties[idTypeKey]?.type
                     is SchemaRecord -> schema.properties[idTypeKey]?.type
                     else -> TODO()
@@ -513,14 +559,16 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
 
                 if (implicitIDsQuery) {
                     add(buildQuery(
-                        schema = EnumMap(mapOf(V2SchemaVersion.V2_SCHEMA_CLASSIC to SchemaArray(idType, false, description = "the available IDs"))),
+                        schema = buildVersionedSchemaData {
+                            add(SchemaArray(idType, false, description = "the available IDs"), since = since, until = until)
+                        },
                         queryParameters = queryParameters,
                         queryDetails = QueryDetails(QueryType.IDs, idType)
                     ))
                 }
 
                 queryTypes.forEach { queryType ->
-                    val schema: EnumMap<V2SchemaVersion, SchemaType>
+                    val schema: SchemaVersionedData<SchemaType>
 
                     val queryParameters = mutableMapOf<String, QueryParameter>()
                     queryParameters += this@V2.queryParameters
@@ -532,12 +580,12 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                                 .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByIDs -> {
-                            schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
+                            schema = this@V2.schema.mapData { v -> SchemaArray(v, false, "") }
                             QueryParameter(queryType.qpKey, SchemaArray(idType, false, null), queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
                                 .also { queryParameters[it.key] = it }
                         }
                         is QueryType.ByPage -> {
-                            schema = this@V2.schema.mapValues { (_, v) -> SchemaArray(v, false, "") }.toMap(EnumMap(V2SchemaVersion::class.java))
+                            schema = this@V2.schema.mapData { v -> SchemaArray(v, false, "") }
                             QueryParameter(QueryParameter.PAGE_KEY, INTEGER, "the index of the requested page", "Page", "page", false)
                                 .also { queryParameters[it.key] = it }
                             QueryParameter(QueryParameter.PAGE_SIZE_KEY, INTEGER, "the size of the requested page", "PageSize", "pageSize", true)

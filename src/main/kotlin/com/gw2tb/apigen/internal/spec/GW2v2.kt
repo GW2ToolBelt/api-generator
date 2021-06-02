@@ -969,7 +969,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         summary = "Returns information about a continent's floors."
         cache = 1.hours
 
-        pathParameter("ID", INTEGER, "the continent's ID", camelCase = "id")
+        pathParameter("ContinentID", INTEGER, "the continent's ID", key = "ID", camelCase = "continentID")
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
         schema(record(name = "ContinentFloor", description = "Information about a continent floor.") {
             CamelCase("id").."ID"(INTEGER, "the floor's ID")
@@ -2285,12 +2285,14 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
     }
     "/Recipes/Search" {
         summary = "Returns an array of item IDs for recipes using a given item as ingredient."
+        querySuffix = "ByInput"
 
         queryParameter("Input", INTEGER, "the item ID of the crafting ingredient")
         schema(array(INTEGER, "the IDs of the found recipes"))
     }
     "/Recipes/Search" {
         summary = "Returns an array of item IDs for recipes to craft a given item."
+        querySuffix = "ByOutput"
 
         queryParameter("Output", INTEGER, "the item ID of the crafting result")
         schema(array(INTEGER, "the IDs of the found recipes"))

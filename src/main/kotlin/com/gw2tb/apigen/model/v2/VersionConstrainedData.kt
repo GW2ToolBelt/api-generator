@@ -19,28 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.model.v2
 
-import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
+public data class VersionConstrainedData<T> internal constructor(
+    val data: T,
+    val since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
+    val until: V2SchemaVersion? = null,
+) : Comparable<VersionConstrainedData<T>> {
 
-public sealed class APIType {
-
-    internal abstract val name: String
-
-    public data class V1 internal constructor(
-        val schema: SchemaClass
-    ) : APIType() {
-        override val name: String get() = schema.name
+    init {
+        require(until == null || since < until)
     }
 
-    public data class V2 internal constructor(
-        internal val _schema: SchemaVersionedData<SchemaClass>
-    ) : APIType(), VersionedData<SchemaClass> by _schema {
-
-        override val name: String get() = _schema.flatMapData(SchemaClass::name)
-
-    }
+    override fun compareTo(other: VersionConstrainedData<T>): Int = (until ?: since).compareTo(other.since)
 
 }

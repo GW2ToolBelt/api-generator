@@ -19,28 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.model.v2
 
-import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
+public interface VersionedData<T> {
 
-public sealed class APIType {
+    public val versions: List<V2SchemaVersion>
 
-    internal abstract val name: String
+    public val significantVersions: List<V2SchemaVersion>
 
-    public data class V1 internal constructor(
-        val schema: SchemaClass
-    ) : APIType() {
-        override val name: String get() = schema.name
-    }
+    public fun <R> flatMapData(transform: (T) -> R): R
 
-    public data class V2 internal constructor(
-        internal val _schema: SchemaVersionedData<SchemaClass>
-    ) : APIType(), VersionedData<SchemaClass> by _schema {
+    public operator fun get(version: V2SchemaVersion): VersionConstrainedData<T>
 
-        override val name: String get() = _schema.flatMapData(SchemaClass::name)
+    public fun getOrNull(version: V2SchemaVersion): VersionConstrainedData<T>?
 
-    }
+    public fun isSupported(version: V2SchemaVersion): Boolean
 
 }

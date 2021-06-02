@@ -22,6 +22,7 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
 package com.gw2tb.apigen.schema
 
+import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 
@@ -182,7 +183,7 @@ public data class SchemaRecord internal constructor(
 
 internal class SchemaBlueprint internal constructor(
     override val name: String,
-    internal val versions: Map<V2SchemaVersion, SchemaType?>
+    internal val versions: SchemaVersionedData<SchemaType>
 ) : SchemaClass() {
 
     override val isLocalized: Boolean get() = error("isLocalized should never be called for SchemaBlueprint")
