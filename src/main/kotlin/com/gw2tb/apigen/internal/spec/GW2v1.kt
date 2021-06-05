@@ -194,7 +194,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("icon_file_signature").."IconFileSignature"(STRING, "the icon's file signature to be used with the render service")
         }) {
             +record(name = "Armor", description = "Additional information about an armor skin.") {
-                "Type"(STRING, "the skin's armor slot")
+                SerialName("type").."ArmorType"(STRING, "the skin's armor slot")
                 SerialName("weight_class").."WeightClass"(STRING, "the skin's armor weight")
                 SerialName("dye_slots").."DyeSlots"(
                     description = "the skin's dye slots",
@@ -222,7 +222,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             +record(name = "Back", description = "Additional information about a backpack skin.") {}
             +record(name = "Gathering", description = "Additional information about a gathering tool skin.") {}
             +record(name = "Weapon", description = "Additional information about a gathering tool skin.") {
-                "Type"(STRING, "the skin's weapon type")
+                SerialName("type").."WeaponType"(STRING, "the skin's weapon type")
                 SerialName("damage_type").."DamageType"(STRING, "the skin's damage type")
             }
         })
