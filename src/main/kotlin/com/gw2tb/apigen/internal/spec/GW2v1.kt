@@ -267,7 +267,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
 
         schema(array(
             description = "the available objectives",
-            items = record(name = "WorldName", description = "Information about a WvW objective.") {
+            items = record(name = "ObjectiveName", description = "Information about a WvW objective.") {
                 CamelCase("id").."ID"(STRING, "the ID of the objective")
                 localized.."Name"(STRING, "the objective's localized name")
             }
