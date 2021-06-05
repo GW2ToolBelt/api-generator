@@ -469,7 +469,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         fun schema(schema: SchemaType) {
             this.schema = buildVersionedSchemaData {
                 V2SchemaVersion.values()
-                    .filter { it == since || ((until == null || it <= until) && schema.hasChangedInVersion(it)) }
+                    .filter { it == since || it == until || (until != null && it < until && schema.hasChangedInVersion(it)) }
                     .zipSchemaVersionConstraints(includeUnbound = until == null)
                     .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
             }
@@ -487,15 +487,15 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             val versions = buildVersionedSchemaData<SchemaType> {
                 schemas.asIterable()
                     .sortedBy { it.first }
-                    .zipSchemaVersionConstraints(includeUnbound = until == null)
+                    .zipSchemaVersionConstraints()
                     .forEach { (since, until) ->
                         val schema = since.second
                         val sinceBound = since.first
                         val untilBound = until?.first
 
                         V2SchemaVersion.values()
-                            .filter { it == sinceBound || ((sinceBound < it) && (untilBound == null || it <= untilBound) && schema.hasChangedInVersion(it)) }
-                            .zipSchemaVersionConstraints()
+                            .filter { it == sinceBound || it == untilBound || (untilBound != null && it < untilBound && schema.hasChangedInVersion(it)) }
+                            .zipSchemaVersionConstraints(includeUnbound = until == null)
                             .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
                     }
             }
@@ -512,7 +512,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                 for ((_, schema) in schemas) types.removeIf { it._schema.any { it.data == schema } }
             }
 
-            if (!classes.isEmpty) {
+            if (classes != null) {
                 if (types == null) {
                     types = mutableListOf()
                     _types[loc] = types

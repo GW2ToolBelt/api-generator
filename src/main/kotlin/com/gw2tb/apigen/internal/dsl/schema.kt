@@ -126,6 +126,9 @@ internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean
     val itr = this@zipSchemaVersionConstraints.iterator()
     var first = itr.next()
 
+    if (!includeUnbound && !itr.hasNext())
+        error("Cannot zip single version into bound constraint")
+
     while (itr.hasNext()) {
         val second = itr.next()
         yield(first to second)

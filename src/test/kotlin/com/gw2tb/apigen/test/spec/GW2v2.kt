@@ -2357,7 +2357,6 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         fun SchemaType.isClassOrArrayOfClasses() = firstPossiblyNestedClassOrNull() != null
 
         query.significantVersions.forEach { version ->
-
             val schema = query[version].data
             if (!schema.isClassOrArrayOfClasses()) return@forEach
 

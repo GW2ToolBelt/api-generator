@@ -59,20 +59,21 @@ internal data class VersionConstraint(
 )
 
 internal class SchemaVersionedData<T>(
-    private val entries: TreeSet<VersionConstrainedData<T>>
+    internal val entries: TreeSet<VersionConstrainedData<T>>
 ) : VersionedData<T>, Iterable<VersionConstrainedData<T>> by entries {
+
+    init {
+        require(entries.isNotEmpty()) { "SchemaVersionedData requires at least one entry" }
+    }
 
     val isConsistent get() =
         (entries.size == 1) && (entries.first().since == V2SchemaVersion.V2_SCHEMA_CLASSIC) && (entries.first().until == null)
-
-    val isEmpty get() =
-        entries.isEmpty()
 
     override val versions: List<V2SchemaVersion> get() =
         V2SchemaVersion.values().filter { getOrNull(it) != null }
 
     override val significantVersions get() =
-        V2SchemaVersion.values().filter { hasChangedInVersion(it) }
+        V2SchemaVersion.values().filter { hasChangedInVersion(it) && isSupported(it) }
 
     fun first(): VersionConstrainedData<T> =
         entries.first()
@@ -129,8 +130,14 @@ internal class SchemaVersionedData<T>(
     fun <R> mapData(transform: (T) -> R): SchemaVersionedData<R> =
         SchemaVersionedData(entries.asSequence().map { it.map(transform) }.toCollection(TreeSet()))
 
-    fun <R> mapDataOrNull(transform: (T) -> R?): SchemaVersionedData<R> =
-        SchemaVersionedData(entries.asSequence().mapNotNull { it.mapOrNull(transform) }.toCollection(TreeSet()))
+    fun <R> mapDataOrNull(transform: (T) -> R?): SchemaVersionedData<R>? {
+        val set = entries.asSequence().mapNotNull { it.mapOrNull(transform) }.toCollection(TreeSet())
+
+        return if (set.isNotEmpty())
+            SchemaVersionedData(set)
+        else
+            null
+    }
 
     private fun <R> VersionConstrainedData<T>.map(transform: (T) -> R) =
         VersionConstrainedData(transform(data), since, until)
