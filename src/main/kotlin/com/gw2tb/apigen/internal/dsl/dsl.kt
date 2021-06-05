@@ -470,7 +470,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             this.schema = buildVersionedSchemaData {
                 V2SchemaVersion.values()
                     .filter { it == since || ((until == null || it <= until) && schema.hasChangedInVersion(it)) }
-                    .zipSchemaVersionConstraints()
+                    .zipSchemaVersionConstraints(includeUnbound = until == null)
                     .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
             }
         }
@@ -487,7 +487,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             val versions = buildVersionedSchemaData<SchemaType> {
                 schemas.asIterable()
                     .sortedBy { it.first }
-                    .zipSchemaVersionConstraints()
+                    .zipSchemaVersionConstraints(includeUnbound = until == null)
                     .forEach { (since, until) ->
                         val schema = since.second
                         val sinceBound = since.first

@@ -122,7 +122,7 @@ internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, u
         until === null || until.ordinal <= version.ordinal
     }.associateBy { keySelector(it) }
 
-internal fun <T> Iterable<T>.zipSchemaVersionConstraints(): Iterable<Pair<T, T?>> = sequence {
+internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean = true): Iterable<Pair<T, T?>> = sequence {
     val itr = this@zipSchemaVersionConstraints.iterator()
     var first = itr.next()
 
@@ -133,7 +133,8 @@ internal fun <T> Iterable<T>.zipSchemaVersionConstraints(): Iterable<Pair<T, T?>
         first = second
     }
 
-    yield(first to null)
+    if (includeUnbound)
+        yield(first to null)
 }.asIterable()
 
 @APIGenDSL
