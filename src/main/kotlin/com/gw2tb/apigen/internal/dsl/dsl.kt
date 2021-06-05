@@ -485,11 +485,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
             require(until == null || schemas.none { (version, _) -> version >= until })
 
             val versions = buildVersionedSchemaData<SchemaType> {
-                V2SchemaVersion.values()
-                    .sorted()
-                    .zipSchemaVersionConstraints()
-                    .filter { (since, _) -> schemas.any { it.first <= since } }
-
                 schemas.asIterable()
                     .sortedBy { it.first }
                     .zipSchemaVersionConstraints()
