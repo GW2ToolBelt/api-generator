@@ -33,6 +33,37 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
+    "/Colors" {
+        summary = "Returns information about all dye colors in the game."
+
+        schema(record(name = "Colors", description = "Information about the available dye colors.") {
+            "Colors"(
+                description = "the colors",
+                type = map(
+                    keys = INTEGER,
+                    values = record(name = "Color", description = "Information about a dye color.") {
+                        val APPEARANCE = record(name = "Appearance", description = "Information about the appearance of the color.") {
+                            "Brightness"(INTEGER, "the brightness")
+                            "Contrast"(DECIMAL, "the contrast")
+                            "Hue"(INTEGER, "the hue in HSL colorspace")
+                            "Saturation"(DECIMAL, "the saturation in HSL colorspace")
+                            "Lightness"(DECIMAL, "the lightness in HSL colorspace")
+                            "RGB"(array(INTEGER), "a list containing precalculated RGB values")
+                        }
+
+                        localized.."Name"(STRING, "the color's name")
+                        SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
+                        "Cloth"(APPEARANCE, "detailed information on its appearance when applied on cloth armor")
+                        "Leather"(APPEARANCE, "detailed information on its appearance when applied on leather armor")
+                        "Metal"(APPEARANCE, "detailed information on its appearance when applied on metal armor")
+                        optional.."Fur"(APPEARANCE, "detailed information on its appearance when applied on fur armor")
+                        optional.."Item"(INTEGER, "the ID of the dye item")
+                        "Categories"(array(STRING), "the categories of the color")
+                    }
+                )
+            )
+        })
+    }
     "/Continents" {
         summary = "Returns information about continents."
 

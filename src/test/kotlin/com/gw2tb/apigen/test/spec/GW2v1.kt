@@ -38,6 +38,11 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         expectQuery("/Build")
 
         expectQuery(
+            "/Colors",
+            isLocalized = true
+        )
+
+        expectQuery(
             "/Continents",
             isLocalized = true
         )
