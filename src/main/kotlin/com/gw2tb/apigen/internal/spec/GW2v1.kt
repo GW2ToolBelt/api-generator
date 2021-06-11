@@ -204,7 +204,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional.."Buff"(
                     description = "object containing an additional effect",
                     type = record(name = "Buff", description = "Information about an infix upgrade's buffs.") {
-                        SerialName("skill_id").."SkillId"(INTEGER, "the skill ID of the effect")
+                        SerialName("skill_id").."SkillID"(INTEGER, "the skill ID of the effect")
                         optional.."Description"(STRING, "the effect's description")
                     }
                 )
@@ -212,7 +212,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
 
             val INFUSION_SLOTS = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
                 "Flags"(array(STRING), "infusion slot type of infusion upgrades")
-                optional..SerialName("item_id").."ItemId"(INTEGER, "the infusion upgrade in the armor piece")
+                optional..SerialName("item_id").."ItemID"(INTEGER, "the infusion upgrade in the armor piece")
             })
 
             +record(name = "Armor", description = "Additional information about an armor item.") {
@@ -221,16 +221,16 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 "Defense"(INTEGER, "the defense value of the armor piece")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the armor piece")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
+                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
             }
             +record(name = "Back", description = "Additional information about a backpiece.") {
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the back item")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
+                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
             }
@@ -243,10 +243,10 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional.."Description"(STRING, "effect description for consumables applying an effect")
                 optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
                 optional..SerialName("unlock_type").."UnlockType"(STRING, "unlock type for unlock consumables")
-                optional..SerialName("color_id").."ColorId"(INTEGER, "the dye ID for dye unlocks")
-                optional..SerialName("recipe_id").."RecipeId"(INTEGER, "the recipe ID for recipe unlocks")
-                optional..SerialName("extra_recipe_ids").."ExtraRecipeIds"(array(INTEGER), "additional recipe IDs for recipe unlocks")
-                optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade ID for the item")
+                optional..SerialName("color_id").."ColorID"(INTEGER, "the dye ID for dye unlocks")
+                optional..SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe ID for recipe unlocks")
+                optional..SerialName("extra_recipe_ids").."ExtraRecipeIDs"(array(INTEGER), "additional recipe IDs for recipe unlocks")
+                optional..SerialName("guild_upgrade_id").."GuildUpgradeID"(INTEGER, "the guild upgrade ID for the item")
                 optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
                 optional.."Name"(STRING, "the effect type name of the consumable")
                 optional.."Icon"(STRING, "the icon of the effect")
@@ -260,11 +260,11 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             })
             +record(name = "Gizmo", description = "Additional information about a gizmo.") {
                 "Type"(STRING, "the gizmo type")
-                optional..SerialName("guild_upgrade_id").."GuildUpgradeId"(INTEGER, "the guild upgrade ID for the item")
-                optional..SerialName("vendor_ids").."VendorIds"(array(INTEGER), "the vendor IDs")
+                optional..SerialName("guild_upgrade_id").."GuildUpgradeID"(INTEGER, "the guild upgrade ID for the item")
+                optional..SerialName("vendor_ids").."VendorIDs"(array(INTEGER), "the vendor IDs")
             }
             +record(name = "MiniPet", description = "Additional information about a mini unlock item.") {
-                SerialName("minipet_id").."MinipetId"(INTEGER, "the miniature it unlocks")
+                SerialName("minipet_id").."MinipetID"(INTEGER, "the miniature it unlocks")
             }
             "Tool"(record(name = "Tool", description = "Additional information about a tool.") {
                 "Type"(STRING, "the tool type")
@@ -274,8 +274,8 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 "Type"(STRING, "the trinket type")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the trinket")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
+                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
             }
@@ -296,8 +296,8 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 "Defense"(INTEGER, "the defense value of the weapon")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the weapon")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemId"(INTEGER, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemId"(STRING, "the secondary suffix item ID")
+                optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
+                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
             }
