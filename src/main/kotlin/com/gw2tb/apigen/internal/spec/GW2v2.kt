@@ -2495,7 +2495,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
         cache = 1.seconds
 
         supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-        schema(record(name = "WvWMatchOverview", description = "General information about a WvW match.") {
+        schema(record(name = "WvWMatch", description = "General information about a WvW match.") {
             CamelCase("id").."ID"(STRING, "the match's ID")
             SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
             SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
