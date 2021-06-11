@@ -2142,6 +2142,33 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/WvW/Matches",
+            cache = 1.seconds,
+            queryDetails = QueryIDs(STRING)
+        )
+        expectQuery(
+            "/WvW/Matches",
+            cache = 1.seconds,
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryByID(STRING)
+        )
+        expectQuery(
+            "/WvW/Matches",
+            cache = 1.seconds,
+            queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
+            queryDetails = QueryByIDs(STRING)
+        )
+        expectQuery(
+            "/WvW/Matches",
+            cache = 1.seconds,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage(STRING)
+        )
+
+        expectQuery(
             "/WvW/Matches/Overview",
             cache = 1.seconds,
             queryDetails = QueryIDs(STRING)

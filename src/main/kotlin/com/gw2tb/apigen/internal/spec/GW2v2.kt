@@ -2490,6 +2490,45 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/WvW/Matches" {
+        summary = "Returns information about the active WvW matches."
+        cache = 1.seconds
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "WvWMatchOverview", description = "General information about a WvW match.") {
+            CamelCase("id").."ID"(STRING, "the match's ID")
+            SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
+            SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+            "Scores"(map(STRING, INTEGER), "the total scores by team color")
+            "Worlds"(map(STRING, INTEGER), "the IDs of the three primary servers by team color")
+            SerialName("all_worlds").."AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
+            "Deaths"(map(STRING, INTEGER), "the total deaths by team color")
+            "Kills"(map(STRING, INTEGER), "the total kills by team color")
+            SerialName("victory_points").."VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
+            "Skirmishes"(
+                description = "the match's skirmishes",
+                type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
+                    CamelCase("id").."ID"(STRING, "the skirmish's ID")
+                    "Scores"(map(STRING, INTEGER), "the scores by team color")
+                    SerialName("map_scores").."MapScores"(
+                        description = "the scores by map",
+                        type = array(record(name = "MapScores", description = "Map-specific information about scores.") {
+                            "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                            "Scores"(map(STRING, INTEGER), "the scores by team color")
+                        })
+                    )
+                })
+            )
+            "Maps"(
+                description = "the total scores by map",
+                type = array(record(name = "Map", description = "Map-specific information about scores.") {
+                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                    "Scores"(map(STRING, INTEGER), "the scores by team color")
+                })
+            )
+        })
+    }
     "/WvW/Matches/Overview" {
         summary = "Returns general information about the active WvW matches."
         cache = 1.seconds
