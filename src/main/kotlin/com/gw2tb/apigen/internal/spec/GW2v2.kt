@@ -978,7 +978,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             "Regions"(
                 description = "the floor's regions",
                 type = map(
-                    keys = STRING,
+                    keys = INTEGER,
                     values = record(name = "Region", description = "Information about a region.") {
                         CamelCase("id").."ID"(INTEGER, "the region's ID")
                         localized.."Name"(STRING, "the region's localized name")
@@ -986,7 +986,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         "Maps"(
                             description = "the region's maps",
                             type = map(
-                                keys = STRING,
+                                keys = INTEGER,
                                 values = record(name = "Map", description = "Information about a map.") {
                                     CamelCase("id").."ID"(INTEGER, "the map's ID")
                                     localized.."Name"(STRING, "the map's localized name")
@@ -998,7 +998,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                     SerialName("points_of_interest").."PointsOfInterest"(
                                         description = "the points of interest on the floor (i.e. landmarks, vistas and waypoints)",
                                         type = map(
-                                            keys = STRING,
+                                            keys = INTEGER,
                                             values = record(name = "PointOfInterest", description = "Information about a point of interest (i.e. a landmark, vista or waypoint).") {
                                                 CamelCase("id").."ID"(INTEGER, "the PoI's ID")
                                                 optional..localized.."Name"(STRING, "the PoI's localized name")
@@ -1025,7 +1025,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                     "Tasks"(
                                         description = "the tasks on the floor",
                                         type = map(
-                                            keys = STRING,
+                                            keys = INTEGER,
                                             values = record(name = "Task", description = "Information about a task.") {
                                                 CamelCase("id").."ID"(INTEGER, "the task's ID")
                                                 localized.."Objective"(STRING, "the adventure's localized objective")
@@ -1046,7 +1046,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                     "Sectors"(
                                         description = "the sectors on the floor",
                                         type = map(
-                                            keys = STRING,
+                                            keys = INTEGER,
                                             values = record(name = "Sector", description = "Information about a sector.") {
                                                 CamelCase("id").."ID"(INTEGER, "the sector's ID")
                                                 optional..localized.."Name"(STRING, "the sector's localized name")
