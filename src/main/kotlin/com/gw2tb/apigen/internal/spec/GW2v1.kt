@@ -136,6 +136,38 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+
+    val GuildDetails = record(name = "GuildDetails", description = "Information about events.", endpoint = "/GuildDetails") {
+        SerialName("guild_id").."GuildID"(STRING, "the guild's ID")
+        SerialName("guild_name").."GuildName"(STRING, "the guild's name")
+        "Tag"(STRING, "the guild's tag")
+        "Emblem"(
+            description = "the guild's emblem",
+            type = record(name = "Emblem", description = "Information about a guild emblem.") {
+                SerialName("background_id").."BackgroundID"(STRING, "the background's ID")
+                SerialName("foreground_id").."ForegroundID"(STRING, "the foreground's ID")
+                "Flags"(array(STRING), "the manipulations applied to the emblem")
+                SerialName("background_color_id").."BackgroundColorID"(STRING, "the background color's ID")
+                SerialName("foreground_primary_color_id").."ForegroundPrimaryColorID"(STRING, "the foreground primary color's ID")
+                SerialName("foreground_secondary_color_id").."ForegroundSecondaryColorID"(STRING, "the foreground secondary color's ID")
+            }
+        )
+    }
+
+    "/guild_details"(endpoint = "/GuildDetails") {
+        summary = "Returns information about a guild."
+        querySuffix = "ByID"
+
+        queryParameter("GuildID", STRING, "the ID of the guild", key = "guild_id")
+        schema(GuildDetails)
+    }
+    "/guild_details"(endpoint = "/GuildDetails") {
+        summary = "Returns information about a guild."
+        querySuffix = "ByName"
+
+        queryParameter("GuildName", STRING, "the name of the guild", key = "guild_name")
+        schema(GuildDetails)
+    }
     "/Items" {
         summary = "Returns the IDs of the available items."
 

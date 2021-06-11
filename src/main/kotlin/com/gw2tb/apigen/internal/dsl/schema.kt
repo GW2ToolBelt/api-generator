@@ -140,7 +140,6 @@ internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean
         yield(first to null)
 }.asIterable()
 
-@APIGenDSL
 internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
 
     override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
@@ -227,7 +226,6 @@ internal class SchemaConditionalInterpretationBuilder(
 
 }
 
-@APIGenDSL
 internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilder<T> {
 
     override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()

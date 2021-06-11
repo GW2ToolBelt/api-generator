@@ -48,54 +48,70 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
     val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList(v) })
 
     @APIGenDSL
-    fun array(
-        items: SchemaType,
+    fun record(
+        name: String,
         description: String,
-        nullableItems: Boolean = false
-    ): SchemaType =
-        SchemaArray(items, nullableItems, description)
+        endpoint: String,
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = recordImpl(name, description, types, ::createType, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
+
+        return type
+    }
 
     @APIGenDSL
-    fun map(
-        keys: SchemaPrimitive,
-        values: SchemaType,
+    fun SchemaBuilder<T>.record(
+        name: String,
         description: String,
-        nullableValues: Boolean = false
-    ): SchemaType =
-        SchemaMap(keys, values, nullableValues, description)
+        configure: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = recordImpl(name, description, types, this@APIVersionBuilder::createType, configure)
+        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
 
-//    @APIGenDSL
-//    fun record(
-//        name: String,
-//        description: String,
-//        configure: SchemaRecordBuilder<T>.() -> Unit
-//    ): SchemaClass {
-//        val types = mutableMapOf<String, MutableList<T>>()
-//        val type = recordImpl(name, description, types, ::createType, configure)
-//        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
-//
-//        return type
-//    }
-//
-//    @APIGenDSL
-//    fun conditional(
-//        name: String,
-//        description: String,
-//        disambiguationBy: String = "type",
-//        disambiguationBySideProperty: Boolean = false,
-//        interpretationInNestedProperty: Boolean = false,
-//        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
-//        configure: SchemaConditionalBuilder<T>.() -> Unit
-//    ): SchemaClass {
-//        val types = mutableMapOf<String, MutableList<T>>()
-//        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
-//        types.forEach { _types.computeIfAbsent(TypeLocation(null, it.key)) { mutableListOf() }.addAll(it.value) }
-//
-//        return type
-//    }
+        return type
+    }
+
+    @APIGenDSL
+    fun conditional(
+        name: String,
+        description: String,
+        endpoint: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, configure)
+        types.forEach { _types.computeIfAbsent(TypeLocation(endpoint, it.key)) { mutableListOf() }.addAll(it.value) }
+
+        return type
+    }
+
+    @APIGenDSL
+    fun SchemaBuilder<T>.conditional(
+        name: String,
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass {
+        val types = mutableMapOf<String?, MutableList<T>>()
+        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, this@APIVersionBuilder::createType, configure)
+        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
+
+        return type
+    }
 
     abstract fun createType(type: SchemaClass): T
 
+    @APIGenDSL
     class V1 : APIVersionBuilder<APIQuery.V1, APIType.V1>() {
 
         operator fun String.invoke(
@@ -118,6 +134,7 @@ internal sealed class APIVersionBuilder<Q : APIQuery, T : APIType> {
 
     }
 
+    @APIGenDSL
     class V2 : APIVersionBuilder<APIQuery.V2, APIType.V2>() {
 
         operator fun String.invoke(
@@ -300,7 +317,6 @@ private fun <T : APIType> recordImpl(
     }
 }
 
-@APIGenDSL
 internal interface SchemaBuilder<T : APIType> {
 
     val nestedTypes: MutableMap<String?, MutableList<T>>
@@ -322,6 +338,7 @@ internal interface SchemaBuilder<T : APIType> {
 
 }
 
+@APIGenDSL
 internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val createTypeFun: (SchemaClass) -> T) {
 
     protected val _types = mutableMapOf<TypeLocation, MutableList<T>>()
@@ -331,6 +348,8 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
     abstract val endpoint: String
 
     var summary: String = ""
+
+    var querySuffix: String? = null
 
     var cache: Duration? = null
     var security: Set<TokenScope>? = null
@@ -365,6 +384,23 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
     abstract fun finalize(): Collection<Q>
 
     @APIGenDSL
+    fun array(
+        items: SchemaType,
+        description: String,
+        nullableItems: Boolean = false
+    ): SchemaType =
+        SchemaArray(items, nullableItems, description)
+
+    @APIGenDSL
+    fun map(
+        keys: SchemaPrimitive,
+        values: SchemaType,
+        description: String,
+        nullableValues: Boolean = false
+    ): SchemaType =
+        SchemaMap(keys, values, nullableValues, description)
+
+    @APIGenDSL
     fun record(
         name: String,
         description: String,
@@ -389,7 +425,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
 
         return type
     }
-
 
     @APIGenDSL
     fun conditional(
@@ -443,6 +478,7 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
                 summary = summary,
                 pathParameters = pathParameters,
                 queryParameters = queryParameters,
+                querySuffix = querySuffix,
                 cache = cache,
                 schema = schema
             )
@@ -463,7 +499,6 @@ internal sealed class APIQueryBuilder<Q : APIQuery, T : APIType>(private val cre
         }
 
         var idTypeKey: String = "id"
-        var querySuffix: String? = null
 
         private lateinit var schema: SchemaVersionedData<SchemaType>
         fun schema(schema: SchemaType) {

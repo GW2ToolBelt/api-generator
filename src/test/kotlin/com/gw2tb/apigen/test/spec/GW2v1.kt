@@ -54,6 +54,16 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
 
         expectQuery("/Files")
 
+        expectQuery(
+            "/guild_details",
+            queryParameters = listOf(ExpectedQueryParameter("guild_id", STRING))
+        )
+
+        expectQuery(
+            "/guild_details",
+            queryParameters = listOf(ExpectedQueryParameter("guild_name", STRING))
+        )
+
         expectQuery("/Items")
 
         expectQuery(
@@ -101,8 +111,6 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     }
 
     override fun testTypes(queries: Collection<APIQuery.V1>) = sequence<DynamicTest> {
-        if (queries.size != 1) error("")
-
         val query = queries.first()
 
         fun SchemaType.firstPossiblyNestedClassOrNull(): SchemaClass? = when (this) {
