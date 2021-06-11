@@ -308,6 +308,37 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
+    "/wvw/match_details"(endpoint = "/WvW/MatchDetails") {
+        summary = "Returns detailed information about a WvW match."
+
+        queryParameter("MatchID", STRING, "the ID of the match", key = "match_id")
+        schema(record(name = "WvWMatchDetails", description = "Information about a WvW match.") {
+            SerialName("match_id").."MatchID"(STRING, "the match's ID")
+            "Scores"(array(INTEGER), "the total scores")
+            "Maps"(
+                description = "the map information",
+                type = array(record(name = "Map", description = "Map-specific information about scores.") {
+                    "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
+                    "Scores"(array(INTEGER), "the scores")
+                    "Objectives"(
+                        description = "the map's objectives",
+                        type = array(record(name = "Objective", description = "Information about an objective.") {
+                            CamelCase("id").."ID"(INTEGER, "the objective's ID")
+                            "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
+                            optional.."OwnerGuild"(STRING, "the guild ID of the guild that currently has claimed this objective")
+                        })
+                    )
+                    "Bonuses"(
+                        description = "the bonuses granted by this map",
+                        type = array(record(name = "Bonus", description = "Information about a bonus.") {
+                            "Type"(STRING, "the type of the bonus")
+                            "Owner"(STRING, "the owner of the bonus (i.e. \"Red\", \"Green\", \"Blue\")")
+                        })
+                    )
+                })
+            )
+        })
+    }
     "/WvW/Matches" {
         summary = "Returns information about WvW matches."
 
