@@ -64,6 +64,12 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
             queryParameters = listOf(ExpectedQueryParameter("guild_name", STRING))
         )
 
+        expectQuery(
+            "/item_details",
+            isLocalized = true,
+            queryParameters = listOf(ExpectedQueryParameter("item_id", STRING))
+        )
+
         expectQuery("/Items")
 
         expectQuery(
