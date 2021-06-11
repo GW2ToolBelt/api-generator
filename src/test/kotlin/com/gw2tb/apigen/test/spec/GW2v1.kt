@@ -67,6 +67,15 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         expectQuery("/Items")
 
         expectQuery(
+            "/map_floor",
+            isLocalized = true,
+            queryParameters = listOf(
+                ExpectedQueryParameter("continent_id", INTEGER),
+                ExpectedQueryParameter("floor", INTEGER)
+            )
+        )
+
+        expectQuery(
             "/map_names",
             isLocalized = true
         )
