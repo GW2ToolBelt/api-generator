@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("UnstableApiUsage")
+@file:Suppress("UnstableApiUsage", "SuspiciousCollectionReassignment")
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
@@ -51,14 +51,6 @@ java {
 kotlin {
     explicitApi = ExplicitApiMode.Strict
 
-    sourceSets {
-        all {
-            languageSettings.apply {
-                useExperimentalAnnotation("kotlin.time.ExperimentalTime")
-            }
-        }
-    }
-
     target {
         compilations.all {
             kotlinOptions {
@@ -67,7 +59,10 @@ kotlin {
 
                 jvmTarget = "1.8"
 
-                freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+                freeCompilerArgs += listOf(
+                    "-Xopt-in=kotlin.RequiresOptIn",
+                    "-Xopt-in=kotlin.time.ExperimentalTime"
+                )
             }
         }
     }
