@@ -122,12 +122,12 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                 val record = assertDoesNotThrow<JsonObject> { element.jsonObject }
 
                 sharedProperties.forEach { (_, property) ->
-                    val value = assertDoesNotThrow<JsonElement?>("$this") { record[property.serialName]!! }
-                    if (value === null) {
+                    val value = assertDoesNotThrow("$this") { record[property.serialName] }
+                    if (value == null) {
                         if (property.optionality.isOptional)
                             return@forEach
                         else
-                            fail()
+                            fail("Could not find required shared property: ${property.serialName}")
                     }
 
                     val type = property.type
