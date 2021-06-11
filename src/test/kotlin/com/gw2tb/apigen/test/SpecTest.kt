@@ -152,24 +152,33 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
             }
             is SchemaRecord -> {
                 if (nullable && element is JsonNull) return
-                val record = assertDoesNotThrow("$this") { element.jsonObject }
+                val jsonObject = assertDoesNotThrow("$this") { element.jsonObject }
 
-                properties.forEach { (_, property) ->
-                    val value = assertDoesNotThrow<JsonElement?> { record[property.serialName] }
-                    if (value === null) {
-                        if (property.optionality.isOptional)
-                            return@forEach
-                        else
-                            fail("Could not find required property \"${property.serialName}\"")
-                    }
+                val unvisitedExpectedProperties = HashMap(properties.filter { (_, property) -> !property.optionality.isOptional })
+                val unvisitedActualElements = HashSet(jsonObject.keys)
+
+                properties.forEach { (key, property) ->
+                    val value = jsonObject[property.serialName] ?: return@forEach
+                    unvisitedExpectedProperties.remove(key)
+                    unvisitedActualElements.remove(property.serialName)
 
                     val type = property.type
                     val intrp = (if (type is SchemaConditional && type.disambiguationBySideProperty)
-                        assertDoesNotThrow("$this") { record[type.disambiguationBy]!!.jsonPrimitive.content }
+                        assertDoesNotThrow("$this") { jsonObject[type.disambiguationBy]!!.jsonPrimitive.content }
                     else
                         null)
 
                     property.type.assertMatches(value, property.optionality.isOptional, intrp)
+                }
+
+                unvisitedExpectedProperties .let {
+                    if (it.isNotEmpty())
+                        fail("Required properties were not found: ${it.values.map(SchemaRecord.Property::serialName)}")
+                }
+
+                unvisitedActualElements.let {
+                    if (it.isNotEmpty())
+                        fail("Unexpected properties: $it")
                 }
             }
             else -> fail("Unsupported SchemaType reached SpecTest stage: $this")
