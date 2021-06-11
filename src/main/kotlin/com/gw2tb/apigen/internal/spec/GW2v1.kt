@@ -569,7 +569,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                         type = array(record(name = "Objective", description = "Information about an objective.") {
                             CamelCase("id").."ID"(INTEGER, "the objective's ID")
                             "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
-                            optional.."OwnerGuild"(STRING, "the guild ID of the guild that currently has claimed this objective")
+                            optional..SerialName("owner_guild").."OwnerGuild"(STRING, "the guild ID of the guild that currently has claimed this objective")
                         })
                     )
                     "Bonuses"(
