@@ -191,6 +191,14 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 "Flags"(array(STRING), "flags applying to the item")
                 SerialName("game_types").."GameTypes"(array(STRING), "the game types in which the item is usable")
                 "Restrictions"(array(STRING), "restrictions applied to the item")
+                optional..SerialName("upgrade_recipes").."UpgradeRecipes"(
+                    description = "lists what items this item can be upgraded from and into, and the method of upgrading",
+                    type = array(record(name = "Upgrade", description = "Information about an item's upgrade.") {
+                        "Type"(STRING, "describes the method of upgrading")
+                        optional.."From"(INTEGER, "the ID of the item that is upgraded into the item")
+                        optional.."Into"(INTEGER, "the ID that results from performing the upgrade")
+                    })
+                )
             }
         ) {
             val INFIX_UPGRADE = record(name = "InfixUpgrade", description = "Information about an item's infix upgrade.") {
