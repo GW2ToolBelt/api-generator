@@ -1204,6 +1204,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                 description = "the IDs of the dyes that are applied to the glider by default",
                 type = array(INTEGER)
             )
+            SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the glider")
         })
     }
     "/Guild/:ID" {
