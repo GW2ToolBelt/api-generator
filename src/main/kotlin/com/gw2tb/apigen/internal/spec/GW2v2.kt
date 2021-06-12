@@ -2124,7 +2124,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             optional..CamelCase("id").."ID"(STRING, "the guild's ID")
             "Rank"(INTEGER, "the account's rank")
             optional.."Team"(INTEGER, "the guild team's name")
-            optional.."TeamID"(INTEGER, "the guild team's ID")
+            optional..SerialName("team_id").."TeamID"(INTEGER, "the guild team's ID")
             "Date"(STRING, "the date at which the rank was reached")
             "Scores"(
                 description = "the entry's scoring values",
