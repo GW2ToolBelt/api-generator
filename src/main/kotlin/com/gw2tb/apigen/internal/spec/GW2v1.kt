@@ -233,7 +233,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
                 optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
             +record(name = "Back", description = "Additional information about a backpiece.") {
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the back item")
@@ -241,7 +241,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
                 optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
             +record(name = "Bag", description = "Additional information about a bag.") {
                 "Size"(INTEGER, "the number of bag slots")
@@ -286,7 +286,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
                 optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
             +record(name = "UpgradeComponent", description = "Additional information about an upgrade component.") {
                 "Type"(STRING, "the type of the upgrade component")
@@ -295,7 +295,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                 optional.."Bonuses"(array(STRING), "the bonuses from runes")
-                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
             +record(name = "Weapon", description = "Additional information about a weapon.") {
                 "Type"(STRING, "the weapon type")
@@ -308,7 +308,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                 optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
                 optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "") // TODO doc
+                optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
         })
     }
