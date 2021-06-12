@@ -698,7 +698,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                             optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                             optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
                             optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
-                            optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "") // TODO description: figure out what this actually describes
+                            optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
                             optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
                             optional.."Stats"(
                                 description = "contains information on the stats chosen if the item offers an option for stats/prefix",
