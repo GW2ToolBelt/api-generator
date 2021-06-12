@@ -1493,14 +1493,14 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                 description = "lists what items this item can be upgraded into, and the method of upgrading",
                 type = array(record(name = "Upgrade", description = "Information about an item's upgrade.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(INTEGER, "the item ID that results from performing the upgrade")
+                    SerialName("item_id").."ItemID"(INTEGER, "the ID that results from performing the upgrade")
                 })
             )
             optional..SerialName("upgrades_from").."UpgradesFrom"(
                 description = "lists what items this item can be upgraded from, and the method of upgrading",
                 type = array(record(name = "Precursor", description = "Information about an item's precursor.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(INTEGER, "the item ID that results from performing the upgrade")
+                    SerialName("item_id").."ItemID"(INTEGER, "the ID of the item that is upgraded into the item")
                 })
             )
             optional.."Details"(
