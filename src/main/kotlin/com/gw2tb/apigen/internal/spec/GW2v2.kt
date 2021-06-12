@@ -990,6 +990,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                         CamelCase("id").."ID"(INTEGER, "the region's ID")
                         localized.."Name"(STRING, "the region's localized name")
                         SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the region's label")
+                        SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the region, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
                         "Maps"(
                             description = "the region's maps",
                             type = map(
@@ -1002,6 +1003,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                     SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
                                     SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
                                     SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                                    SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the map's label")
                                     SerialName("points_of_interest").."PointsOfInterest"(
                                         description = "the points of interest on the floor (i.e. landmarks, vistas and waypoints)",
                                         type = map(
