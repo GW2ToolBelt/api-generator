@@ -80,10 +80,10 @@ internal fun BY_IDS(
 )
 
 internal fun SchemaConditional.Interpretation.hasChangedInVersion(version: V2SchemaVersion): Boolean =
-    since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
+    since == version || (until != null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
 
 internal fun SchemaRecord.Property.hasChangedInVersion(version: V2SchemaVersion): Boolean =
-    since === version || (until !== null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
+    since == version || (until != null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
 
 internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean = when (this) {
     is SchemaBlueprint -> versions.hasChangedInVersion(version)
@@ -116,10 +116,10 @@ internal fun SchemaType.copyForVersion(version: V2SchemaVersion): SchemaType = w
 internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, untilSelector: (T) -> V2SchemaVersion?, keySelector: (T) -> String, version: V2SchemaVersion): Map<String, T> =
     filter {
         val since = sinceSelector(it)
-        if (since !== null && version < since) return@filter false
+        if (since != null && version < since) return@filter false
 
         val until = untilSelector(it)
-        until === null || until.ordinal <= version.ordinal
+        until == null || version.ordinal < until.ordinal
     }.associateBy { keySelector(it) }
 
 internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean = true): Iterable<Pair<T, T?>> = sequence {
