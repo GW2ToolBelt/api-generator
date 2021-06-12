@@ -2437,6 +2437,7 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     description = "an array of strings describing which permissions the API key has",
                     type = array(STRING)
                 )
+                "Type"(STRING, "the type of the access token given")
             },
             V2_SCHEMA_2019_05_22T00_00_00_000Z to record(name = "TokenInfo", description = "Information about an API key.") {
                 CamelCase("id").."ID"(STRING, "the API key that was requested")
