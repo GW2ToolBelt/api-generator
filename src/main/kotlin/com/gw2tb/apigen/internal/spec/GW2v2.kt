@@ -2079,6 +2079,9 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                 "Tiers"(
                                     description = "the tiers",
                                     type = array(record(name = "Tier", description = "Information about a leaderboard's tiers.") {
+                                        optional.."Color"(STRING, "the tier's color as hex value")
+                                        optional.."Type"(STRING, "the tier's type")
+                                        optional.."Name"(STRING, "the tier's name")
                                         "Range"(array(DECIMAL), "the tier's scoring range")
                                     })
                                 )
