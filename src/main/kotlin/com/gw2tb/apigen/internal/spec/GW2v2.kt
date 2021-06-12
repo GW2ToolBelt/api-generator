@@ -2536,6 +2536,30 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                     CamelCase("id").."ID"(STRING, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
+                    "Deaths"(map(STRING, INTEGER), "the deaths by team color")
+                    "Kills"(map(STRING, INTEGER), "the kills by team color")
+                    "Objectives"(
+                        description = "the list of the map's objective",
+                        type = array(record(name = "Objective", description = "Information about a map objective.") {
+                            CamelCase("id").."ID"(STRING, "the objective's ID")
+                            "Type"(STRING, "the objective's type")
+                            "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
+                            SerialName("last_flipped").."LastFlipped"(STRING, "the ISO-8601 standard timestamp of when the objective was last flipped")
+                            optional..SerialName("claimed_by").."ClaimedBy"(STRING, "the guild ID of the guild that currently has claimed this objective")
+                            optional..SerialName("claimed_at").."ClaimedAt"(STRING, "the ISO-8601 standard timestamp of when the objective was claimed")
+                            SerialName("points_tick").."PointsTick"(INTEGER, "the amount of points per tick given by the objective")
+                            SerialName("points_capture").."PointsCapture"(INTEGER, "the amount of points awarded for capturing the objective")
+                            optional..SerialName("guild_upgrades").."GuildUpgrades"(array(INTEGER), "the IDs of the currently slotted guild upgrades")
+                            optional..SerialName("yaks_delivered").."YaksDelivered"(INTEGER, "the total number of shipments delivered to the objective")
+                        }
+                    ))
+                    "Bonuses"(
+                        description = "the bonuses granted by this map",
+                        type = array(record(name = "Bonus", description = "Information about a bonus.") {
+                            "Type"(STRING, "the type of the bonus")
+                            "Owner"(STRING, "the owner of the bonus (i.e. \"Red\", \"Green\", \"Blue\")")
+                        })
+                    )
                 })
             )
         })
