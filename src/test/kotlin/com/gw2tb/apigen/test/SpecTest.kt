@@ -133,6 +133,7 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                     val unvisitedExpectedProperties = HashMap(expectedProperties.filter { (_, property) -> !property.optionality.isOptional })
                     val unvisitedActualElements = HashSet(jsonObject.keys)
 
+                    interpretations.forEach { (_, interpretation) -> unvisitedActualElements.remove(interpretation.interpretationNestProperty!!) }
                     expectedProperties.forEach { (key, property) ->
                         val value = jsonObject[property.serialName] ?: return@forEach
                         unvisitedExpectedProperties.remove(key)
