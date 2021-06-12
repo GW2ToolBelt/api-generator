@@ -2341,16 +2341,16 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
                                 "Overrides"(
                                     description = "the race/gender dye slot overrides",
                                     type = record(name = "Overrides", description = "Information about race/gender dye slot overrides.") {
-                                        optional.."AsuraMale"(DYE_SLOTS(), "the dye slot overrides for asuarn male characters")
-                                        optional.."AsuraFemale"(DYE_SLOTS(), "the dye slot overrides for asuarn female characters")
-                                        optional.."CharrMale"(DYE_SLOTS(), "the dye slot overrides for charr male characters")
-                                        optional.."CharrFemale"(DYE_SLOTS(), "the dye slot overrides for charr female characters")
-                                        optional.."HumanMale"(DYE_SLOTS(), "the dye slot overrides for human male characters")
-                                        optional.."HumanFemale"(DYE_SLOTS(), "the dye slot overrides for human female characters")
-                                        optional.."NornMale"(DYE_SLOTS(), "the dye slot overrides for norn male characters")
-                                        optional.."NornFemale"(DYE_SLOTS(), "the dye slot overrides for norn female characters")
-                                        optional.."SylvariMale"(DYE_SLOTS(), "the dye slot overrides for sylvari male characters")
-                                        optional.."SylvariFemale"(DYE_SLOTS(), "the dye slot overrides for sylvari female characters")
+                                        optional..SerialName("AsuraMale").."AsuraMale"(DYE_SLOTS(), "the dye slot overrides for asuarn male characters")
+                                        optional..SerialName("AsuraFemale").."AsuraFemale"(DYE_SLOTS(), "the dye slot overrides for asuarn female characters")
+                                        optional..SerialName("CharrMale").."CharrMale"(DYE_SLOTS(), "the dye slot overrides for charr male characters")
+                                        optional..SerialName("CharrFemale").."CharrFemale"(DYE_SLOTS(), "the dye slot overrides for charr female characters")
+                                        optional..SerialName("HumanMale").."HumanMale"(DYE_SLOTS(), "the dye slot overrides for human male characters")
+                                        optional..SerialName("HumanFemale").."HumanFemale"(DYE_SLOTS(), "the dye slot overrides for human female characters")
+                                        optional..SerialName("NornMale").."NornMale"(DYE_SLOTS(), "the dye slot overrides for norn male characters")
+                                        optional..SerialName("NornFemale").."NornFemale"(DYE_SLOTS(), "the dye slot overrides for norn female characters")
+                                        optional..SerialName("SylvariMale").."SylvariMale"(DYE_SLOTS(), "the dye slot overrides for sylvari male characters")
+                                        optional..SerialName("SylvariFemale").."SylvariFemale"(DYE_SLOTS(), "the dye slot overrides for sylvari female characters")
                                     }
                                 )
                             }
