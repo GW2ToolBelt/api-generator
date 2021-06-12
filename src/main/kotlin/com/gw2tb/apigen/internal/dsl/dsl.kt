@@ -227,14 +227,6 @@ private fun <T : APIType> conditionalImpl(
         )
     }
 
-    val propVersions = mutableMapOf<V2SchemaVersion, Map<String, SchemaRecord.Property>?>()
-    propVersions[V2SchemaVersion.V2_SCHEMA_CLASSIC] = sharedProps.getForVersion(
-        SchemaRecord.Property::since,
-        SchemaRecord.Property::until,
-        SchemaRecord.Property::serialName,
-        V2SchemaVersion.V2_SCHEMA_CLASSIC
-    ).mapValues { (_, property) -> property.copyForVersion(V2SchemaVersion.V2_SCHEMA_CLASSIC) }
-
     val versions = buildVersionedSchemaData<SchemaType> {
         V2SchemaVersion.values()
             .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || sharedProps.any { it.hasChangedInVersion(version) } || interpretations.any { it.hasChangedInVersion(version) } }
