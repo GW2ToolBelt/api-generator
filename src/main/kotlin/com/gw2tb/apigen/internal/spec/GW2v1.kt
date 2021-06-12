@@ -318,6 +318,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
         queryParameter("FloorID", INTEGER, "the ID of the floor", key = "floor")
         schema(record(name = "MapFloor", description = "Information about a map floor.") {
             SerialName("texture_dims").."TextureDims"(array(INTEGER), "the width and height of the texture")
+            optional..SerialName("clamped_view").."ClampedView"(array(array(INTEGER)), "a rectangle of downloadable textures (Every tile coordinate outside this rectangle is not available on the tile server.)")
             "Regions"(
                 description = "the floor's regions",
                 type = map(
@@ -325,6 +326,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                     values = record(name = "Region", description = "Information about a region.") {
                         localized.."Name"(STRING, "the region's localized name")
                         SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the region's label")
+                        SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the region, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
                         "Maps"(
                             description = "the region's maps",
                             type = map(
@@ -336,6 +338,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                                     SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
                                     SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
                                     SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                                    optional..SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the map's label")
                                     SerialName("points_of_interest").."PointsOfInterest"(
                                         description = "the points of interest on the floor (i.e. landmarks, vistas and waypoints)",
                                         type = array(record(name = "PointOfInterest", description = "Information about a point of interest (i.e. a landmark, vista or waypoint).") {
@@ -344,9 +347,16 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
                                             "Type"(STRING, "the type of the PoI (landmark, vista, or waypoint)")
                                             "Floor"(INTEGER, "the PoI's floor")
                                             "Coord"(array(DECIMAL), "the PoI's coordinates")
+                                            optional.."Marker"(
+                                                description = "the PoI's marker icon",
+                                                type = record(name = "Marker", "Information about a PoI's marker icon.") {
+                                                    SerialName("file_id").."FileID"(STRING, "the icon's file ID to be used with the render service")
+                                                    SerialName("signature").."Signature"(STRING, "the icon's file signature to be used with the render service")
+                                                }
+                                            )
                                         })
                                     )
-                                    optional.."GodShrines"(
+                                    optional..SerialName("god_shrines").."GodShrines"(
                                         description = "the god shrines on the floor",
                                         type = array(record(name = "GodShrine", description = "Information about a god shrine.") {
                                             CamelCase("id").."ID"(INTEGER, "the god shrine's ID")
