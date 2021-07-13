@@ -107,6 +107,11 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Account/LegendaryArmory",
+            security = setOf(ACCOUNT, INVENTORIES, UNLOCKS)
+        )
+
+        expectQuery(
             "/Account/Luck",
             security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
         )

@@ -249,6 +249,18 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             }
         ))
     }
+    "/Account/LegendaryArmory" {
+        summary = "Returns information about a player's legendary armory."
+        security = setOf(ACCOUNT, INVENTORIES, UNLOCKS)
+
+        schema(array(
+            description = "the account's legendary armory unlocks.",
+            items = record(name = "AccountLegendaryArmoryUnlock", description = "Information about a player's legendary armory item unlock.") {
+                CamelCase("id").."ID"(INTEGER, "the item's ID")
+                "Count"(INTEGER, "the number of copies unlocked")
+            }
+        ))
+    }
     "/Account/Luck" {
         summary = "Returns information about a player's luck."
         security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
