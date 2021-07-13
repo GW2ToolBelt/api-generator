@@ -1162,6 +1162,33 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/LegendaryArmory",
+            cache = 1.hours,
+            queryDetails = QueryIDs(INTEGER)
+        )
+        expectQuery(
+            "/LegendaryArmory",
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID(INTEGER)
+        )
+        expectQuery(
+            "/LegendaryArmory",
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs(INTEGER)
+        )
+        expectQuery(
+            "/LegendaryArmory",
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage(INTEGER)
+        )
+
+        expectQuery(
             "/Legends",
             cache = 1.hours,
             queryDetails = QueryIDs(STRING)

@@ -1641,6 +1641,16 @@ internal val GW2v2 = GW2APIVersion({ APIVersionBuilder.V2() }) {
             )
         })
     }
+    "/LegendaryArmory" {
+        summary = "Returns information about what can be stored in the legendary armory."
+        cache = 1.hours
+
+        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
+        schema(record(name = "LegendaryArmorySlot", description = "Information about an item that can be stored in the legendary armory.") {
+            CamelCase("id").."ID"(INTEGER, "the item's ID")
+            SerialName("max_count").."MaxCount"(INTEGER, "the maximum number of copies of this item that can be stored in the armory for an account")
+        })
+    }
     "/Legends" {
         summary = "Returns information about the Revenant legends."
         cache = 1.hours
