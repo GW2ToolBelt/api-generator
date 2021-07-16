@@ -92,6 +92,12 @@
             "active": true
         },
         {
+            "path": "/v2/account/legendaryarmory",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
             "path": "/v2/account/luck",
             "lang": false,
             "auth": true,
@@ -602,6 +608,12 @@
             "active": true
         },
         {
+            "path": "/v2/legendaryarmory",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/legends",
             "lang": false,
             "auth": false,
@@ -969,7 +981,11 @@
         },
         {
             "v": "2021-04-06T21:00:00.000Z",
-            "desc": "Remove `equipment_pvp` and add `equipment_tabs_pvp` for `/v2/characters/:id`"
+            "desc": "Move `equipment_pvp` under `equipment_tabs` in `/v2/characters/:id`"
+        },
+        {
+            "v": "2021-07-15T13:00:00.000Z",
+            "desc": "Add `EquippedFromLegendaryArmory` and `LegendaryArmory` values to `equipment[i].location` field"
         }
     ]
 }
