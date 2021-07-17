@@ -83,6 +83,7 @@ return all relevant data (e.g. `/v2/build`) and 2. _indexed_ endpoints which ret
 
 Indexed endpoints provide a couple of different parameters to retrieve the data for a given set of IDs. These are
 referred to as `QueryTypes` throughout documentation and source of this project. Possible query types are:
+
 - querying IDs (e.g. `/v2/items`),
 - querying by ID (e.g. `/v2/items?id={id}`),
 - querying by IDs (e.g. `/v2/items?ids={ids; ","-separated}`), and
@@ -94,6 +95,7 @@ Some endpoints support a specialized version of this query type that can be used
 
 ##### Querying by Page
 When querying by page, the response contains additional header elements:
+
 - `x-page-size` which is the requested page size,
 - `x-page-total` which is the total amount of pages for the given size, and
 - `x-result-count` which is the number of results on the returned page.
@@ -105,6 +107,7 @@ When querying by page, the response contains additional header elements:
 
 The library defines several entry-points for retrieving all the information
 necessary to generate implementations for each API version:
+
 - `com.gw2tb.apigen.APIVersion.API_V1`,
 - `com.gw2tb.apigen.APIVersion.API_V2`
 
@@ -119,7 +122,7 @@ one-to-one  mapping between schema mappings and appropriate language or library
 constructs.
 
 For a better understanding of schema types and how to work with them, please
-refer to the [user guide](docs/userguide).
+refer to the [user guide](docs/mkdocs/userguide).
 
 
 ## Building from source
@@ -176,7 +179,7 @@ Each endpoint definition must contain a `summary` describing what the endpoint
 does, and a `schema` which defines the shape of the returned data.
 
 For further information on which functions to use in what situations, please
-refer to the documentation of the [developer guide](docs/devguide).
+refer to the documentation of the [developer guide](docs/mkdocs/devguide).
 
 
 ## Implementations
