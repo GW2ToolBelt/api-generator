@@ -25,7 +25,7 @@
 }
 
 [data-md-color-scheme="slate"] {
-    --md-primary-fg-color: #ef396a;
-    --md-default-bg-color: #2b2b2b;
-    --md-accent-fg-color:  #f58ba9;
+    --md-hue: 190;
+    --md-primary-fg-color: #159695;
+    --md-accent-fg-color:  #10e1c8;
 }
