@@ -1,0 +1,57 @@
+# Project information
+site_name: 'api-generator'
+site_description: 'A library for generating programs that interface with the official Guild Wars 2 API.'
+site_author: 'GW2ToolBelt'
+site_url: 'https://gw2toolbelt.github.io/api-generator'
+edit_uri: 'tree/main/docs'
+remote_branch: 'gh-pages'
+
+docs_dir: 'build/mkdocs/docs'
+
+# Repository
+repo_name: 'api-generator'
+repo_url: 'https://github.com/GW2ToolBelt/api-generator'
+
+# Navigation
+nav:
+  - 'Overview': index.md
+  - 'Contributing': contributing.md
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  icon:
+    logo: material/hammer-wrench
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: gw2tb-light
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  font:
+    text: 'Roboto'
+    code: 'JetBrains Mono'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.betterem
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+
+# CSS extensions
+extra_css:
+  - stylesheets/colors.css
