@@ -20,9 +20,12 @@
  * SOFTWARE.
  */
 [data-md-color-scheme="gw2tb-light"] {
-    --md-primary-fg-color:          #631625;
+    --md-primary-fg-color: #631625;
+    --md-accent-fg-color:  #ef396a;
 }
 
 [data-md-color-scheme="slate"] {
     --md-primary-fg-color: #ef396a;
+    --md-default-bg-color: #2b2b2b;
+    --md-accent-fg-color:  #f58ba9;
 }
