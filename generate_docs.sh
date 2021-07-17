@@ -28,7 +28,7 @@ set -ex
 DOCS_ROOT=build/mkdocs/docs
 
 [ -d $DOCS_ROOT ] && rm -r $DOCS_ROOT
-mkdir $DOCS_ROOT
+mkdir -p $DOCS_ROOT
 
 # Clear out the old API docs
 [ -d docs/api ] && rm -r docs/api
