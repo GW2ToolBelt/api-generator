@@ -22,130 +22,48 @@
 @file:Suppress("FunctionName")
 package com.gw2tb.apigen.internal.dsl
 
+import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
-import java.util.*
 
-/** Alias for [SchemaBoolean]. */
-internal val BOOLEAN get() = SchemaBoolean
+@APIGenDSL
+internal interface SchemaClassBuilder<T : APIType> {
 
-/** Alias for [SchemaDecimal]. */
-internal val DECIMAL get() = SchemaDecimal
+    val nestedTypes: MutableMap<String?, MutableList<T>>
 
-/** Alias for [SchemaInteger]. */
-internal val INTEGER get() = SchemaInteger
+    fun array(
+        items: SchemaType,
+        nullableItems: Boolean = false
+    ): SchemaType =
+        SchemaArray(items, nullableItems, null)
 
-/** Alias for [SchemaString]. */
-internal val STRING get() = SchemaString
+    fun map(
+        keys: SchemaPrimitive,
+        values: SchemaType,
+        nullableValues: Boolean = false
+    ): SchemaType =
+        SchemaMap(keys, values, nullableValues, null)
 
-/** Alias for [QueryType.ByID]. */
-internal val BY_ID get() = QueryType.ByID
+    fun conditional(
+        name: String,
+        description: String,
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        configure: SchemaConditionalBuilder<T>.() -> Unit
+    ): SchemaClass
 
-/** Alias for [QueryType.ByID]. */
-internal fun BY_ID(
-    qpName: String,
-    qpDescription: String,
-    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
-    qpCamelCase: String = qpName.firstToLowerCase()
-) = QueryType.ByID(
-    qpKey = qpKey,
-    qpDescription = qpDescription,
-    qpName = qpName,
-    qpCamelCase = qpCamelCase
-)
+    fun record(
+        name: String,
+        description: String,
+        block: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClass
 
-/** Alias for [QueryType.ByPage]. */
-internal val BY_PAGE get() = QueryType.ByPage
-
-/** Alias for [QueryType.ByIDs]. */
-internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
-
-/** Alias for [QueryType.ByIDs]. */
-internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
-
-/** Alias for [QueryType.ByIDs]. */
-internal fun BY_IDS(
-    qpName: String,
-    qpDescription: String,
-    all: Boolean = true,
-    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
-    qpCamelCase: String = qpName.firstToLowerCase()
-) = QueryType.ByIDs(
-    supportsAll = all,
-    qpKey = qpKey,
-    qpDescription = qpDescription,
-    qpName = qpName,
-    qpCamelCase = qpCamelCase
-)
-
-internal fun SchemaConditional.Interpretation.hasChangedInVersion(version: V2SchemaVersion): Boolean =
-    since == version || (until != null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
-
-internal fun SchemaRecord.Property.hasChangedInVersion(version: V2SchemaVersion): Boolean =
-    since == version || (until != null && until.ordinal == version.ordinal) || type.hasChangedInVersion(version)
-
-internal fun SchemaType.hasChangedInVersion(version: V2SchemaVersion): Boolean = when (this) {
-    is SchemaBlueprint -> versions.hasChangedInVersion(version)
-    is SchemaArray -> items.hasChangedInVersion(version)
-    is SchemaConditional -> sharedProperties.any { (_, property) -> property.hasChangedInVersion(version) }
-        || interpretations.any { (_, property) -> property.hasChangedInVersion(version) }
-    is SchemaMap -> values.hasChangedInVersion(version)
-    is SchemaRecord -> properties.any { (_, property) -> property.hasChangedInVersion(version) }
-    is SchemaPrimitive -> false
 }
 
-internal fun SchemaType.copyForVersion(version: V2SchemaVersion): SchemaType = when (this) {
-    is SchemaBlueprint -> versions[version].data
-    is SchemaArray -> copy(items = items.copyForVersion(version))
-    is SchemaConditional -> copy(
-        sharedProperties = sharedProperties.filterValues { property ->
-            (property.since === null || property.since <= version) && (property.until === null || version < property.until)
-        },
-        interpretations = interpretations.filterValues { interpretation ->
-            (interpretation.since === null || interpretation.since <= version) && (interpretation.until === null || version < interpretation.until)
-        }
-    )
-    is SchemaMap -> copy(values = values.copyForVersion(version))
-    is SchemaRecord -> copy(properties = properties.filterValues { property ->
-        (property.since === null || property.since <= version) && (property.until === null || version < property.until)
-    })
-    is SchemaPrimitive -> this
-}
-
-internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, untilSelector: (T) -> V2SchemaVersion?, keySelector: (T) -> String, version: V2SchemaVersion): Map<String, T> =
-    filter {
-        val since = sinceSelector(it)
-        if (since != null && version < since) return@filter false
-
-        val until = untilSelector(it)
-        until == null || version.ordinal < until.ordinal
-    }.associateBy { keySelector(it) }
-
-internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean = true): Iterable<Pair<T, T?>> = sequence {
-    val itr = this@zipSchemaVersionConstraints.iterator()
-    var first = itr.next()
-
-    if (!includeUnbound && !itr.hasNext())
-        error("Cannot zip single version into bound constraint")
-
-    while (itr.hasNext()) {
-        val second = itr.next()
-        yield(first to second)
-
-        first = second
-    }
-
-    if (includeUnbound)
-        yield(first to null)
-}.asIterable()
-
-internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
-
-    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
-
-    private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
-    val interpretations get() = _interpretations.map { it.interpretation }
+internal interface SchemaConditionalBuilder<T : APIType> : SchemaClassBuilder<T> {
 
     /**
      * Registers a conditional interpretation using the @receiver as key.
@@ -154,19 +72,13 @@ internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
      *
      * @param type  the type of the interpretation
      */
-    @APIGenDSL
-    operator fun String.invoke(type: SchemaType, nestProperty: String = this.toLowerCase()): SchemaConditionalInterpretationBuilder {
-        return SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
-    }
+    operator fun String.invoke(type: SchemaType, nestProperty: String = this.toLowerCase()): SchemaConditionalInterpretationBuilder
 
     /** Registers a conditional interpretation using the @receiver's name as key. */
-    @APIGenDSL
-    operator fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder {
-        return SchemaConditionalInterpretationBuilder(name, name.toLowerCase(), this).also { _interpretations += it }
-    }
+    operator fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder
 
     /** Marks a deprecated interpretation. */
-    val deprecated = Modifiers.deprecated
+    val deprecated get() = Modifiers.deprecated
 
     /** The minimal [V2SchemaVersion] (inclusive) required for the interpretation. */
     fun since(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
@@ -179,6 +91,61 @@ internal class SchemaConditionalBuilder<T : APIType> : SchemaBuilder<T> {
     fun until(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
         override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
             interpretation.until = version
+        }
+    }
+
+}
+
+internal interface SchemaRecordBuilder<T : APIType> : SchemaClassBuilder<T> {
+
+    operator fun String.invoke(
+        type: SchemaType,
+        description: String
+    ): SchemaRecordPropertyBuilder
+
+    /** Marks a deprecated property. */
+    val deprecated get() = Modifiers.deprecated
+
+    /** Marks a localized property. */
+    val localized get() = Modifiers.localized
+
+    /** Marks an optional property. */
+    val optional get() = Modifiers.optional
+
+    /** Marks an optional property whose presents is mandated by the given `scope`. */
+    fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.optionality = Optionality.MANDATED(scope)
+        }
+    }
+
+    /** The minimal [V2SchemaVersion] (inclusive) required for the property. */
+    fun since(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.since = version
+        }
+    }
+
+    /** The maximum [V2SchemaVersion] (exclusive) required for the property. */
+    fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.until = version
+        }
+    }
+
+    /** Explicitly specifies the _camelCase_ name for the property. */
+    @Suppress("FunctionName")
+    fun CamelCase(value: String): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.camelCase = value
+        }
+    }
+
+    /** Explicitly specifies the serial name for the property. */
+    @Suppress("FunctionName")
+    fun SerialName(value: String): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.serialName = value
         }
     }
 
@@ -222,81 +189,6 @@ internal class SchemaConditionalInterpretationBuilder(
             since = since,
             until = until
         )
-    }
-
-}
-
-internal class SchemaRecordBuilder<T : APIType>(val name: String) : SchemaBuilder<T> {
-
-    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
-
-    private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
-    val properties get() = _properties.map { it.property }
-
-    /**
-     * Registers a new record property with the @receiver as name.
-     *
-     * The name should be in _TitleCase_. By default, the _camelCase_ variant is generated by converting the first
-     * character of the name to lower-case. Similarly, the _serial_name_ variant is generated by converting the entire
-     * name to lower-case. For properties that require a custom behavior, the [CamelCase] and [SerialName] modifiers
-     * should be used.
-     *
-     * @param type          the type of the record member
-     * @param description   the description of the parameter. (Should be worded to complete the sentence "This field
-     *                      holds {description}.")
-     */
-    @APIGenDSL
-    operator fun String.invoke(
-        type: SchemaType,
-        description: String
-    ): SchemaRecordPropertyBuilder {
-        return SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
-    }
-
-    /** Marks a deprecated property. */
-    val deprecated = Modifiers.deprecated
-
-    /** Marks a localized property. */
-    val localized = Modifiers.localized
-
-    /** Marks an optional property. */
-    val optional = Modifiers.optional
-
-    /** Marks an optional property whose presents is mandated by the given `scope`. */
-    fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.optionality = Optionality.MANDATED(scope)
-        }
-    }
-
-    /** The minimal [V2SchemaVersion] (inclusive) required for the property. */
-    fun since(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.since = version
-        }
-    }
-
-    /** The maximum [V2SchemaVersion] (exclusive) required for the property. */
-    fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.until = version
-        }
-    }
-
-    /** Explicitly specifies the _camelCase_ name for the property. */
-    @Suppress("FunctionName")
-    fun CamelCase(value: String): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.camelCase = value
-        }
-    }
-
-    /** Explicitly specifies the serial name for the property. */
-    @Suppress("FunctionName")
-    fun SerialName(value: String): IPropertyModifier = object : IPropertyModifier {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.serialName = value
-        }
     }
 
 }

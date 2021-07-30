@@ -21,8 +21,6 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.schema.*
-
 internal operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
 internal operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
 
@@ -41,33 +39,4 @@ internal interface IInterpretationModifier {
 
 internal interface IPropertyModifier {
     fun applyTo(property: SchemaRecordPropertyBuilder)
-}
-
-internal object Modifiers {
-    abstract class PropertyModifier : IPropertyModifier
-    abstract class SharedModifier : IInterpretationModifier, IPropertyModifier
-
-    val deprecated = object : SharedModifier() {
-
-        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
-            interpretation.isDeprecated = true
-        }
-
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.isDeprecated = true
-        }
-
-    }
-
-    val localized = object : PropertyModifier() {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.isLocalized = true
-        }
-    }
-
-    val optional = object : PropertyModifier() {
-        override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.optionality = Optionality.OPTIONAL
-        }
-    }
 }

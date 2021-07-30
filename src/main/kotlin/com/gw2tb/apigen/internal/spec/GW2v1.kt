@@ -25,17 +25,13 @@ package com.gw2tb.apigen.internal.spec
 import com.gw2tb.apigen.internal.dsl.*
 import kotlin.time.*
 
-internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
-    "/Build" {
-        summary = "Returns the current build ID."
-
+internal val GW2v1 = GW2APISpecV1 {
+    "/Build"(summary = "Returns the current build ID.") {
         schema(record(name = "Build", description = "Information about the current game build.") {
             SerialName("build_id").."BuildID"(INTEGER, "the current build ID")
         })
     }
-    "/Colors" {
-        summary = "Returns information about all dye colors in the game."
-
+    "/Colors"(summary = "Returns information about all dye colors in the game.") {
         schema(record(name = "Colors", description = "Information about the available dye colors.") {
             "Colors"(
                 description = "the colors",
@@ -65,9 +61,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/Continents" {
-        summary = "Returns information about continents."
-
+    "/Continents"(summary = "Returns information about continents.") {
         schema(record(name = "Continents", description = "Information about continents.") {
             "Continents"(
                 description = "the continents",
@@ -84,9 +78,10 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/event_details"(endpoint = "/EventDetails") {
+    "/event_details"(
+        endpointTitleCase = "/EventDetails",
         summary = "Returns information about the events in the game."
-
+    ) {
         schema(record(name = "EventDetails", description = "Information about events.") {
             "Events"(
                 description = "the events",
@@ -125,9 +120,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/Files" {
-        summary = "Returns commonly requested in-game assets."
-
+    "/Files"(summary = "Returns commonly requested in-game assets.") {
         schema(map(
             description = "the available in-game assets",
             keys = STRING,
@@ -155,24 +148,30 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
         )
     }
 
-    "/guild_details"(endpoint = "/GuildDetails") {
+    "/guild_details"(
+        endpointTitleCase = "/GuildDetails",
+        querySuffix = "ByID",
         summary = "Returns information about a guild."
-        querySuffix = "ByID"
-
+    ) {
         queryParameter("GuildID", STRING, "the ID of the guild", key = "guild_id")
+
         schema(GuildDetails)
     }
-    "/guild_details"(endpoint = "/GuildDetails") {
+    "/guild_details"(
+        endpointTitleCase = "/GuildDetails",
+        querySuffix = "ByName",
         summary = "Returns information about a guild."
-        querySuffix = "ByName"
-
+    ) {
         queryParameter("GuildName", STRING, "the name of the guild", key = "guild_name")
+
         schema(GuildDetails)
     }
-    "/item_details"(endpoint = "/ItemDetails") {
+    "/item_details"(
+        endpointTitleCase = "/ItemDetails",
         summary = "Returns information an item."
-
+    ) {
         queryParameter("ItemID", STRING, "the ID of the item", key = "item_id")
+
         schema(conditional(
             name = "ItemDetails",
             description = "Information about an item.",
@@ -312,18 +311,18 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         })
     }
-    "/Items" {
-        summary = "Returns the IDs of the available items."
-
+    "/Items"(summary = "Returns the IDs of the available items.") {
         schema(record(name = "ItemIDs", description = "Information about the available items.") {
             "Items"(array(INTEGER), "the IDs of the available items")
         })
     }
-    "/map_floor"(endpoint = "/MapFloor") {
+    "/map_floor"(
+        endpointTitleCase = "/MapFloor",
         summary = "Returns information about a map floor."
-
+    ) {
         queryParameter("ContinentID", INTEGER, "the ID of the continent", key = "continent_id")
         queryParameter("FloorID", INTEGER, "the ID of the floor", key = "floor")
+
         schema(record(name = "MapFloor", description = "Information about a map floor.") {
             SerialName("texture_dims").."TextureDims"(array(INTEGER), "the width and height of the texture")
             optional..SerialName("clamped_view").."ClampedView"(array(array(INTEGER)), "a rectangle of downloadable textures (Every tile coordinate outside this rectangle is not available on the tile server.)")
@@ -438,9 +437,10 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/map_names"(endpoint = "/MapNames") {
+    "/map_names"(
+        endpointTitleCase = "/MapNames",
         summary = "Returns information about maps."
-
+    ) {
         schema(array(
             description = "the available maps",
             items = record(name = "MapName", description = "Information about a map.") {
@@ -449,9 +449,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
-    "/Maps" {
-        summary = "Returns information about maps."
-
+    "/Maps"(summary = "Returns information about maps.") {
         schema(record(name = "Maps", description = "Information about maps.") {
             "Maps"(
                 description = "the maps",
@@ -475,10 +473,12 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/recipe_details"(endpoint = "/RecipeDetails") {
+    "/recipe_details"(
+        endpointTitleCase = "/RecipeDetails",
         summary = "Returns information about the recipes in the game."
-
+    ) {
         queryParameter("RecipeID", INTEGER, "the recipe's ID", key = "recipe_id")
+
         schema(record(name = "Recipe", description = "Information about a crafting recipe.") {
             SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe's ID")
             "Type"(STRING, "the recipe's type")
@@ -497,18 +497,18 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/Recipes" {
-        summary = "Returns the IDs of the available recipes."
-
+    "/Recipes"(summary = "Returns the IDs of the available recipes.") {
         schema(record(name = "RecipeIDs", description = "Information about the available recipes.") {
             "Recipes"(array(INTEGER), "the IDs of the available recipes")
         })
     }
-    "/skin_details"(endpoint = "/SkinDetails") {
-        summary = "Returns information about the skins in the game."
+    "/skin_details"(
+        endpointTitleCase = "/SkinDetails",
+        summary = "Returns information about the skins in the game.",
         cache = 1.hours
-
+    ) {
         queryParameter("SkinID", INTEGER, "the the skin's ID", key = "skin_id")
+
         schema(conditional("SkinDetails", "Information about a skin.", interpretationInNestedProperty = true, sharedConfigure = {
             SerialName("skin_id").."SkinID"(INTEGER, "")
             localized.."Name"(STRING, "the skin's localized name")
@@ -553,16 +553,15 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         })
     }
-    "/Skins" {
-        summary = "Returns the IDs of the available skins."
-
+    "/Skins"(summary = "Returns the IDs of the available skins.") {
         schema(record(name = "SkinIDs", description = "Information about the available skins.") {
             "Skins"(array(INTEGER), "the IDs of the available skins")
         })
     }
-    "/world_names"(endpoint = "/WorldNames") {
+    "/world_names"(
+        endpointTitleCase = "/WorldNames",
         summary = "Returns information about the available worlds (or servers)."
-
+    ) {
         schema(array(
             description = "the available worlds",
             items = record(name = "WorldName", description = "Information about an available world (or server).") {
@@ -571,10 +570,12 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             }
         ))
     }
-    "/wvw/match_details"(endpoint = "/WvW/MatchDetails") {
+    "/wvw/match_details"(
+        endpointTitleCase = "/WvW/MatchDetails",
         summary = "Returns detailed information about a WvW match."
-
+    ) {
         queryParameter("MatchID", STRING, "the ID of the match", key = "match_id")
+
         schema(record(name = "WvWMatchDetails", description = "Information about a WvW match.") {
             SerialName("match_id").."MatchID"(STRING, "the match's ID")
             "Scores"(array(INTEGER), "the total scores")
@@ -602,9 +603,7 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/WvW/Matches" {
-        summary = "Returns information about WvW matches."
-
+    "/WvW/Matches"(summary = "Returns information about WvW matches.") {
         schema(record(name = "WvWMatches", description = "Information about WvW matches.") {
             SerialName("wvw_matches").."WvWMatches"(
                 description = "the matches",
@@ -619,9 +618,10 @@ internal val GW2v1 = GW2APIVersion({ APIVersionBuilder.V1() }) {
             )
         })
     }
-    "/wvw/objectives_names"(endpoint = "/WvW/ObjectivesNames") {
+    "/wvw/objectives_names"(
+        endpointTitleCase = "/WvW/ObjectivesNames",
         summary = "Returns information about the available WvW objectives."
-
+    ) {
         schema(array(
             description = "the available objectives",
             items = record(name = "ObjectiveName", description = "Information about a WvW objective.") {

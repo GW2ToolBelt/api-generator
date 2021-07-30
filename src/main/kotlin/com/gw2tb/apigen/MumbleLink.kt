@@ -24,12 +24,15 @@
 package com.gw2tb.apigen
 
 import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 
 /** The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol. */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
-    SchemaRecord("MumbleLinkIdentity", SchemaRecordBuilder<APIType.V1>("MumbleLinkIdentity").apply {
+    SchemaRecord("MumbleLinkIdentity", SchemaRecordBuilderImpl<APIType.V1>(
+        apiTypeFactory = { error("Unsupported operation") }
+    ).apply {
         "Name"(STRING, "the name of the currently played character")
         "Profession"(INTEGER, "the current profession (class) of the currently played character")
         "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")

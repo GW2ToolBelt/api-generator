@@ -21,7 +21,7 @@
  */
 package com.gw2tb.apigen.model
 
-import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.internal.impl.SchemaVersionedData
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 import kotlin.time.*

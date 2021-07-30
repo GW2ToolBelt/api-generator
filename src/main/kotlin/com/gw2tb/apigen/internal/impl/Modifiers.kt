@@ -19,7 +19,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.internal.dsl
+package com.gw2tb.apigen.internal.impl
 
-internal fun String.firstToLowerCase(): String =
-    "${toCharArray()[0].toLowerCase()}${substring(1)}"
+import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.internal.dsl.IPropertyModifier
+import com.gw2tb.apigen.schema.*
+
+internal object Modifiers {
+
+    abstract class PropertyModifier : IPropertyModifier
+    abstract class SharedModifier : IInterpretationModifier, IPropertyModifier
+
+    val deprecated = object : SharedModifier() {
+
+        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
+            interpretation.isDeprecated = true
+        }
+
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isDeprecated = true
+        }
+
+    }
+
+    val localized = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isLocalized = true
+        }
+    }
+
+    val optional = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.optionality = Optionality.OPTIONAL
+        }
+    }
+
+}
