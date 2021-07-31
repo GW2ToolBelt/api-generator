@@ -1932,6 +1932,36 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Skills",
+            cache = 1.hours,
+            queryDetails = QueryIDs(INTEGER)
+        )
+        expectQuery(
+            "/Skills",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID(INTEGER)
+        )
+        expectQuery(
+            "/Skills",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs(INTEGER, supportsAll = false)
+        )
+        expectQuery(
+            "/Skills",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage(INTEGER)
+        )
+
+        expectQuery(
             "/Skins",
             cache = 1.hours,
             queryDetails = QueryIDs(INTEGER)

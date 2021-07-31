@@ -2350,6 +2350,137 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the found recipes"))
     }
+    "/Skills"(
+        summary = "Returns information about the skills in the game.",
+        queryTypes = defaultQueryTypes(),
+        cache = 1.hours
+    ) {
+        @APIGenDSL
+        fun SchemaConditionalBuilder<*>.FACTS() {
+            +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
+                optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
+                optional.."Target"(STRING, "the attribute this fact adjusts")
+            }
+            +record(name = "Buff", description = "Additional information about a buff.") {
+                "Status"(STRING, "the boon, condition, or effect referred to by the fact")
+                optional.."Duration"(INTEGER, "the duration of the effect in seconds")
+                optional.."Description"(STRING, "the description of the status effect")
+                optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+            }
+            +record(name = "BuffConversion", description = "Additional information about a buff-conversion.") {
+                "Source"(STRING, "the attribute that is used to calculate the attribute gain")
+                "Percent"(INTEGER, "how much of the source attribute is added to target")
+                "Target"(STRING, "the attribute that gets added to")
+            }
+            +record(name = "ComboField", description = "Additional information about a combo-field.") {
+                SerialName("field_type").."FieldType"(STRING, "the type of the field")
+            }
+            +record(name = "ComboFinisher", description = "Additional information about a combo-finisher.") {
+                SerialName("finisher_type").."FinisherType"(STRING, "the type of finisher")
+                "Percent"(INTEGER, "the percent chance that the finisher will trigger")
+            }
+            +record(name = "Damage", description = "Additional information about damage.") {
+                SerialName("hit_count").."HitCount"(INTEGER, "the amount of times the damage hits")
+                SerialName("dmg_multiplier").."DamageMultiplier"(DECIMAL, "the damage multiplier")
+            }
+            +record(name = "Distance", description = "Additional information about range.") {
+                "Distance"(INTEGER, "the distance value")
+            }
+            +record(name = "NoData", description = "No (special) additional information.") {}
+            +record(name = "Number", description = "An additional number.") {
+                "Value"(INTEGER, "the number value as referenced by text")
+            }
+            +record(name = "Percent", description = "An additional percentage value.") {
+                "Percent"(DECIMAL, "the percentage value as referenced by text")
+            }
+            +record(name = "PrefixedBuff", description = "Additional information about a prefixed buff.") {
+                optional.."Status"(STRING, "the boon, condition, or effect referred to by the fact")
+                optional.."Duration"(INTEGER, "the duration of the effect in seconds")
+                optional.."Description"(STRING, "the description of the status effect")
+                optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+                "Prefix"(
+                    description = "A buff's prefix icon and description.",
+                    type = record(name = "Prefix", description = "Information about a buff's prefix.") {
+                        "Text"(STRING, "the prefix text")
+                        "Icon"(STRING, "the prefix icon url")
+                        optional.."Status"(STRING, "the prefix status")
+                        optional.."Description"(STRING, "the prefix description")
+                    }
+                )
+            }
+            +record(name = "Radius", description = "Additional information about a radius.") {
+                "Distance"(INTEGER, "the radius value")
+            }
+            +record(name = "Range", description = "Additional information about range.") {
+                "Value"(INTEGER, "the range of the trait/skill")
+            }
+            +record(name = "Recharge", description = "Additional information about recharge.") {
+                "Value"(DECIMAL, "the recharge time in seconds")
+            }
+            +record(name = "StunBreak", description = "Additional information about a stunbreak.") {
+                "Value"(BOOLEAN, "always true")
+            }
+            +record(name = "Time", description = "Additional information about time.") {
+                "Duration"(INTEGER, "the time value in seconds")
+            }
+            +record(name = "Unblockable", description = "A fact, indicating that a trait/skill is unlockable.") {
+                "Value"(BOOLEAN, "always true")
+            }
+        }
+
+        schema(record(name = "Skill", description = "Information about a skill.") {
+            CamelCase("id").."ID"(INTEGER, "the skill's ID")
+            localized.."Name"(STRING, "the skill's localized name")
+            localized.."Description"(STRING, "the skill's localized description")
+            "Icon"(STRING, "a render service URL for the skill's icon")
+            SerialName("chat_link").."ChatLink"(STRING, "the skill's chat code")
+            optional.."Flags"(array(STRING), "additional skill flags")
+            optional.."Type"(STRING, "the type of skill")
+            optional..SerialName("weapon_type").."WeaponType"(STRING, "the type of weapon that the skill is on. (May be \"None\".)")
+            optional.."Professions"(array(STRING), "the IDs of the professions that can use the skill")
+            optional.."Specialization"(INTEGER, "the ID of the specialization required for the skill")
+            optional.."Slot"(STRING, "the slot that the skill fits into")
+            optional.."Facts"(
+                description = "an array of facts describing the skill's effect",
+                type = array(conditional(
+                    name = "Fact",
+                    description = "Information about a trait's fact (i.e. effect/property).",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of the fact")
+                        optional.."Icon"(STRING, "the URL for the fact's icon")
+                        optional.."Text"(STRING, "an arbitrary localized string describing the fact")
+                    }
+                ) {
+                    FACTS()
+                })
+            )
+            optional..SerialName("traited_facts").."TraitedFacts"(
+                description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
+                type = array(conditional(
+                    name = "TraitedFact",
+                    description = "a list of traited facts",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of the fact")
+                        optional.."Icon"(STRING, "the URL for the fact's icon")
+                        optional.."Text"(STRING, "an arbitrary localized string describing the fact")
+                        SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                        optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
+                    }
+                ) { FACTS() })
+            )
+            optional.."Categories"(array(STRING), "the categories that the skill falls under")
+            optional.."Attunement"(STRING, "the attunement required for the skill")
+            optional.."Cost"(INTEGER, "the cost associated with the skill")
+            optional..SerialName("dual_wield").."DualWield"(STRING, "the type of off-hand weapon that must be equipped for this dual-wield skill to appear")
+            optional..SerialName("flip_skill").."FlipSkill"(INTEGER, "the ID of the skill that the skill flips over into")
+            optional.."Initiative"(INTEGER, "the skill's initiative cost")
+            optional..SerialName("next_chain").."NextChain"(INTEGER, "the ID of the next skill in the chain")
+            optional..SerialName("prev_chain").."PrevChain"(INTEGER, "the ID of the previous skill in the chain")
+            optional..SerialName("transform_skills").."TransformSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
+            optional..SerialName("bundle_skills").."BundleSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
+            optional..SerialName("toolbelt_skill").."ToolbeltSkill"(INTEGER, "the ID of the associated toolbelt skill")
+        })
+    }
     "/Skins"(
         summary = "Returns information about the skins in the game.",
         queryTypes = defaultQueryTypes(),

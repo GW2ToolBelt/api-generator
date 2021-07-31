@@ -28,7 +28,7 @@ import java.util.*
 
 @DslMarker
 @Retention(AnnotationRetention.SOURCE)
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE)
 internal annotation class APIGenDSL
 
 /** Alias for [SchemaBoolean]. */
