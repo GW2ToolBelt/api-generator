@@ -1404,6 +1404,58 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    "/Guild/:ID/Log"(
+        summary = "Returns information about events in a guild's log.",
+        security = security(ACCOUNT, GUILDS)
+    ) {
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+
+        schema(array(
+            description = "the guild's log entries",
+            items = conditional(
+                name = "GuildLogEntry",
+                description = "Information about a logged guild event.",
+                sharedConfigure = {
+                    CamelCase("id").."ID"(INTEGER, "the log entry's ID")
+                    "Time"(STRING, "ISO-8601 timestamp for when the log entry was created")
+                    optional.."User"(STRING, "the account name of the guild member who generated this log entry")
+                    "Type"(STRING, "the type of log entry")
+                }
+            ) {
+                "joined"(record(name = "Joined", description = "A log entry indicating that the user joined the guild.") {})
+                "invited"(record(name = "Invited", description = "A log entry indicating that the user has been invited to the guild.") {
+                    SerialName("invited_by").."InvitedBy"(STRING, "the account name of the guild member who invited the user")
+                })
+                "kick"(record(name = "Kick", description = "A log entry indicating that the user has been kicked from the guild.") {
+                    SerialName("kicked_by").."KickedBy"(STRING, "the account name of the guild member who kicked the user")
+                })
+                "rank_change"(record(name = "RankChange", description = "A log entry indicating that the rank for the user changed.") {
+                    SerialName("changed_by").."ChangedBy"(STRING, "the account name of the guild member who changed the rank of the user")
+                    SerialName("old_rank").."OldRank"(STRING, "the name of the old rank")
+                    SerialName("new_rank").."NewRank"(STRING, "the name of the new rank")
+                })
+                "treasury"(record(name = "Treasury", description = "A log entry indicating that the user has deposited an item into the guild's treasury.") {
+                    SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                    "Count"(INTEGER, "how many of the item was deposited")
+                })
+                "stash"(record(name = "Stash", description = "A log entry indicating that the user has deposited/withdrawn an item into the guild stash.") {
+                    "Operation"(STRING, "the action (may be \"deposit\", \"withdraw\" or \"move\"")
+                    SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                    "Count"(INTEGER, "how many of the item was deposited")
+                    "Coins"(INTEGER, "the amount of deposited coins")
+                })
+                "motd"(record(name = "MOTD", description = "A log entry indicating that the user has changed the guild's MOTD.") {
+                    CamelCase("motd").."MOTD"(STRING, "the new message of the day")
+                })
+                "upgrade"(record(name = "Upgrade", description = "A log entry indicating that the user has interacted with a guild upgrade.") {
+                    "Action"(STRING, "the action (may be \"queued\", \"cancelled\", \"completed\" or \"sped_up\"")
+                    optional.."Count"(INTEGER, "how many upgrade were added")
+                    SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the completed upgrade")
+                    optional..SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe that generated the upgrade")
+                })
+            }
+        ))
+    }
     "/Guild/:ID/Members"(
         summary = "Returns information about a guild's members.",
         security = security(ACCOUNT, GUILDS)
