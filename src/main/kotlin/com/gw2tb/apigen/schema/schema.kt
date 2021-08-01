@@ -114,6 +114,16 @@ public data class SchemaConditional internal constructor(
 
     override val isLocalized: Boolean = sharedProperties.any { (_, v) -> v.isLocalized || v.type.isLocalized } || interpretations.any { (_, v) -> v.type.isLocalized }
 
+    init {
+        if (!interpretationInNestedProperty) {
+            interpretations.forEach { (_, interpretation) ->
+                (interpretation.type as SchemaRecord).properties.forEach { (key, _) ->
+                    if (key in sharedProperties) error("Property key '$key' in interpretation '${interpretation.interpretationKey}' is also in shared properties of $name")
+                }
+            }
+        }
+    }
+
     /**
      * A conditional interpretation.
      *
