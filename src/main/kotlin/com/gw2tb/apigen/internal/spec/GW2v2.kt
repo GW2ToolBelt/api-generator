@@ -29,6 +29,80 @@ import kotlin.time.*
 
 @Suppress("FunctionName")
 internal val GW2v2 = GW2APISpecV2 {
+    @APIGenDSL
+    fun SchemaConditionalBuilder<*>.FACTS() {
+        +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
+            optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
+            optional.."Target"(STRING, "the attribute this fact adjusts")
+        }
+        +record(name = "Buff", description = "Additional information about a buff.") {
+            "Status"(STRING, "the boon, condition, or effect referred to by the fact")
+            optional.."Duration"(INTEGER, "the duration of the effect in seconds")
+            optional.."Description"(STRING, "the description of the status effect")
+            optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+        }
+        +record(name = "BuffConversion", description = "Additional information about a buff-conversion.") {
+            "Source"(STRING, "the attribute that is used to calculate the attribute gain")
+            "Percent"(INTEGER, "how much of the source attribute is added to target")
+            "Target"(STRING, "the attribute that gets added to")
+        }
+        +record(name = "ComboField", description = "Additional information about a combo-field.") {
+            SerialName("field_type").."FieldType"(STRING, "the type of the field")
+        }
+        +record(name = "ComboFinisher", description = "Additional information about a combo-finisher.") {
+            SerialName("finisher_type").."FinisherType"(STRING, "the type of finisher")
+            "Percent"(INTEGER, "the percent chance that the finisher will trigger")
+        }
+        +record(name = "Damage", description = "Additional information about damage.") {
+            SerialName("hit_count").."HitCount"(INTEGER, "the amount of times the damage hits")
+            SerialName("dmg_multiplier").."DamageMultiplier"(DECIMAL, "the damage multiplier")
+        }
+        +record(name = "Distance", description = "Additional information about range.") {
+            "Distance"(INTEGER, "the distance value")
+        }
+        +record(name = "NoData", description = "No (special) additional information.") {}
+        +record(name = "Number", description = "An additional number.") {
+            "Value"(INTEGER, "the number value as referenced by text")
+        }
+        +record(name = "Percent", description = "An additional percentage value.") {
+            "Percent"(DECIMAL, "the percentage value as referenced by text")
+        }
+        +record(name = "PrefixedBuff", description = "Additional information about a prefixed buff.") {
+            optional.."Status"(STRING, "the boon, condition, or effect referred to by the fact")
+            optional.."Duration"(INTEGER, "the duration of the effect in seconds")
+            optional.."Description"(STRING, "the description of the status effect")
+            optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+            "Prefix"(
+                description = "A buff's prefix icon and description.",
+                type = record(name = "Prefix", description = "Information about a buff's prefix.") {
+                    "Text"(STRING, "the prefix text")
+                    "Icon"(STRING, "the prefix icon url")
+                    optional.."Status"(STRING, "the prefix status")
+                    optional.."Description"(STRING, "the prefix description")
+                }
+            )
+        }
+        +record(name = "Radius", description = "Additional information about a radius.") {
+            "Distance"(INTEGER, "the radius value")
+        }
+        +record(name = "Range", description = "Additional information about range.") {
+            "Value"(INTEGER, "the range of the trait/skill")
+        }
+        +record(name = "Recharge", description = "Additional information about recharge.") {
+            "Value"(DECIMAL, "the recharge time in seconds")
+        }
+        +record(name = "StunBreak", description = "Additional information about a stunbreak.") {
+            "Value"(BOOLEAN, "always true")
+        }
+        +record(name = "Time", description = "Additional information about time.") {
+            "Duration"(INTEGER, "the time value in seconds")
+        }
+        +record(name = "Unblockable", description = "A fact, indicating that a trait/skill is unlockable.") {
+            "Value"(BOOLEAN, "always true")
+        }
+    }
+
+
     "/Account"(
         summary = "Returns information about a player's account.",
         security = security(ACCOUNT)
@@ -2355,79 +2429,6 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
     ) {
-        @APIGenDSL
-        fun SchemaConditionalBuilder<*>.FACTS() {
-            +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
-                optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
-                optional.."Target"(STRING, "the attribute this fact adjusts")
-            }
-            +record(name = "Buff", description = "Additional information about a buff.") {
-                "Status"(STRING, "the boon, condition, or effect referred to by the fact")
-                optional.."Duration"(INTEGER, "the duration of the effect in seconds")
-                optional.."Description"(STRING, "the description of the status effect")
-                optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
-            }
-            +record(name = "BuffConversion", description = "Additional information about a buff-conversion.") {
-                "Source"(STRING, "the attribute that is used to calculate the attribute gain")
-                "Percent"(INTEGER, "how much of the source attribute is added to target")
-                "Target"(STRING, "the attribute that gets added to")
-            }
-            +record(name = "ComboField", description = "Additional information about a combo-field.") {
-                SerialName("field_type").."FieldType"(STRING, "the type of the field")
-            }
-            +record(name = "ComboFinisher", description = "Additional information about a combo-finisher.") {
-                SerialName("finisher_type").."FinisherType"(STRING, "the type of finisher")
-                "Percent"(INTEGER, "the percent chance that the finisher will trigger")
-            }
-            +record(name = "Damage", description = "Additional information about damage.") {
-                SerialName("hit_count").."HitCount"(INTEGER, "the amount of times the damage hits")
-                SerialName("dmg_multiplier").."DamageMultiplier"(DECIMAL, "the damage multiplier")
-            }
-            +record(name = "Distance", description = "Additional information about range.") {
-                "Distance"(INTEGER, "the distance value")
-            }
-            +record(name = "NoData", description = "No (special) additional information.") {}
-            +record(name = "Number", description = "An additional number.") {
-                "Value"(INTEGER, "the number value as referenced by text")
-            }
-            +record(name = "Percent", description = "An additional percentage value.") {
-                "Percent"(DECIMAL, "the percentage value as referenced by text")
-            }
-            +record(name = "PrefixedBuff", description = "Additional information about a prefixed buff.") {
-                optional.."Status"(STRING, "the boon, condition, or effect referred to by the fact")
-                optional.."Duration"(INTEGER, "the duration of the effect in seconds")
-                optional.."Description"(STRING, "the description of the status effect")
-                optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
-                "Prefix"(
-                    description = "A buff's prefix icon and description.",
-                    type = record(name = "Prefix", description = "Information about a buff's prefix.") {
-                        "Text"(STRING, "the prefix text")
-                        "Icon"(STRING, "the prefix icon url")
-                        optional.."Status"(STRING, "the prefix status")
-                        optional.."Description"(STRING, "the prefix description")
-                    }
-                )
-            }
-            +record(name = "Radius", description = "Additional information about a radius.") {
-                "Distance"(INTEGER, "the radius value")
-            }
-            +record(name = "Range", description = "Additional information about range.") {
-                "Value"(INTEGER, "the range of the trait/skill")
-            }
-            +record(name = "Recharge", description = "Additional information about recharge.") {
-                "Value"(DECIMAL, "the recharge time in seconds")
-            }
-            +record(name = "StunBreak", description = "Additional information about a stunbreak.") {
-                "Value"(BOOLEAN, "always true")
-            }
-            +record(name = "Time", description = "Additional information about time.") {
-                "Duration"(INTEGER, "the time value in seconds")
-            }
-            +record(name = "Unblockable", description = "A fact, indicating that a trait/skill is unlockable.") {
-                "Value"(BOOLEAN, "always true")
-            }
-        }
-
         schema(record(name = "Skill", description = "Information about a skill.") {
             CamelCase("id").."ID"(INTEGER, "the skill's ID")
             localized.."Name"(STRING, "the skill's localized name")
@@ -2448,7 +2449,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     sharedConfigure = {
                         "Type"(STRING, "the type of the fact")
                         optional.."Icon"(STRING, "the URL for the fact's icon")
-                        optional.."Text"(STRING, "an arbitrary localized string describing the fact")
+                        optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
                     }
                 ) {
                     FACTS()
@@ -2462,7 +2463,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     sharedConfigure = {
                         "Type"(STRING, "the type of the fact")
                         optional.."Icon"(STRING, "the URL for the fact's icon")
-                        optional.."Text"(STRING, "an arbitrary localized string describing the fact")
+                        optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
                         SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
                         optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
                     }
@@ -2635,6 +2636,86 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional..CamelCase("urls").."URLs"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
             }
         )
+    }
+    "/Traits"(
+        summary = "Returns information about the traits in the game.",
+        queryTypes = defaultQueryTypes(),
+        cache = 1.hours
+    ) {
+        schema(record(name = "Trait", description = "Information about a trait.") {
+            CamelCase("id").."ID"(INTEGER, "the trait's ID")
+            "Tier"(INTEGER, "the trait's tier")
+            "Order"(INTEGER, "the trait's order")
+            localized.."Name"(STRING, "the trait's localized name")
+            optional..localized.."Description"(STRING, "the trait's localized description")
+            "Slot"(STRING, "the slot for the trait")
+            optional.."Facts"(
+                description = "a list of facts",
+                type = array(conditional(
+                    name = "Fact",
+                    description = "Information about a trait's fact (i.e. effect/property).",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of the fact")
+                        optional.."Icon"(STRING, "the URL for the fact's icon")
+                        optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
+                    }
+                ) { FACTS() })
+            )
+            optional..SerialName("traited_facts").."TraitedFacts"(
+                description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
+                type = array(conditional(
+                    name = "TraitedFact",
+                    description = "a list of traited facts",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of the fact")
+                        optional.."Icon"(STRING, "the URL for the fact's icon")
+                        optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
+                        SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                        optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
+                    }
+                ) { FACTS() })
+            )
+            optional.."Skills"(
+                description = "a list of skills related to this trait",
+                type = array(record(name = "Skill", description = "Information about a skill related to a trait.") {
+                    CamelCase("id").."ID"(INTEGER, "the skill's ID")
+                    localized.."Name"(STRING, "the skill's localized name")
+                    localized.."Description"(STRING, "the skill's localized description")
+                    "Icon"(STRING, "a render service URL for the skill's icon")
+                    SerialName("chat_link").."ChatLink"(STRING, "the skill's chat code")
+                    optional.."Categories"(array(STRING), "the categories that the skill falls under")
+                    optional.."Flags"(array(STRING), "additional skill flags")
+                    optional.."Facts"(
+                        description = "an array of facts describing the skill's effect",
+                        type = array(conditional(
+                            name = "Fact",
+                            description = "Information about a trait's fact (i.e. effect/property).",
+                            sharedConfigure = {
+                                "Type"(STRING, "the type of the fact")
+                                optional.."Icon"(STRING, "the URL for the fact's icon")
+                                optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
+                            }
+                        ) { FACTS() })
+                    )
+                    optional..SerialName("traited_facts").."TraitedFacts"(
+                        description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
+                        type = array(conditional(
+                            name = "TraitedFact",
+                            description = "a list of traited facts",
+                            sharedConfigure = {
+                                "Type"(STRING, "the type of the fact")
+                                optional.."Icon"(STRING, "the URL for the fact's icon")
+                                optional.."Text"(STRING, "an arbitrary localized string describing the fact")
+                                SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                                optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
+                            }
+                        ) { FACTS() })
+                    )
+                })
+            )
+            "Specialization"(INTEGER, "the specialization that this trait is part of")
+            "Icon"(STRING, "the URL for the trait's icon")
+        })
     }
     "/WorldBosses"(
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day.",

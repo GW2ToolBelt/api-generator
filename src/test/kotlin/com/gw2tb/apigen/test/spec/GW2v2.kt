@@ -2112,6 +2112,36 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Traits",
+            cache = 1.hours,
+            queryDetails = QueryIDs(INTEGER)
+        )
+        expectQuery(
+            "/Traits",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID(INTEGER)
+        )
+        expectQuery(
+            "/Traits",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs(INTEGER, supportsAll = false)
+        )
+        expectQuery(
+            "/Traits",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage(INTEGER)
+        )
+
+        expectQuery(
             "/TokenInfo",
             security = setOf(ACCOUNT)
         )
