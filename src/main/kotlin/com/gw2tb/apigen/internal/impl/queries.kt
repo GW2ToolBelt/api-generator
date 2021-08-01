@@ -237,8 +237,11 @@ internal class QueriesBuilderV2Impl(
             val idType: SchemaPrimitive = when (val schema = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC].data) {
                 is SchemaConditional -> schema.sharedProperties[idTypeKey]?.type
                 is SchemaRecord -> schema.properties[idTypeKey]?.type
-                else -> TODO()
-            } as? SchemaPrimitive ?: TODO()
+                else -> error("Cannot extract ID type for key \"$idTypeKey\" from type: ${schema.javaClass}")
+            }.let {
+                if (it == null) error("Could not find ID member \"$idTypeKey\" for endpoint \"$endpointTitleCase\"")
+                it as? SchemaPrimitive ?: error("ID type is not a primitive type: ${it.javaClass}")
+            }
 
             queryTypes.values.forEach { queryType ->
                 val schema: SchemaVersionedData<SchemaType>
