@@ -104,11 +104,11 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
         interpretationKey: String? = null,
         inheritedSharedProperties: Map<String, SchemaRecord.Property> = emptyMap()
     ) {
-        fun <T> JsonPrimitive.validate(optional: JsonPrimitive.() -> T, required: JsonPrimitive.() -> T?) =
-            assertDoesNotThrow { if (nullable) optional() else required() }
-
         when (this) {
             is SchemaPrimitive -> {
+                fun <T> JsonPrimitive.validate(optional: JsonPrimitive.() -> T, required: JsonPrimitive.() -> T?) =
+                    assertDoesNotThrow("Element has unexpected type: $path") { if (nullable) optional() else required() }
+
                 val primitive = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonPrimitive }
 
                 when (this) {
