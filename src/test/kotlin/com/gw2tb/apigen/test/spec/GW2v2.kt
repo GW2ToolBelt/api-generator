@@ -431,6 +431,45 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/Characters/:ID/EquipmentTabs",
+            security = setOf(ACCOUNT, BUILDS, CHARACTERS),
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            ),
+            queryDetails = QueryIDs(INTEGER)
+        )
+        expectQuery(
+            "/Characters/:ID/EquipmentTabs",
+            security = setOf(ACCOUNT, BUILDS, CHARACTERS),
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            ),
+            queryParameters = listOf(ExpectedQueryParameter("tab", INTEGER)),
+            queryDetails = QueryByID(INTEGER)
+        )
+        expectQuery(
+            "/Characters/:ID/EquipmentTabs",
+            security = setOf(ACCOUNT, BUILDS, CHARACTERS),
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            ),
+            queryParameters = listOf(ExpectedQueryParameter("tabs", INTEGER.array)),
+            queryDetails = QueryByIDs(INTEGER)
+        )
+        expectQuery(
+            "/Characters/:ID/EquipmentTabs",
+            security = setOf(ACCOUNT, BUILDS, CHARACTERS),
+            pathParameters = listOf(
+                ExpectedPathParameter("ID", STRING)
+            ),
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage(INTEGER)
+        )
+
+        expectQuery(
             "/Characters/:ID/HeroPoints",
             security = setOf(ACCOUNT, CHARACTERS, PROGRESSION),
             pathParameters = listOf(

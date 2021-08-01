@@ -1,0 +1,115 @@
+[
+    {
+        "tab": 1,
+        "name": "",
+        "is_active": true,
+        "equipment": [
+            {
+                "id": 79830,
+                "slot": "Backpack",
+                "binding": "Account",
+                "location": "Equipped",
+                "dyes": [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            },
+            {
+                "id": 79745,
+                "slot": "Accessory1",
+                "binding": "Account",
+                "location": "Equipped"
+            },
+            {
+                "id": 79444,
+                "slot": "Accessory2",
+                "binding": "Account",
+                "location": "Equipped"
+            },
+            {
+                "id": 79712,
+                "slot": "Ring1",
+                "binding": "Account",
+                "location": "Equipped"
+            },
+            {
+                "id": 79124,
+                "slot": "Ring2",
+                "binding": "Account",
+                "location": "Equipped"
+            },
+            {
+                "id": 44976,
+                "slot": "WeaponAquaticA",
+                "upgrades": [
+                    24567
+                ],
+                "binding": "Character",
+                "bound_to": "Character McCharacterface",
+                "location": "Equipped"
+            },
+            {
+                "id": 82195,
+                "slot": "WeaponA1",
+                "upgrades": [
+                    24575
+                ],
+                "skin": 6486,
+                "binding": "Character",
+                "bound_to": "Character McCharacterface",
+                "location": "Equipped"
+            },
+            {
+                "id": 27024,
+                "slot": "WeaponA2",
+                "upgrades": [
+                    24551
+                ],
+                "skin": 6417,
+                "binding": "Character",
+                "bound_to": "Character McCharacterface",
+                "location": "Equipped"
+            },
+            {
+                "id": 27325,
+                "slot": "WeaponB1",
+                "upgrades": [
+                    24578,
+                    24575
+                ],
+                "skin": 6346,
+                "binding": "Character",
+                "bound_to": "Character McCharacterface",
+                "location": "Equipped"
+            }
+        ],
+        "equipment_pvp": {
+            "amulet": 9,
+            "rune": 21172,
+            "sigils": [
+                21150,
+                81268,
+                21150,
+                81268
+            ]
+        }
+    },
+    {
+        "tab": 2,
+        "name": "",
+        "is_active": false,
+        "equipment": [],
+        "equipment_pvp": {
+            "amulet": 9,
+            "rune": 21172,
+            "sigils": [
+                21150,
+                81268,
+                21150,
+                81268
+            ]
+        }
+    }
+]

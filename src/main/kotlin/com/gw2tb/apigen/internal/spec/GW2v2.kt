@@ -755,6 +755,61 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    "/Characters/:ID/EquipmentTabs"(
+        idTypeKey = "tab",
+        summary = "Returns information about a character's equipment.",
+        queryTypes = queryTypes(
+            IDS,
+            BY_ID("Tab", "the ID of the requested tab"),
+            BY_IDS("Tabs", "the IDs of the requested tabs"),
+            BY_PAGE
+        ),
+        security = security(ACCOUNT, BUILDS, CHARACTERS)
+    ) {
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+
+        schema(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
+            "Tab"(INTEGER, "the tab's ID")
+            "Name"(STRING, "the equipment configuration's name")
+            SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+            "Equipment"(
+                description = "the stored equipment",
+                type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
+                    CamelCase("id").."ID"(INTEGER, "the equipped item's ID")
+                    "Slot"(STRING, "the slot in which the equipment piece is slotted into")
+                    optional.."Skin"(INTEGER, "the ID of the skin transmuted onto the equipment piece")
+                    optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
+                    optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
+                    optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
+                    optional.."Binding"(STRING, "the binding of the item")
+                    optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                    "Location"(STRING, "the storage location of the equipment piece")
+                    optional.."Stats"(
+                        description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
+                        type = record(name = "Stats", description = "Information about an item's stats.") {
+                            CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                            optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                            optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                            optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                            optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                            optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                            optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                            optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                            optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                        }
+                    )
+                })
+            )
+            SerialName("equipment_pvp").."EquipmentPvP"(
+                description = "the character's PvP equipment",
+                type = record(name = "PvPEquipment", "Information about a character's PvP equipment.") {
+                    "Amulet"(INTEGER, "the ID of the selected amulet")
+                    "Rune"(INTEGER, "the ID of the selected rune")
+                    "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
+                }
+            )
+        })
+    }
     "/Characters/:ID/HeroPoints"(
         summary = "Returns information about a character's unlock hero points.",
         security = security(ACCOUNT, CHARACTERS, PROGRESSION)
