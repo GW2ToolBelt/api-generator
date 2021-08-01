@@ -109,7 +109,7 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
 
         when (this) {
             is SchemaPrimitive -> {
-                val primitive = assertDoesNotThrow("$this") { actual.jsonPrimitive }
+                val primitive = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonPrimitive }
 
                 when (this) {
                     is SchemaBoolean -> primitive.validate(JsonPrimitive::booleanOrNull, JsonPrimitive::boolean)
@@ -120,12 +120,12 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                 }
             }
             is SchemaArray -> {
-                val array = assertDoesNotThrow<JsonArray> { actual.jsonArray }
+                val array = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonArray }
                 array.forEachIndexed { index, it -> items.assertMatches("$path[$index]", it, nullableItems) }
             }
             is SchemaConditional -> {
                 if (nullable && actual is JsonNull) return
-                val jsonObject = assertDoesNotThrow<JsonObject> { actual.jsonObject }
+                val jsonObject = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
 
                 if (interpretationInNestedProperty) {
                     val expectedProperties = (inheritedSharedProperties + sharedProperties)
@@ -184,12 +184,12 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
                 )
             }
             is SchemaMap -> {
-                val map = assertDoesNotThrow<JsonObject> { actual.jsonObject }
+                val map = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
                 map.forEach { key, value -> values.assertMatches("$path[$key]", value, nullableValues) }
             }
             is SchemaRecord -> {
                 if (nullable && actual is JsonNull) return
-                val jsonObject = assertDoesNotThrow<JsonObject> { actual.jsonObject }
+                val jsonObject = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
 
                 val expectedProperties = (inheritedSharedProperties + properties)
 
