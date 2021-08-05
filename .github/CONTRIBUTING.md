@@ -7,7 +7,7 @@ documentation, or a bug report.
 
 Any contribution must be submitted as a pull request. (If you wish to report an
 issue or ask a question please use the [issue tracker](https://github.com/GW2ToolBelt/api-generator/issues)
-instead.)
+or [discussions](https://github.com/GW2ToolBelt/api-generator/discussions) instead.)
 
 
 ## General guidelines
