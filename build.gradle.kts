@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.gradle.dsl.*
 plugins {
     kotlin("jvm") version "1.5.30"
     kotlin("plugin.serialization") version "1.5.30"
-    id("org.jetbrains.dokka") version "1.4.32"
+    id("org.jetbrains.dokka") version "1.5.0"
     signing
     `maven-publish`
 }
