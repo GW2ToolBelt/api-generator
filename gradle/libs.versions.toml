@@ -1,6 +1,6 @@
 [versions]
 junit = "5.7.2"
-kotlinx-serialization = "1.1.0"
+kotlinx-serialization = "1.2.2"
 
 [libraries]
 # org.junit - JUnit
