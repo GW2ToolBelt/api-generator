@@ -2,8 +2,8 @@ name: CI
 on: push
 
 jobs:
-  jdk8:
-    name: OpenJDK 8 (Ubuntu)
+  jdk17:
+    name: OpenJDK 17 (Ubuntu)
     runs-on: ubuntu-latest
     steps:
       - uses: GW2ToolBelt/checkout@v2
@@ -13,7 +13,7 @@ jobs:
 
       - uses: AdoptOpenJDK/install-jdk@v1
         with:
-          version: '8'
+          version: '17'
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
