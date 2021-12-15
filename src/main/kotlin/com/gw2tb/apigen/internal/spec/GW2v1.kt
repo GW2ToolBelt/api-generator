@@ -24,9 +24,8 @@ package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.APIv1Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
-import kotlin.time.*
 
-@Suppress("FunctionName", "DEPRECATION") // Suppresses deprecation of Duration extensions
+@Suppress("FunctionName")
 internal val GW2v1 = GW2APISpecV1 {
     val BUILD_ID = "BuildID"(INTEGER)
     val COLOR_ID = "ColorID"(INTEGER)

@@ -26,9 +26,9 @@ import com.gw2tb.apigen.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
-import kotlin.time.*
+import kotlin.time.Duration
 
-@Suppress("FunctionName", "DEPRECATION") // Suppresses deprecation of Duration extensions
+@Suppress("FunctionName")
 internal val GW2v2 = GW2APISpecV2 {
     val BUILD_ID = "BuildID"(INTEGER)
     val ITEM_ID = "ItemID"(INTEGER)

@@ -22,13 +22,14 @@
 package com.gw2tb.apigen.test.spec
 
 import com.gw2tb.apigen.*
+import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import kotlin.time.*
+import kotlin.time.Duration
 
 class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
     "GW2v2",
