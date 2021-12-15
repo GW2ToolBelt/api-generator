@@ -21,6 +21,7 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
+import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
@@ -28,34 +29,36 @@ import com.gw2tb.apigen.schema.*
 import kotlin.time.*
 
 @Suppress("FunctionName")
-private fun <Q : APIQuery, T : APIType, S : SpecBuilderImplBase<Q, T, *>> GW2APISpec(builder: S, block: S.() -> Unit): () -> Pair<Map<TypeLocation, List<T>>, Set<Q>> =
-    fun() = builder.also(block).let { it.types to it.queries }
+private fun <E, Q : APIQuery, T : APIType, S : SpecBuilderImplBase<E, Q, T, *>> GW2APISpec(builder: S, block: S.() -> Unit): S =
+    builder.also(block)
 
 @Suppress("FunctionName")
-internal fun GW2APISpecV1(block: SpecBuilderV1.() -> Unit): () -> Pair<Map<TypeLocation, List<APIType.V1>>, Set<APIQuery.V1>> =
+internal fun GW2APISpecV1(block: SpecBuilderV1.() -> Unit): SpecBuilderV1Impl =
     GW2APISpec(SpecBuilderV1Impl(), block)
 
 @Suppress("FunctionName")
-internal fun GW2APISpecV2(block: SpecBuilderV2.() -> Unit): () -> Pair<Map<TypeLocation, List<APIType.V2>>, Set<APIQuery.V2>> =
+internal fun GW2APISpecV2(block: SpecBuilderV2.() -> Unit): SpecBuilderV2Impl =
     GW2APISpec(SpecBuilderV2Impl(), block)
 
 @APIGenDSL
 internal interface SpecBuilder<T : APIType> {
 
+    operator fun String.invoke(type: SchemaPrimitiveReference, camelCaseName: String = this): SchemaPrimitiveReference
+
     fun array(
-        items: SchemaType,
+        items: SchemaTypeReference,
         description: String,
         nullableItems: Boolean = false
-    ): SchemaType =
-        SchemaArray(items, nullableItems, description)
+    ): SchemaTypeReference =
+        SchemaArrayReference { SchemaArray(items.get(it), nullableItems, description) }
 
     fun map(
-        keys: SchemaPrimitive,
-        values: SchemaType,
+        keys: SchemaPrimitiveReference,
+        values: SchemaTypeReference,
         description: String,
         nullableValues: Boolean = false
-    ): SchemaType =
-        SchemaMap(keys, values, nullableValues, description)
+    ): SchemaTypeReference =
+        SchemaMapReference { SchemaMap(keys.get(it), values.get(it), nullableValues, description) }
 
     fun conditional(
         name: String,
@@ -66,21 +69,22 @@ internal interface SpecBuilder<T : APIType> {
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
     fun record(
         name: String,
         description: String,
         endpoint: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
 }
 
 internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
 
-    operator fun String.invoke(
-        endpointTitleCase: String = this,
+    operator fun APIv1Endpoint.invoke(
+        endpointTitleCase: String = endpointName,
+        route: String = endpointName,
         querySuffix: String = "",
         summary: String,
         cache: Duration? = null,
@@ -88,8 +92,9 @@ internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
         block: QueriesBuilderV1.() -> Unit
     )
 
-    operator fun String.invoke(
-        endpointTitleCase: String = this,
+    operator fun APIv1Endpoint.invoke(
+        endpointTitleCase: String = endpointName,
+        route: String = endpointName,
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,
@@ -102,8 +107,9 @@ internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
 
 internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
 
-    operator fun String.invoke(
-        endpointTitleCase: String = this,
+    operator fun APIv2Endpoint.invoke(
+        endpointTitleCase: String = endpointName,
+        route: String = endpointName,
         querySuffix: String = "",
         summary: String,
         cache: Duration? = null,
@@ -113,8 +119,9 @@ internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
         block: QueriesBuilderV2.() -> Unit
     )
 
-    operator fun String.invoke(
-        endpointTitleCase: String = this,
+    operator fun APIv2Endpoint.invoke(
+        endpointTitleCase: String = endpointName,
+        route: String = endpointName,
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,

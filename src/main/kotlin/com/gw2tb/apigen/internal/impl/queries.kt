@@ -25,13 +25,11 @@ import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
-import java.util.*
 import kotlin.time.*
 
 internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : QueriesBuilder<T> {
 
-    protected val _types = mutableMapOf<TypeLocation, MutableList<T>>()
-    val types get(): Map<TypeLocation, List<T>> = HashMap(_types.mapValues { (_, v) -> ArrayList(v) })
+    protected abstract val typeRegistry: TypeRegistryScope
 
     protected abstract val route: String
     protected abstract val endpointTitleCase: String
@@ -43,18 +41,18 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
     protected abstract val queryTypes: QueryTypes?
 
     protected val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
-    override fun pathParameter(name: String, type: SchemaPrimitive, description: String, key: String, camelCase: String) {
+    override fun pathParameter(name: String, type: SchemaPrimitiveReference, description: String, key: String, camelCase: String) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
 
-        pathParameters[key] = PathParameter(key, type, description, name, camelCase)
+        pathParameters[key] = PathParameter(key, type.get(typeRegistry), description, name, camelCase)
     }
 
     protected val queryParameters: MutableMap<String, QueryParameter> = mutableMapOf()
-    override fun queryParameter(name: String, type: SchemaPrimitive, description: String, key: String, camelCase: String, isOptional: Boolean) {
+    override fun queryParameter(name: String, type: SchemaPrimitiveReference, description: String, key: String, camelCase: String, isOptional: Boolean) {
         check(key !in queryParameters)
 
-        queryParameters[key] = QueryParameter(key, type, description, name, camelCase, isOptional)
+        queryParameters[key] = QueryParameter(key, type.get(typeRegistry), description, name, camelCase, isOptional)
     }
 
     override fun conditional(
@@ -65,21 +63,27 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
         interpretationInNestedProperty: Boolean,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
         block: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String?, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, ::createType, block)
-        types.forEach { _types.computeIfAbsent(TypeLocation(endpointTitleCase, it.key)) { mutableListOf() }.addAll(it.value) }
+    ): SchemaClassReference = conditionalImpl(
+        name,
+        description,
+        disambiguationBy,
+        disambiguationBySideProperty,
+        interpretationInNestedProperty,
+        sharedConfigure,
+        ::createType,
+        block
+    )
 
-        return type
-    }
-
-    override fun record(name: String, description: String, block: SchemaRecordBuilder<T>.() -> Unit): SchemaClass {
-        val types = mutableMapOf<String?, MutableList<T>>()
-        val type = recordImpl(name, description, types, ::createType, block)
-        types.forEach { _types.computeIfAbsent(TypeLocation(endpointTitleCase, it.key)) { mutableListOf() }.addAll(it.value) }
-
-        return type
-    }
+    override fun record(
+        name: String,
+        description: String,
+        block: SchemaRecordBuilder<T>.() -> Unit
+    ): SchemaClassReference = recordImpl(
+        name,
+        description,
+        ::createType,
+        block
+    )
 
     abstract fun createType(type: SchemaClass): T
 
@@ -95,14 +99,15 @@ internal class QueriesBuilderV1Impl(
     override val summary: String,
     override val cache: Duration?,
     override val security: Security?,
-    override val queryTypes: QueryTypes?
+    override val queryTypes: QueryTypes?,
+    override val typeRegistry: TypeRegistryScope
 ) : QueriesBuilderImplBase<APIQuery.V1, APIType.V1>(), QueriesBuilderV1 {
 
     private lateinit var _schema: SchemaType
 
-    override fun schema(schema: SchemaType) {
+    override fun schema(schema: SchemaTypeReference) {
         check(!this::_schema.isInitialized)
-        _schema = schema
+        _schema = schema.get(typeRegistry)
     }
 
     override fun createType(type: SchemaClass): APIType.V1 {
@@ -135,39 +140,46 @@ internal class QueriesBuilderV2Impl(
     override val security: Security?,
     override val queryTypes: QueryTypes?,
     private val since: V2SchemaVersion,
-    private val until: V2SchemaVersion?
+    private val until: V2SchemaVersion?,
+    override val typeRegistry: TypeRegistryScope
 ) : QueriesBuilderImplBase<APIQuery.V2, APIType.V2>(), QueriesBuilderV2 {
 
     private lateinit var _schema: SchemaVersionedData<SchemaType>
 
-    override fun schema(schema: SchemaType) {
+    override fun schema(schema: SchemaTypeReference) {
         check(!this::_schema.isInitialized)
 
+        val rSchema = schema.get(typeRegistry)
         _schema = buildVersionedSchemaData {
             V2SchemaVersion.values()
-                .filter { it == since || it == until || (until != null && it < until && schema.hasChangedInVersion(it)) }
+                .filter { it == since || it == until || (until != null && it < until && rSchema.hasChangedInVersion(it)) }
                 .zipSchemaVersionConstraints(includeUnbound = until == null)
-                .forEach { (since, until) -> add(schema.copyForVersion(since), since, until) }
+                .forEach { (since, until) -> add(rSchema.copyForVersion(since), since, until) }
         }
     }
 
-    override fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>) {
+    override fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaTypeReference>) {
         check(!this::_schema.isInitialized)
 
         /*
-         * The method only receives `since` constraints. Thus we need to ensure that no two constraints are equal
+         * The method only receives `since` constraints. Thus, we need to ensure that no two constraints are equal
          * before we can continue processing.
          */
         require(schemas.all { a -> schemas.all { b -> a == b || a.first != b.first } })
         require(schemas.none { (version, _) -> version < since })
         require(until == null || schemas.none { (version, _) -> version >= until })
 
+        val deferredTypeRegistry = object : TypeRegistryScope() {
+            override fun register(name: String, value: APIType) {}
+            override fun nestedScope(nestName: String) = typeRegistry.nestedScope(nestName)
+        }
+
         val versions = buildVersionedSchemaData<SchemaType> {
             schemas.asIterable()
                 .sortedBy { it.first }
                 .zipSchemaVersionConstraints()
                 .forEach { (since, until) ->
-                    val schema = since.second
+                    val schema = since.second.get(deferredTypeRegistry)
                     val sinceBound = since.first
                     val untilBound = until?.first
 
@@ -178,26 +190,10 @@ internal class QueriesBuilderV2Impl(
                 }
         }
 
-        val classes = versions.mapDataOrNull { type -> when (type) {
-            is SchemaClass -> type
-            else -> null
-        }}
-
-        val loc = TypeLocation(endpointTitleCase, null)
-        var types = _types[loc]
-
-        if (types != null) {
-            for ((_, schema) in schemas) types.removeIf { it._schema.any { it.data == schema } }
-        }
-
-        if (classes != null) {
-            if (types == null) {
-                types = mutableListOf()
-                _types[loc] = types
-            }
-
-            types.add(APIType.V2(classes))
-        }
+        @Suppress("UNCHECKED_CAST")
+        val classes = if (versions.first().data is SchemaClass) APIType.V2(versions as SchemaVersionedData<SchemaClass>) else null
+        if (classes != null)
+            typeRegistry.register(classes.name, classes)
 
         _schema = versions
     }
@@ -267,9 +263,9 @@ internal class QueriesBuilderV2Impl(
                     }
                     is QueryType.ByPage -> {
                         schema = _schema.mapData { v -> SchemaArray(v, false, "") }
-                        QueryParameter(QueryParameter.PAGE_KEY, INTEGER, "the index of the requested page", "Page", "page", false)
+                        QueryParameter(QueryParameter.PAGE_KEY, SchemaInteger(), "the index of the requested page", "Page", "page", false)
                             .also { queryParameters[it.key] = it }
-                        QueryParameter(QueryParameter.PAGE_SIZE_KEY, INTEGER, "the size of the requested page", "PageSize", "pageSize", true)
+                        QueryParameter(QueryParameter.PAGE_SIZE_KEY, SchemaInteger(), "the size of the requested page", "PageSize", "pageSize", true)
                             .also { queryParameters[it.key] = it }
                     }
                 }

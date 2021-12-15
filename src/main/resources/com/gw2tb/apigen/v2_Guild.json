@@ -1,0 +1,31 @@
+[
+    {
+        "level": 0,
+        "motd": "Du siehst heute aber knackich aus! ;)",
+        "influence": 0,
+        "aetherium": 0,
+        "resonance": 0,
+        "favor": 1330,
+        "member_count": 1,
+        "member_capacity": 50,
+        "id": "123E4567-E89B-12D3-A456-426614174000",
+        "name": "Wir wuenschen einen guten",
+        "tag": "Tag",
+        "emblem": {
+            "background": {
+                "id": 21,
+                "colors": [
+                    340
+                ]
+            },
+            "foreground": {
+                "id": 199,
+                "colors": [
+                    132,
+                    130
+                ]
+            },
+            "flags": []
+        }
+    }
+]

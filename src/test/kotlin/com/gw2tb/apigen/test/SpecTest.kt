@@ -63,11 +63,11 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
 
                     actualQuery.pathParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.pathParameters.find { actualParam.key == it.key }!!
-                        assertEquals(expectedParam.type, actualParam.type)
+                        assertHintedEquals(expectedParam.type, actualParam.type)
                     }
                     actualQuery.queryParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.queryParameters.find { actualParam.key == it.key }!!
-                        assertEquals(expectedParam.type, actualParam.type)
+                        assertHintedEquals(expectedParam.type, actualParam.type)
                         assertEquals(expectedParam.isOptional, actualParam.isOptional)
                     }
                 })
@@ -85,15 +85,19 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
 
     fun assertSchema(schema: SchemaType, data: String) {
         val element = Json.parseToJsonElement(data)
-        schema.assertMatches(path = "", element)
+        if (element !is JsonArray) error("Expected top-level array")
+
+        element.jsonArray.forEachIndexed { index, entry ->
+            schema.assertMatches(path = "Sample[$index]", entry)
+        }
     }
 
-    abstract fun testTypes(queries: Collection<Q>): Iterable<DynamicTest>
+    abstract fun testType(type: T): Iterable<DynamicTest>
 
     @TestFactory
     fun testTypes(): Iterator<DynamicTest> = sequence {
-        spec.supportedQueries.groupBy { it.endpoint }.values.forEach { endpointQueries ->
-            yieldAll(testTypes(endpointQueries))
+        spec.supportedTypes.filter { (loc, _) -> loc.nest == null }.flatMap { it.value }.forEach { type ->
+            yieldAll(testType(type))
         }
     }.iterator()
 

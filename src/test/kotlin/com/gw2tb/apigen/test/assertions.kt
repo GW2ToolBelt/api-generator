@@ -21,9 +21,14 @@
  */
 package com.gw2tb.apigen.test
 
+import com.gw2tb.apigen.schema.*
 import org.junit.jupiter.api.*
-import java.util.function.*
+import org.junit.jupiter.api.Assertions.*
 import kotlin.contracts.*
+
+fun assertHintedEquals(expected: SchemaType, actual: SchemaType) {
+    if (!expected.equalsSignature(actual)) fail<Unit>("Expected type did not match. Expected: $expected; got $actual")
+}
 
 @OptIn(ExperimentalContracts::class)
 fun assertNotNull(actual: Any?) {

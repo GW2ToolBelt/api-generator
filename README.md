@@ -162,15 +162,15 @@ manually integrated into the [API definition](src/main/kotlin/com/gw2tb/apigen/i
 The API definition files use a custom DSL for defining endpoint that attempts to
 be as concise as possible while also providing the additional benefits of type-safety.
 
-Adding a new endpoint is as simple as adding a few lines of Kotlin code to the
-appropriate file. For example, the `/v2/build` endpoint looks as follows:
+Adding a new endpoint is almost as simple as adding a few lines of Kotlin code
+to the appropriate file. For example, the `/v2/build` endpoint looks as follows:
 
 ```
-"/Build" {
-    summary = "Returns the current build ID."
+val BUILD_ID = "BuildID"(INTEGER)
 
+"/Build"(summary = "Returns the current build ID.") {
     schema(record(name = "Build", description = "Information about the current game build.") {
-        CamelCase("id").."ID"(INTEGER, "the current build ID")
+        CamelCase("id").."ID"(BUILD_ID, "the current build ID")
     })
 }
 ```

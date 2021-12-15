@@ -24,11 +24,9 @@ package com.gw2tb.apigen.model
 /**
  * A type location.
  *
- * @param endpoint  the endpoint that this type belongs to, if any
  * @param nest      the type's nest (`/`-separated, list of type names)
  */
 public data class TypeLocation(
-    val endpoint: String?,
     val nest: String?
 ) {
 

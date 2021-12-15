@@ -41,25 +41,27 @@ internal abstract class SchemaClassBuilderBaseImpl<T : APIType>(
         interpretationInNestedProperty: Boolean,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
         configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String?, MutableList<T>>()
-        val type = conditionalImpl(name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, types, apiTypeFactory, configure)
-        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
-
-        return type
-    }
+    ): SchemaClassReference = conditionalImpl(
+        name,
+        description,
+        disambiguationBy,
+        disambiguationBySideProperty,
+        interpretationInNestedProperty,
+        sharedConfigure,
+        apiTypeFactory,
+        configure
+    )
 
     override fun record(
         name: String,
         description: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass {
-        val types = mutableMapOf<String?, MutableList<T>>()
-        val type = recordImpl(name, description, types, apiTypeFactory, block)
-        types.forEach { (k, v) -> nestedTypes.computeIfAbsent(k) { mutableListOf() }.addAll(v) }
-
-        return type
-    }
+    ): SchemaClassReference = recordImpl(
+        name,
+        description,
+        apiTypeFactory,
+        block
+    )
 
 }
 
@@ -67,16 +69,16 @@ internal class SchemaConditionalBuilderImpl<T : APIType>(
     apiTypeFactory: (SchemaClass) -> T
 ) : SchemaClassBuilderBaseImpl<T>(apiTypeFactory), SchemaConditionalBuilder<T> {
 
-    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
-
     private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
-    val interpretations get() = _interpretations.map { it.interpretation }
 
-    override fun String.invoke(type: SchemaType, nestProperty: String): SchemaConditionalInterpretationBuilder =
+    override fun String.invoke(type: SchemaTypeReference, nestProperty: String): SchemaConditionalInterpretationBuilder =
         SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
 
-    override fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder =
+    override fun SchemaClassReference.unaryPlus(): SchemaConditionalInterpretationBuilder =
         SchemaConditionalInterpretationBuilder(name, name.toLowerCase(), this).also { _interpretations += it }
+
+    fun buildInterpretations(register: TypeRegistryScope): List<SchemaConditional.Interpretation> =
+        _interpretations.map { it.build(register) }
 
 }
 
@@ -84,13 +86,13 @@ internal class SchemaRecordBuilderImpl<T : APIType>(
     apiTypeFactory: (SchemaClass) -> T
 ) : SchemaClassBuilderBaseImpl<T>(apiTypeFactory), SchemaRecordBuilder<T> {
 
-    override val nestedTypes: MutableMap<String?, MutableList<T>> = mutableMapOf()
-
     private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
-    val properties get() = _properties.map { it.property }
 
-    override fun String.invoke(type: SchemaType, description: String): SchemaRecordPropertyBuilder =
+    override fun String.invoke(type: SchemaTypeReference, description: String): SchemaRecordPropertyBuilder =
         SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
+
+    fun buildProperties(register: TypeRegistryScope): List<SchemaRecord.Property> =
+        _properties.map { it.build(register) }
 
 }
 
@@ -101,26 +103,14 @@ internal fun <T : APIType> conditionalImpl(
     disambiguationBySideProperty: Boolean,
     interpretationInNestedProperty: Boolean,
     sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
-    types: MutableMap<String?, MutableList<T>>,
     apiTypeFactory: (SchemaClass) -> T,
     configure: SchemaConditionalBuilder<T>.() -> Unit
-): SchemaClass {
+): SchemaClassReference = SchemaClassReference(name) { typeRegister ->
     val bSharedProps = sharedConfigure?.let { SchemaRecordBuilderImpl(apiTypeFactory).also(it) }
     val bInterpretations = SchemaConditionalBuilderImpl(apiTypeFactory).also(configure)
 
-    val sharedProps = bSharedProps?.properties ?: emptyList()
-    val interpretations = bInterpretations.interpretations
-
-    bSharedProps?.nestedTypes?.forEach { (k, v) -> types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }.addAll(v) }
-    bInterpretations.nestedTypes.forEach { (k, v) ->
-        types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }
-            .addAll(v.filter { apiType ->
-                interpretations.none {
-                    it.type is SchemaClass && (apiType.name == it.type.name)
-                }
-            }
-            )
-    }
+    val sharedProps = bSharedProps?.buildProperties(typeRegister.nestedScope(name)) ?: emptyList()
+    val interpretations = bInterpretations.buildInterpretations(typeRegister.nestedScope(name))
 
     val versions = buildVersionedSchemaData<SchemaType> {
         V2SchemaVersion.values()
@@ -153,26 +143,24 @@ internal fun <T : APIType> conditionalImpl(
             }
     }
 
-    return (if (versions.isConsistent) {
+    (if (versions.isConsistent) {
         versions[V2SchemaVersion.V2_SCHEMA_CLASSIC].data as SchemaConditional
     } else {
         SchemaBlueprint(name, versions)
     }).also {
-        types.computeIfAbsent(null) { mutableListOf() }.add(apiTypeFactory(it))
+        typeRegister.register(name, apiTypeFactory(it))
     }
 }
 
 internal fun <T : APIType> recordImpl(
     name: String,
     description: String,
-    types: MutableMap<String?, MutableList<T>>,
     apiTypeFactory: (SchemaClass) -> T,
     configure: SchemaRecordBuilder<T>.() -> Unit
-): SchemaClass {
+): SchemaClassReference = SchemaClassReference(name) { typeRegister ->
     val bProperties = SchemaRecordBuilderImpl(apiTypeFactory).also(configure)
-    bProperties.nestedTypes.forEach { (k, v) -> types.computeIfAbsent("$name${if (k != null && k.isNotEmpty()) "/$k" else ""}") { mutableListOf() }.addAll(v) }
+    val properties = bProperties.buildProperties(typeRegister.nestedScope(name))
 
-    val properties = bProperties.properties
     val versions = buildVersionedSchemaData<SchemaType> {
         V2SchemaVersion.values()
             .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || properties.any { it.hasChangedInVersion(version) } }
@@ -195,11 +183,11 @@ internal fun <T : APIType> recordImpl(
             }
     }
 
-    return (if (versions.isConsistent) {
+    (if (versions.isConsistent) {
         versions[V2SchemaVersion.V2_SCHEMA_CLASSIC].data as SchemaRecord
     } else {
         SchemaBlueprint(name, versions)
     }).also {
-        types.computeIfAbsent(null) { mutableListOf() }.add(apiTypeFactory(it))
+        typeRegister.register(name, apiTypeFactory(it))
     }
 }

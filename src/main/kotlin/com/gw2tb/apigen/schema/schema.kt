@@ -28,10 +28,18 @@ import com.gw2tb.apigen.model.v2.*
 
 public sealed class SchemaType {
     public abstract val isLocalized: Boolean
+    internal abstract fun equalsSignature(other: SchemaType): Boolean
 }
 
 public sealed class SchemaPrimitive : SchemaType() {
     override val isLocalized: Boolean = false
+    public abstract val typeHint: TypeHint?
+
+    internal abstract fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive
+
+    public data class TypeHint(
+        val s: String
+    )
 }
 
 public sealed class SchemaClass : SchemaType() {
@@ -39,22 +47,42 @@ public sealed class SchemaClass : SchemaType() {
 }
 
 /** A schema representing primitive boolean types. */
-public object SchemaBoolean : SchemaPrimitive()
+public data class SchemaBoolean internal constructor(
+    override val typeHint: TypeHint? = null
+) : SchemaPrimitive() {
+    override fun equalsSignature(other: SchemaType) = other is SchemaBoolean
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
 
 /** A schema representing primitive decimal types. */
-public object SchemaDecimal : SchemaPrimitive()
+public data class SchemaDecimal internal constructor(
+    override val typeHint: TypeHint? = null
+): SchemaPrimitive() {
+    override fun equalsSignature(other: SchemaType) = other is SchemaDecimal
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
 
 /** A schema representing primitive integer types. */
-public object SchemaInteger : SchemaPrimitive()
+public data class SchemaInteger internal constructor(
+    override val typeHint: TypeHint? = null
+): SchemaPrimitive() {
+    override fun equalsSignature(other: SchemaType) = other is SchemaInteger
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
 
 /** A schema representing primitive string types. */
-public object SchemaString : SchemaPrimitive()
+public data class SchemaString internal constructor(
+    override val typeHint: TypeHint? = null
+): SchemaPrimitive() {
+    override fun equalsSignature(other: SchemaType) = other is SchemaString
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
 
 /**
  * A schema for lists.
  *
  * @param items         the schema definition for the elements of this list
- * @param nullableItems whether or not the items may contain `null`
+ * @param nullableItems whether the items may contain `null`
  * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
  *                      holds {description}.")
  */
@@ -64,6 +92,7 @@ public data class SchemaArray internal constructor(
     public val description: String?
 ) : SchemaType() {
     override val isLocalized: Boolean get() = items.isLocalized
+    override fun equalsSignature(other: SchemaType) = other is SchemaArray && items.equalsSignature(other.items)
 }
 
 /**
@@ -71,7 +100,7 @@ public data class SchemaArray internal constructor(
  *
  * @param keys              the schema definition for the keys of this map
  * @param values            the schema definition for the values of this map
- * @param nullableValues    whether or not the values may contain `null`
+ * @param nullableValues    whether the values may contain `null`
  * @param description       the description of the type or `null`. (Should be worded to complete the sentence "This
  *                          field holds {description}.")
  */
@@ -82,6 +111,7 @@ public data class SchemaMap internal constructor(
     public val description: String?
 ) : SchemaType() {
     override val isLocalized: Boolean get() = values.isLocalized
+    override fun equalsSignature(other: SchemaType) = other is SchemaMap && keys.equalsSignature(other.keys) && values.equalsSignature(other.values)
 }
 
 /**
@@ -124,6 +154,12 @@ public data class SchemaConditional internal constructor(
         }
     }
 
+    override fun equalsSignature(other: SchemaType) = other is SchemaConditional
+        && disambiguationBySideProperty == other.disambiguationBySideProperty
+        && interpretationInNestedProperty == other.interpretationInNestedProperty
+        && sharedProperties.all { (k, v) -> v.equalsSignature(other.sharedProperties[k]!!) }
+        && interpretations.all { (k, v) -> v.equalsSignature(other.interpretations[k]!!) }
+
     /**
      * A conditional interpretation.
      *
@@ -141,7 +177,11 @@ public data class SchemaConditional internal constructor(
         public val isDeprecated: Boolean,
         public val since: V2SchemaVersion?,
         public val until: V2SchemaVersion?
-    )
+    ) {
+
+        internal fun equalsSignature(other: Interpretation): Boolean = type.equalsSignature(other.type)
+
+    }
 
 }
 
@@ -160,6 +200,9 @@ public data class SchemaRecord internal constructor(
 ) : SchemaClass() {
 
     override val isLocalized: Boolean = properties.any { (_, v) -> v.isLocalized || v.type.isLocalized }
+
+    override fun equalsSignature(other: SchemaType) = other is SchemaRecord
+        && properties.all { (k, v) -> v.equalsSignature(other.properties[k]!!) }
 
     /**
      * A record property.
@@ -187,7 +230,12 @@ public data class SchemaRecord internal constructor(
         public val until: V2SchemaVersion?,
         public val serialName: String,
         public val camelCaseName: String
-    )
+    ) {
+
+        internal fun equalsSignature(other: Property): Boolean = type.equalsSignature(other.type)
+            && optionality == other.optionality
+
+    }
 
 }
 
@@ -197,6 +245,7 @@ internal class SchemaBlueprint internal constructor(
 ) : SchemaClass() {
 
     override val isLocalized: Boolean get() = error("isLocalized should never be called for SchemaBlueprint")
+    override fun equalsSignature(other: SchemaType) = error("equalsSignature should never be called for SchemaBlueprint")
 
 }
 

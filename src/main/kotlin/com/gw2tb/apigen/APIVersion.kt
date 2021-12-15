@@ -35,32 +35,17 @@ import java.util.*
 public data class APIVersion<Q : APIQuery, T : APIType> internal constructor(
     val supportedLanguages: EnumSet<Language>,
     val supportedQueries: Set<Q>,
-    val supportedTypes: Map<TypeLocation, List<T>>
+    val supportedTypes: Map<TypeLocation, List<T>>,
+    internal val version: String
 ) {
 
     public companion object {
 
-        /** The definition for the API version 1 of the Guild Wars 2 API. */
-        public val API_V1: APIVersion<APIQuery.V1, APIType.V1> by lazy {
-            val (types, queries) = GW2v1()
+        public fun getV1(endpoints: Set<APIv1Endpoint> = EnumSet.allOf(APIv1Endpoint::class.java)): APIVersion<APIQuery.V1, APIType.V1> =
+            GW2v1.build(endpoints)
 
-            APIVersion(
-                supportedLanguages = EnumSet.of(Language.ENGLISH, Language.FRENCH, Language.GERMAN, Language.SPANISH),
-                supportedQueries = queries,
-                supportedTypes = types
-            )
-        }
-
-        /** The definition for the API version 2 of the Guild Wars 2 API. */
-        public val API_V2: APIVersion<APIQuery.V2, APIType.V2> by lazy {
-            val (types, queries) = GW2v2()
-
-            APIVersion(
-                supportedLanguages = EnumSet.allOf(Language::class.java),
-                supportedQueries = queries,
-                supportedTypes = types
-            )
-        }
+        public fun getV2(endpoints: Set<APIv2Endpoint> = EnumSet.allOf(APIv2Endpoint::class.java)): APIVersion<APIQuery.V2, APIType.V2> =
+            GW2v2.build(endpoints)
 
     }
 

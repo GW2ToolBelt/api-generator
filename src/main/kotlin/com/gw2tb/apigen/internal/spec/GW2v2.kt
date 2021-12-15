@@ -22,13 +22,18 @@
 @file:Suppress("LocalVariableName")
 package com.gw2tb.apigen.internal.spec
 
+import com.gw2tb.apigen.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.*
 
-@Suppress("FunctionName")
+@Suppress("FunctionName", "DEPRECATION") // Suppresses deprecation of Duration extensions
 internal val GW2v2 = GW2APISpecV2 {
+    val BUILD_ID = "BuildID"(INTEGER)
+    val ITEM_ID = "ItemID"(INTEGER)
+    val SKIN_ID = "SkinID"(INTEGER)
+
     @APIGenDSL
     fun SchemaConditionalBuilder<*>.FACTS() {
         +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
@@ -97,13 +102,12 @@ internal val GW2v2 = GW2APISpecV2 {
         +record(name = "Time", description = "Additional information about time.") {
             "Duration"(INTEGER, "the time value in seconds")
         }
-        +record(name = "Unblockable", description = "A fact, indicating that a trait/skill is unlockable.") {
+        +record(name = "Unblockable", description = "A fact, indicating that a trait/skill is unblockable.") {
             "Value"(BOOLEAN, "always true")
         }
     }
 
-
-    "/Account"(
+    V2_ACCOUNT(
         summary = "Returns information about a player's account.",
         security = security(ACCOUNT)
     ) {
@@ -113,18 +117,30 @@ internal val GW2v2 = GW2APISpecV2 {
             "Name"(STRING, "the unique account name")
             "World"(INTEGER, "the ID of the home world the account is assigned to")
             "Guilds"(array(STRING), "an array containing the IDs of all guilds the account is a member in")
-            optional(GUILDS)..SerialName("guild_leader").."GuildLeader"(array(STRING), "an array containing the IDs of all guilds the account is a leader of")
+            optional(GUILDS)..SerialName("guild_leader").."GuildLeader"(
+                array(STRING),
+                "an array containing the IDs of all guilds the account is a leader of"
+            )
             "Created"(STRING, "the ISO-8601 standard timestamp of when the account was created")
             "Access"(array(STRING), "an array of what content this account has access to")
             "Commander"(BOOLEAN, "a flag indicating whether or not the commander tag is unlocked for the account")
-            optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(INTEGER, "the account's personal fractal level")
+            optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(
+                INTEGER,
+                "the account's personal fractal level"
+            )
             optional(PROGRESSION)..SerialName("daily_ap").."DailyAP"(INTEGER, "the daily AP the account has")
             optional(PROGRESSION)..SerialName("monthly_ap").."MonthlyAP"(INTEGER, "the monthly AP the account has")
-            optional(PROGRESSION)..CamelCase("wvwRank")..SerialName("wvw_rank").."WvWRank"(INTEGER, "the account's personal wvw rank")
-            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "the ISO-8601 standard timestamp of when the account information last changed (as perceived by the API)")
+            optional(PROGRESSION)..CamelCase("wvwRank")..SerialName("wvw_rank").."WvWRank"(
+                INTEGER,
+                "the account's personal wvw rank"
+            )
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(
+                STRING,
+                "the ISO-8601 standard timestamp of when the account information last changed (as perceived by the API)"
+            )
         })
     }
-    "/Account/Achievements"(
+    V2_ACCOUNT_ACHIEVEMENTS(
         summary = "Returns a player's progress towards all their achievements.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
@@ -141,7 +157,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Bank"(
+    V2_ACCOUNT_BANK(
         summary = "Returns information about the items stored in a player's vault.",
         security = security(ACCOUNT, INVENTORIES)
     ) {
@@ -149,14 +165,14 @@ internal val GW2v2 = GW2APISpecV2 {
             description = "a list of slots in a player's bank.",
             nullableItems = true,
             items = record(name = "AccountBankSlot", description = "Information about a bank slot.") {
-                CamelCase("id").."ID"(INTEGER, "the item's ID")
+                CamelCase("id").."ID"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-                optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+                optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                 optional.."Dyes"(array(INTEGER), "the IDs of the dyes applied to the item")
-                optional.."Upgrades"(array(INTEGER), "the array of item IDs of runes or sigils applied to the item")
+                optional.."Upgrades"(array(ITEM_ID), "the array of item IDs of runes or sigils applied to the item")
                 optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
-                optional.."Infusions"(array(INTEGER), "the array of item IDs of infusions applied to the item")
+                optional.."Infusions"(array(ITEM_ID), "the array of item IDs of infusions applied to the item")
                 optional.."Stats"(
                     description = "contains information on the stats chosen if the item offers an option for stats/prefix",
                     type = record(name = "Stats", description = "Information about an item's stats.") {
@@ -181,7 +197,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/BuildStorage"(
+    V2_ACCOUNT_BUILDSTORAGE(
         summary = "Returns an account's build storage.",
         security = security(ACCOUNT)
     ) {
@@ -221,31 +237,31 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/DailyCrafting"(
+    V2_ACCOUNT_DAILYCRAFTING(
         summary = "Returns which items that can be crafted once per day a player crafted since the most recent daily reset.",
         security = security(ACCOUNT, PROGRESSION, UNLOCKS)
     ) {
         schema(array(STRING, "a list of dailycrafting IDs of the items that can be crafted once per day which the player has crafted since the most recent daily reset"))
     }
-    "/Account/Dungeons"(
+    V2_ACCOUNT_DUNGEONS(
         summary = "Returns which dungeons paths a player has completed since the most recent daily reset.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
         schema(array(STRING, "an array of IDs containing an ID for each dungeon path that the player has completed since the most recent daily reset"))
     }
-    "/Account/Dyes"(
+    V2_ACCOUNT_DYES(
         summary = "Returns information about a player's unlocked dyes.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "a list of the dye IDs of the account's unlocked dyes"))
     }
-    "/Account/Emotes"(
+    V2_ACCOUNT_EMOTES(
         summary = "Returns information about a player's unlocked emotes.",
         security = security(ACCOUNT)
     ) {
         schema(array(STRING, "an array of IDs containing the ID of each emote unlocked by the player"))
     }
-    "/Account/Finishers"(
+    V2_ACCOUNT_FINISHERS(
         summary = "Returns information about a player's unlocked finishers.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
@@ -258,19 +274,19 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Gliders"(
+    V2_ACCOUNT_GLIDERS(
         summary = "Returns information about a player's unlocked gliders.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each glider unlocked by the player"))
     }
-    "/Account/Home"(
+    V2_ACCOUNT_HOME(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Account/Home/Cats"(
+    V2_ACCOUNT_HOME_CATS(
         summary = "Returns information about a player's unlock home instance cats.",
         security = security(ACCOUNT, PROGRESSION, UNLOCKS)
     ) {
@@ -285,13 +301,13 @@ internal val GW2v2 = GW2APISpecV2 {
             V2_SCHEMA_2019_03_22T00_00_00_000Z to array(INTEGER, "the IDs of the player's unlocked home instance cats")
         )
     }
-    "/Account/Home/Nodes"(
+    V2_ACCOUNT_HOME_NODES(
         summary = "Returns information about a player's unlocked home instance nodes.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
         schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
     }
-    "/Account/Inventory"(
+    V2_ACCOUNT_INVENTORY(
         summary = "Returns information about a player's shared inventory slots.",
         security = security(ACCOUNT, INVENTORIES)
     ) {
@@ -301,7 +317,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 CamelCase("id").."ID"(INTEGER, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-                optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+                optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                 optional.."Upgrades"(array(INTEGER), "the array of item IDs of runes or sigils applied to the item")
                 optional.."Infusions"(array(INTEGER), "the array of item IDs of infusions applied to the item")
                 optional.."Stats"(
@@ -322,7 +338,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/LegendaryArmory"(
+    V2_ACCOUNT_LEGENDARYARMORY(
         summary = "Returns information about a player's legendary armory.",
         security = security(ACCOUNT, INVENTORIES, UNLOCKS)
     ) {
@@ -334,7 +350,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Luck"(
+    V2_ACCOUNT_LUCK(
         summary = "Returns information about a player's luck.",
         security = security(ACCOUNT, PROGRESSION, UNLOCKS)
     ) {
@@ -346,19 +362,19 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Mailcarriers"(
+    V2_ACCOUNT_MAILCARRIERS(
         summary = "Returns information about a player's unlocked mail carriers.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each mail carrier unlocked by the player"))
     }
-    "/Account/MapChests"(
+    V2_ACCOUNT_MAPCHESTS(
         summary = "Returns which Hero's Choice Chests a player has acquired since the most recent daily reset.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
         schema(array(STRING, "an array of IDs for Hero's Choice Chests that the player has acquired since the most recent daily reset"))
     }
-    "/Account/Masteries"(
+    V2_ACCOUNT_MASTERIES(
         summary = "Returns information about a player's unlocked masteries.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
@@ -370,7 +386,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Mastery/Points"(
+    V2_ACCOUNT_MASTERY_POINTS(
         summary = "Returns information about a player's unlocked mastery points.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
@@ -386,7 +402,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Unlocked"(array(INTEGER), "the list of IDs of unlocked mastery points")
         })
     }
-    "/Account/Materials"(
+    V2_ACCOUNT_MATERIALS(
         summary = "Returns information about the materials stored in a player's vault.",
         security = security(ACCOUNT, INVENTORIES)
     ) {
@@ -400,73 +416,73 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/Minis"(
+    V2_ACCOUNT_MINIS(
         summary = "Returns information about a player's unlocked miniatures.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each miniature unlocked by the player"))
     }
-    "/Account/Mounts"(
+    V2_ACCOUNT_MOUNTS(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Account/Mounts/Skins"(
+    V2_ACCOUNT_MOUNTS_SKIN(
         summary = "Returns information about a player's unlocked mount skins.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(STRING, "an array of IDs containing the ID of each mount skin unlocked by the player"))
     }
-    "/Account/Mounts/Types"(
+    V2_ACCOUNT_MOUNTS_TYPES(
         summary = "Returns information about a player's unlocked mounts.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(STRING, "an array of IDs containing the ID of each mount unlocked by the player"))
     }
-    "/Account/Novelties"(
+    V2_ACCOUNT_NOVELTIES(
         summary = "Returns information about a player's unlocked novelties.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each novelty unlocked by the player"))
     }
-    "/Account/Outfits"(
+    V2_ACCOUNT_OUTFITS(
         summary = "Returns information about a player's unlocked outfits.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each outfit unlocked by the player"))
     }
-    "/Account/PvP/Heroes"(
+    V2_ACCOUNT_PVP_HEROES(
         summary = "Returns information about a player's unlocked PvP heroes.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each PvP hero unlocked by the player"))
     }
-    "/Account/Raids"(
+    V2_ACCOUNT_RAIDS(
         summary = "Returns which raid encounter a player has cleared since the most recent raid reset.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
         schema(array(STRING, "an array of IDs containing the ID of each raid encounter that the player has cleared since the most recent raid reset"))
     }
-    "/Account/Recipes"(
+    V2_ACCOUNT_RECIPES(
         summary = "Returns information about a player's unlocked recipes.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each recipe unlocked by the player"))
     }
-    "/Account/Skins"(
+    V2_ACCOUNT_SKINS(
         summary = "Returns information about a player's unlocked skins.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
-        schema(array(INTEGER, "an array of IDs containing the ID of each skin unlocked by the player"))
+        schema(array(SKIN_ID, "an array of IDs containing the ID of each skin unlocked by the player"))
     }
-    "/Account/Titles"(
+    V2_ACCOUNT_TITLES(
         summary = "Returns information about a player's unlocked titles.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each title unlocked by the player"))
     }
-    "/Account/Wallet"(
+    V2_ACCOUNT_WALLET(
         summary = "Returns information about a player's wallet.",
         security = security(ACCOUNT, WALLET)
     ) {
@@ -478,13 +494,13 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Account/WorldBosses"(
+    V2_ACCOUNT_WORLDBOSSES(
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset.",
         security = security(ACCOUNT, PROGRESSION)
     ) {
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
-    "/Achievements"(
+    V2_ACHIEVEMENTS(
         summary = "Returns information about achievements.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
@@ -542,7 +558,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..SerialName("point_cap").."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
         })
     }
-    "/Achievements/Categories"(
+    V2_ACHIEVEMENTS_CATEGORIES(
         summary = "Returns information about achievement categories.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -556,7 +572,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
         })
     }
-    "/Achievements/Daily"(summary = "Returns information about daily achievements.") {
+    V2_ACHIEVEMENTS_DAILY(summary = "Returns information about daily achievements.") {
         schema(record(name = "AchievementsDaily", description = "Information about daily achievements.") {
             val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.") {
                 CamelCase("id").."ID"(INTEGER, "the achievement's ID")
@@ -577,7 +593,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Special"(array(DAILY_ACHIEVEMENT), "the special achievements (e.g. festival dailies)")
         })
     }
-    "/Achievements/Daily/Tomorrow"(summary = "Returns information about tomorrow's daily achievements.") {
+    V2_ACHIEVEMENTS_DAILY_TOMORROW(summary = "Returns information about tomorrow's daily achievements.") {
         schema(record(name = "AchievementsDailyTomorrow", description = "Information about daily achievements.") {
             val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.") {
                 CamelCase("id").."ID"(INTEGER, "the achievement's ID")
@@ -598,7 +614,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Special"(array(DAILY_ACHIEVEMENT), "the special achievements (e.g. festival dailies)")
         })
     }
-    "/Achievements/Groups"(
+    V2_ACHIEVEMENTS_GROUPS(
         summary = "Returns information about achievement groups.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -611,13 +627,13 @@ internal val GW2v2 = GW2APISpecV2 {
             "Categories"(array(INTEGER), "an array containing the IDs of the categories that this group contains")
         })
     }
-    "/Backstory"(
+    V2_BACKSTORY(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Backstory/Answers"(
+    V2_BACKSTORY_ANSWERS(
         summary = "Returns information about biography answers.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -632,7 +648,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Races"(array(STRING), "the IDs of the races that the answer is available for")
         })
     }
-    "/Backstory/Questions"(
+    V2_BACKSTORY_QUESTIONS(
         summary = "Returns information about biography questions.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -647,9 +663,9 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Races"(array(STRING), "the IDs of the races that the question is presented to")
         })
     }
-    "/Build"(summary = "Returns the current build ID.") {
+    V2_BUILD(summary = "Returns the current build ID.") {
         schema(record(name = "Build", description = "Information about the current game build.") {
-            CamelCase("id").."ID"(INTEGER, "the current build ID")
+            CamelCase("id").."ID"(BUILD_ID, "the current build ID")
         })
     }
 //    "/Characters" {
@@ -667,7 +683,7 @@ internal val GW2v2 = GW2APISpecV2 {
 //            "Guild"(STRING, "")
 //        })
 //    }
-    "/Characters/:ID/Backstory"(
+    V2_CHARACTERS_BACKSTORY(
         summary = "Returns information about a character's backstory.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
@@ -677,7 +693,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Backstory"(array(STRING), "the IDs of the character's backstory answers")
         })
     }
-    "/Characters/:ID/BuildTabs"(
+    V2_CHARACTERS_BUILDTABS(
         idTypeKey = "tab",
         summary = "Returns information about a character's equipped specializations.",
         queryTypes = queryTypes(
@@ -718,7 +734,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/Core"(
+    V2_CHARACTERS_CORE(
         summary = "Returns general information about a character.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
@@ -738,7 +754,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Title"(INTEGER, "the ID of the character's selected title")
         })
     }
-    "/Characters/:ID/Crafting"(
+    V2_CHARACTERS_CRAFTING(
         summary = "Returns information about a character's crafting disciplines.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
@@ -755,7 +771,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/EquipmentTabs"(
+    V2_CHARACTERS_EQUIPMENTTABS(
         idTypeKey = "tab",
         summary = "Returns information about a character's equipment.",
         queryTypes = queryTypes(
@@ -777,7 +793,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
                     CamelCase("id").."ID"(INTEGER, "the equipped item's ID")
                     "Slot"(STRING, "the slot in which the equipment piece is slotted into")
-                    optional.."Skin"(INTEGER, "the ID of the skin transmuted onto the equipment piece")
+                    optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
                     optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
                     optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
                     optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
@@ -810,7 +826,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/HeroPoints"(
+    V2_CHARACTERS_HEROPOINTS(
         summary = "Returns information about a character's unlock hero points.",
         security = security(ACCOUNT, CHARACTERS, PROGRESSION)
     ) {
@@ -818,7 +834,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(STRING, "the IDs of the heropoints unlocked by the character"))
     }
-    "/Characters/:ID/Inventory"(
+    V2_CHARACTERS_INVENTORY(
         summary = "Returns information about a character's inventory.",
         security = security(ACCOUNT, CHARACTERS, INVENTORIES)
     ) {
@@ -836,7 +852,7 @@ internal val GW2v2 = GW2APISpecV2 {
                             CamelCase("id").."ID"(INTEGER, "the item's ID")
                             "Count"(INTEGER, "the amount of items in the stack")
                             optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-                            optional.."Skin"(INTEGER, "the ID of the skin applied to the item")
+                            optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                             optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
                             optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
                             optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
@@ -862,7 +878,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/Quests"(
+    V2_CHARACTERS_QUESTS(
         summary = "Returns information about a character's selected quests.",
         security = security(ACCOUNT, CHARACTERS, PROGRESSION)
     ) {
@@ -870,7 +886,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the quests selected by the character"))
     }
-    "/Characters/:ID/Recipes"(
+    V2_CHARACTERS_RECIPES(
         summary = "Returns information about a character's crafting recipes.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
@@ -880,7 +896,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
         })
     }
-    "/Characters/:ID/SAB"(
+    V2_CHARACTERS_SAB(
         summary = "Returns information about a character's Super Adventure Box (SAB) progression.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
@@ -912,7 +928,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/Skills"(
+    V2_CHARACTERS_SKILLS(
         summary = "Returns information about a character's equipped skills.",
         security = security(ACCOUNT, BUILDS, CHARACTERS),
         until = V2_SCHEMA_2019_12_19T00_00_00_000Z
@@ -937,7 +953,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/Specializations"(
+    V2_CHARACTERS_SPECIALIZATIONS(
         summary = "Returns information about a character's equipped specializations.",
         security = security(ACCOUNT, BUILDS, CHARACTERS),
         until = V2_SCHEMA_2019_12_19T00_00_00_000Z
@@ -960,7 +976,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Characters/:ID/Training"(
+    V2_CHARACTERS_TRAINING(
         summary = "Returns information about a character's (skill-tree) training.",
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
@@ -977,7 +993,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Colors"(
+    V2_COLORS(
         summary = "Returns information about all dye colors in the game.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1003,7 +1019,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Categories"(array(STRING), "the categories of the color")
         })
     }
-    "/Commerce/Delivery"(
+    V2_COMMERCE_DELIVERY(
         summary = "Returns information about the items and coins currently available for pickup.",
         security = security(ACCOUNT, TRADINGPOST)
     ) {
@@ -1018,13 +1034,16 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Commerce/Exchange"(
+    V2_COMMERCE_EXCHANGE(
         summary = "Returns information about the gem exchange.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Commerce/Exchange/:Type"(summary = "Returns information about the gem exchange.") {
+    V2_COMMERCE_EXCHANGE(
+        route = "/Commerce/Exchange/:Type",
+        summary = "Returns information about the gem exchange."
+    ) {
         pathParameter("Type", STRING, "the exchange type")
         queryParameter("Quantity", INTEGER, "the amount to exchange")
 
@@ -1033,7 +1052,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
         })
     }
-    "/Commerce/Listings"(
+    V2_COMMERCE_LISTINGS(
         summary = "Returns current buy and sell listings from the trading post.",
         queryTypes = defaultQueryTypes()
     ) {
@@ -1049,7 +1068,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Sells"(array(LISTING), "list of all sell listings")
         })
     }
-    "/Commerce/Prices"(
+    V2_COMMERCE_PRICES(
         summary = "Returns current aggregated buy and sell listing information from the trading post.",
         queryTypes = defaultQueryTypes()
     ) {
@@ -1072,14 +1091,15 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Commerce/Transactions"(
+    V2_COMMERCE_TRANSACTIONS(
         summary = "Returns information about an account's transactions.",
         cache = Duration.INFINITE, // We don't expect this to change. Ever.
         security = security(ACCOUNT, TRADINGPOST)
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Commerce/Transactions/:Relevance"(
+    V2_COMMERCE_TRANSACTIONS(
+        route = "/Commerce/Transactions/:Relevance",
         summary = "Returns information about an account's transactions.",
         cache = Duration.INFINITE, // We don't expect this to change. Ever.
         security = security(ACCOUNT, TRADINGPOST)
@@ -1088,7 +1108,8 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Commerce/Transactions/:Relevance/:Type"(
+    V2_COMMERCE_TRANSACTIONS(
+        route = "/Commerce/Transactions/:Relevance/:Type",
         summary = "Returns information about an account's transactions.",
         queryTypes = queryTypes(BY_PAGE),
         cache = 1.minutes,
@@ -1106,7 +1127,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Purchased"(STRING, "the ISO-8601 standard timestamp of when the transaction was completed")
         })
     }
-    "/Continents"(
+    V2_CONTINENTS(
         summary = "Returns information about continents.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1120,7 +1141,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Floors"(array(INTEGER), "the IDs of the continent's floors")
         })
     }
-    "/Continents/:ID/Floors"(
+    V2_CONTINENTS_FLOORS(
         summary = "Returns information about a continent's floors.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1240,7 +1261,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/CreateSubToken"(
+    V2_CREATESUBTOKEN(
         summary = "Creates a new subtoken.",
         security = security(ACCOUNT)
     ) {
@@ -1252,7 +1273,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
         })
     }
-    "/Currencies"(
+    V2_CURRENCIES(
         summary = "Returns information about currencies contained in the account wallet.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1265,7 +1286,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Order"(INTEGER, "a number that can be used to sort the list of currencies")
         })
     }
-    "/DailyCrafting"(
+    V2_DAILYCRAFTING(
         summary = "Returns information about the items that can be crafted once per day.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1274,7 +1295,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(STRING, "the ID of the dailycrafting")
         })
     }
-    "/Dungeons"(
+    V2_DUNGEONS(
         summary = "Returns information about the dungeons in the game.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1290,13 +1311,14 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Emblem"(
+    V2_EMBLEM(
         summary = "Returns information about guild emblem assets.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Emblem/:Type"(
+    V2_EMBLEM(
+        route = "/Emblem/:Type",
         summary = "Returns information about guild emblem assets.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1308,7 +1330,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Layers"(array(STRING), "an array of URLs to images that make up the various parts of the emblem")
         })
     }
-    "/Emotes"(
+    V2_EMOTES(
         summary = "Returns information about unlockable emotes.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1325,7 +1347,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Files"(
+    V2_FILES(
         summary = "Returns commonly requested in-game assets.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1335,7 +1357,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL to the image")
         })
     }
-    "/Finishers"(
+    V2_FINISHERS(
         summary = "Returns information about finishers.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1349,7 +1371,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the finisher")
         })
     }
-    "/Gliders"(
+    V2_GLIDERS(
         summary = "Returns information about gliders.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1367,7 +1389,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the glider")
         })
     }
-    "/Guild/:ID"(summary = "Returns information about a guild.") {
+    V2_GUILD(summary = "Returns information about a guild.") {
         pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
 
         schema(record(name = "Guild", description = "Information about a guild.") {
@@ -1394,7 +1416,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     )
                     "Foreground"(
                         description = "the emblem's foreground",
-                        type = record(name = "Foreground", description = "Information about a guild emblem's forground.") {
+                        type = record(name = "Foreground", description = "Information about a guild emblem's foreground.") {
                             CamelCase("id").."ID"(STRING, "the foreground's ID")
                             "Colors"(array(INTEGER), "the foreground's colors")
                         }
@@ -1404,7 +1426,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Guild/:ID/Log"(
+    V2_GUILD_LOG(
         summary = "Returns information about events in a guild's log.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1456,7 +1478,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Guild/:ID/Members"(
+    V2_GUILD_MEMBERS(
         summary = "Returns information about a guild's members.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1467,11 +1489,11 @@ internal val GW2v2 = GW2APISpecV2 {
             items = record(name = "GuildMember", description = "Information about a guild member.") {
                 "Name"(STRING, "the member's account name")
                 "Rank"(STRING, "the member's rank")
-                "Joined"(STRING, "the ISO8601 timestamp of when the member joined the guild")
+                "Joined"(STRING, "the ISO-8601 timestamp of when the member joined the guild")
             }
         ))
     }
-    "/Guild/:ID/Ranks"(
+    V2_GUILD_RANKS(
         summary = "Returns information about a guild's ranks.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1487,7 +1509,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Guild/:ID/Storage"(
+    V2_GUILD_STORAGE(
         summary = "Returns information about a guild's storage.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1501,7 +1523,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Guild/:ID/Teams"(
+    V2_GUILD_TEAMS(
         summary = "Returns information about a guild's PvP teams.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1562,7 +1584,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Guild/:ID/Treasury"(
+    V2_GUILD_TREASURY(
         summary = "Returns information about a guild's treasury.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1571,7 +1593,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "the guild's treasury items",
             items = record(name = "GuildTreasurySlot", description = "Information about an item in a guild's treasury.") {
-                SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                SerialName("item_id").."ItemID"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the amount of the item in the guild's treasury")
                 SerialName("needed_by").."NeededBy"(
                     description = "the currently in-progress upgrades requiring the item",
@@ -1583,7 +1605,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/Guild/:ID/Upgrades"(
+    V2_GUILD_UPGRADES(
         summary = "Returns information about a guild's upgrades.",
         security = security(ACCOUNT, GUILDS)
     ) {
@@ -1591,12 +1613,12 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the guild's unlocked upgrades"))
     }
-    "/Guild/Search"(summary = "Returns an array of guild IDs for a given guild name.") {
+    V2_GUILD_SEARCH(summary = "Returns an array of guild IDs for a given guild name.") {
         queryParameter("Name", STRING, "the guild name to search for")
 
         schema(array(STRING, "the IDs of the found guilds"))
     }
-    "/Guild/Permissions"(
+    V2_GUILD_PERMISSIONS(
         summary = "Returns information about available guild permissions.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1607,7 +1629,7 @@ internal val GW2v2 = GW2APISpecV2 {
             localized.."Description"(STRING, "the permission's localized description")
         })
     }
-    "/Guild/Upgrades"(
+    V2_GUILD_UPGRADES__STATIC(
         summary = "Returns information about available guild hall upgrades.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1631,7 +1653,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Type"(STRING, "the cost's type")
                         localized.."Name"(STRING, "the cost's name")
                         "Count"(STRING, "the amount needed")
-                        optional..SerialName("item_id").."ItemID"(INTEGER, "the ID of the cost's item")
+                        optional..SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the cost's item")
                     })
                 )
             }
@@ -1652,13 +1674,13 @@ internal val GW2v2 = GW2APISpecV2 {
             +record(name = "Unlock", description = "Information about permanent unlocks, such as merchants and arena decorations.") {}
         })
     }
-    "/Home"(
+    V2_HOME(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Home/Cats"(
+    V2_HOME_CATS(
         summary = "Returns information about home-instance cats.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1668,7 +1690,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Hint"(STRING, "the unlock hint")
         })
     }
-    "/Home/Nodes"(
+    V2_HOME_NODES(
         summary = "Returns information about home-instance nodes.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1677,13 +1699,13 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(STRING, "the node's ID")
         })
     }
-    "/Items"(
+    V2_ITEMS(
         summary = "Returns information about items in the game.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
     ) {
         schema(record(name = "Item", description = "Information about an item.") {
-            CamelCase("id").."ID"(INTEGER, "the item's ID")
+            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
             localized.."Name"(STRING, "the item's name")
             "Type"(STRING, "the item's type")
             SerialName("chat_link").."ChatLink"(STRING, "the chat link")
@@ -1692,7 +1714,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Rarity"(STRING, "the item's rarity")
             "Level"(INTEGER, "the level required to use the item")
             SerialName("vendor_value").."VendorValue"(INTEGER, "the value in coins when selling the item to a vendor")
-            optional..SerialName("default_skin").."DefaultSkin"(INTEGER, "the ID of the item's default skin")
+            optional..SerialName("default_skin").."DefaultSkin"(SKIN_ID, "the ID of the item's default skin")
             "Flags"(array(STRING), "flags applying to the item")
             SerialName("game_types").."GameTypes"(array(STRING), "the game types in which the item is usable")
             "Restrictions"(array(STRING), "restrictions applied to the item")
@@ -1700,14 +1722,14 @@ internal val GW2v2 = GW2APISpecV2 {
                 description = "lists what items this item can be upgraded into, and the method of upgrading",
                 type = array(record(name = "Upgrade", description = "Information about an item's upgrade.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(INTEGER, "the ID that results from performing the upgrade")
+                    SerialName("item_id").."ItemID"(ITEM_ID, "the ID that results from performing the upgrade")
                 })
             )
             optional..SerialName("upgrades_from").."UpgradesFrom"(
                 description = "lists what items this item can be upgraded from, and the method of upgrading",
                 type = array(record(name = "Precursor", description = "Information about an item's precursor.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(INTEGER, "the ID of the item that is upgraded into the item")
+                    SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the item that is upgraded into the item")
                 })
             )
             optional.."Details"(
@@ -1830,7 +1852,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/ItemStats"(
+    V2_ITEMSTATS(
         summary = "Returns information about itemstats.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1848,17 +1870,17 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/LegendaryArmory"(
+    V2_LEGENDARYARMORY(
         summary = "Returns information about what can be stored in the legendary armory.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
         schema(record(name = "LegendaryArmorySlot", description = "Information about an item that can be stored in the legendary armory.") {
-            CamelCase("id").."ID"(INTEGER, "the item's ID")
+            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
             SerialName("max_count").."MaxCount"(INTEGER, "the maximum number of copies of this item that can be stored in the armory for an account")
         })
     }
-    "/Legends"(
+    V2_LEGENDS(
         summary = "Returns information about the Revenant legends.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1874,7 +1896,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Mailcarriers"(
+    V2_MAILCARRIERS(
         summary = "Returns information about mailcarriers.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1884,11 +1906,11 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the mailcarrier's icon")
             localized.."Name"(STRING, "the mailcarrier's name")
             "Order"(INTEGER, "a number that can be used to sort the list of mailcarriers")
-            SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array containing the IDs of the items used to unlock the mailcarrier")
+            SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array containing the IDs of the items used to unlock the mailcarrier")
             "Flags"(array(STRING), "additional flags describing the mailcarrier")
         })
     }
-    "/MapChests"(
+    V2_MAPCHESTS(
         summary = "Returns information about the Hero's Choice Chests that can be acquired once per day.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1897,7 +1919,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(STRING, "the ID of the chest")
         })
     }
-    "/Maps"(
+    V2_MAPS(
         summary = "Returns information about maps.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1918,7 +1940,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
         })
     }
-    "/Masteries"(
+    V2_MASTERIES(
         summary = "Returns information about masteries.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1943,7 +1965,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Materials"(
+    V2_MATERIALS(
         summary = "Returns information about the categories in the material storage.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1951,11 +1973,11 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "MaterialCategory", description = "Information about a material category.") {
             CamelCase("id").."ID"(INTEGER, "the category's ID")
             localized.."Name"(STRING, "the category's name")
-            "Items"(array(INTEGER), "the IDs of this category's items")
+            "Items"(array(ITEM_ID), "the IDs of this category's items")
             "Order"(INTEGER, "the category's sorting key")
         })
     }
-    "/Minis"(
+    V2_MINIS(
         summary = "Returns information about minis.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1966,16 +1988,16 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..localized.."Description"(STRING, "the description of how to unlock the mini")
             "Icon"(STRING, "the URL for the mini's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
-            SerialName("item_id").."ItemID"(INTEGER, "the ID of the item which unlocks the mini")
+            SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the item which unlocks the mini")
         })
     }
-    "/Mounts"(
+    V2_MOUNTS(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/Mounts/Skins"(
+    V2_MOUNTS_SKINS(
         summary = "Returns information about mount skins.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -1994,7 +2016,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Mounts/Types"(
+    V2_MOUNTS_TYPES(
         summary = "Returns information about mount types.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2013,7 +2035,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Novelties"(
+    V2_NOVELTIES(
         summary = "Returns information about novelties.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2026,11 +2048,11 @@ internal val GW2v2 = GW2APISpecV2 {
             "Slot"(STRING, "the novelty's slot")
             SerialName("unlock_item").."UnlockItems"(
                 description = "the IDs of the items that unlock the novelty",
-                type = array(INTEGER)
+                type = array(ITEM_ID)
             )
         })
     }
-    "/Outfits"(
+    V2_OUTFITS(
         summary = "Returns information about outfits.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2041,11 +2063,11 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the outfit's icon")
             SerialName("unlock_items").."UnlockItems"(
                 description = "the IDs of the items that unlock the outfit",
-                type = array(INTEGER)
+                type = array(ITEM_ID)
             )
         })
     }
-    "/Pets"(
+    V2_PETS(
         summary = "Returns information about pets.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2063,7 +2085,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Professions"(
+    V2_PROFESSIONS(
         summary = "Returns information about the game's playable professions.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2128,13 +2150,13 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP"(
+    V2_PVP(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/PvP/Amulets"(
+    V2_PVP_AMULETS(
         summary = "Returns information about available PvP amulets.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2160,7 +2182,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP/Games"(
+    V2_PVP_GAMES(
         summary = "Returns information about an account's recent PvP games.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours,
@@ -2186,7 +2208,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP/Heroes"(
+    V2_PVP_HEROES(
         summary = "Returns information about available PvP heroes.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2213,12 +2235,12 @@ internal val GW2v2 = GW2APISpecV2 {
                     localized.."Name"(STRING, "the hero skin's localized name")
                     "Icon"(STRING, "a render service URL for the skin's icon")
                     "Default"(BOOLEAN, "whether or not the skin is the champion's default skin")
-                    SerialName("unlock_items").."UnlockItems"(array(INTEGER), "an array of item IDs used to unlock the finisher")
+                    SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the skin")
                 })
             )
         })
     }
-    "/PvP/Ranks"(
+    V2_PVP_RANKS(
         summary = "Returns information about the PvP ranks.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2240,7 +2262,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP/Seasons"(
+    V2_PVP_SEASONS(
         summary = "", // TODO
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2323,7 +2345,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP/Seasons/:ID/Leaderboards"(
+    V2_PVP_SEASONS_LEADERBOARDS(
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
@@ -2331,7 +2353,8 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/PvP/Seasons/:ID/Leaderboards/:Board"(
+    V2_PVP_SEASONS_LEADERBOARDS(
+        route = "/PvP/Seasons/:ID/Leaderboards/:Board",
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
@@ -2340,7 +2363,8 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(STRING, "the available sub-endpoints"))
     }
-    "/PvP/Seasons/:ID/Leaderboards/:Board/:Region"(
+    V2_PVP_SEASONS_LEADERBOARDS(
+        route = "/PvP/Seasons/:ID/Leaderboards/:Board/:Region",
         idTypeKey = "rank",
         summary = "Returns information about a PvP leaderboard.",
         queryTypes = queryTypes(BY_PAGE),
@@ -2366,7 +2390,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/PvP/Standings"(
+    V2_PVP_STANDINGS(
         summary = "Returns information about an account's PvP standings.",
         security = security(ACCOUNT, PVP)
     ) {
@@ -2399,7 +2423,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
-    "/PvP/Stats"(
+    V2_PVP_STATS(
         summary = "Returns information about an account's PvP stats.",
         cache = 1.hours,
         security = security(ACCOUNT, PVP)
@@ -2421,7 +2445,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Ladders"(map(STRING, STATS), "the stats by ladder (e.g. \"ranked\", \"unranked\")")
         })
     }
-    "/Quaggans"(
+    V2_QUAGGANS(
         summary = "Returns images of quaggans.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2431,7 +2455,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("url").."URL"(STRING, "the URL to the quaggan image")
         })
     }
-    "/Quests"(
+    V2_QUESTS(
         summary = "Returns information about Story Journal missions.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2450,7 +2474,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Races"(
+    V2_RACES(
         summary = "Returns information about the game's playable races.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2461,7 +2485,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
     }
-    "/Raids"(
+    V2_RAIDS(
         summary = "Returns information about the raids in the game.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2483,7 +2507,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Recipes"(
+    V2_RECIPES(
         summary = "Returns information about the crafting recipes in the game.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
@@ -2491,7 +2515,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "Recipe", description = "Information about a crafting recipe.") {
             CamelCase("id").."ID"(INTEGER, "the recipe's ID")
             "Type"(STRING, "the recipe's type")
-            SerialName("output_item_id").."OutputItemID"(INTEGER, "the ID of the produced item")
+            SerialName("output_item_id").."OutputItemID"(ITEM_ID, "the ID of the produced item")
             SerialName("output_item_count").."OutputItemCount"(INTEGER, "the amount of items produced")
             SerialName("time_to_craft_ms").."CraftTimeMillis"(INTEGER, "the time in milliseconds it takes to craft the item")
             "Disciplines"(array(STRING), "the crafting disciplines that can use the recipe")
@@ -2500,7 +2524,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Ingredients"(
                 description = "the recipe's ingredients",
                 type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
-                    SerialName("item_id").."ItemID"(STRING, "the ingredient's item ID")
+                    SerialName("item_id").."ItemID"(ITEM_ID, "the ingredient's item ID")
                     "Count"(INTEGER, "the quantity of this ingredient")
                 })
             )
@@ -2515,7 +2539,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("chat_link").."ChatLink"(STRING, "the recipe's chat code")
         })
     }
-    "/Recipes/Search"(
+    V2_RECIPES_SEARCH(
         querySuffix = "ByInput",
         summary = "Returns an array of item IDs for recipes using a given item as ingredient."
     ) {
@@ -2523,7 +2547,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the found recipes"))
     }
-    "/Recipes/Search"(
+    V2_RECIPES_SEARCH(
         querySuffix = "ByOutput",
         summary = "Returns an array of item IDs for recipes to craft a given item."
     ) {
@@ -2531,7 +2555,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the found recipes"))
     }
-    "/Skills"(
+    V2_SKILLS(
         summary = "Returns information about the skills in the game.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
@@ -2589,13 +2613,13 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..SerialName("toolbelt_skill").."ToolbeltSkill"(INTEGER, "the ID of the associated toolbelt skill")
         })
     }
-    "/Skins"(
+    V2_SKINS(
         summary = "Returns information about the skins in the game.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
     ) {
         schema(record(name = "Skin", description = "Information about a skin.") {
-            CamelCase("id").."ID"(INTEGER, "the skin's ID")
+            CamelCase("id").."ID"(SKIN_ID, "the skin's ID")
             localized.."Name"(STRING, "the skin's localized name")
             "Type"(STRING, "the skin's type")
             "Flags"(array(STRING), "additional skin flags (ShowInWardrobe, NoCost, HideIfLocked, OverrideRarity)")
@@ -2649,7 +2673,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/Specializations"(
+    V2_SPECIALIZATIONS(
         summary = "Returns information about the specializations in the game.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2668,7 +2692,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..SerialName("profession_icon_big").."BigProfessionIcon"(STRING, "a render service URL for a large variant of the elite specialization's icon")
         })
     }
-    "/Stories"(
+    V2_STORIES(
         summary = "Returns information about the Story Journal stories.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2691,7 +2715,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Flags"(array(STRING), "additional requirements for a character to participate in the story")
         })
     }
-    "/Stories/Seasons"(
+    V2_STORIES_SEASONS(
         summary = "Returns information about the Story Journal seasons.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2703,7 +2727,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Stories"(array(INTEGER), "the IDs of the stories in the season")
         })
     }
-    "/Titles"(
+    V2_TITLES(
         summary = "Returns information about the titles that are in the game.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2716,9 +2740,9 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..SerialName("ap_required")..CamelCase("apRequired").."APRequired"(INTEGER, "the amount of AP required to unlock this title")
         })
     }
-    "/TokenInfo"(
+    V2_TOKENINFO(
         summary = "Returns information about the supplied API key.",
-        security = security(ACCOUNT)
+        security = security()
     ) {
         schema(
             V2_SCHEMA_CLASSIC to record(name = "TokenInfo", description = "Information about an API key.") {
@@ -2728,7 +2752,6 @@ internal val GW2v2 = GW2APISpecV2 {
                     description = "an array of strings describing which permissions the API key has",
                     type = array(STRING)
                 )
-                "Type"(STRING, "the type of the access token given")
             },
             V2_SCHEMA_2019_05_22T00_00_00_000Z to record(name = "TokenInfo", description = "Information about an API key.") {
                 CamelCase("id").."ID"(STRING, "the API key that was requested")
@@ -2744,7 +2767,7 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         )
     }
-    "/Traits"(
+    V2_TRAITS(
         summary = "Returns information about the traits in the game.",
         queryTypes = defaultQueryTypes(),
         cache = 1.hours
@@ -2824,7 +2847,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the trait's icon")
         })
     }
-    "/WorldBosses"(
+    V2_WORLDBOSSES(
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2833,7 +2856,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(STRING, "the worldboss's ID")
         })
     }
-    "/Worlds"(
+    V2_WORLDS(
         summary = "Returns information about the available worlds (or servers).",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2844,7 +2867,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Population"(STRING, "the population level of the world")
         })
     }
-    "/WvW/Abilities"(
+    V2_WVW_ABILITIES(
         summary = "Returns information about the achievable ranks in the World versus World game mode.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2863,7 +2886,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/WvW/Matches"(
+    V2_WVW_MATCHES(
         summary = "Returns information about the active WvW matches.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
@@ -2926,7 +2949,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/WvW/Matches/Overview"(
+    V2_WVW_MATCHES_OVERVIEW(
         summary = "Returns general information about the active WvW matches.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
@@ -2939,7 +2962,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
         })
     }
-    "/WvW/Matches/Scores"(
+    V2_WVW_MATCHES_SCORES(
         summary = "Returns information about the active WvW match scores.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
@@ -2972,7 +2995,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/WvW/Matches/Stats"(
+    V2_WVW_MATCHES_STATS(
         summary = "Returns information about the active WvW match stats.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
@@ -2992,7 +3015,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
-    "/WvW/Objectives"(
+    V2_WVW_OBJECTIVES(
         summary = "Returns information about the objectives in the World versus World game mode.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -3011,7 +3034,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional..SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the upgrades available for the objective")
         })
     }
-    "/WvW/Ranks"(
+    V2_WVW_RANKS(
         summary = "Returns information about the achievable ranks in the World versus World game mode.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -3022,7 +3045,7 @@ internal val GW2v2 = GW2APISpecV2 {
             SerialName("min_rank").."MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
-    "/WvW/Upgrades"(
+    V2_WVW_UPGRADES(
         summary = "Returns information about available upgrades for objectives in the World versus World game mode.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours

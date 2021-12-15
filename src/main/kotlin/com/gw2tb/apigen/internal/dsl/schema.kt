@@ -27,23 +27,88 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 
+/** Alias for [SchemaBoolean]. */
+internal val BOOLEAN get() = SchemaPrimitiveReference(SchemaBoolean())
+
+/** Alias for [SchemaDecimal]. */
+internal val DECIMAL get() = SchemaPrimitiveReference(SchemaDecimal())
+
+/** Alias for [SchemaInteger]. */
+internal val INTEGER get() = SchemaPrimitiveReference(SchemaInteger())
+
+/** Alias for [SchemaString]. */
+internal val STRING get() = SchemaPrimitiveReference(SchemaString())
+
+internal interface SchemaTypeReference {
+
+    fun get(register: TypeRegistryScope): SchemaType
+
+}
+
+internal class SchemaPrimitiveReference(
+    internal val type: SchemaPrimitive
+) : SchemaTypeReference {
+
+    private lateinit var value: SchemaPrimitive
+
+    override fun get(register: TypeRegistryScope): SchemaPrimitive {
+        if (!this::value.isInitialized) value = type // TODO register
+        return value
+    }
+
+}
+
+internal class SchemaArrayReference(private val factory: (register: TypeRegistryScope) -> SchemaArray) : SchemaTypeReference {
+
+    private lateinit var value: SchemaArray
+
+    override fun get(register: TypeRegistryScope): SchemaType {
+        if (!this::value.isInitialized) value = factory(register)
+        return value
+    }
+
+}
+
+internal class SchemaMapReference(private val factory: (register: TypeRegistryScope) -> SchemaMap) : SchemaTypeReference {
+
+    private lateinit var value: SchemaMap
+
+    override fun get(register: TypeRegistryScope): SchemaType {
+        if (!this::value.isInitialized) value = factory(register)
+        return value
+    }
+
+}
+
+internal class SchemaClassReference(
+    val name: String,
+    private val factory: (register: TypeRegistryScope) -> SchemaClass
+) : SchemaTypeReference {
+
+    private lateinit var value: SchemaClass
+
+    override fun get(register: TypeRegistryScope): SchemaType {
+        if (!this::value.isInitialized) value = factory(register)
+        return value
+    }
+
+}
+
 @APIGenDSL
 internal interface SchemaClassBuilder<T : APIType> {
 
-    val nestedTypes: MutableMap<String?, MutableList<T>>
-
     fun array(
-        items: SchemaType,
+        items: SchemaTypeReference,
         nullableItems: Boolean = false
-    ): SchemaType =
-        SchemaArray(items, nullableItems, null)
+    ): SchemaTypeReference =
+        SchemaArrayReference { SchemaArray(items.get(it), nullableItems, null) }
 
     fun map(
-        keys: SchemaPrimitive,
-        values: SchemaType,
+        keys: SchemaPrimitiveReference,
+        values: SchemaTypeReference,
         nullableValues: Boolean = false
-    ): SchemaType =
-        SchemaMap(keys, values, nullableValues, null)
+    ): SchemaTypeReference =
+        SchemaMapReference { SchemaMap(keys.get(it), values.get(it), nullableValues, null) }
 
     fun conditional(
         name: String,
@@ -53,13 +118,13 @@ internal interface SchemaClassBuilder<T : APIType> {
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
     fun record(
         name: String,
         description: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
 }
 
@@ -72,10 +137,10 @@ internal interface SchemaConditionalBuilder<T : APIType> : SchemaClassBuilder<T>
      *
      * @param type  the type of the interpretation
      */
-    operator fun String.invoke(type: SchemaType, nestProperty: String = this.toLowerCase()): SchemaConditionalInterpretationBuilder
+    operator fun String.invoke(type: SchemaTypeReference, nestProperty: String = this.toLowerCase()): SchemaConditionalInterpretationBuilder
 
     /** Registers a conditional interpretation using the @receiver's name as key. */
-    operator fun SchemaClass.unaryPlus(): SchemaConditionalInterpretationBuilder
+    operator fun SchemaClassReference.unaryPlus(): SchemaConditionalInterpretationBuilder
 
     /** Marks a deprecated interpretation. */
     val deprecated get() = Modifiers.deprecated
@@ -99,7 +164,7 @@ internal interface SchemaConditionalBuilder<T : APIType> : SchemaClassBuilder<T>
 internal interface SchemaRecordBuilder<T : APIType> : SchemaClassBuilder<T> {
 
     operator fun String.invoke(
-        type: SchemaType,
+        type: SchemaTypeReference,
         description: String
     ): SchemaRecordPropertyBuilder
 
@@ -154,7 +219,7 @@ internal interface SchemaRecordBuilder<T : APIType> : SchemaClassBuilder<T> {
 internal class SchemaConditionalInterpretationBuilder(
     private val interpretationKey: String,
     private val interpretationNestProperty: String,
-    private val type: SchemaType
+    private val type: SchemaTypeReference
 ) {
 
     private var isUnused = true
@@ -177,14 +242,13 @@ internal class SchemaConditionalInterpretationBuilder(
             field = value
         }
 
-
-    val interpretation by lazy {
+    fun build(register: TypeRegistryScope): SchemaConditional.Interpretation {
         isUnused = false
 
-        SchemaConditional.Interpretation(
+        return SchemaConditional.Interpretation(
             interpretationKey = interpretationKey,
             interpretationNestProperty = interpretationNestProperty,
-            type = type,
+            type = type.get(register),
             isDeprecated = isDeprecated,
             since = since,
             until = until
@@ -195,7 +259,7 @@ internal class SchemaConditionalInterpretationBuilder(
 
 internal class SchemaRecordPropertyBuilder(
     private val propertyName: String,
-    private val type: SchemaType,
+    private val type: SchemaTypeReference,
     private val description: String
 ) {
 
@@ -262,12 +326,12 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
-    val property by lazy {
+    fun build(register: TypeRegistryScope): SchemaRecord.Property {
         isUnused = false
 
-        SchemaRecord.Property(
+        return SchemaRecord.Property(
             propertyName = propertyName,
-            type = type,
+            type = type.get(register),
             description = description,
             optionality = optionality ?: Optionality.REQUIRED,
             isDeprecated = isDeprecated,

@@ -32,7 +32,7 @@ internal interface QueriesBuilder<T : APIType> {
 
     fun pathParameter(
         name: String,
-        type: SchemaPrimitive,
+        type: SchemaPrimitiveReference,
         description: String,
         key: String = name,
         camelCase: String = name.firstToLowerCase()
@@ -40,29 +40,29 @@ internal interface QueriesBuilder<T : APIType> {
 
     fun queryParameter(
         name: String,
-        type: SchemaPrimitive,
+        type: SchemaPrimitiveReference,
         description: String,
         key: String = name.toLowerCase(Locale.ENGLISH),
         camelCase: String = name.firstToLowerCase(),
         isOptional: Boolean = false
     )
 
-    fun schema(schema: SchemaType)
+    fun schema(schema: SchemaTypeReference)
 
     fun array(
-        items: SchemaType,
+        items: SchemaTypeReference,
         description: String,
         nullableItems: Boolean = false
-    ): SchemaType =
-        SchemaArray(items, nullableItems, description)
+    ): SchemaTypeReference =
+        SchemaArrayReference { SchemaArray(items.get(it), nullableItems, description) }
 
     fun map(
-        keys: SchemaPrimitive,
-        values: SchemaType,
+        keys: SchemaPrimitiveReference,
+        values: SchemaTypeReference,
         description: String,
         nullableValues: Boolean = false
-    ): SchemaType =
-        SchemaMap(keys, values, nullableValues, description)
+    ): SchemaTypeReference =
+        SchemaMapReference { SchemaMap(keys.get(it), values.get(it), nullableValues, description) }
 
     fun conditional(
         name: String,
@@ -72,13 +72,13 @@ internal interface QueriesBuilder<T : APIType> {
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         block: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
     fun record(
         name: String,
         description: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClass
+    ): SchemaClassReference
 
 }
 
@@ -88,6 +88,6 @@ internal interface QueriesBuilderV1 : QueriesBuilder<APIType.V1>
 /** A builder for one or more V2 queries. */
 internal interface QueriesBuilderV2 : QueriesBuilder<APIType.V2> {
 
-    fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaType>)
+    fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaTypeReference>)
 
 }

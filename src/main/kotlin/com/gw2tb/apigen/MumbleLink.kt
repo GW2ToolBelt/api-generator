@@ -44,5 +44,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
         "Map"(INTEGER, "the ID of the current map")
         "FoV"(DECIMAL, "the scaling of the FOV")
         SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
-    }.properties.associateBy { it.serialName }, "The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol.")
+    }.buildProperties(object : TypeRegistryScope() {
+        override fun register(name: String, value: APIType) {}
+    }).associateBy { it.serialName }, "The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol.")
 }

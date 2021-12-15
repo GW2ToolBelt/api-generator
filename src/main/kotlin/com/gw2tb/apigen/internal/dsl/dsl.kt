@@ -19,29 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("FunctionName")
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.schema.*
 import java.util.*
 
 @DslMarker
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE)
 internal annotation class APIGenDSL
-
-/** Alias for [SchemaBoolean]. */
-internal val BOOLEAN get() = SchemaBoolean
-
-/** Alias for [SchemaDecimal]. */
-internal val DECIMAL get() = SchemaDecimal
-
-/** Alias for [SchemaInteger]. */
-internal val INTEGER get() = SchemaInteger
-
-/** Alias for [SchemaString]. */
-internal val STRING get() = SchemaString
 
 /** Alias for [QueryType.ByID]. */
 internal val BY_ID get() = QueryType.ByID

@@ -22,58 +22,57 @@
 package com.gw2tb.apigen.test.spec
 
 import com.gw2tb.apigen.*
-import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.APIv1Endpoint.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
-import com.gw2tb.apigen.test.assertNotNull
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import kotlin.time.*
 
 class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     "GW2v1",
-    APIVersion.API_V1,
+    APIVersion.getV1(),
     V1SpecBuilder {
-        expectQuery("/Build")
+        expectQuery(V1_BUILD)
 
         expectQuery(
-            "/Colors",
+            V1_COLORS,
             isLocalized = true
         )
 
         expectQuery(
-            "/Continents",
+            V1_CONTINENTS,
             isLocalized = true
         )
 
         expectQuery(
-            "/event_details",
+            V1_EVENT_DETAILS,
             isLocalized = true
         )
 
-        expectQuery("/Files")
+        expectQuery(V1_FILES)
 
         expectQuery(
-            "/guild_details",
+            V1_GUILD_DETAILS,
             queryParameters = listOf(ExpectedQueryParameter("guild_id", STRING))
         )
 
         expectQuery(
-            "/guild_details",
+            V1_GUILD_DETAILS,
             queryParameters = listOf(ExpectedQueryParameter("guild_name", STRING))
         )
 
         expectQuery(
-            "/item_details",
+            V1_ITEM_DETAILS,
             isLocalized = true,
-            queryParameters = listOf(ExpectedQueryParameter("item_id", STRING))
+            queryParameters = listOf(ExpectedQueryParameter("item_id", INTEGER))
         )
 
-        expectQuery("/Items")
+        expectQuery(V1_ITEMS)
 
         expectQuery(
-            "/map_floor",
+            V1_MAP_FLOOR,
             isLocalized = true,
             queryParameters = listOf(
                 ExpectedQueryParameter("continent_id", INTEGER),
@@ -82,45 +81,45 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         )
 
         expectQuery(
-            "/map_names",
+            V1_MAP_NAMES,
             isLocalized = true
         )
 
         expectQuery(
-            "/Maps",
+            V1_MAPS,
             isLocalized = true
         )
 
         expectQuery(
-            "/recipe_details",
+            V1_RECIPE_DETAILS,
             queryParameters = listOf(ExpectedQueryParameter("recipe_id", INTEGER))
         )
 
-        expectQuery("/Recipes")
+        expectQuery(V1_RECIPES)
 
         expectQuery(
-            "/skin_details",
+            V1_SKIN_DETAILS,
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("skin_id", INTEGER))
         )
 
-        expectQuery("/Skins")
+        expectQuery(V1_SKINS)
 
         expectQuery(
-            "/world_names",
+            V1_WORLD_NAMES,
             isLocalized = true
         )
 
         expectQuery(
-            "/wvw/match_details",
+            V1_WVW_MATCH_DETAILS,
             queryParameters = listOf(ExpectedQueryParameter("match_id", STRING))
         )
 
-        expectQuery("/WvW/Matches")
+        expectQuery(V1_WVW_MATCHES)
 
         expectQuery(
-            "/wvw/objectives_names",
+            V1_WVW_OBJECTIVE_NAMES,
             isLocalized = true
         )
     }
@@ -130,9 +129,7 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         assertEquals(expected.isLocalized, actual.schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
     }
 
-    override fun testTypes(queries: Collection<APIQuery.V1>) = sequence<DynamicTest> {
-        val query = queries.first()
-
+    override fun testType(type: APIType.V1): Iterable<DynamicTest> = sequence {
         fun SchemaType.firstPossiblyNestedClassOrNull(): SchemaClass? = when (this) {
             is SchemaClass -> this
             is SchemaArray -> items.firstPossiblyNestedClassOrNull()
@@ -140,21 +137,16 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         }
 
         fun SchemaType.isClassOrArrayOfClasses() = firstPossiblyNestedClassOrNull() != null
-        if (!query.schema.isClassOrArrayOfClasses()) return@sequence
+        if (!type.schema.isClassOrArrayOfClasses()) return@sequence
 
-        val supportedType = spec.supportedTypes.filter { (key, _) -> key.endpoint == query.endpoint }
-            .flatMap { (_, value) -> value }
-            .find { it.schema == query.schema.firstPossiblyNestedClassOrNull() }
-
-        yield(DynamicTest.dynamicTest("$prefix${query.route}") {
-            assertNotNull(supportedType)
-
-            val data = TestData[spec, query.route]
-            assertSchema(query.schema, data)
+        yield(DynamicTest.dynamicTest("$prefix${type.name}") {
+            val data = TestData[spec, type.name]
+            assertSchema(type.schema, data)
         })
     }.asIterable()
 
     data class ExpectedAPIv1Query(
+        private val endpoint: APIv1Endpoint,
         override val route: String,
         override val isLocalized: Boolean,
         override val cache: Duration?,
@@ -173,13 +165,15 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
         }
 
         fun expectQuery(
-            route: String,
+            endpoint: APIv1Endpoint,
+            route: String = endpoint.endpointName,
             isLocalized: Boolean = false,
             cache: Duration? = null,
             pathParameters: List<ExpectedPathParameter> = emptyList(),
             queryParameters: List<ExpectedQueryParameter> = emptyList()
         ) {
             queries += ExpectedAPIv1Query(
+                endpoint,
                 route,
                 isLocalized,
                 cache,
