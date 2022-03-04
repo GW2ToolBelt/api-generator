@@ -1,10 +1,5 @@
 name: Publish docs
-on:
-  push:
-    tags:
-      - v*
-  workflow_dispatch:
-
+on: workflow_dispatch
 
 jobs:
   deploy_docs:
