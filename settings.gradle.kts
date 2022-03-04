@@ -21,8 +21,6 @@
  */
 rootProject.name = "api-generator"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
