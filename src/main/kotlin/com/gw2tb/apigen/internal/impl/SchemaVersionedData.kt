@@ -31,6 +31,9 @@ internal fun <T> buildVersionedSchemaData(block: Builder<T>.() -> Unit): SchemaV
         }
     })
 
+internal fun <T> wrapVersionedSchemaData(value: T): SchemaVersionedData<T> =
+    buildVersionedSchemaData { add(value, since = V2SchemaVersion.V2_SCHEMA_CLASSIC, until = null) }
+
 internal class Builder<T> {
 
     internal val data = mutableMapOf<VersionConstraint, T>()
@@ -130,6 +133,9 @@ internal class SchemaVersionedData<T>(
     fun <R> mapData(transform: (T) -> R): SchemaVersionedData<R> =
         SchemaVersionedData(entries.asSequence().map { it.map(transform) }.toCollection(TreeSet()))
 
+    fun <R> mapVersionedData(transform: (V2SchemaVersion, T) -> R): SchemaVersionedData<R> =
+        SchemaVersionedData(entries.asSequence().map { it.mapVersioned(transform) }.toCollection(TreeSet()))
+
     fun <R> mapDataOrNull(transform: (T) -> R?): SchemaVersionedData<R>? {
         val set = entries.asSequence().mapNotNull { it.mapOrNull(transform) }.toCollection(TreeSet())
 
@@ -141,6 +147,9 @@ internal class SchemaVersionedData<T>(
 
     private fun <R> VersionConstrainedData<T>.map(transform: (T) -> R) =
         VersionConstrainedData(transform(data), since, until)
+
+    private fun <R> VersionConstrainedData<T>.mapVersioned(transform: (V2SchemaVersion, T) -> R) =
+        VersionConstrainedData(transform(since, data), since, until)
 
     private fun <R> VersionConstrainedData<T>.mapOrNull(transform: (T) -> R?): VersionConstrainedData<R>? =
         transform(data)?.let { VersionConstrainedData(it, since, until) }

@@ -24,6 +24,7 @@ package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.model.APIType
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.Duration
@@ -34,8 +35,20 @@ internal val GW2v2 = GW2APISpecV2 {
     val ITEM_ID = "ItemID"(INTEGER)
     val SKIN_ID = "SkinID"(INTEGER)
 
+    val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.", endpoint = "/Achivements/Daily") {
+        CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+        "Level"(
+            description = "the level requirement for the daily achievement to appear",
+            type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
+                "Min"(INTEGER, "the minimum level for a character to the daily achievement")
+                "Max"(INTEGER, "the maximum level for a character to the daily achievement")
+            }
+        )
+        SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
+    }
+
     @APIGenDSL
-    fun SchemaConditionalBuilder<*>.FACTS() {
+    fun SchemaConditionalBuilder<APIType.V2>.FACTS() {
         +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
             optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
             optional.."Target"(STRING, "the attribute this fact adjusts")
@@ -574,18 +587,6 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_ACHIEVEMENTS_DAILY(summary = "Returns information about daily achievements.") {
         schema(record(name = "AchievementsDaily", description = "Information about daily achievements.") {
-            val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.") {
-                CamelCase("id").."ID"(INTEGER, "the achievement's ID")
-                "Level"(
-                    description = "the level requirement for the daily achievement to appear",
-                    type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
-                        "Min"(INTEGER, "the minimum level for a character to the daily achievement")
-                        "Max"(INTEGER, "the maximum level for a character to the daily achievement")
-                    }
-                )
-                SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
-            }
-
             CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
             CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
             CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT), "the WvW achievements")
@@ -595,18 +596,6 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_ACHIEVEMENTS_DAILY_TOMORROW(summary = "Returns information about tomorrow's daily achievements.") {
         schema(record(name = "AchievementsDailyTomorrow", description = "Information about daily achievements.") {
-            val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.") {
-                CamelCase("id").."ID"(INTEGER, "the achievement's ID")
-                "Level"(
-                    description = "the level requirement for the daily achievement to appear",
-                    type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
-                        "Min"(INTEGER, "the minimum level for a character to the daily achievement")
-                        "Max"(INTEGER, "the maximum level for a character to the daily achievement")
-                    }
-                )
-                SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
-            }
-
             CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
             CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
             CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT), "the WvW achievements")

@@ -24,27 +24,36 @@
 package com.gw2tb.apigen
 
 import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 
 /** The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol. */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
-    SchemaRecord("MumbleLinkIdentity", SchemaRecordBuilderImpl<APIType.V1>(
-        apiTypeFactory = { error("Unsupported operation") }
-    ).apply {
-        "Name"(STRING, "the name of the currently played character")
-        "Profession"(INTEGER, "the current profession (class) of the currently played character")
-        "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
-        "Race"(INTEGER, "the ID of the race of the currently played character")
-        SerialName("map_id").."MapId"(INTEGER, "the ID of the current map")
-        SerialName("world_id").."WorldId"(INTEGER, "the ID of the current world")
-        SerialName("team_color_id").."TeamColorId"(INTEGER, "the ID of the current team")
-        "Commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
-        "Map"(INTEGER, "the ID of the current map")
-        "FoV"(DECIMAL, "the scaling of the FOV")
-        SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
-    }.buildProperties(object : TypeRegistryScope() {
-        override fun register(name: String, value: APIType) {}
-    }).associateBy { it.serialName }, "The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol.")
+    val stubTypeRegistry = object : TypeRegistryScope() {
+        override fun register(name: String, value: APIType): TypeLocation {
+            return TypeLocation(null, "STUB")
+        }
+    }
+
+    SchemaRecord(
+        "MumbleLinkIdentity",
+        SchemaRecordBuilder<APIType.V1>(
+            "MumbleLinkIdentity",
+            "", // TODO
+            apiTypeFactory = { error("Unsupported operation") }
+        ).apply {
+            "Name"(STRING, "the name of the currently played character")
+            "Profession"(INTEGER, "the current profession (class) of the currently played character")
+            "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
+            "Race"(INTEGER, "the ID of the race of the currently played character")
+            SerialName("map_id").."MapId"(INTEGER, "the ID of the current map")
+            SerialName("world_id").."WorldId"(INTEGER, "the ID of the current world")
+            SerialName("team_color_id").."TeamColorId"(INTEGER, "the ID of the current team")
+            "Commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
+            "Map"(INTEGER, "the ID of the current map")
+            "FoV"(DECIMAL, "the scaling of the FOV")
+            SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
+        }.buildProperties(stubTypeRegistry).single().data,
+        "The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol."
+    )
 }

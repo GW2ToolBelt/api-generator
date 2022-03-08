@@ -43,22 +43,22 @@ internal fun GW2APISpecV2(block: SpecBuilderV2.() -> Unit): SpecBuilderV2Impl =
 @APIGenDSL
 internal interface SpecBuilder<T : APIType> {
 
-    operator fun String.invoke(type: SchemaPrimitiveReference, camelCaseName: String = this): SchemaPrimitiveReference
+    operator fun String.invoke(type: DeferredPrimitiveType, camelCaseName: String = this): DeferredPrimitiveType
 
     fun array(
-        items: SchemaTypeReference,
+        items: DeferredSchemaType<out SchemaTypeUse>,
         description: String,
         nullableItems: Boolean = false
-    ): SchemaTypeReference =
-        SchemaArrayReference { SchemaArray(items.get(it), nullableItems, description) }
+    ): DeferredSchemaType<SchemaArray> =
+        DeferredSchemaType { typeRegistry -> items.get(typeRegistry).mapData { SchemaArray(it, nullableItems, description) } }
 
     fun map(
-        keys: SchemaPrimitiveReference,
-        values: SchemaTypeReference,
+        keys: DeferredSchemaType<out SchemaPrimitive>,
+        values: DeferredSchemaType<out SchemaTypeUse>,
         description: String,
         nullableValues: Boolean = false
-    ): SchemaTypeReference =
-        SchemaMapReference { SchemaMap(keys.get(it), values.get(it), nullableValues, description) }
+    ): DeferredSchemaType<SchemaMap> =
+        DeferredSchemaType { typeRegistry -> values.get(typeRegistry).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
 
     fun conditional(
         name: String,
@@ -69,14 +69,14 @@ internal interface SpecBuilder<T : APIType> {
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClassReference
+    ): DeferredSchemaClass<T>
 
     fun record(
         name: String,
         description: String,
         endpoint: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClassReference
+    ): DeferredSchemaClass<T>
 
 }
 

@@ -23,4 +23,4 @@ package com.gw2tb.apigen.test
 
 import com.gw2tb.apigen.schema.*
 
-val SchemaType.array get() = SchemaArray(this, false, null)
+val SchemaTypeUse.array get() = SchemaArray(this, false, null)

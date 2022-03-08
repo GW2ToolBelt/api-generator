@@ -25,12 +25,12 @@ import com.gw2tb.apigen.model.*
 
 internal abstract class TypeRegistryScope {
 
-    abstract fun register(name: String, value: APIType)
+    abstract fun register(name: String, value: APIType): TypeLocation
 
     open fun nestedScope(nestName: String): TypeRegistryScope = object : TypeRegistryScope() {
 
-        override fun register(name: String, value: APIType) {
-            this@TypeRegistryScope.register("$nestName/$name", value)
+        override fun register(name: String, value: APIType): TypeLocation {
+            return this@TypeRegistryScope.register("$nestName/$name", value)
         }
 
     }

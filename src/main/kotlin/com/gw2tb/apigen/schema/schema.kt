@@ -22,16 +22,180 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
 package com.gw2tb.apigen.schema
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
+
+/** A type usage. */
+public sealed class SchemaTypeUse
+
+public sealed class SchemaPrimitive : SchemaTypeUse() {
+
+    public abstract val typeHint: TypeHint?
+
+    public abstract fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive
+
+    public data class TypeHint(
+        val camelCaseName: String
+    )
+
+}
+
+/** A schema representing primitive boolean types. */
+public data class SchemaBoolean(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
+
+/** A schema representing primitive decimal types. */
+public data class SchemaDecimal(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
+
+/** A schema representing primitive integer types. */
+public data class SchemaInteger(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
+
+/** A schema representing primitive string types. */
+public data class SchemaString(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
+
+public data class SchemaArray(
+    val elements: SchemaTypeUse,
+    val nullableElements: Boolean,
+    val description: String?
+) : SchemaTypeUse()
+
+public data class SchemaMap(
+    val keys: SchemaPrimitive,
+    val values: SchemaTypeUse,
+    val nullableValues: Boolean,
+    val description: String?
+) : SchemaTypeUse()
+
+public data class SchemaTypeReference(
+    val typeLocation: TypeLocation,
+    val version: V2SchemaVersion,
+    internal val declaration: SchemaTypeDeclaration
+) : SchemaTypeUse() {
+    val name: String get() = declaration.name
+}
+
+/** A type declaration. */
+public sealed class SchemaTypeDeclaration {
+
+    public abstract val name: String
+
+}
+
+public data class SchemaConditional(
+    public override val name: String,
+    public val disambiguationBy: String,
+    public val disambiguationBySideProperty: Boolean,
+    public val interpretationInNestedProperty: Boolean,
+    public val sharedProperties: Map<String, SchemaProperty>,
+    public val interpretations: Map<String, Interpretation>,
+    public val description: String
+) : SchemaTypeDeclaration() {
+
+    /**
+     * A conditional interpretation.
+     *
+     * @param interpretationKey             the key used to identify the interpretation
+     * @param interpretationNestProperty    TODO doc
+     * @param type                          the schema definition for this interpretation
+     * @param isDeprecated                  whether the interpretation is deprecated
+     * @param since                         the minimum [V2SchemaVersion] required for the interpretation
+     * @param until                         the [V2SchemaVersion] up to which the interpretation existed
+     */
+    public data class Interpretation internal constructor(
+        public val interpretationKey: String,
+        public val interpretationNestProperty: String?,
+        public val type: SchemaTypeUse,
+        public val isDeprecated: Boolean,
+        public val since: V2SchemaVersion?,
+        public val until: V2SchemaVersion?
+    )
+
+}
+
+public data class SchemaRecord(
+    public override val name: String,
+    public val properties: Map<String, SchemaProperty>,
+    public val description: String
+) : SchemaTypeDeclaration()
+
+/**
+ * A record property.
+ *
+ * @param propertyName  the name of the property in title-case (e.g. "ItemId")
+ * @param type          the schema definition for this property
+ * @param description   the description of the property. (Should be worded to complete the sentence "This field
+ *                      holds {description}.")
+ * @param isDeprecated  whether the property is deprecated
+ * @param isLocalized
+ * @param optionality   the [Optionality] of this property
+ * @param since         the minimum [V2SchemaVersion] required for the property
+ * @param until         the [V2SchemaVersion] up to which the property existed
+ * @param serialName    the serial name of the property
+ * @param camelCaseName the name of the property in camelCase
+ */
+public data class SchemaProperty internal constructor(
+    public val propertyName: String,
+    public val type: SchemaTypeUse,
+    public val description: String,
+    public val isDeprecated: Boolean,
+    public val isLocalized: Boolean,
+    public val optionality: Optionality,
+    public val since: V2SchemaVersion?,
+    public val until: V2SchemaVersion?,
+    public val serialName: String,
+    public val camelCaseName: String
+)
+
+/** A property's optionality. */
+public sealed class Optionality {
+
+    public abstract val isOptional: Boolean
+
+    /** The property is optional. */
+    public object OPTIONAL : Optionality() {
+        override val isOptional: Boolean = true
+    }
+
+    /** The property is required for a key with the appropriate [scope]. */
+    public class MANDATED(public val scope: TokenScope) : Optionality() {
+        override val isOptional: Boolean = true
+    }
+
+    /** The property is required. */
+    public object REQUIRED : Optionality() {
+        override val isOptional: Boolean = false
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 public sealed class SchemaType {
     public abstract val isLocalized: Boolean
     internal abstract fun equalsSignature(other: SchemaType): Boolean
 }
 
-public sealed class SchemaPrimitive : SchemaType() {
+public sealed class SchemaPrimitive : SchemaType(), SchemaTypeUse {
     override val isLocalized: Boolean = false
     public abstract val typeHint: TypeHint?
 
@@ -40,42 +204,6 @@ public sealed class SchemaPrimitive : SchemaType() {
     public data class TypeHint(
         val s: String
     )
-}
-
-public sealed class SchemaClass : SchemaType() {
-    public abstract val name: String
-}
-
-/** A schema representing primitive boolean types. */
-public data class SchemaBoolean internal constructor(
-    override val typeHint: TypeHint? = null
-) : SchemaPrimitive() {
-    override fun equalsSignature(other: SchemaType) = other is SchemaBoolean
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
-
-/** A schema representing primitive decimal types. */
-public data class SchemaDecimal internal constructor(
-    override val typeHint: TypeHint? = null
-): SchemaPrimitive() {
-    override fun equalsSignature(other: SchemaType) = other is SchemaDecimal
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
-
-/** A schema representing primitive integer types. */
-public data class SchemaInteger internal constructor(
-    override val typeHint: TypeHint? = null
-): SchemaPrimitive() {
-    override fun equalsSignature(other: SchemaType) = other is SchemaInteger
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
-
-/** A schema representing primitive string types. */
-public data class SchemaString internal constructor(
-    override val typeHint: TypeHint? = null
-): SchemaPrimitive() {
-    override fun equalsSignature(other: SchemaType) = other is SchemaString
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
 }
 
 /**
@@ -238,35 +366,4 @@ public data class SchemaRecord internal constructor(
     }
 
 }
-
-internal class SchemaBlueprint internal constructor(
-    override val name: String,
-    internal val versions: SchemaVersionedData<SchemaType>
-) : SchemaClass() {
-
-    override val isLocalized: Boolean get() = error("isLocalized should never be called for SchemaBlueprint")
-    override fun equalsSignature(other: SchemaType) = error("equalsSignature should never be called for SchemaBlueprint")
-
-}
-
-/** A property's optionality. */
-public sealed class Optionality {
-
-    public abstract val isOptional: Boolean
-
-    /** The property is optional. */
-    public object OPTIONAL : Optionality() {
-        override val isOptional: Boolean = true
-    }
-
-    /** The property is required for a key with the appropriate [scope]. */
-    public class MANDATED(public val scope: TokenScope) : Optionality() {
-        override val isOptional: Boolean = true
-    }
-
-    /** The property is required. */
-    public object REQUIRED : Optionality() {
-        override val isOptional: Boolean = false
-    }
-
-}
+ */

@@ -35,7 +35,7 @@ import java.util.*
 public data class APIVersion<Q : APIQuery, T : APIType> internal constructor(
     val supportedLanguages: EnumSet<Language>,
     val supportedQueries: Set<Q>,
-    val supportedTypes: Map<TypeLocation, List<T>>,
+    val supportedTypes: Map<TypeLocation, T>,
     internal val version: String
 ) {
 

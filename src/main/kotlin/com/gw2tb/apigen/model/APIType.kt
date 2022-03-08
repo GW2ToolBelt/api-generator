@@ -27,19 +27,19 @@ import com.gw2tb.apigen.schema.*
 
 public sealed class APIType {
 
-    internal abstract val name: String
+    public abstract val name: String
 
     public data class V1 internal constructor(
-        val schema: SchemaClass
+        val schema: SchemaTypeDeclaration
     ) : APIType() {
         override val name: String get() = schema.name
     }
 
     public data class V2 internal constructor(
-        internal val _schema: SchemaVersionedData<SchemaClass>
-    ) : APIType(), VersionedData<SchemaClass> by _schema {
+        internal val _schema: SchemaVersionedData<out SchemaTypeDeclaration>
+    ) : APIType(), VersionedData<SchemaTypeDeclaration> by _schema {
 
-        override val name: String get() = _schema.flatMapData(SchemaClass::name)
+        override val name: String get() = _schema.flatMapData(SchemaTypeDeclaration::name)
 
     }
 

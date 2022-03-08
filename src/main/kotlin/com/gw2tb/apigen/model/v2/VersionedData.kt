@@ -21,7 +21,7 @@
  */
 package com.gw2tb.apigen.model.v2
 
-public interface VersionedData<T> {
+public interface VersionedData<out T> {
 
     public val versions: List<V2SchemaVersion>
 
@@ -29,9 +29,9 @@ public interface VersionedData<T> {
 
     public fun <R> flatMapData(transform: (T) -> R): R
 
-    public operator fun get(version: V2SchemaVersion): VersionConstrainedData<T>
+    public operator fun get(version: V2SchemaVersion): VersionConstrainedData<out T>
 
-    public fun getOrNull(version: V2SchemaVersion): VersionConstrainedData<T>?
+    public fun getOrNull(version: V2SchemaVersion): VersionConstrainedData<out T>?
 
     public fun isSupported(version: V2SchemaVersion): Boolean
 

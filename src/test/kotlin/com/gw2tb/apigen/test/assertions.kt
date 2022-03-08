@@ -26,8 +26,20 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import kotlin.contracts.*
 
-fun assertHintedEquals(expected: SchemaType, actual: SchemaType) {
-    if (!expected.equalsSignature(actual)) fail<Unit>("Expected type did not match. Expected: $expected; got $actual")
+fun assertHintedEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
+    fun equalsSignature(expected: SchemaTypeUse, actual: SchemaTypeUse): Boolean = when (expected) {
+        is SchemaBoolean -> actual is SchemaBoolean
+        is SchemaDecimal -> actual is SchemaDecimal
+        is SchemaInteger -> actual is SchemaInteger
+        is SchemaString -> actual is SchemaString
+
+        is SchemaArray -> actual is SchemaArray && equalsSignature(expected.elements, actual.elements)
+        is SchemaMap -> actual is SchemaMap && equalsSignature(expected.keys, actual.keys) && equalsSignature(expected.values, actual.values)
+
+        is SchemaTypeReference -> TODO("Not yet implemented")
+    }
+
+    if (!equalsSignature(expected, actual)) fail<Unit>("Expected type did not match. Expected: $expected; got $actual")
 }
 
 @OptIn(ExperimentalContracts::class)

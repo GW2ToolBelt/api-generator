@@ -23,7 +23,6 @@ package com.gw2tb.apigen.internal.impl
 
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.internal.dsl.SpecBuilderV2
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
@@ -34,10 +33,10 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 
     protected val queries = mutableMapOf<E, MutableList<(TypeRegistryScope) -> QueriesBuilderImplBase<Q, T>>>()
 
-    abstract fun createType(type: SchemaClass): T
+    abstract fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): T
 
-    override fun String.invoke(type: SchemaPrimitiveReference, camelCaseName: String): SchemaPrimitiveReference =
-        SchemaPrimitiveReference(type.type.withTypeHint(SchemaPrimitive.TypeHint(camelCaseName)))
+    override fun String.invoke(type: DeferredPrimitiveType, camelCaseName: String): DeferredPrimitiveType =
+        type.withTypeHint(SchemaPrimitive.TypeHint(camelCaseName))
 
     override fun conditional(
         name: String,
@@ -48,7 +47,7 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
         interpretationInNestedProperty: Boolean,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
         configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClassReference = conditionalImpl(
+    ): DeferredSchemaClass<T> = conditionalImpl(
         name,
         description,
         disambiguationBy,
@@ -64,7 +63,7 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
         description: String,
         endpoint: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClassReference = recordImpl(
+    ): DeferredSchemaClass<T> = recordImpl(
         name,
         description,
         ::createType,
@@ -76,18 +75,23 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V1, APIType.V1, QueriesBuilderV1>(), SpecBuilderV1 {
 
     fun build(endpoints: Set<APIv1Endpoint>): APIVersion<APIQuery.V1, APIType.V1> {
-        val types = mutableMapOf<TypeLocation, MutableList<APIType.V1>>()
+        val types = mutableMapOf<TypeLocation, APIType.V1>()
 
-        val typeRegistryScope = object : TypeRegistryScope() {
+        val typeRegistry = object : TypeRegistryScope() {
 
-            override fun register(name: String, value: APIType) {
-                val nest = if ("/" in name) name.substringBeforeLast("/") else null
-                (types.computeIfAbsent(TypeLocation(nest = nest)) { mutableListOf() }).add(value as APIType.V1)
+            override fun register(name: String, value: APIType): TypeLocation {
+                val location = TypeLocation(
+                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
+                    name
+                )
+
+                types[location] = (value as APIType.V1)
+                return location
             }
 
         }
 
-        val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistryScope).finalize() } }.toSet()
+        val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistry).finalize() } }.toSet()
 
         return APIVersion(
             supportedLanguages = EnumSet.of(Language.ENGLISH, Language.FRENCH, Language.GERMAN, Language.SPANISH),
@@ -116,6 +120,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
                 cache = cache,
                 security = security,
                 queryTypes = null,
+                this@SpecBuilderV1Impl::createType,
                 typeRegistry = typeRegistry
             ).also(block)
         }
@@ -141,28 +146,32 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
                 cache = cache,
                 security = security,
                 queryTypes = queryTypes,
+                this@SpecBuilderV1Impl::createType,
                 typeRegistry = typeRegistry
             ).also(block)
         }
     }
 
-    override fun createType(type: SchemaClass): APIType.V1 {
-        require(type !is SchemaBlueprint)
-        return APIType.V1(type)
-    }
+    override fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): APIType.V1 =
+        APIType.V1(data.single().data)
 
 }
 
 internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V2, APIType.V2, QueriesBuilderV2>(), SpecBuilderV2 {
 
     fun build(endpoints: Set<APIv2Endpoint>): APIVersion<APIQuery.V2, APIType.V2> {
-        val types = mutableMapOf<TypeLocation, MutableList<APIType.V2>>()
+        val types = mutableMapOf<TypeLocation, APIType.V2>()
 
         val typeRegistryScope = object : TypeRegistryScope() {
 
-            override fun register(name: String, value: APIType) {
-                val nest = if ("/" in name) name.substringBeforeLast("/") else null
-                (types.computeIfAbsent(TypeLocation(nest = nest)) { mutableListOf() }).add(value as APIType.V2)
+            override fun register(name: String, value: APIType): TypeLocation {
+                val location = TypeLocation(
+                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
+                    name
+                )
+
+                types[location] = (value as APIType.V2)
+                return location
             }
 
         }
@@ -200,6 +209,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
                 queryTypes = null,
                 since = since,
                 until = until,
+                this@SpecBuilderV2Impl::createType,
                 typeRegistry = typeRegistry,
             ).also(block)
         }
@@ -229,19 +239,12 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
                 queryTypes = queryTypes,
                 since = since,
                 until = until,
+                this@SpecBuilderV2Impl::createType,
                 typeRegistry = typeRegistry,
             ).also(block)
         }
     }
 
-    override fun createType(type: SchemaClass): APIType.V2 = APIType.V2(buildVersionedSchemaData {
-        when (type) {
-            is SchemaBlueprint -> type.versions.forEach { type, since, until ->
-                if (type !is SchemaClass) return@forEach // TODO Should we instead extract the first nested class?
-                add(type, since, until)
-            }
-            else -> add(type)
-        }
-    })
+    override fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): APIType.V2 = APIType.V2(data)
 
 }

@@ -64,7 +64,7 @@ public sealed class APIQuery {
         override val queryParameters: Map<String, QueryParameter>,
         override val querySuffix: String?,
         override val cache: Duration?,
-        val schema: SchemaType
+        val schema: SchemaTypeUse
     ) : APIQuery()
 
     /**
@@ -88,7 +88,7 @@ public sealed class APIQuery {
         val since: V2SchemaVersion,
         val until: V2SchemaVersion?,
         val security: Set<TokenScope>,
-        private val _schema: SchemaVersionedData<SchemaType>
-    ) : APIQuery(), VersionedData<SchemaType> by _schema
+        private val _schema: SchemaVersionedData<out SchemaTypeUse>
+    ) : APIQuery(), VersionedData<SchemaTypeUse> by _schema
 
 }

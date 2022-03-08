@@ -32,7 +32,7 @@ internal interface QueriesBuilder<T : APIType> {
 
     fun pathParameter(
         name: String,
-        type: SchemaPrimitiveReference,
+        type: DeferredSchemaType<out SchemaPrimitive>,
         description: String,
         key: String = name,
         camelCase: String = name.firstToLowerCase()
@@ -40,29 +40,29 @@ internal interface QueriesBuilder<T : APIType> {
 
     fun queryParameter(
         name: String,
-        type: SchemaPrimitiveReference,
+        type: DeferredSchemaType<out SchemaPrimitive>,
         description: String,
         key: String = name.toLowerCase(Locale.ENGLISH),
         camelCase: String = name.firstToLowerCase(),
         isOptional: Boolean = false
     )
 
-    fun schema(schema: SchemaTypeReference)
+    fun schema(schema: DeferredSchemaType<out SchemaTypeUse>)
 
     fun array(
-        items: SchemaTypeReference,
+        items: DeferredSchemaType<out SchemaTypeUse>,
         description: String,
         nullableItems: Boolean = false
-    ): SchemaTypeReference =
-        SchemaArrayReference { SchemaArray(items.get(it), nullableItems, description) }
+    ): DeferredSchemaType<SchemaArray> =
+        DeferredSchemaType { typeRegistry -> items.get(typeRegistry).mapData { SchemaArray(it, nullableItems, description) } }
 
     fun map(
-        keys: SchemaPrimitiveReference,
-        values: SchemaTypeReference,
+        keys: DeferredSchemaType<out SchemaPrimitive>,
+        values: DeferredSchemaType<out SchemaTypeUse>,
         description: String,
         nullableValues: Boolean = false
-    ): SchemaTypeReference =
-        SchemaMapReference { SchemaMap(keys.get(it), values.get(it), nullableValues, description) }
+    ): DeferredSchemaType<SchemaMap> =
+        DeferredSchemaType { typeRegistry -> values.get(typeRegistry).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
 
     fun conditional(
         name: String,
@@ -72,13 +72,13 @@ internal interface QueriesBuilder<T : APIType> {
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
         block: SchemaConditionalBuilder<T>.() -> Unit
-    ): SchemaClassReference
+    ): DeferredSchemaClass<T>
 
     fun record(
         name: String,
         description: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): SchemaClassReference
+    ): DeferredSchemaClass<T>
 
 }
 
@@ -88,6 +88,6 @@ internal interface QueriesBuilderV1 : QueriesBuilder<APIType.V1>
 /** A builder for one or more V2 queries. */
 internal interface QueriesBuilderV2 : QueriesBuilder<APIType.V2> {
 
-    fun schema(vararg schemas: Pair<V2SchemaVersion, SchemaTypeReference>)
+    fun schema(vararg schemas: Pair<V2SchemaVersion, DeferredSchemaType<out SchemaTypeUse>>)
 
 }

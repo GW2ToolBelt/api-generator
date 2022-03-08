@@ -27,11 +27,13 @@ package com.gw2tb.apigen.model
  * @param nest      the type's nest (`/`-separated, list of type names)
  */
 public data class TypeLocation(
-    val nest: String?
+    val nest: String?,
+    val name: String
 ) {
 
     init {
         require(nest == null || nest.isNotBlank())
+        require(name.isNotBlank())
     }
 
 }
