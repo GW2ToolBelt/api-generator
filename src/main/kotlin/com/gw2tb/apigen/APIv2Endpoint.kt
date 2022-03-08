@@ -99,6 +99,7 @@ public enum class APIv2Endpoint(internal val endpointName: String) {
     V2_GUILD_LOG("/Guild/:ID/Log"),
     V2_GUILD_MEMBERS("/Guild/:ID/Members"),
     V2_GUILD_RANKS("/Guild/:ID/Ranks"),
+    V2_GUILD_STASH("/Guild/:ID/Stash"),
     V2_GUILD_STORAGE("/Guild/:ID/Storage"),
     V2_GUILD_TEAMS("/Guild/:ID/Teams"),
     V2_GUILD_TREASURY("/Guild/:ID/Treasury"),

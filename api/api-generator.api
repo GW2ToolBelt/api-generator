@@ -124,6 +124,7 @@ public final class com/gw2tb/apigen/APIv2Endpoint : java/lang/Enum {
 	public static final field V2_GUILD_PERMISSIONS Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_GUILD_RANKS Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_GUILD_SEARCH Lcom/gw2tb/apigen/APIv2Endpoint;
+	public static final field V2_GUILD_STASH Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_GUILD_STORAGE Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_GUILD_TEAMS Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_GUILD_TREASURY Lcom/gw2tb/apigen/APIv2Endpoint;

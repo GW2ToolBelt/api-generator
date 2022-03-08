@@ -1502,6 +1502,32 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
+    V2_GUILD_STASH(
+        summary = "Returns information about the items in a guild's vault.",
+        security = security(ACCOUNT, GUILDS)
+    ) {
+        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+
+        schema(array(
+            description = "the guild's vault items",
+            items = record(name = "GuildStashSection", description = "Information about a section of a guild's vault.") {
+                SerialName("upgrade_id").."UpgradeID"(STRING, "the ID of the guild upgrade that granted access to this section of the guild's vault")
+                "Size"(INTEGER, "the number of slots in this section of the guild's vault")
+                "Coins"(INTEGER, "the number of coins deposited in this section of the guild's vault")
+                "Note"(STRING, "the description set for this section of the guild's vault")
+                "Inventory"(
+                    description = "the items in this section of the guild's vault",
+                    type = array(
+                        nullableItems = true,
+                        items = record(name = "GuildStashSlot", description = "Information about an item in a guild vault's slot.") {
+                            CamelCase("id").."ID"(STRING, "the item's ID")
+                            "Count"(STRING, "the amount of items in the stack")
+                        }
+                    )
+                )
+            }
+        ))
+    }
     V2_GUILD_STORAGE(
         summary = "Returns information about a guild's storage.",
         security = security(ACCOUNT, GUILDS)
