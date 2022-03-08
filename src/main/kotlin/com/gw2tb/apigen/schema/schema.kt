@@ -26,9 +26,15 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 
 /** A type usage. */
-public sealed class SchemaTypeUse
+public sealed class SchemaTypeUse {
+
+    public abstract val isLocalized: Boolean
+
+}
 
 public sealed class SchemaPrimitive : SchemaTypeUse() {
+
+    override val isLocalized: Boolean get() = false
 
     public abstract val typeHint: TypeHint?
 
@@ -64,14 +70,18 @@ public data class SchemaArray(
     val elements: SchemaTypeUse,
     val nullableElements: Boolean,
     val description: String?
-) : SchemaTypeUse()
+) : SchemaTypeUse() {
+    override val isLocalized: Boolean get() = elements.isLocalized
+}
 
 public data class SchemaMap(
     val keys: SchemaPrimitive,
     val values: SchemaTypeUse,
     val nullableValues: Boolean,
     val description: String?
-) : SchemaTypeUse()
+) : SchemaTypeUse() {
+    override val isLocalized: Boolean get() = values.isLocalized
+}
 
 public data class SchemaTypeReference(
     val typeLocation: TypeLocation,
@@ -79,12 +89,15 @@ public data class SchemaTypeReference(
     internal val declaration: SchemaTypeDeclaration
 ) : SchemaTypeUse() {
     val name: String get() = declaration.name
+    override val isLocalized: Boolean get() = declaration.isLocalized
 }
 
 /** A type declaration. */
 public sealed class SchemaTypeDeclaration {
 
     public abstract val name: String
+
+    internal abstract val isLocalized: Boolean
 
 }
 
@@ -97,6 +110,10 @@ public data class SchemaConditional(
     public val interpretations: Map<String, Interpretation>,
     public val description: String
 ) : SchemaTypeDeclaration() {
+
+    override val isLocalized: Boolean by lazy {
+        sharedProperties.any { (_, v) -> v.isLocalized || v.type.isLocalized } || interpretations.any { (_, v) -> v.type.isLocalized }
+    }
 
     /**
      * A conditional interpretation.
@@ -123,7 +140,13 @@ public data class SchemaRecord(
     public override val name: String,
     public val properties: Map<String, SchemaProperty>,
     public val description: String
-) : SchemaTypeDeclaration()
+) : SchemaTypeDeclaration() {
+
+    override val isLocalized: Boolean by lazy {
+        properties.any { (_, v) -> v.isLocalized || v.type.isLocalized }
+    }
+
+}
 
 /**
  * A record property.

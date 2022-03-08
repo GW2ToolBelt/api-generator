@@ -525,6 +525,7 @@ public final class com/gw2tb/apigen/schema/SchemaArray : com/gw2tb/apigen/schema
 	public final fun getElements ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun getNullableElements ()Z
 	public fun hashCode ()I
+	public fun isLocalized ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -627,11 +628,13 @@ public final class com/gw2tb/apigen/schema/SchemaMap : com/gw2tb/apigen/schema/S
 	public final fun getNullableValues ()Z
 	public final fun getValues ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public fun hashCode ()I
+	public fun isLocalized ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
 public abstract class com/gw2tb/apigen/schema/SchemaPrimitive : com/gw2tb/apigen/schema/SchemaTypeUse {
 	public abstract fun getTypeHint ()Lcom/gw2tb/apigen/schema/SchemaPrimitive$TypeHint;
+	public fun isLocalized ()Z
 	public abstract fun withTypeHint (Lcom/gw2tb/apigen/schema/SchemaPrimitive$TypeHint;)Lcom/gw2tb/apigen/schema/SchemaPrimitive;
 }
 
@@ -718,9 +721,11 @@ public final class com/gw2tb/apigen/schema/SchemaTypeReference : com/gw2tb/apige
 	public final fun getTypeLocation ()Lcom/gw2tb/apigen/model/TypeLocation;
 	public final fun getVersion ()Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;
 	public fun hashCode ()I
+	public fun isLocalized ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
 public abstract class com/gw2tb/apigen/schema/SchemaTypeUse {
+	public abstract fun isLocalized ()Z
 }
 
