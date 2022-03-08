@@ -151,6 +151,10 @@ internal val GW2v2 = GW2APISpecV2 {
                 STRING,
                 "the ISO-8601 standard timestamp of when the account information last changed (as perceived by the API)"
             )
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("build_storage_slots").."BuildStorageSlots"(
+                INTEGER,
+                "the number of the account's account-wide build storage slots unlocked"
+            )
         })
     }
     V2_ACCOUNT_ACHIEVEMENTS(
