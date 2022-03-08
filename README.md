@@ -108,8 +108,8 @@ When querying by page, the response contains additional header elements:
 The library defines several entry-points for retrieving all the information
 necessary to generate implementations for each API version:
 
-- `com.gw2tb.apigen.APIVersion.API_V1`,
-- `com.gw2tb.apigen.APIVersion.API_V2`
+- `com.gw2tb.apigen.APIVersion#getV1(Set<APIv1Endpoint>)`,
+- `com.gw2tb.apigen.APIVersion#getV2(Set<APIv2Endpoint>)`
 
 and the data exposed by Guild Wars 2 via MumbleLink:
 
