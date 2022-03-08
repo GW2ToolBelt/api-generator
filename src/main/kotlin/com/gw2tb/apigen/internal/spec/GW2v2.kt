@@ -1876,6 +1876,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(record(name = "Legend", description = "Information about a Revenant legend.") {
             CamelCase("id").."ID"(STRING, "the legend's ID")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the build template ID of the legend")
             "Swap"(INTEGER, "the ID of the profession (swap Legend) skill")
             "Heal"(INTEGER, "the ID of the heal skill")
             "Elite"(INTEGER, "the ID of the elite skills")
