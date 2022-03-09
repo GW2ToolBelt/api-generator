@@ -84,17 +84,14 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
 
             override fun getLocationFor(name: String): TypeLocation =
                 TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
-                    name
+                    nest = if ("/" in name) name.substringBeforeLast('/') else null,
+                    name = name.substringAfterLast('/')
                 )
 
             override fun register(name: String, value: APIType): TypeLocation {
-                val location = TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
-                    name
-                )
-
+                val location = getLocationFor(name)
                 types[location] = (value as APIType.V1)
+
                 return location
             }
 
@@ -178,17 +175,14 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
 
             override fun getLocationFor(name: String): TypeLocation =
                 TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
-                    name
+                    nest = if ("/" in name) name.substringBeforeLast('/') else null,
+                    name = name.substringAfterLast('/')
                 )
 
             override fun register(name: String, value: APIType): TypeLocation {
-                val location = TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
-                    name
-                )
-
+                val location = getLocationFor(name)
                 types[location] = (value as APIType.V2)
+
                 return location
             }
 

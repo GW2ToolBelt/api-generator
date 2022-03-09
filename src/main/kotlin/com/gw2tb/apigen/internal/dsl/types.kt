@@ -32,7 +32,7 @@ internal abstract class TypeRegistryScope {
     open fun nestedScope(nestName: String): TypeRegistryScope = object : TypeRegistryScope() {
 
         override fun getLocationFor(name: String): TypeLocation =
-            this@TypeRegistryScope.getLocationFor("$nestName/name")
+            this@TypeRegistryScope.getLocationFor("$nestName/$name")
 
         override fun register(name: String, value: APIType): TypeLocation =
             this@TypeRegistryScope.register("$nestName/$name", value)
