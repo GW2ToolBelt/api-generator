@@ -292,14 +292,17 @@ public final class com/gw2tb/apigen/model/APIQuery$V2 : com/gw2tb/apigen/model/A
 }
 
 public abstract class com/gw2tb/apigen/model/APIType {
+	public abstract fun getInterpretationHint ()Lcom/gw2tb/apigen/model/InterpretationHint;
 	public abstract fun getName ()Ljava/lang/String;
 }
 
 public final class com/gw2tb/apigen/model/APIType$V1 : com/gw2tb/apigen/model/APIType {
 	public final fun component1 ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
-	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;)Lcom/gw2tb/apigen/model/APIType$V1;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V1;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V1;
+	public final fun component2 ()Lcom/gw2tb/apigen/model/InterpretationHint;
+	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;)Lcom/gw2tb/apigen/model/APIType$V1;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V1;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V1;
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getInterpretationHint ()Lcom/gw2tb/apigen/model/InterpretationHint;
 	public fun getName ()Ljava/lang/String;
 	public final fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun hashCode ()I
@@ -307,17 +310,34 @@ public final class com/gw2tb/apigen/model/APIType$V1 : com/gw2tb/apigen/model/AP
 }
 
 public final class com/gw2tb/apigen/model/APIType$V2 : com/gw2tb/apigen/model/APIType, com/gw2tb/apigen/model/v2/VersionedData {
-	public final fun copy (Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;)Lcom/gw2tb/apigen/model/APIType$V2;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V2;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V2;
+	public final fun component2 ()Lcom/gw2tb/apigen/model/InterpretationHint;
+	public final fun copy (Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;)Lcom/gw2tb/apigen/model/APIType$V2;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V2;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V2;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun flatMapData (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public fun get (Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Lcom/gw2tb/apigen/model/v2/VersionConstrainedData;
+	public fun getInterpretationHint ()Lcom/gw2tb/apigen/model/InterpretationHint;
 	public fun getName ()Ljava/lang/String;
 	public fun getOrNull (Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Lcom/gw2tb/apigen/model/v2/VersionConstrainedData;
 	public fun getSignificantVersions ()Ljava/util/List;
 	public fun getVersions ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun isSupported (Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gw2tb/apigen/model/InterpretationHint {
+	public fun <init> (Lcom/gw2tb/apigen/model/TypeLocation;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Lcom/gw2tb/apigen/model/TypeLocation;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Lcom/gw2tb/apigen/model/TypeLocation;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/model/InterpretationHint;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/InterpretationHint;Lcom/gw2tb/apigen/model/TypeLocation;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/InterpretationHint;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConditionalBase ()Lcom/gw2tb/apigen/model/TypeLocation;
+	public final fun getInterpretationKey ()Ljava/lang/String;
+	public final fun getInterpretationNestProperty ()Ljava/lang/String;
+	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
