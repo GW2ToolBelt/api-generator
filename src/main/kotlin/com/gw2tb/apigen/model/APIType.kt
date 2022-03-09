@@ -29,18 +29,26 @@ public sealed class APIType {
 
     public abstract val name: String
 
+    public abstract val interpretationHint: InterpretationHint?
+
     public data class V1 internal constructor(
-        val schema: SchemaTypeDeclaration
+        val schema: SchemaTypeDeclaration,
+        override val interpretationHint: InterpretationHint?
     ) : APIType() {
         override val name: String get() = schema.name
     }
 
     public data class V2 internal constructor(
-        internal val _schema: SchemaVersionedData<out SchemaTypeDeclaration>
+        internal val _schema: SchemaVersionedData<out SchemaTypeDeclaration>,
+        override val interpretationHint: InterpretationHint?
     ) : APIType(), VersionedData<SchemaTypeDeclaration> by _schema {
-
         override val name: String get() = _schema.flatMapData(SchemaTypeDeclaration::name)
-
     }
 
 }
+
+public data class InterpretationHint(
+    val conditionalBase: TypeLocation,
+    val interpretationKey: String,
+    val interpretationNestProperty: String?
+)

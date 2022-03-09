@@ -50,7 +50,7 @@ internal interface SpecBuilder<T : APIType> {
         description: String,
         nullableItems: Boolean = false
     ): DeferredSchemaType<SchemaArray> =
-        DeferredSchemaType { typeRegistry -> items.get(typeRegistry).mapData { SchemaArray(it, nullableItems, description) } }
+        DeferredSchemaType { typeRegistry -> items.get(typeRegistry, interpretationHint = null).mapData { SchemaArray(it, nullableItems, description) } }
 
     fun map(
         keys: DeferredSchemaType<out SchemaPrimitive>,
@@ -58,7 +58,7 @@ internal interface SpecBuilder<T : APIType> {
         description: String,
         nullableValues: Boolean = false
     ): DeferredSchemaType<SchemaMap> =
-        DeferredSchemaType { typeRegistry -> values.get(typeRegistry).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
+        DeferredSchemaType { typeRegistry -> values.get(typeRegistry, interpretationHint = null).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
 
     fun conditional(
         name: String,

@@ -39,7 +39,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
     protected abstract val cache: Duration?
     protected abstract val security: Security?
     protected abstract val queryTypes: QueryTypes?
-    protected abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>) -> T
+    protected abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T
 
     protected val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
     override fun pathParameter(name: String, type: DeferredSchemaType<out SchemaPrimitive>, description: String, key: String, camelCase: String) {
@@ -99,7 +99,7 @@ internal class QueriesBuilderV1Impl(
     override val cache: Duration?,
     override val security: Security?,
     override val queryTypes: QueryTypes?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>) -> APIType.V1,
+    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> APIType.V1,
     override val typeRegistry: TypeRegistryScope
 ) : QueriesBuilderImplBase<APIQuery.V1, APIType.V1>(), QueriesBuilderV1 {
 
@@ -107,7 +107,7 @@ internal class QueriesBuilderV1Impl(
 
     override fun schema(schema: DeferredSchemaType<out SchemaTypeUse>) {
         check(!this::_schema.isInitialized)
-        _schema = schema.get(typeRegistry).single().data
+        _schema = schema.get(typeRegistry, interpretationHint = null).single().data
     }
 
     override fun finalize(): Collection<APIQuery.V1> = listOf(
@@ -136,7 +136,7 @@ internal class QueriesBuilderV2Impl(
     override val queryTypes: QueryTypes?,
     private val since: V2SchemaVersion,
     private val until: V2SchemaVersion?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>) -> APIType.V2,
+    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> APIType.V2,
     override val typeRegistry: TypeRegistryScope
 ) : QueriesBuilderImplBase<APIQuery.V2, APIType.V2>(), QueriesBuilderV2 {
 
@@ -144,7 +144,7 @@ internal class QueriesBuilderV2Impl(
 
     override fun schema(schema: DeferredSchemaType<out SchemaTypeUse>) {
         check(!this::_schema.isInitialized)
-        _schema = schema.get(typeRegistry)
+        _schema = schema.get(typeRegistry, interpretationHint = null)
     }
 
     override fun schema(vararg schemas: Pair<V2SchemaVersion, DeferredSchemaType<out SchemaTypeUse>>) {
@@ -159,6 +159,7 @@ internal class QueriesBuilderV2Impl(
         require(until == null || schemas.none { (version, _) -> version >= until })
 
         val deferredTypeRegistry = object : TypeRegistryScope() {
+            override fun getLocationFor(name: String): TypeLocation = TypeLocation(nest = null, name)
             override fun register(name: String, value: APIType): TypeLocation = TypeLocation(nest = null, name)
             override fun nestedScope(nestName: String) = typeRegistry.nestedScope(nestName)
         }
@@ -168,7 +169,7 @@ internal class QueriesBuilderV2Impl(
                 .sortedBy { it.first }
                 .zipSchemaVersionConstraints()
                 .forEach { (since, until) ->
-                    since.second.get(deferredTypeRegistry).forEach { (schema, schemaSince, schemaUntil) ->
+                    since.second.get(deferredTypeRegistry, interpretationHint = null).forEach { (schema, schemaSince, schemaUntil) ->
                         // Clamp schema versions against bounds implied by the function call
                         if (since.first >= schemaSince && (until == null || schemaSince < until.first)) {
                             add(
@@ -191,7 +192,7 @@ internal class QueriesBuilderV2Impl(
                     if (schema is SchemaTypeReference)
                         add(schema.declaration, since, until)
                 }
-            })
+            }, null)
 
             typeRegistry.register(apiType.name, apiType)
         }

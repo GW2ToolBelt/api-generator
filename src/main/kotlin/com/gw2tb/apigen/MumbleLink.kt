@@ -30,9 +30,8 @@ import com.gw2tb.apigen.schema.*
 /** The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol. */
 public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
     val stubTypeRegistry = object : TypeRegistryScope() {
-        override fun register(name: String, value: APIType): TypeLocation {
-            return TypeLocation(null, "STUB")
-        }
+        override fun getLocationFor(name: String): TypeLocation = TypeLocation(null, "STUB")
+        override fun register(name: String, value: APIType): TypeLocation = TypeLocation(null, "STUB")
     }
 
     SchemaRecord(
@@ -40,7 +39,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
         SchemaRecordBuilder<APIType.V1>(
             "MumbleLinkIdentity",
             "", // TODO
-            apiTypeFactory = { error("Unsupported operation") }
+            apiTypeFactory = { _, _ -> error("Unsupported operation") }
         ).apply {
             "Name"(STRING, "the name of the currently played character")
             "Profession"(INTEGER, "the current profession (class) of the currently played character")

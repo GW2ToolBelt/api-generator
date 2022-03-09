@@ -33,7 +33,10 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 
     protected val queries = mutableMapOf<E, MutableList<(TypeRegistryScope) -> QueriesBuilderImplBase<Q, T>>>()
 
-    abstract fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): T
+    abstract fun createType(
+        data: SchemaVersionedData<out SchemaTypeDeclaration>,
+        interpretationHint: InterpretationHint?
+    ): T
 
     override fun String.invoke(type: DeferredPrimitiveType, camelCaseName: String): DeferredPrimitiveType =
         type.withTypeHint(SchemaPrimitive.TypeHint(camelCaseName))
@@ -78,6 +81,12 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
         val types = mutableMapOf<TypeLocation, APIType.V1>()
 
         val typeRegistry = object : TypeRegistryScope() {
+
+            override fun getLocationFor(name: String): TypeLocation =
+                TypeLocation(
+                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
+                    name
+                )
 
             override fun register(name: String, value: APIType): TypeLocation {
                 val location = TypeLocation(
@@ -152,8 +161,11 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
         }
     }
 
-    override fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): APIType.V1 =
-        APIType.V1(data.single().data)
+    override fun createType(
+        data: SchemaVersionedData<out SchemaTypeDeclaration>,
+        interpretationHint: InterpretationHint?
+    ): APIType.V1 =
+        APIType.V1(data.single().data, interpretationHint)
 
 }
 
@@ -163,6 +175,12 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
         val types = mutableMapOf<TypeLocation, APIType.V2>()
 
         val typeRegistryScope = object : TypeRegistryScope() {
+
+            override fun getLocationFor(name: String): TypeLocation =
+                TypeLocation(
+                    nest = if ("/" in name) name.substringBeforeLast("/") else null,
+                    name
+                )
 
             override fun register(name: String, value: APIType): TypeLocation {
                 val location = TypeLocation(
@@ -245,6 +263,9 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
         }
     }
 
-    override fun createType(data: SchemaVersionedData<out SchemaTypeDeclaration>): APIType.V2 = APIType.V2(data)
+    override fun createType(
+        data: SchemaVersionedData<out SchemaTypeDeclaration>,
+        interpretationHint: InterpretationHint?
+    ): APIType.V2 = APIType.V2(data, interpretationHint)
 
 }
