@@ -33,6 +33,8 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 
     protected val queries = mutableMapOf<E, MutableList<(TypeRegistryScope) -> QueriesBuilderImplBase<Q, T>>>()
 
+    abstract val typeRegistry: TypeRegistryScope?
+
     abstract fun createType(
         data: SchemaVersionedData<out SchemaTypeDeclaration>,
         interpretationHint: InterpretationHint?
@@ -48,7 +50,7 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
         disambiguationBy: String,
         disambiguationBySideProperty: Boolean,
         interpretationInNestedProperty: Boolean,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T> = conditionalImpl(
         name,
@@ -58,6 +60,7 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
         interpretationInNestedProperty,
         sharedConfigure,
         ::createType,
+        typeRegistry,
         configure
     )
 
@@ -70,6 +73,7 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
         name,
         description,
         ::createType,
+        typeRegistry,
         block
     )
 
@@ -77,26 +81,26 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 
 internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V1, APIType.V1, QueriesBuilderV1>(), SpecBuilderV1 {
 
-    fun build(endpoints: Set<APIv1Endpoint>): APIVersion<APIQuery.V1, APIType.V1> {
-        val types = mutableMapOf<TypeLocation, APIType.V1>()
+    private val types = mutableMapOf<TypeLocation, APIType.V1>()
 
-        val typeRegistry = object : TypeRegistryScope() {
+    override val typeRegistry = object : TypeRegistryScope() {
 
-            override fun getLocationFor(name: String): TypeLocation =
-                TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast('/') else null,
-                    name = name.substringAfterLast('/')
-                )
+        override fun getLocationFor(name: String): TypeLocation =
+            TypeLocation(
+                nest = if ("/" in name) name.substringBeforeLast('/') else null,
+                name = name.substringAfterLast('/')
+            )
 
-            override fun register(name: String, value: APIType): TypeLocation {
-                val location = getLocationFor(name)
-                types[location] = (value as APIType.V1)
+        override fun register(name: String, value: APIType): TypeLocation {
+            val location = getLocationFor(name)
+            types[location] = (value as APIType.V1)
 
-                return location
-            }
-
+            return location
         }
 
+    }
+
+    fun build(endpoints: Set<APIv1Endpoint>): APIVersion<APIQuery.V1, APIType.V1> {
         val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistry).finalize() } }.toSet()
 
         return APIVersion(
@@ -168,27 +172,27 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
 
 internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V2, APIType.V2, QueriesBuilderV2>(), SpecBuilderV2 {
 
-    fun build(endpoints: Set<APIv2Endpoint>): APIVersion<APIQuery.V2, APIType.V2> {
-        val types = mutableMapOf<TypeLocation, APIType.V2>()
+    private val types = mutableMapOf<TypeLocation, APIType.V2>()
 
-        val typeRegistryScope = object : TypeRegistryScope() {
+    override val typeRegistry = object : TypeRegistryScope() {
 
-            override fun getLocationFor(name: String): TypeLocation =
-                TypeLocation(
-                    nest = if ("/" in name) name.substringBeforeLast('/') else null,
-                    name = name.substringAfterLast('/')
-                )
+        override fun getLocationFor(name: String): TypeLocation =
+            TypeLocation(
+                nest = if ("/" in name) name.substringBeforeLast('/') else null,
+                name = name.substringAfterLast('/')
+            )
 
-            override fun register(name: String, value: APIType): TypeLocation {
-                val location = getLocationFor(name)
-                types[location] = (value as APIType.V2)
+        override fun register(name: String, value: APIType): TypeLocation {
+            val location = getLocationFor(name)
+            types[location] = (value as APIType.V2)
 
-                return location
-            }
-
+            return location
         }
 
-        val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistryScope).finalize() } }.toSet()
+    }
+
+    fun build(endpoints: Set<APIv2Endpoint>): APIVersion<APIQuery.V2, APIType.V2> {
+        val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistry).finalize() } }.toSet()
 
         return APIVersion(
             supportedLanguages = EnumSet.allOf(Language::class.java),

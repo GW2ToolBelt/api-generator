@@ -67,7 +67,7 @@ internal interface SpecBuilder<T : APIType> {
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
         interpretationInNestedProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
         configure: SchemaConditionalBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T>
 

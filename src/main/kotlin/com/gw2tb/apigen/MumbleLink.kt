@@ -39,7 +39,8 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
         SchemaRecordBuilder<APIType.V1>(
             "MumbleLinkIdentity",
             "", // TODO
-            apiTypeFactory = { _, _ -> error("Unsupported operation") }
+            apiTypeFactory = { _, _ -> error("Unsupported operation") },
+            typeRegistry = null
         ).apply {
             "Name"(STRING, "the name of the currently played character")
             "Profession"(INTEGER, "the current profession (class) of the currently played character")
@@ -52,7 +53,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
             "Map"(INTEGER, "the ID of the current map")
             "FoV"(DECIMAL, "the scaling of the FOV")
             SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
-        }.buildProperties(stubTypeRegistry).single().data,
+        }.buildProperties(stubTypeRegistry)!!.single().data,
         "The definition Guild Wars 2's use of the `identity` field of the MumbleLink protocol."
     )
 }

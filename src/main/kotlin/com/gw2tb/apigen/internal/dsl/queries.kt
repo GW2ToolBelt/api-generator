@@ -70,7 +70,7 @@ internal interface QueriesBuilder<T : APIType> {
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
         interpretationInNestedProperty: Boolean = false,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)? = null,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
         block: SchemaConditionalBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T>
 

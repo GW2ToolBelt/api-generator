@@ -62,7 +62,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
         disambiguationBy: String,
         disambiguationBySideProperty: Boolean,
         interpretationInNestedProperty: Boolean,
-        sharedConfigure: (SchemaRecordBuilder<T>.() -> Unit)?,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
         block: SchemaConditionalBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T> = conditionalImpl(
         name,
@@ -72,6 +72,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
         interpretationInNestedProperty,
         sharedConfigure,
         apiTypeFactory,
+        typeRegistry,
         block
     )
 
@@ -83,6 +84,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
         name,
         description,
         apiTypeFactory,
+        typeRegistry,
         block
     )
 
