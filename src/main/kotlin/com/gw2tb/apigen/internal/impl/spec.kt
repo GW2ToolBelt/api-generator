@@ -114,7 +114,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
     override fun APIv1Endpoint.invoke(
         endpointTitleCase: String,
         route: String,
-        querySuffix: String,
+        querySuffix: String?,
         summary: String,
         cache: Duration?,
         security: Security?,
@@ -149,7 +149,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV1Impl(
                 route = route,
-                querySuffix = "",
+                querySuffix = null,
                 endpointTitleCase = endpointTitleCase,
                 idTypeKey = idTypeKey,
                 summary = summary,
@@ -205,7 +205,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
     override fun APIv2Endpoint.invoke(
         endpointTitleCase: String,
         route: String,
-        querySuffix: String,
+        querySuffix: String?,
         summary: String,
         cache: Duration?,
         security: Security?,
@@ -246,7 +246,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV2Impl(
                 route = route,
-                querySuffix = "",
+                querySuffix = null,
                 endpointTitleCase = endpointTitleCase,
                 idTypeKey = idTypeKey,
                 summary = summary,

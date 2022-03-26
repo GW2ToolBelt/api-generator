@@ -85,7 +85,7 @@ internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
     operator fun APIv1Endpoint.invoke(
         endpointTitleCase: String = endpointName,
         route: String = endpointName,
-        querySuffix: String = "",
+        querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
         security: Security? = null,
@@ -110,7 +110,7 @@ internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
     operator fun APIv2Endpoint.invoke(
         endpointTitleCase: String = endpointName,
         route: String = endpointName,
-        querySuffix: String = "",
+        querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
         security: Security? = null,

@@ -33,7 +33,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
 
     protected abstract val route: String
     protected abstract val endpointTitleCase: String
-    protected abstract val querySuffix: String
+    protected abstract val querySuffix: String?
     protected abstract val idTypeKey: String?
     protected abstract val summary: String
     protected abstract val cache: Duration?
@@ -94,7 +94,7 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
 
 internal class QueriesBuilderV1Impl(
     override val route: String,
-    override val querySuffix: String,
+    override val querySuffix: String?,
     override val endpointTitleCase: String,
     override val idTypeKey: String?,
     override val summary: String,
@@ -129,7 +129,7 @@ internal class QueriesBuilderV1Impl(
 
 internal class QueriesBuilderV2Impl(
     override val route: String,
-    override val querySuffix: String,
+    override val querySuffix: String?,
     override val endpointTitleCase: String,
     override val idTypeKey: String?,
     override val summary: String,
