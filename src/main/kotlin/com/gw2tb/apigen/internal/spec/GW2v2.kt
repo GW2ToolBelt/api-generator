@@ -35,7 +35,7 @@ internal val GW2v2 = GW2APISpecV2 {
     val ITEM_ID = "ItemID"(INTEGER)
     val SKIN_ID = "SkinID"(INTEGER)
 
-    val DAILY_ACHIEVEMENT = record(name = "Achievement", description = "Information about a daily achievement.", endpoint = "/Achivements/Daily") {
+    val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.", endpoint = "/Achivements/Daily") {
         CamelCase("id").."ID"(INTEGER, "the achievement's ID")
         "Level"(
             description = "the level requirement for the daily achievement to appear",
