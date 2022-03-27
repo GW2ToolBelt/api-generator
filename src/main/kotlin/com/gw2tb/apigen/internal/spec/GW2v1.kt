@@ -622,7 +622,10 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_WVW_MATCHES(summary = "Returns information about WvW matches.") {
+    V1_WVW_MATCHES(
+        endpointTitleCase = "/WvW/Matches",
+        summary = "Returns information about WvW matches."
+    ) {
         schema(record(name = "WvWMatches", description = "Information about WvW matches.") {
             SerialName("wvw_matches").."WvWMatches"(
                 description = "the matches",
