@@ -2924,7 +2924,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skirmishes"(
                 description = "the match's skirmishes",
                 type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
-                    CamelCase("id").."ID"(STRING, "the skirmish's ID")
+                    CamelCase("id").."ID"(INTEGER, "the skirmish's ID")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                     SerialName("map_scores").."MapScores"(
                         description = "the scores by map",
@@ -2938,7 +2938,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Maps"(
                 description = "the total scores by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    CamelCase("id").."ID"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                     "Deaths"(map(STRING, INTEGER), "the deaths by team color")
@@ -2994,7 +2994,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skirmishes"(
                 description = "the match's skirmishes",
                 type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
-                    CamelCase("id").."ID"(STRING, "the skirmish's ID")
+                    CamelCase("id").."ID"(INTEGER, "the skirmish's ID")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                     SerialName("map_scores").."MapScores"(
                         description = "the scores by map",
@@ -3008,7 +3008,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Maps"(
                 description = "the total scores by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    CamelCase("id").."ID"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                 })
@@ -3027,7 +3027,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Maps"(
                 description = "the stats by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(STRING, "the map's ID")
+                    CamelCase("id").."ID"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Deaths"(map(STRING, INTEGER), "the deaths by team color")
                     "Kills"(map(STRING, INTEGER), "the deaths by team color")
