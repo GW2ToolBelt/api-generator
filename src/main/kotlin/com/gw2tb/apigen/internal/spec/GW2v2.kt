@@ -1511,7 +1511,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "the guild's vault items",
             items = record(name = "GuildStashSection", description = "Information about a section of a guild's vault.") {
-                SerialName("upgrade_id").."UpgradeID"(STRING, "the ID of the guild upgrade that granted access to this section of the guild's vault")
+                SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the guild upgrade that granted access to this section of the guild's vault")
                 "Size"(INTEGER, "the number of slots in this section of the guild's vault")
                 "Coins"(INTEGER, "the number of coins deposited in this section of the guild's vault")
                 "Note"(STRING, "the description set for this section of the guild's vault")
@@ -1520,8 +1520,8 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(
                         nullableItems = true,
                         items = record(name = "GuildStashSlot", description = "Information about an item in a guild vault's slot.") {
-                            CamelCase("id").."ID"(STRING, "the item's ID")
-                            "Count"(STRING, "the amount of items in the stack")
+                            CamelCase("id").."ID"(INTEGER, "the item's ID")
+                            "Count"(INTEGER, "the amount of items in the stack")
                         }
                     )
                 )
