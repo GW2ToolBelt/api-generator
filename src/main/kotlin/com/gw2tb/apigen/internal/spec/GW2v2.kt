@@ -2394,7 +2394,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("Board", STRING, "the board")
         pathParameter("Region", STRING, "the region")
 
-        schema(record(name = "LeaderboardEntry", description = "Information about a leaderboard entry.") {
+        schema(record(name = "PvPSeasonsLeaderboardEntry", description = "Information about a leaderboard entry.") {
             optional.."Name"(STRING, "the account's name")
             optional..CamelCase("id").."ID"(STRING, "the guild's ID")
             "Rank"(INTEGER, "the account's rank")
