@@ -2100,7 +2100,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skills"(
                 description = "the pet's skills",
                 type = array(record(name = "Skill", description = "Information about a pet's skill.") {
-                    CamelCase("id").."ID"(STRING, "the skill's ID")
+                    CamelCase("id").."ID"(INTEGER, "the skill's ID")
                 })
             )
         })
