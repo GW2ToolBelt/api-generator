@@ -1403,14 +1403,14 @@ internal val GW2v2 = GW2APISpecV2 {
                     "Background"(
                         description = "the emblem's background",
                         type = record(name = "Background", description = "Information about a guild emblem's background.") {
-                            CamelCase("id").."ID"(STRING, "the background's ID")
+                            CamelCase("id").."ID"(INTEGER, "the background's ID")
                             "Colors"(array(INTEGER), "the background's colors")
                         }
                     )
                     "Foreground"(
                         description = "the emblem's foreground",
                         type = record(name = "Foreground", description = "Information about a guild emblem's foreground.") {
-                            CamelCase("id").."ID"(STRING, "the foreground's ID")
+                            CamelCase("id").."ID"(INTEGER, "the foreground's ID")
                             "Colors"(array(INTEGER), "the foreground's colors")
                         }
                     )
