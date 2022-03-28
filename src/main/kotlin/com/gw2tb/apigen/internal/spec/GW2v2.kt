@@ -1671,7 +1671,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(record(name = "Cost", description = "Information about an upgrade's cost.") {
                         "Type"(STRING, "the cost's type")
                         localized.."Name"(STRING, "the cost's name")
-                        "Count"(STRING, "the amount needed")
+                        "Count"(INTEGER, "the amount needed")
                         optional..SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the cost's item")
                     })
                 )
