@@ -2398,7 +2398,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Name"(STRING, "the account's name")
             optional..CamelCase("id").."ID"(STRING, "the guild's ID")
             "Rank"(INTEGER, "the account's rank")
-            optional.."Team"(INTEGER, "the guild team's name")
+            optional.."Team"(STRING, "the guild team's name")
             optional..SerialName("team_id").."TeamID"(INTEGER, "the guild team's ID")
             "Date"(STRING, "the date at which the rank was reached")
             "Scores"(
