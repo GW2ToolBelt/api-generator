@@ -2333,7 +2333,7 @@ internal val GW2v2 = GW2APISpecV2 {
                             description = "the leaderboard's settings",
                             type = record(name = "Settings", description = "Information about a leaderboard's settings.") {
                                 "Name"(STRING, "the setting's name")
-                                "Duration"(STRING, "the setting's duration (unknown purpose)")
+                                optional.."Duration"(STRING, "the setting's duration (unknown purpose)")
                                 "Scoring"(STRING, "the ID of the primary scoring component")
                                 "Tiers"(
                                     description = "the tiers",
