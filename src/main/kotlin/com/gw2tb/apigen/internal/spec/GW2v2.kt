@@ -2405,7 +2405,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 description = "the entry's scoring values",
                 type = array(record(name = "Scoring", description = "Information about a leaderboard entry's scoring") {
                     CamelCase("id").."ID"(STRING, "the scoring's ID")
-                    "Value"(STRING, "the scoring's value")
+                    "Value"(INTEGER, "the scoring's value")
                 })
             )
         })
