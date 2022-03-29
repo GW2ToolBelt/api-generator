@@ -53,12 +53,12 @@ internal val GW2v1 = GW2APISpecV1 {
         "Emblem"(
             description = "the guild's emblem",
             type = record(name = "Emblem", description = "Information about a guild emblem.") {
-                SerialName("background_id").."BackgroundID"(STRING, "the background's ID")
-                SerialName("foreground_id").."ForegroundID"(STRING, "the foreground's ID")
+                SerialName("background_id").."BackgroundID"(INTEGER, "the background's ID")
+                SerialName("foreground_id").."ForegroundID"(INTEGER, "the foreground's ID")
                 "Flags"(array(STRING), "the manipulations applied to the emblem")
-                SerialName("background_color_id").."BackgroundColorID"(STRING, "the background color's ID")
-                SerialName("foreground_primary_color_id").."ForegroundPrimaryColorID"(STRING, "the foreground primary color's ID")
-                SerialName("foreground_secondary_color_id").."ForegroundSecondaryColorID"(STRING, "the foreground secondary color's ID")
+                SerialName("background_color_id").."BackgroundColorID"(INTEGER, "the background color's ID")
+                SerialName("foreground_primary_color_id").."ForegroundPrimaryColorID"(INTEGER, "the foreground primary color's ID")
+                SerialName("foreground_secondary_color_id").."ForegroundSecondaryColorID"(INTEGER, "the foreground secondary color's ID")
             }
         )
     }
