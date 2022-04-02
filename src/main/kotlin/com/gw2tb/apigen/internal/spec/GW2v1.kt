@@ -376,7 +376,7 @@ internal val GW2v1 = GW2APISpecV1 {
                                             optional.."Marker"(
                                                 description = "the PoI's marker icon",
                                                 type = record(name = "Marker", "Information about a PoI's marker icon.") {
-                                                    SerialName("file_id").."FileID"(STRING, "the icon's file ID to be used with the render service")
+                                                    SerialName("file_id").."FileID"(INTEGER, "the icon's file ID to be used with the render service")
                                                     SerialName("signature").."Signature"(STRING, "the icon's file signature to be used with the render service")
                                                 }
                                             )
