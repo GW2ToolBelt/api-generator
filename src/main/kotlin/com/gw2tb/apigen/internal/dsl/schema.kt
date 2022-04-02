@@ -39,13 +39,13 @@ internal val INTEGER: DeferredPrimitiveType = DeferredPrimitiveType(SchemaIntege
 /** Alias for [SchemaString]. */
 internal val STRING: DeferredPrimitiveType = DeferredPrimitiveType(SchemaString())
 
-internal fun <T : SchemaTypeUse> DeferredSchemaType(factory: (TypeRegistryScope?) -> SchemaVersionedData<out T>): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<out T> = factory(typeRegistry)
+internal fun <T : SchemaTypeUse> DeferredSchemaType(factory: (TypeRegistryScope?, Boolean) -> SchemaVersionedData<out T>): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
+    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out T> = factory(typeRegistry, isTopLevel)
 }
 
 internal abstract class DeferredSchemaType<T : SchemaTypeUse> {
 
-    abstract fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<out T>
+    abstract fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean = false): SchemaVersionedData<out T>
 
     fun getFlat(): T = get(typeRegistry = null, interpretationHint = null).single().data
 
@@ -55,7 +55,7 @@ internal data class DeferredPrimitiveType(
     private val value: SchemaPrimitive,
 ) : DeferredSchemaType<SchemaPrimitive>() {
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<out SchemaPrimitive> {
+    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaPrimitive> {
         return wrapVersionedSchemaData(value)
     }
 
@@ -69,7 +69,7 @@ internal abstract class DeferredSchemaClass<T : APIType> : DeferredSchemaType<Sc
 
     abstract val name: String
 
-    abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T
+    abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T
 
     abstract val typeRegistry: TypeRegistryScope?
 
@@ -79,14 +79,14 @@ internal abstract class DeferredSchemaClass<T : APIType> : DeferredSchemaType<Sc
         items: DeferredSchemaType<out SchemaTypeUse>,
         nullableItems: Boolean = false
     ): DeferredSchemaType<SchemaArray> =
-        DeferredSchemaType { typeRegistry -> items.get(typeRegistry, interpretationHint = null).mapData { SchemaArray(it, nullableItems, description = null) } }
+        DeferredSchemaType { typeRegistry, isTopLevel -> items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaArray(it, nullableItems, description = null) } }
 
     fun map(
         keys: DeferredSchemaType<out SchemaPrimitive>,
         values: DeferredSchemaType<out SchemaTypeUse>,
         nullableValues: Boolean = false
     ): DeferredSchemaType<SchemaMap> =
-        DeferredSchemaType { typeRegistry -> values.get(typeRegistry, interpretationHint = null).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description = null) } }
+        DeferredSchemaType { typeRegistry, isTopLevel -> values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description = null) } }
 
     fun conditional(
         name: String,
@@ -129,7 +129,7 @@ internal class SchemaConditionalBuilder<T : APIType>(
     private val disambiguationBySideProperty: Boolean,
     private val interpretationInNestedProperty: Boolean,
     private val sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T,
+    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
     override val typeRegistry: TypeRegistryScope?
 ) : DeferredSchemaClass<T>() {
 
@@ -159,7 +159,7 @@ internal class SchemaConditionalBuilder<T : APIType>(
 
     private lateinit var _value: SchemaVersionedData<SchemaTypeReference>
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<out SchemaTypeReference> {
+    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
@@ -191,7 +191,7 @@ internal class SchemaConditionalBuilder<T : APIType>(
                     }
             }
 
-            val apiType = apiTypeFactory(versions, interpretationHint)
+            val apiType = apiTypeFactory(versions, interpretationHint, isTopLevel)
             typeRegistry.register(name, apiType)
 
             _value = versions.mapVersionedData { version, data -> SchemaTypeReference(loc, version, data) }
@@ -313,13 +313,13 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
 internal class SchemaRecordBuilder<T : APIType>(
     override val name: String,
     private val description: String,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T,
+    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
     override val typeRegistry: TypeRegistryScope?
 ) : AbstractSchemaRecordBuilder<T>() {
 
     private lateinit var _value: SchemaVersionedData<SchemaTypeReference>
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<SchemaTypeReference> {
+    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<SchemaTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
@@ -343,7 +343,7 @@ internal class SchemaRecordBuilder<T : APIType>(
                     }
             }
 
-            val apiType = apiTypeFactory(versions, interpretationHint)
+            val apiType = apiTypeFactory(versions, interpretationHint, isTopLevel)
             val loc = typeRegistry?.register(name, apiType) ?: error("TypeRegistry is required")
 
             _value = versions.mapVersionedData { version, data -> SchemaTypeReference(loc, version, data) }
@@ -412,7 +412,7 @@ internal class SchemaConditionalInterpretationBuilder(
 }
 
 internal class SchemaConditionalSharedPropertyBuilder<T : APIType>(
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T,
+    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
     override val typeRegistry: TypeRegistryScope?
 ) : AbstractSchemaRecordBuilder<T>() {
 
@@ -422,7 +422,7 @@ internal class SchemaConditionalSharedPropertyBuilder<T : APIType>(
     override val name: String
         get() = error("Not implemented")
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?): SchemaVersionedData<out SchemaTypeReference> {
+    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaTypeReference> {
         error("Not implemented")
     }
 
@@ -500,7 +500,7 @@ internal class SchemaRecordPropertyBuilder(
 
     fun get(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion?): SchemaProperty {
         if (!this::_value.isInitialized) {
-            _value = type.get(typeRegistry, interpretationHint = null).mapData {
+            _value = type.get(typeRegistry, interpretationHint = null, ).mapData {
                 SchemaProperty(
                     propertyName = propertyName,
                     type = it,

@@ -131,7 +131,7 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
 
     override fun testType(type: APIType.V1): Iterable<DynamicTest> = sequence {
         yield(DynamicTest.dynamicTest("$prefix${type.name}") {
-            val data = TestData[spec, type.name]
+            val data = TestData[type]
             assertSchema(type.schema, data)
         })
     }.asIterable()

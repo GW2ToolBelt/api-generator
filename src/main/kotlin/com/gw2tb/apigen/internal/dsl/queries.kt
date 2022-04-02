@@ -54,7 +54,7 @@ internal interface QueriesBuilder<T : APIType> {
         description: String,
         nullableItems: Boolean = false
     ): DeferredSchemaType<SchemaArray> =
-        DeferredSchemaType { typeRegistry -> items.get(typeRegistry, interpretationHint = null).mapData { SchemaArray(it, nullableItems, description) } }
+        DeferredSchemaType { typeRegistry, isTopLevel -> items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaArray(it, nullableItems, description) } }
 
     fun map(
         keys: DeferredSchemaType<out SchemaPrimitive>,
@@ -62,7 +62,7 @@ internal interface QueriesBuilder<T : APIType> {
         description: String,
         nullableValues: Boolean = false
     ): DeferredSchemaType<SchemaMap> =
-        DeferredSchemaType { typeRegistry -> values.get(typeRegistry, interpretationHint = null).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
+        DeferredSchemaType { typeRegistry, isTopLevel -> values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
 
     fun conditional(
         name: String,

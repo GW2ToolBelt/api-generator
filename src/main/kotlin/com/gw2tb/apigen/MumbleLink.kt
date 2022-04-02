@@ -39,7 +39,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
         SchemaRecordBuilder<APIType.V1>(
             "MumbleLinkIdentity",
             "", // TODO
-            apiTypeFactory = { _, _ -> error("Unsupported operation") },
+            apiTypeFactory = { _, _, _ -> error("Unsupported operation") },
             typeRegistry = null
         ).apply {
             "Name"(STRING, "the name of the currently played character")

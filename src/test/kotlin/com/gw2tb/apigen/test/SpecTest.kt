@@ -29,6 +29,7 @@ import kotlinx.serialization.json.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.Assertions.*
+import kotlin.math.exp
 import kotlin.time.*
 
 abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuery>(
@@ -84,12 +85,18 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
         }
     }.iterator()
 
-    fun assertSchema(schema: SchemaTypeDeclaration, data: String) {
-        val element = Json.parseToJsonElement(data)
-        if (element !is JsonArray) error("Expected top-level array")
+    fun assertSchema(schema: SchemaTypeDeclaration, data: List<JsonElement>) {
+        data.forEachIndexed { index, entry ->
+            val errors = testSchema(
+                expected = schema,
+                actual = entry,
+                context = RootSchemaMatcherContext("Sample[$index]")
+            )
 
-        element.jsonArray.forEachIndexed { index, entry ->
-            SchemaTypeReference(TypeLocation(null, "STUB"), V2SchemaVersion.V2_SCHEMA_CLASSIC, schema).assertMatches(path = "Sample[$index]", entry)
+            if (errors.isNotEmpty()) {
+                errors.forEach { error -> System.err.println("[${error.path}] ${error.message}") }
+                fail("Schema did not match actual")
+            }
         }
     }
 
@@ -97,142 +104,14 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
 
     @TestFactory
     fun testTypes(): Iterator<DynamicTest> = sequence {
-//        println(spec.supportedTypes.mapValues { (_, v) -> v.name }.entries.joinToString(separator = "\n") )
-
-        spec.supportedTypes.filter { (loc, _) -> loc.nest == null }.map { it.value }.forEach { type ->
-            yieldAll(testType(type))
-        }
+        spec.supportedTypes
+            .filter { (loc, _) -> loc.nest == null }
+            .map { it.value }
+            .filter { it.isTopLevel }
+            .forEach { type ->
+                yieldAll(testType(type))
+            }
     }.iterator()
-
-    private fun SchemaTypeUse.assertMatches(
-        path: String,
-        actual: JsonElement,
-        nullable: Boolean = false,
-        interpretationKey: String? = null,
-        inheritedSharedProperties: Map<String, SchemaProperty> = emptyMap()
-    ) {
-        when (this) {
-            is SchemaPrimitive -> {
-                fun <T> JsonPrimitive.validate(optional: JsonPrimitive.() -> T, required: JsonPrimitive.() -> T?) =
-                    assertDoesNotThrow("Element has unexpected type: $path") { if (nullable) optional() else required() }
-
-                val primitive = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonPrimitive }
-
-                when (this) {
-                    is SchemaBoolean -> primitive.validate(JsonPrimitive::booleanOrNull, JsonPrimitive::boolean)
-                    is SchemaDecimal -> primitive.validate(JsonPrimitive::doubleOrNull, JsonPrimitive::double)
-                    is SchemaInteger -> primitive.validate(JsonPrimitive::longOrNull, JsonPrimitive::long)
-                    is SchemaString -> primitive.validate(JsonPrimitive::contentOrNull, JsonPrimitive::content)
-                    else -> error("Should not happen")
-                }
-            }
-            is SchemaArray -> {
-                val array = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonArray }
-                array.forEachIndexed { index, it -> elements.assertMatches("$path[$index]", it, nullableElements) }
-            }
-            is SchemaMap -> {
-                val map = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
-                map.forEach { key, value -> values.assertMatches("$path[$key]", value, nullableValues) }
-            }
-            is SchemaTypeReference -> when (val declaration = declaration) {
-                is SchemaConditional -> {
-                    if (nullable && actual is JsonNull) return
-                    val jsonObject = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
-
-                    if (declaration.interpretationInNestedProperty) {
-                        val expectedProperties = (inheritedSharedProperties + declaration.sharedProperties)
-
-                        val unvisitedExpectedProperties = HashMap(expectedProperties.filter { (_, property) -> !property.optionality.isOptional })
-                        val unvisitedActualElements = HashSet(jsonObject.keys)
-
-                        declaration.interpretations.forEach { (_, interpretation) -> unvisitedActualElements.remove(interpretation.interpretationNestProperty!!) }
-                        expectedProperties.forEach { (key, property) ->
-                            val value = jsonObject[property.serialName] ?: return@forEach
-                            unvisitedExpectedProperties.remove(key)
-                            unvisitedActualElements.remove(property.serialName)
-
-                            val interpretationKey = property.type.let { propertyType ->
-                                if (propertyType !is SchemaTypeReference || (propertyType.declaration !is SchemaConditional || !propertyType.declaration.disambiguationBySideProperty)) return@let null
-
-                                val disambiguationByElement = jsonObject[propertyType.declaration.disambiguationBy] ?: fail("Disambiguator not found: ${propertyType.declaration.disambiguationBy} in $path")
-                                disambiguationByElement.jsonPrimitive.content
-                            }
-
-                            property.type.assertMatches("$path/${property.serialName}", value, property.optionality.isOptional, interpretationKey)
-                        }
-
-                        unvisitedExpectedProperties.let {
-                            if (it.isNotEmpty())
-                                fail("Required properties were not found: ${it.values.map(SchemaProperty::serialName)} in $path")
-                        }
-
-                        unvisitedActualElements.let {
-                            if (it.isNotEmpty())
-                                fail("Unexpected properties: $it in $path")
-                        }
-                    }
-
-                    val interpretation = interpretationKey.let {
-                        if (it == null) {
-                            if (declaration.disambiguationBySideProperty) error("Unexpected state")
-
-                            jsonObject[declaration.disambiguationBy]?.jsonPrimitive?.content ?: fail("Disambiguator not found: ${declaration.disambiguationBy} in $path")
-                        } else
-                            it
-                    }.let { key ->
-                        val interpretation = declaration.interpretations[key] ?: fail("Could not find interpretation for key: $key in $path")
-                        interpretation
-                    }
-
-                    val actualInterpretation = if (declaration.interpretationInNestedProperty)
-                        jsonObject[interpretation.interpretationNestProperty] ?: fail("Nested interpretation property not found: ${interpretation.interpretationNestProperty} in $path")
-                    else
-                        jsonObject
-
-                    interpretation.type.assertMatches(
-                        if (declaration.interpretationInNestedProperty) "$path/${interpretation.interpretationNestProperty}" else path,
-                        actualInterpretation,
-                        inheritedSharedProperties = if (declaration.interpretationInNestedProperty) emptyMap() else declaration.sharedProperties
-                    )
-                }
-                is SchemaRecord -> {
-                    if (nullable && actual is JsonNull) return
-                    val jsonObject = assertDoesNotThrow("Element has unexpected type: $path") { actual.jsonObject }
-
-                    val expectedProperties = (inheritedSharedProperties + declaration.properties)
-
-                    val unvisitedExpectedProperties = HashMap(expectedProperties.filter { (_, property) -> !property.optionality.isOptional })
-                    val unvisitedActualElements = HashSet(jsonObject.keys)
-
-                    expectedProperties.forEach { (key, property) ->
-                        val value = jsonObject[property.serialName] ?: return@forEach
-                        unvisitedExpectedProperties.remove(key)
-                        unvisitedActualElements.remove(property.serialName)
-
-                        val interpretationKey = property.type.let { propertyType ->
-                            if (propertyType !is SchemaTypeReference || (propertyType.declaration !is SchemaConditional || !propertyType.declaration.disambiguationBySideProperty)) return@let null
-
-                            val disambiguationByElement = jsonObject[propertyType.declaration.disambiguationBy] ?: fail("Disambiguator not found: ${propertyType.declaration.disambiguationBy} in $path")
-                            disambiguationByElement.jsonPrimitive.content
-                        }
-
-                        property.type.assertMatches("$path/${property.serialName}", value, property.optionality.isOptional, interpretationKey)
-                    }
-
-                    unvisitedExpectedProperties.let {
-                        if (it.isNotEmpty())
-                            fail("Required properties were not found: ${it.values.map(SchemaProperty::serialName)} in $path")
-                    }
-
-                    unvisitedActualElements.let {
-                        if (it.isNotEmpty())
-                            fail("Unexpected properties: $it in $path")
-                    }
-                }
-            }
-            else -> fail("Unsupported SchemaType reached SpecTest stage: $this")
-        }
-    }
 
     interface ExpectedAPIQuery {
         val route: String

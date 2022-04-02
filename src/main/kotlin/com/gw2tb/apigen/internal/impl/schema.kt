@@ -32,7 +32,7 @@ internal fun <T : APIType> conditionalImpl(
     disambiguationBySideProperty: Boolean,
     interpretationInNestedProperty: Boolean,
     sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
-    apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T,
+    apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
     typeRegistry: TypeRegistryScope?,
     configure: SchemaConditionalBuilder<T>.() -> Unit
 ): DeferredSchemaClass<T> {
@@ -51,7 +51,7 @@ internal fun <T : APIType> conditionalImpl(
 internal fun <T : APIType> recordImpl(
     name: String,
     description: String,
-    apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?) -> T,
+    apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
     typeRegistry: TypeRegistryScope?,
     configure: SchemaRecordBuilder<T>.() -> Unit
 ): DeferredSchemaClass<T> {

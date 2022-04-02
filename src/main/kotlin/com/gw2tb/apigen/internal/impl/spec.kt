@@ -37,7 +37,8 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
 
     abstract fun createType(
         data: SchemaVersionedData<out SchemaTypeDeclaration>,
-        interpretationHint: InterpretationHint?
+        interpretationHint: InterpretationHint?,
+        isTopLevel: Boolean
     ): T
 
     override fun String.invoke(type: DeferredPrimitiveType, camelCaseName: String): DeferredPrimitiveType =
@@ -164,9 +165,10 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, APIQuery.V
 
     override fun createType(
         data: SchemaVersionedData<out SchemaTypeDeclaration>,
-        interpretationHint: InterpretationHint?
+        interpretationHint: InterpretationHint?,
+        isTopLevel: Boolean
     ): APIType.V1 =
-        APIType.V1(data.single().data, interpretationHint)
+        APIType.V1(data.single().data, interpretationHint, isTopLevel)
 
 }
 
@@ -263,7 +265,8 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, APIQuery.V
 
     override fun createType(
         data: SchemaVersionedData<out SchemaTypeDeclaration>,
-        interpretationHint: InterpretationHint?
-    ): APIType.V2 = APIType.V2(data, interpretationHint)
+        interpretationHint: InterpretationHint?,
+        isTopLevel: Boolean
+    ): APIType.V2 = APIType.V2(data, interpretationHint, isTopLevel)
 
 }

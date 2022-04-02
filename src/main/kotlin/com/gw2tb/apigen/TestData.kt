@@ -21,19 +21,22 @@
  */
 package com.gw2tb.apigen
 
+import com.gw2tb.apigen.model.APIType
 import com.gw2tb.apigen.model.v2.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 /** Provides access to data that may be used for testing. */
 public object TestData {
 
-    public operator fun get(api: APIVersion<*, *>, type: String, version: V2SchemaVersion? = null): String {
-        val resource = buildString {
+    public operator fun get(type: APIType, version: V2SchemaVersion? = null): List<JsonElement> {
+        val resourceName = buildString {
             append("/com/gw2tb/apigen/")
-            append(api.version)
+            append(if (type is APIType.V2) "v2" else "v1")
             append("_")
-            append(type)
+            append(type.name)
 
-            if (api.version == "v2" && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
+            if (type is APIType.V2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
                 append("+")
                 append(version.identifier!!.replace(':', '_'))
             }
@@ -41,16 +44,17 @@ public object TestData {
             append(".json")
         }
 
-        return TestData::class.java.getResourceAsStream(resource).use {
-            check(it != null) {
-                """
-                TestData::class.java.getResourceAsStream returned `null` for $resource.
-                When adding an endpoint please make sure to add a sample file in "src/main/resources/com/gw2tb/apigen".
-                """.trimIndent()
+        return Json.decodeFromString<JsonArray>(TestData::class.java.getResourceAsStream(resourceName).use {
+            if (it == null) {
+                if (type.isTopLevel) {
+                    error("Did not find test vectors for top-level type ${type.name} (Resource: '$resourceName')")
+                }
+
+                return emptyList()
             }
 
             it.reader().readText()
-        }
+        }).toList()
     }
 
 }

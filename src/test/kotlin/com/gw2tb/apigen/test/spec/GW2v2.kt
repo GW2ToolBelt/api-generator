@@ -2503,12 +2503,11 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
     }
 
     override fun testType(type: APIType.V2) = sequence<DynamicTest> {
-
         type.significantVersions.forEach { version ->
             val schema = type[version].data
 
             yield(DynamicTest.dynamicTest("$prefix${type.name}${if (version != com.gw2tb.apigen.model.v2.V2SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
-                val data = TestData[spec, type.name, version]
+                val data = TestData[type, version]
                 assertSchema(schema, data)
             })
         }

@@ -193,8 +193,8 @@ public final class com/gw2tb/apigen/MumbleLink {
 
 public final class com/gw2tb/apigen/TestData {
 	public static final field INSTANCE Lcom/gw2tb/apigen/TestData;
-	public final fun get (Lcom/gw2tb/apigen/APIVersion;Ljava/lang/String;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Ljava/lang/String;
-	public static synthetic fun get$default (Lcom/gw2tb/apigen/TestData;Lcom/gw2tb/apigen/APIVersion;Ljava/lang/String;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun get (Lcom/gw2tb/apigen/model/APIType;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Ljava/util/List;
+	public static synthetic fun get$default (Lcom/gw2tb/apigen/TestData;Lcom/gw2tb/apigen/model/APIType;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;ILjava/lang/Object;)Ljava/util/List;
 }
 
 public final class com/gw2tb/apigen/internal/dsl/UtilsKt {
@@ -299,8 +299,8 @@ public abstract class com/gw2tb/apigen/model/APIType {
 public final class com/gw2tb/apigen/model/APIType$V1 : com/gw2tb/apigen/model/APIType {
 	public final fun component1 ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public final fun component2 ()Lcom/gw2tb/apigen/model/InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;)Lcom/gw2tb/apigen/model/APIType$V1;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V1;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V1;
+	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;Z)Lcom/gw2tb/apigen/model/APIType$V1;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V1;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/InterpretationHint;ZILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V1;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getInterpretationHint ()Lcom/gw2tb/apigen/model/InterpretationHint;
 	public fun getName ()Ljava/lang/String;
@@ -311,8 +311,8 @@ public final class com/gw2tb/apigen/model/APIType$V1 : com/gw2tb/apigen/model/AP
 
 public final class com/gw2tb/apigen/model/APIType$V2 : com/gw2tb/apigen/model/APIType, com/gw2tb/apigen/model/v2/VersionedData {
 	public final fun component2 ()Lcom/gw2tb/apigen/model/InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;)Lcom/gw2tb/apigen/model/APIType$V2;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V2;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V2;
+	public final fun copy (Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;Z)Lcom/gw2tb/apigen/model/APIType$V2;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/APIType$V2;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedData;Lcom/gw2tb/apigen/model/InterpretationHint;ZILjava/lang/Object;)Lcom/gw2tb/apigen/model/APIType$V2;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun flatMapData (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public fun get (Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Lcom/gw2tb/apigen/model/v2/VersionConstrainedData;
