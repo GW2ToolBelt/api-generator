@@ -510,7 +510,7 @@ internal class SchemaRecordPropertyBuilder(
 
     fun get(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion?): SchemaProperty {
         if (!this::_value.isInitialized) {
-            _value = type.get(typeRegistry, interpretationHint = null, ).mapData {
+            _value = type.get(typeRegistry, interpretationHint = null).mapData {
                 SchemaProperty(
                     propertyName = propertyName,
                     type = it,
