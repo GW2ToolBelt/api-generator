@@ -367,6 +367,33 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery("/Build")
 
         expectQuery(
+            "/Characters",
+            security = setOf(ACCOUNT, CHARACTERS),
+            queryDetails = QueryIDs<SchemaString>()
+        )
+        expectQuery(
+            "/Characters",
+            security = setOf(ACCOUNT, CHARACTERS),
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryByID<SchemaString>()
+        )
+        expectQuery(
+            "/Characters",
+            security = setOf(ACCOUNT, CHARACTERS),
+            queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
+            queryDetails = QueryByIDs<SchemaString>()
+        )
+        expectQuery(
+            "/Characters",
+            security = setOf(ACCOUNT, CHARACTERS),
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage<SchemaString>()
+        )
+
+        expectQuery(
             "/Characters/:ID/Backstory",
             security = setOf(ACCOUNT, CHARACTERS),
             pathParameters = listOf(
@@ -2527,6 +2554,8 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
     }
 
     override fun testType(type: APIType.V2) = sequence<DynamicTest> {
+        if (type.name == "Character") println(type._schema.entries)
+
         type.significantVersions.forEach { version ->
             val schema = type[version].data
 

@@ -47,6 +47,11 @@ internal val GW2v2 = GW2APISpecV2 {
         SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
     }
 
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_BACKSTORY() {
+        "Backstory"(array(STRING), "the IDs of the character's backstory answers")
+    }
+
     val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.", endpoint = "/Characters/:ID/BuildTabs") {
         "Tab"(INTEGER, "the tab's ID")
         SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
@@ -72,6 +77,74 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
                 optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
             }
+        )
+    }
+
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_CORE() {
+        "Name"(STRING, "the character's name")
+        "Race"(STRING, "the ID of the character's race")
+        "Gender"(STRING, "the character's gender")
+        "Profession"(STRING, "the ID of the characters's profession")
+        "Level"(INTEGER, "the character's level")
+        optional.."Guild"(STRING, "the ID of the character's represented guild")
+        "Age"(INTEGER, "the amount of seconds the character was played")
+        "Created"(STRING, "the ISO-8601 standard timestamp of when the character was created")
+        since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
+        "Deaths"(INTEGER, "the amount of times the character has been defeated")
+        optional.."Title"(INTEGER, "the ID of the character's selected title")
+    }
+
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_CRAFTING() {
+        "Crafting"(
+            description = "the character's crafting disciplines",
+            type = array(record(name = "Discipline", description = "Information about a character's crafting discipline.") {
+                "Discipline"(STRING, "the name of the discipline")
+                "Rating"(INTEGER, "the character's crafting level for the discipline")
+                "Active"(BOOLEAN, "a flag indicating whether or not the discipline is currently active on the character")
+            })
+        )
+    }
+
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_EQUIPMENT() {
+        "Equipment"(
+            description = "the character's equipment",
+            type = array(record(name = "EquipmentSlot", description = "Information a character's equipment slot.") {
+                CamelCase("id").."ID"(INTEGER, "the equipment piece's item ID")
+                until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Slot"(STRING, "the equipment piece's slot")
+                since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Slot"(STRING, "the equipment piece's slot")
+                optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
+                optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
+                optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
+                optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
+                optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+                optional.."Binding"(STRING, "the binding of the item")
+                optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                optional.."Stats"(
+                    description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                    type = record(name = "Stats", description = "Information about an item's stats.") {
+                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Attributes"(
+                            description = "the item's attributes",
+                            type = record(name = "Attributes", description = "Information about an item's attributes.") {
+                                optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the item")
+                                optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                            }
+                        )
+                    }
+                )
+                since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Location"(STRING, "the storage location of the equipment piece")
+                since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
+            })
         )
     }
 
@@ -114,6 +187,81 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Rune"(INTEGER, "the ID of the selected rune")
                 "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
             }
+        )
+    }
+
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_INVENTORY() {
+        "Bags"(
+            description = "the character's inventory bags",
+            type = array(record(name = "Bag", description = "Information about an inventory bag.") {
+                CamelCase("id").."ID"(INTEGER, "the bag's item ID")
+                "Size"(INTEGER, "the bag's size")
+                "Inventory"(
+                    description = "the bag's content",
+                    type = array(record(name = "Item", description = "Information about an item in a character's inventory.") {
+                        CamelCase("id").."ID"(INTEGER, "the item's ID")
+                        "Count"(INTEGER, "the amount of items in the stack")
+                        optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+                        optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
+                        optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
+                        optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
+                        optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
+                        optional.."Stats"(
+                            description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                            type = record(name = "Stats", description = "Information about an item's stats.") {
+                                CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                                optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                            }
+                        )
+                        optional.."Binding"(STRING, "the binding of the material")
+                        optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                    }, nullableItems = true)
+                )
+            })
+        )
+    }
+
+    val CHARACTERS_SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.", endpoint = "/Characters/:ID/Skills") {
+        val SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
+            optional.."Heal"(INTEGER, "the heal skill's ID")
+            "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
+            optional.."Elite"(INTEGER, "the elite skill's ID")
+            optional.."Legends"(array(STRING, nullableItems = true), "the legend IDs")
+        }
+
+        CamelCase("pve").."PvE"(SKILLS, "the character's PvE skills")
+        CamelCase("pvp").."PvP"(SKILLS, "the character's PvP skills")
+        CamelCase("wvw").."WvW"(SKILLS, "the character's WvW skills")
+    }
+
+    val CHARACTERS_SPECIALIZATIONS = record(name = "Specializations", description = "Information about a character's equipped specializations.", endpoint = "/Characters/:ID/Specializations") {
+        val SPECIALIZATION = record(name = "Specialization", description = "Information about an equipped specialization.") {
+            optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
+            "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
+        }
+
+        CamelCase("pve").."PvE"(array(SPECIALIZATION), "the character's PvE specializations")
+        CamelCase("pvp").."PvP"(array(SPECIALIZATION), "the character's PvP specializations")
+        CamelCase("wvw").."WvW"(array(SPECIALIZATION), "the character's WvW specializations")
+    }
+
+    @APIGenDSL
+    fun SchemaRecordBuilder<*>.CHARACTERS_TRAINING() {
+        "Training"(
+            description = "the training information for a character's trained skill-trees",
+            type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
+                CamelCase("id").."ID"(INTEGER, "the skill tree's ID")
+                "Spent"(INTEGER, "the amount of hero points spent in the tree")
+                "Done"(BOOLEAN, "a flag indicating whether or not the tree is fully trained")
+            })
         )
     }
 
@@ -731,21 +879,92 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(BUILD_ID, "the current build ID")
         })
     }
-//    "/Characters" {
-//        summary = ""
-//        security = setOf(ACCOUNT, CHARACTERS)
-//
-//        supportedQueries(BY_ID, BY_IDS, BY_PAGE)
-//        schema(map {
-//            "Name"(STRING, "the character's name")
-//            "Race"(STRING, "the ID of the character's race")
-//            "Gender"(STRING, "the character's gender")
-//            "Flags"(INTEGER, "") // TODO array of something ?
-//            "Profession"(STRING, "the ID of the character's profession")
-//            "Level"(INTEGER, "the character's level")
-//            "Guild"(STRING, "")
-//        })
-//    }
+    V2_CHARACTERS(
+        idTypeKey = "name",
+        summary = "Returns information about characters.",
+        queryTypes = defaultQueryTypes(all = true),
+        security = security(ACCOUNT, CHARACTERS)
+    ) {
+        schema(record(name = "Character", description = "Information about a character.") {
+            CHARACTERS_CORE()
+
+            SerialName("wvw_abilities")..CamelCase("wvwAbilities").."WvWAbilities"(
+                description = "information about the WvW abilities of the character",
+                type = array(record(name = "WvWAbility", description = "Information about a character's WvW ability.") {
+                    CamelCase("id").."ID"(INTEGER, "the ability's ID")
+                    "Rank"(INTEGER, "the ability's rank")
+                })
+            )
+            until(V2_SCHEMA_2021_04_06T21_00_00_000Z)..SerialName("equipment_pvp").."EquipmentPvP"(
+                description = "information about the character's PvP equipment",
+                type = record(name = "EquipmentPvP", description = "Information about a character's PvP equipment.") {
+                    optional.."Amulet"(INTEGER, "the ID of the character's PvP amulet")
+                    optional.."Rune"(INTEGER, "the ID of the character's PvP rune")
+                    "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the character's PvP sigils")
+                }
+            )
+            "Flags"(array(STRING), "various additional flags")
+
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("build_tabs_unlocked").."BuildTabsUnlocked"(INTEGER, "the number of build tabs unlocked for the character")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("active_build_tab").."ActiveBuildTab"(INTEGER, "the ID of the character's active build tab")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("equipment_tabs_unlocked").."EquipmentTabsUnlocked"(INTEGER, "the number of equipment tabs unlocked for the character")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("active_equipment_tab").."ActiveEquipmentTab"(INTEGER, "the ID of the character's active equipment tab")
+
+            CHARACTERS_BACKSTORY()
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("build_tabs").."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
+            CHARACTERS_CRAFTING()
+            CHARACTERS_EQUIPMENT()
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("equipment_tabs").."EquipmentTabs"(
+                description = "the character's equipment tabs",
+                type = array(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
+                    "Tab"(INTEGER, "the tab's ID")
+                    "Name"(STRING, "the equipment configuration's name")
+                    SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+                    "Equipment"(
+                        description = "the stored equipment",
+                        type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
+                            CamelCase("id").."ID"(INTEGER, "the equipped item's ID")
+                            "Slot"(STRING, "the slot in which the equipment piece is slotted into")
+                            optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
+                            optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
+                            optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
+                            optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
+                            optional.."Binding"(STRING, "the binding of the item")
+                            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                            "Location"(STRING, "the storage location of the equipment piece")
+                            optional.."Stats"(
+                                description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
+                                type = record(name = "Stats", description = "Information about an item's stats.") {
+                                    CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                                }
+                            )
+                        })
+                    )
+                    since(V2_SCHEMA_2021_04_06T21_00_00_000Z)..SerialName("equipment_pvp").."EquipmentPvP"(
+                        description = "the character's PvP equipment",
+                        type = record(name = "PvPEquipment", "Information about a character's PvP equipment.") {
+                            "Amulet"(INTEGER, "the ID of the selected amulet")
+                            "Rune"(INTEGER, "the ID of the selected rune")
+                            "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
+                        }
+                    )
+                })
+            )
+            CHARACTERS_INVENTORY()
+            "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
+            until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Skills"(CHARACTERS_SKILLS, "the character's equipped skills")
+            until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Specializations"(CHARACTERS_SPECIALIZATIONS, "the character's equipped specializations")
+            CHARACTERS_TRAINING()
+        })
+    }
     V2_CHARACTERS_BACKSTORY(
         summary = "Returns information about a character's backstory.",
         security = security(ACCOUNT, CHARACTERS)
@@ -753,7 +972,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersBackstory", description = "Information about a character's backstory.") {
-            "Backstory"(array(STRING), "the IDs of the character's backstory answers")
+            CHARACTERS_BACKSTORY()
         })
     }
     V2_CHARACTERS_BUILDTABS(
@@ -786,17 +1005,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersCore", description = "General Information about a character.") {
-            "Name"(STRING, "the character's name")
-            "Race"(STRING, "the ID of the character's race")
-            "Gender"(STRING, "the character's gender")
-            "Profession"(STRING, "the ID of the characters's profession")
-            "Level"(INTEGER, "the character's level")
-            optional.."Guild"(STRING, "the ID of the character's represented guild")
-            "Age"(INTEGER, "the amount of seconds the character was played")
-            "Created"(STRING, "the ISO-8601 standard timestamp of when the character was created")
-            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
-            "Deaths"(INTEGER, "the amount of times the character has been defeated")
-            optional.."Title"(INTEGER, "the ID of the character's selected title")
+            CHARACTERS_CORE()
         })
     }
     V2_CHARACTERS_CRAFTING(
@@ -806,14 +1015,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersCrafting", description = "Information about a character's crafting disciplines.") {
-            "Crafting"(
-                description = "the character's crafting disciplines",
-                type = array(record(name = "Discipline", description = "Information about a character's crafting discipline.") {
-                    "Discipline"(STRING, "the name of the discipline")
-                    "Rating"(INTEGER, "the character's crafting level for the discipline")
-                    "Active"(BOOLEAN, "a flag indicating whether or not the discipline is currently active on the character")
-                })
-            )
+            CHARACTERS_CRAFTING()
         })
     }
     V2_CHARACTERS_EQUIPMENT(
@@ -823,43 +1025,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersEquipment", description = "Information about a character's equipment.") {
-            "Equipment"(
-                description = "the character's equipment",
-                type = array(record(name = "EquipmentSlot", description = "Information a character's equipment slot.") {
-                    CamelCase("id").."ID"(INTEGER, "the equipment piece's item ID")
-                    until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Slot"(STRING, "the equipment piece's slot")
-                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Slot"(STRING, "the equipment piece's slot")
-                    optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
-                    optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
-                    optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
-                    optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
-                    optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-                    optional.."Binding"(STRING, "the binding of the item")
-                    optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
-                    optional.."Stats"(
-                        description = "contains information on the stats chosen if the item offers an option for stats/prefix",
-                        type = record(name = "Stats", description = "Information about an item's stats.") {
-                            CamelCase("id").."ID"(INTEGER, "the itemstat ID")
-                            "Attributes"(
-                                description = "the item's attributes",
-                                type = record(name = "Attributes", description = "Information about an item's attributes.") {
-                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
-                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
-                                    optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the item")
-                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
-                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
-                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
-                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
-                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
-                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
-                                }
-                            )
-                        }
-                    )
-                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Location"(STRING, "the storage location of the equipment piece")
-                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
-                })
-            )
+            CHARACTERS_EQUIPMENT()
         })
     }
     V2_CHARACTERS_EQUIPMENTTABS(
@@ -900,41 +1066,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersInventorySlot", description = "Information about a bag in a character's inventory.") {
-            "Bags"(
-                description = "the character's inventory bags",
-                type = array(record(name = "Bag", description = "Information about an inventory bag.") {
-                    CamelCase("id").."ID"(INTEGER, "the bag's item ID")
-                    "Size"(INTEGER, "the bag's size")
-                    "Inventory"(
-                        description = "the bag's content",
-                        type = array(record(name = "Item", description = "Information about an item in a character's inventory.") {
-                            CamelCase("id").."ID"(INTEGER, "the item's ID")
-                            "Count"(INTEGER, "the amount of items in the stack")
-                            optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
-                            optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
-                            optional.."Upgrades"(array(INTEGER), "an array of item IDs for each rune or signet applied to the item")
-                            optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
-                            optional.."Infusions"(array(INTEGER), "an array of item IDs for each infusion applied to the item")
-                            optional.."Stats"(
-                                description = "contains information on the stats chosen if the item offers an option for stats/prefix",
-                                type = record(name = "Stats", description = "Information about an item's stats.") {
-                                    CamelCase("id").."ID"(INTEGER, "the itemstat ID")
-                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
-                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
-                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
-                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
-                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
-                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
-                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
-                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
-                                }
-                            )
-                            optional.."Binding"(STRING, "the binding of the material")
-                            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
-                        }, nullableItems = true)
-                    )
-                })
-            )
+            CHARACTERS_INVENTORY()
         })
     }
     V2_CHARACTERS_QUESTS(
@@ -995,21 +1127,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersSkills", description = "Information about a character's equipped skills.") {
-            "Skills"(
-                description = "the character's equipped skills",
-                type = record(name = "Skills", description = "Information about a character's equipped skills.") {
-                    val SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
-                        optional.."Heal"(INTEGER, "the heal skill's ID")
-                        "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
-                        optional.."Elite"(INTEGER, "the elite skill's ID")
-                        optional.."Legends"(array(STRING, nullableItems = true), "the legend IDs")
-                    }
-
-                    CamelCase("pve").."PvE"(SKILLS, "the character's PvE skills")
-                    CamelCase("pvp").."PvP"(SKILLS, "the character's PvP skills")
-                    CamelCase("wvw").."WvW"(SKILLS, "the character's WvW skills")
-                }
-            )
+            "Skills"(CHARACTERS_SKILLS, "the character's equipped skills")
         })
     }
     V2_CHARACTERS_SPECIALIZATIONS(
@@ -1020,19 +1138,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersSpecializations", description = "Information about a character's equipped specializations.") {
-            "Specializations"(
-                description = "the character's equipped specializations",
-                type = record(name = "Specializations", description = "Information about a character's equipped specializations.") {
-                    val SPECIALIZATION = record(name = "Specialization", description = "Information about an equipped specialization.") {
-                        optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
-                        "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
-                    }
-
-                    CamelCase("pve").."PvE"(array(SPECIALIZATION), "the character's PvE specializations")
-                    CamelCase("pvp").."PvP"(array(SPECIALIZATION), "the character's PvP specializations")
-                    CamelCase("wvw").."WvW"(array(SPECIALIZATION), "the character's WvW specializations")
-                }
-            )
+            "Specializations"(CHARACTERS_SPECIALIZATIONS, "the character's equipped specializations")
         })
     }
     V2_CHARACTERS_TRAINING(
@@ -1042,14 +1148,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
         schema(record(name = "CharactersTraining", description = "Information about a character's (skill-tree) training.") {
-            "Training"(
-                description = "the training information for a character's trained skill-trees",
-                type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
-                    CamelCase("id").."ID"(INTEGER, "the skill tree's ID")
-                    "Spent"(INTEGER, "the amount of hero points spent in the tree")
-                    "Done"(BOOLEAN, "a flag indicating whether or not the tree is fully trained")
-                })
-            )
+            CHARACTERS_TRAINING()
         })
     }
     V2_COLORS(
