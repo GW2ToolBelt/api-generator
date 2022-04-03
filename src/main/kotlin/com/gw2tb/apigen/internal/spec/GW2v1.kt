@@ -606,7 +606,7 @@ internal val GW2v1 = GW2APISpecV1 {
                     "Objectives"(
                         description = "the map's objectives",
                         type = array(record(name = "Objective", description = "Information about an objective.") {
-                            lenient..CamelCase("id").."ID"(WVW_OBJECTIVE_ID, "the objective's ID")
+                            CamelCase("id").."ID"(INTEGER, "the objective's ID")
                             "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
                             optional..SerialName("owner_guild").."OwnerGuild"(STRING, "the guild ID of the guild that currently has claimed this objective")
                         })
