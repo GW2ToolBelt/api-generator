@@ -32,6 +32,20 @@ public sealed class SchemaTypeUse {
 
 }
 
+/**
+ * A schema representation of a primitive type.
+ *
+ * ### Localization
+ *
+ * A primitive does not make any assumptions about the value and, thus, is never
+ * considered to be [isLocalized].
+ *
+ * ### Type Hints
+ *
+ * Primitives may be enhanced with [TypeHint]s. These hints are used to provide
+ * usage information about a type and can be used to generate type-safe wrappers
+ * or type-aliases.
+ */
 public sealed class SchemaPrimitive : SchemaTypeUse() {
 
     override val isLocalized: Boolean get() = false
@@ -66,6 +80,13 @@ public data class SchemaString(override val typeHint: TypeHint? = null) : Schema
     override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
 }
 
+/**
+ * A schema representation of an array/list.
+ *
+ * ### Localization
+ *
+ * An array is considered to be localized when its elements are localized.
+ */
 public data class SchemaArray(
     val elements: SchemaTypeUse,
     val nullableElements: Boolean,
@@ -74,6 +95,13 @@ public data class SchemaArray(
     override val isLocalized: Boolean get() = elements.isLocalized
 }
 
+/**
+ * A schema representation of a map.
+ *
+ * ### Localization
+ *
+ * An array is considered to be localized when its values are localized.
+ */
 public data class SchemaMap(
     val keys: SchemaPrimitive,
     val values: SchemaTypeUse,
@@ -83,6 +111,9 @@ public data class SchemaMap(
     override val isLocalized: Boolean get() = values.isLocalized
 }
 
+/**
+ * A reference to a schema representation of a complex type (i.e. a [SchemaTypeDeclaration]).
+ */
 public data class SchemaTypeReference(
     val typeLocation: TypeLocation,
     val version: V2SchemaVersion,
@@ -149,19 +180,71 @@ public data class SchemaRecord(
 }
 
 /**
- * A record property.
+ * A schema property.
  *
- * @param propertyName  the name of the property in title-case (e.g. "ItemId")
- * @param type          the schema definition for this property
- * @param description   the description of the property. (Should be worded to complete the sentence "This field
- *                      holds {description}.")
- * @param isDeprecated  whether the property is deprecated
- * @param isLocalized
- * @param optionality   the [Optionality] of this property
- * @param since         the minimum [V2SchemaVersion] required for the property
- * @param until         the [V2SchemaVersion] up to which the property existed
- * @param serialName    the serial name of the property
- * @param camelCaseName the name of the property in camelCase
+ * ### Names and Description
+ *
+ * A property has multiple name attributes which differ mostly in casing:
+ *
+ * 1. [propertyName] - the name of the property in TitleCase (e.g. `ItemID`),
+ * 2. [camelCaseName] - the name of the property in camelCase (e.g. `itemID`), and
+ * 3. [serialName] - the name of the property in snake_case (e.g. `item_id`).
+ *
+ * The serial name is also the original name of the property as used in the
+ * encoded JSON.
+ *
+ * Additionally, a property also has a [description]. The description of a
+ * property should be worded to fit into the following sentence:
+ *
+ * > This property holds {description}.
+ *
+ * (i.e. "This property holds the item's ID")
+ *
+ *
+ * ### Deprecation
+ *
+ * Properties may be [isDeprecated]. This attribute is purely informational and
+ * does not have any semantic meaning. However, it is good practice to consume
+ * and to make it visible in generated sources anyway when including the
+ * property.
+ *
+ * Usually, there are better alternatives for the information in deprecated
+ * properties.
+ *
+ *
+ * ### Type coercion
+ *
+ * A property of a primitive type may be marked as [isLenient]. Such properties
+ * must be treated with special care as the property's type may not match the
+ * JSON type. Instead, the parser should coerce JSON strings into the property's
+ * type (e.g. by treating the string `"42"` as the integer `42`). Additionally,
+ * when the empty string is found, the element should be treated as if no value
+ * were set.
+ *
+ *
+ * ### Localization
+ *
+ * Usually, the value for a property is expected to be consistent across queries
+ * for different languages. However, a property may be marked as [isLocalized].
+ * Localized properties are exempt from this rule and should and are expected to
+ * return localized results.
+ *
+ *
+ * ### Schema versioning
+ *
+ * Since the schema is versioned in version two of the API, some properties may
+ * be dependent on the schema version. These dependencies are expressed using
+ * the two attributes [since] which specifies the minimal schema version
+ * required for the property (inclusive) and [until] which specifies the schema
+ * version until which the property is available. (i.e. `[since, until)`).
+ *
+ * Note that entirely possible that properties with the same name but different
+ * types are available in different schema versions. Thus, it is generally
+ * recommended to use a specific schema version.
+ *
+ *
+ * @param type          the type of the property
+ * @param optionality   the [Optionality] of the property
  */
 public data class SchemaProperty internal constructor(
     public val propertyName: String,
@@ -177,9 +260,16 @@ public data class SchemaProperty internal constructor(
     public val camelCaseName: String
 )
 
-/** A property's optionality. */
+/**
+ * A property's optionality. There are three different _levels_ of optionality:
+ *
+ * 1. Optional - The property is unconditionally optional,
+ * 2. Mandated - The property is required under certain conditions, and
+ * 3. Required - The property is required.
+ */
 public sealed class Optionality {
 
+    /** Returns `true` for [OPTIONAL] and [MANDATED], and `false` otherwise. */
     public abstract val isOptional: Boolean
 
     /** The property is optional. */
@@ -198,196 +288,3 @@ public sealed class Optionality {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-public sealed class SchemaType {
-    public abstract val isLocalized: Boolean
-    internal abstract fun equalsSignature(other: SchemaType): Boolean
-}
-
-public sealed class SchemaPrimitive : SchemaType(), SchemaTypeUse {
-    override val isLocalized: Boolean = false
-    public abstract val typeHint: TypeHint?
-
-    internal abstract fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive
-
-    public data class TypeHint(
-        val s: String
-    )
-}
-
-/**
- * A schema for lists.
- *
- * @param items         the schema definition for the elements of this list
- * @param nullableItems whether the items may contain `null`
- * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
- *                      holds {description}.")
- */
-public data class SchemaArray internal constructor(
-    public val items: SchemaType,
-    public val nullableItems: Boolean,
-    public val description: String?
-) : SchemaType() {
-    override val isLocalized: Boolean get() = items.isLocalized
-    override fun equalsSignature(other: SchemaType) = other is SchemaArray && items.equalsSignature(other.items)
-}
-
-/**
- * A schema for maps.
- *
- * @param keys              the schema definition for the keys of this map
- * @param values            the schema definition for the values of this map
- * @param nullableValues    whether the values may contain `null`
- * @param description       the description of the type or `null`. (Should be worded to complete the sentence "This
- *                          field holds {description}.")
- */
-public data class SchemaMap internal constructor(
-    public val keys: SchemaPrimitive,
-    public val values: SchemaType,
-    public val nullableValues: Boolean,
-    public val description: String?
-) : SchemaType() {
-    override val isLocalized: Boolean get() = values.isLocalized
-    override fun equalsSignature(other: SchemaType) = other is SchemaMap && keys.equalsSignature(other.keys) && values.equalsSignature(other.values)
-}
-
-/**
- * A schema for a sealed hierarchy (i.e. algebraic sum type-like construct).
- *
- * The interpretation is chosen based on a "disambiguation-property".
- *
- * @param name                              the name of the conditional in _TitleCase_
- * @param disambiguationBy                  the serial name of the disambiguation-
- *                                          property
- * @param disambiguationBySideProperty      `true` if the disambiguation-property
- *                                          is on the same level as the conditional,
- *                                          or `false` if it is a member
- * @param interpretationInNestedProperty    TODO doc
- * @param sharedProperties                  the properties available in all
- *                                          interpretations of this conditional
- * @param interpretations                   the available interpretations
- * @param description                       the description of the type or `null`. (Should be worded to complete the
- *                                          sentence "This field holds {description}.")
- */
-public data class SchemaConditional internal constructor(
-    public override val name: String,
-    public val disambiguationBy: String,
-    public val disambiguationBySideProperty: Boolean,
-    public val interpretationInNestedProperty: Boolean,
-    public val sharedProperties: Map<String, SchemaRecord.Property>,
-    public val interpretations: Map<String, Interpretation>,
-    public val description: String
-) : SchemaClass() {
-
-    override val isLocalized: Boolean = sharedProperties.any { (_, v) -> v.isLocalized || v.type.isLocalized } || interpretations.any { (_, v) -> v.type.isLocalized }
-
-    init {
-        if (!interpretationInNestedProperty) {
-            interpretations.forEach { (_, interpretation) ->
-                (interpretation.type as SchemaRecord).properties.forEach { (key, _) ->
-                    if (key in sharedProperties) error("Property key '$key' in interpretation '${interpretation.interpretationKey}' is also in shared properties of $name")
-                }
-            }
-        }
-    }
-
-    override fun equalsSignature(other: SchemaType) = other is SchemaConditional
-        && disambiguationBySideProperty == other.disambiguationBySideProperty
-        && interpretationInNestedProperty == other.interpretationInNestedProperty
-        && sharedProperties.all { (k, v) -> v.equalsSignature(other.sharedProperties[k]!!) }
-        && interpretations.all { (k, v) -> v.equalsSignature(other.interpretations[k]!!) }
-
-    /**
-     * A conditional interpretation.
-     *
-     * @param interpretationKey             the key used to identify the interpretation
-     * @param interpretationNestProperty    TODO doc
-     * @param type                          the schema definition for this interpretation
-     * @param isDeprecated                  whether or not the interpretation is deprecated
-     * @param since                         the minimum [V2SchemaVersion] required for the interpretation
-     * @param until                         the [V2SchemaVersion] up to which the interpretation existed
-     */
-    public data class Interpretation internal constructor(
-        public val interpretationKey: String,
-        public val interpretationNestProperty: String?,
-        public val type: SchemaType,
-        public val isDeprecated: Boolean,
-        public val since: V2SchemaVersion?,
-        public val until: V2SchemaVersion?
-    ) {
-
-        internal fun equalsSignature(other: Interpretation): Boolean = type.equalsSignature(other.type)
-
-    }
-
-}
-
-/**
- * A schema for records.
- *
- * @param name          the name of the record in _TitleCase_
- * @param properties    the properties of this record
- * @param description   the description of the type or `null`. (Should be worded to complete the sentence "This field
- *                      holds {description}.")
- */
-public data class SchemaRecord internal constructor(
-    public override val name: String,
-    public val properties: Map<String, Property>,
-    public val description: String
-) : SchemaClass() {
-
-    override val isLocalized: Boolean = properties.any { (_, v) -> v.isLocalized || v.type.isLocalized }
-
-    override fun equalsSignature(other: SchemaType) = other is SchemaRecord
-        && properties.all { (k, v) -> v.equalsSignature(other.properties[k]!!) }
-
-    /**
-     * A record property.
-     *
-     * @param propertyName  the name of the property in title-case (e.g. "ItemId")
-     * @param type          the schema definition for this property
-     * @param description   the description of the property. (Should be worded to complete the sentence "This field
-     *                      holds {description}.")
-     * @param isDeprecated  whether or not the property is deprecated
-     * @param isLocalized
-     * @param optionality   the [Optionality] of this property
-     * @param since         the minimum [V2SchemaVersion] required for the property
-     * @param until         the [V2SchemaVersion] up to which the property existed
-     * @param serialName    the serial name of the property
-     * @param camelCaseName the name of the property in camelCase
-     */
-    public data class Property internal constructor(
-        public val propertyName: String,
-        public val type: SchemaType,
-        public val description: String,
-        public val isDeprecated: Boolean,
-        public val isLocalized: Boolean,
-        public val optionality: Optionality,
-        public val since: V2SchemaVersion?,
-        public val until: V2SchemaVersion?,
-        public val serialName: String,
-        public val camelCaseName: String
-    ) {
-
-        internal fun equalsSignature(other: Property): Boolean = type.equalsSignature(other.type)
-            && optionality == other.optionality
-
-    }
-
-}
- */
