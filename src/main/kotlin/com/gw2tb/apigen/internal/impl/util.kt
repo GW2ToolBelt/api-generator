@@ -30,7 +30,7 @@ internal fun requireCamelCase(str: String, ctx: String) = require(str[0].isLower
 internal fun requireTitleCase(str: String, ctx: String) = require(str[0].isUpperCase()) { "$ctx should be in TitleCase: $str" }
 
 internal fun V2SchemaVersion.containsChangeForBounds(since: V2SchemaVersion?, until: V2SchemaVersion?): Boolean =
-    (since ?: V2SchemaVersion.V2_SCHEMA_CLASSIC) == this || (until != null && until == this)
+    (since ?: V2SchemaVersion.V2_SCHEMA_CLASSIC) == this || until == this
 
 internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, untilSelector: (T) -> V2SchemaVersion?, version: V2SchemaVersion): List<T> =
     filter {
@@ -38,7 +38,7 @@ internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, u
         if (since != null && version < since) return@filter false
 
         val until = untilSelector(it)
-        until == null || version.ordinal < until.ordinal
+        until == null || version <= until
     }
 
 internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean = true): Iterable<Pair<T, T?>> = sequence {
