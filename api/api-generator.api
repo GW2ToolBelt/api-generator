@@ -93,6 +93,7 @@ public final class com/gw2tb/apigen/APIv2Endpoint : java/lang/Enum {
 	public static final field V2_CHARACTERS_CORE Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_CHARACTERS_CRAFTING Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_CHARACTERS_EQUIPMENTTABS Lcom/gw2tb/apigen/APIv2Endpoint;
+	public static final field V2_CHARACTERS_EQUIPMENTTABS_ACTIVE Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_CHARACTERS_HEROPOINTS Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_CHARACTERS_INVENTORY Lcom/gw2tb/apigen/APIv2Endpoint;
 	public static final field V2_CHARACTERS_QUESTS Lcom/gw2tb/apigen/APIv2Endpoint;

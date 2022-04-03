@@ -70,6 +70,7 @@ public enum class APIv2Endpoint(internal val endpointName: String) {
     V2_CHARACTERS_CORE("/Characters/:ID/Core"),
     V2_CHARACTERS_CRAFTING("/Characters/:ID/Crafting"),
     V2_CHARACTERS_EQUIPMENTTABS("/Characters/:ID/EquipmentTabs"),
+    V2_CHARACTERS_EQUIPMENTTABS_ACTIVE("/Characters/:ID/EquipmentTabs/Active"),
     V2_CHARACTERS_HEROPOINTS("/Characters/:ID/HeroPoints"),
     V2_CHARACTERS_INVENTORY("/Characters/:ID/Inventory"),
     V2_CHARACTERS_QUESTS("/Characters/:ID/Quests"),
