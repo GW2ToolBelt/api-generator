@@ -38,7 +38,7 @@ internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, u
         if (since != null && version < since) return@filter false
 
         val until = untilSelector(it)
-        until == null || version <= until
+        until == null || version < until
     }
 
 internal fun <T> Iterable<T>.zipSchemaVersionConstraints(includeUnbound: Boolean = true): Iterable<Pair<T, T?>> = sequence {

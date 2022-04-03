@@ -246,13 +246,13 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
         } else {
             buildVersionedSchemaData {
                 V2SchemaVersion.values().forEach { version ->
-                    val relevantProperties = _properties.getForVersion(
-                        SchemaRecordPropertyBuilder::since,
-                        SchemaRecordPropertyBuilder::until,
-                        version
-                    )
+                    if (_properties.any { it.hasChangedInVersion(typeRegistry, version) }) {
+                        val relevantProperties = _properties.getForVersion(
+                            SchemaRecordPropertyBuilder::since,
+                            SchemaRecordPropertyBuilder::until,
+                            version
+                        )
 
-                    if (relevantProperties.any { it.hasChangedInVersion(typeRegistry, version) }) {
                         add(relevantProperties.map { it.get(typeRegistry, version) }.associateBy { it.serialName }, since = version)
                     }
                 }
