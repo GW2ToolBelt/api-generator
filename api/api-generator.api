@@ -673,16 +673,17 @@ public final class com/gw2tb/apigen/schema/SchemaPrimitive$TypeHint {
 public final class com/gw2tb/apigen/schema/SchemaProperty {
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/String;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Z
 	public final fun component5 ()Z
-	public final fun component6 ()Lcom/gw2tb/apigen/schema/Optionality;
-	public final fun component7 ()Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;
+	public final fun component6 ()Z
+	public final fun component7 ()Lcom/gw2tb/apigen/schema/Optionality;
 	public final fun component8 ()Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;
-	public final fun component9 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZLcom/gw2tb/apigen/schema/Optionality;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaProperty;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaProperty;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZLcom/gw2tb/apigen/schema/Optionality;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaProperty;
+	public final fun component9 ()Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;
+	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZZLcom/gw2tb/apigen/schema/Optionality;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaProperty;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaProperty;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZZLcom/gw2tb/apigen/schema/Optionality;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaProperty;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCamelCaseName ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
@@ -694,6 +695,7 @@ public final class com/gw2tb/apigen/schema/SchemaProperty {
 	public final fun getUntil ()Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;
 	public fun hashCode ()I
 	public final fun isDeprecated ()Z
+	public final fun isLenient ()Z
 	public final fun isLocalized ()Z
 	public fun toString ()Ljava/lang/String;
 }
