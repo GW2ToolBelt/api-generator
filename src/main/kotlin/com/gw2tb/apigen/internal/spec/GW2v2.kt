@@ -47,6 +47,34 @@ internal val GW2v2 = GW2APISpecV2 {
         SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
     }
 
+    val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.", endpoint = "/Characters/:ID/BuildTabs") {
+        "Tab"(INTEGER, "the tab's ID")
+        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+        "Build"(
+            description = "the stored build",
+            type = record(name = "Build", description = "Information about a build.") {
+                val SPECIALIZATION = record(name = "Specialization", description = "Information about a build's specialization.") {
+                    optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
+                    "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
+                }
+
+                val SKILLS = record(name = "Skills", description = "Information about a build's skills.") {
+                    optional.."Heal"(INTEGER, "the heal skill's ID")
+                    "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
+                    optional.."Elite"(INTEGER, "the elite skill's ID")
+                }
+
+                "Name"(STRING, "the build's name")
+                "Profession"(STRING, "the build's profession")
+                "Specializations"(array(SPECIALIZATION), "the build's specializations")
+                "Skills"(SKILLS, "the build's skills")
+                SerialName("aquatic_skills").."AquaticSkills"(SKILLS, "the build's aquatic skills")
+                optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
+                optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
+            }
+        )
+    }
+
     val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.", endpoint = "/Characters/:ID/EquipmentTabs") {
         "Tab"(INTEGER, "the tab's ID")
         "Name"(STRING, "the equipment configuration's name")
@@ -741,33 +769,15 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
-        schema(record(name = "CharactersBuildTab", description = "Information about a character's build tab.") {
-            "Tab"(INTEGER, "the tab's ID")
-            SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
-            "Build"(
-                description = "the stored build",
-                type = record(name = "Build", description = "Information about a build.") {
-                    val SPECIALIZATION = record(name = "Specialization", description = "Information about a build's specialization.") {
-                        optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
-                        "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
-                    }
+        schema(CHARACTERS_BUILDTAB)
+    }
+    V2_CHARACTERS_BUILDTABS_ACTIVE(
+        summary = "Returns information about a character's current build.",
+        security = security(ACCOUNT, BUILDS, CHARACTERS)
+    ) {
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
 
-                    val SKILLS = record(name = "Skills", description = "Information about a build's skills.") {
-                        optional.."Heal"(INTEGER, "the heal skill's ID")
-                        "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
-                        optional.."Elite"(INTEGER, "the elite skill's ID")
-                    }
-
-                    "Name"(STRING, "the build's name")
-                    "Profession"(STRING, "the build's profession")
-                    "Specializations"(array(SPECIALIZATION), "the build's specializations")
-                    "Skills"(SKILLS, "the build's skills")
-                    SerialName("aquatic_skills").."AquaticSkills"(SKILLS, "the build's aquatic skills")
-                    optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
-                    optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
-                }
-            )
-        })
+        schema(CHARACTERS_EQUIPMENTTAB)
     }
     V2_CHARACTERS_CORE(
         summary = "Returns general information about a character.",

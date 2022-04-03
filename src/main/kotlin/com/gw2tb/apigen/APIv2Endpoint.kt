@@ -67,6 +67,7 @@ public enum class APIv2Endpoint(internal val endpointName: String) {
     V2_BUILD("/Build"),
     V2_CHARACTERS_BACKSTORY("/Characters/:ID/Backstory"),
     V2_CHARACTERS_BUILDTABS("/Characters/:ID/BuildTabs"),
+    V2_CHARACTERS_BUILDTABS_ACTIVE("/Characters/:ID/BuildTabs/Active"),
     V2_CHARACTERS_CORE("/Characters/:ID/Core"),
     V2_CHARACTERS_CRAFTING("/Characters/:ID/Crafting"),
     V2_CHARACTERS_EQUIPMENT("/Characters/:ID/Equipment"),
