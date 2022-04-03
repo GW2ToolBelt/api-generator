@@ -248,16 +248,16 @@ internal val GW2v1 = GW2APISpecV1 {
                 "Defense"(INTEGER, "the defense value of the armor piece")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the armor piece")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemID"(STRING, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
+                optional..lenient..SerialName("suffix_item_id").."SuffixItemID"(ITEM_ID, "the suffix item ID")
+                optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(ITEMSTAT_ID), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
             +record(name = "Back", description = "Additional information about a backpiece.") {
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the back item")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemID"(STRING, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
+                optional..lenient..SerialName("suffix_item_id").."SuffixItemID"(ITEM_ID, "the suffix item ID")
+                optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(ITEMSTAT_ID), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
@@ -301,8 +301,8 @@ internal val GW2v1 = GW2APISpecV1 {
                 "Type"(STRING, "the trinket type")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the trinket")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemID"(STRING, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
+                optional..lenient..SerialName("suffix_item_id").."SuffixItemID"(ITEM_ID, "the suffix item ID")
+                optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(ITEMSTAT_ID), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
@@ -323,8 +323,8 @@ internal val GW2v1 = GW2APISpecV1 {
                 "Defense"(INTEGER, "the defense value of the weapon")
                 SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the weapon")
                 optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                optional..SerialName("suffix_item_id").."SuffixItemID"(STRING, "the suffix item ID")
-                optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(STRING, "the secondary suffix item ID")
+                optional..lenient..SerialName("suffix_item_id").."SuffixItemID"(ITEM_ID, "the suffix item ID")
+                optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
                 optional..SerialName("stat_choices").."StatChoices"(array(ITEMSTAT_ID), "a list of selectable stat IDs which are visible in /v2/itemstats")
                 optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
             }
@@ -606,7 +606,7 @@ internal val GW2v1 = GW2APISpecV1 {
                     "Objectives"(
                         description = "the map's objectives",
                         type = array(record(name = "Objective", description = "Information about an objective.") {
-                            CamelCase("id").."ID"(INTEGER, "the objective's ID")
+                            lenient..CamelCase("id").."ID"(WVW_OBJECTIVE_ID, "the objective's ID")
                             "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
                             optional..SerialName("owner_guild").."OwnerGuild"(STRING, "the guild ID of the guild that currently has claimed this objective")
                         })
