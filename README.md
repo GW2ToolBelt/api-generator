@@ -1,4 +1,5 @@
 # api-generator
+
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&label=License)](https://github.com/GW2Toolbelt/api-generator/blob/master/LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.api-generator/api-generator)
 [![Documentation](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=flat-square&label=Documentation&color=blue)](https://gw2toolbelt.github.io/api-generator/)
