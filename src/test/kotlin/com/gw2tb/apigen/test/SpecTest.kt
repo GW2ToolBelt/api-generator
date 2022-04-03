@@ -23,18 +23,16 @@ package com.gw2tb.apigen.test
 
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
 import com.gw2tb.apigen.schema.*
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.Assertions.*
-import kotlin.math.exp
 import kotlin.time.*
 
 abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuery>(
     protected val prefix: String,
-    protected val spec: APIVersion<Q, T>,
+    private val spec: APIVersion<Q, T>,
     private val expectedQueries: List<EQ>
 ) {
 
@@ -94,7 +92,11 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
             )
 
             if (errors.isNotEmpty()) {
-                errors.forEach { error -> System.err.println("[${error.path}] ${error.message}") }
+                errors.forEach { error ->
+                    System.err.println("[${error.path}] ${error.message}")
+                    error.cause?.printStackTrace()
+                }
+
                 fail("Schema did not match actual")
             }
         }

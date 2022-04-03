@@ -30,6 +30,10 @@ import kotlinx.serialization.json.*
 
 private val json = Json
 
+private val lenientJson = Json(json) {
+    isLenient = true
+}
+
 fun testSchema(
     expected: SchemaTypeDeclaration,
     actual: JsonElement,
@@ -44,12 +48,13 @@ private fun test(
     expected: SchemaTypeUse,
     actual: JsonElement,
     nullable: Boolean,
+    lenient: Boolean,
     inheritedExpectedProperties: Map<String, SchemaProperty> = emptyMap(),
     sidePropertyInterpretationKey: String? = null
 ) {
     when (expected) {
         is SchemaArray -> testArray(context, expected, actual, nullable)
-        is SchemaPrimitive -> testPrimitive(context, expected, actual, nullable)
+        is SchemaPrimitive -> testPrimitive(context, expected, actual, nullable, lenient)
         is SchemaMap -> testMap(context, expected, actual, nullable)
         is SchemaTypeReference -> testDeclaration(context, expected.declaration, actual, nullable, inheritedExpectedProperties, sidePropertyInterpretationKey)
         else -> error("Unexpected type: ${expected::class.simpleName}")
@@ -98,7 +103,8 @@ private fun testArray(
             context.push("[$index]"),
             expected.elements,
             element,
-            expected.nullableElements
+            expected.nullableElements,
+            lenient = false
         )
     }
 }
@@ -193,6 +199,7 @@ private fun testConditional(
                 expected = propertyType,
                 actual = value,
                 nullable = property.optionality.isOptional,
+                lenient = property.isLenient,
                 sidePropertyInterpretationKey = sidePropertyInterpretationKey
             )
         }
@@ -206,6 +213,7 @@ private fun testConditional(
         expected = expectedInterpretation.type,
         actual = interpretation,
         nullable = false,
+        lenient = false,
         inheritedExpectedProperties = if (expected.interpretationInNestedProperty) emptyMap() else expectedProperties
     )
 }
@@ -246,7 +254,8 @@ private fun testMap(
             context.push("[$key]"),
             expected.values,
             value,
-            expected.nullableValues
+            expected.nullableValues,
+            lenient = false
         )
     }
 }
@@ -255,9 +264,16 @@ private fun testPrimitive(
     context: SchemaMatcherContext,
     expected: SchemaPrimitive,
     actual: JsonElement,
-    nullable: Boolean
+    nullable: Boolean,
+    lenient: Boolean
 ) {
-    fun <T : Any> KSerializer<T>.adjustNullable(): KSerializer<*> = if (nullable) this.nullable else this
+    fun <T : Any> KSerializer<T>.adjustNullable(): KSerializer<*> =
+        if (nullable)
+            if (lenient) this.lenientNullable else this.nullable
+        else
+            this
+
+    val json = if (lenient) lenientJson else json
 
     try {
         when (expected) {
@@ -326,6 +342,7 @@ private fun testRecord(
             expected = propertyType,
             actual = value,
             nullable = property.optionality.isOptional,
+            lenient = property.isLenient,
             sidePropertyInterpretationKey = sidePropertyInterpretationKey
         )
     }

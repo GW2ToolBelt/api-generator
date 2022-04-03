@@ -19,8 +19,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(InternalSerializationApi::class)
 package com.gw2tb.apigen.test
 
 import com.gw2tb.apigen.schema.*
+import kotlinx.serialization.*
+import kotlinx.serialization.builtins.*
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 val SchemaTypeUse.array get() = SchemaArray(this, false, null)
+
+val <T : Any> KSerializer<T>.lenientNullable: KSerializer<T?>
+    get() = LenientNullableSerializer(this)
+
+class LenientNullableSerializer<T : Any>(private val delegate: KSerializer<T>) : KSerializer<T?> {
+
+    override val descriptor: SerialDescriptor
+        get() = delegate.descriptor
+
+    override fun deserialize(decoder: Decoder): T? {
+        val stringValue = decoder.decodeString()
+
+        return if (stringValue.isEmpty()) {
+            null
+        } else {
+            delegate.deserialize(decoder)
+        }
+    }
+
+    override fun serialize(encoder: Encoder, value: T?) {
+        delegate.nullable.serialize(encoder, value)
+    }
+
+}
