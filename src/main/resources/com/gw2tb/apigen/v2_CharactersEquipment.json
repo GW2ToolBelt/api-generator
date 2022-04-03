@@ -1,0 +1,147 @@
+[
+  {
+    "equipment": [
+      {
+        "id": 68357,
+        "slot": "HelmAquatic",
+        "stats": {
+          "id": 161,
+          "attributes": {
+            "Power": 60,
+            "Precision": 43,
+            "CritDamage": 43
+          }
+        },
+        "binding": "Character",
+        "bound_to": "Linux Die Bestie"
+      },
+      {
+        "id": 77536,
+        "slot": "Backpack",
+        "skin": 6892,
+        "stats": {
+          "id": 584,
+          "attributes": {
+            "Power": 63,
+            "Precision": 40,
+            "CritDamage": 40
+          }
+        },
+        "binding": "Account",
+        "dyes": [
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "id": 48078,
+        "slot": "Boots",
+        "upgrades": [
+          24836
+        ],
+        "skin": 7486,
+        "binding": "Account",
+        "dyes": [
+          473,
+          473,
+          473,
+          null
+        ]
+      },
+      {
+        "id": 48080,
+        "slot": "Gloves",
+        "upgrades": [
+          24836
+        ],
+        "skin": 6308,
+        "binding": "Account",
+        "dyes": [
+          2,
+          443,
+          473,
+          60
+        ]
+      },
+      {
+        "id": 48083,
+        "slot": "Shoulders",
+        "upgrades": [
+          24836
+        ],
+        "skin": 7763,
+        "binding": "Account",
+        "dyes": [
+          455,
+          2,
+          null,
+          443
+        ]
+      },
+      {
+        "id": 39232,
+        "slot": "Accessory1",
+        "binding": "Account"
+      },
+      {
+        "id": 94975,
+        "slot": "Accessory2",
+        "stats": {
+          "id": 584,
+          "attributes": {
+            "Power": 110,
+            "Precision": 74,
+            "CritDamage": 74
+          }
+        },
+        "binding": "Account"
+      },
+      {
+        "id": 49402,
+        "slot": "Ring1",
+        "binding": "Account"
+      },
+      {
+        "id": 49403,
+        "slot": "Ring2",
+        "binding": "Account"
+      },
+      {
+        "id": 28430,
+        "slot": "WeaponAquaticA",
+        "upgrades": [
+          24554
+        ],
+        "binding": "Character",
+        "bound_to": "Linux Die Bestie"
+      },
+      {
+        "id": 17875,
+        "slot": "WeaponB1",
+        "upgrades": [
+          24641
+        ],
+        "skin": 4877,
+        "binding": "Character",
+        "bound_to": "Linux Die Bestie"
+      },
+      {
+        "id": 22997,
+        "slot": "Sickle",
+        "binding": "Account"
+      },
+      {
+        "id": 23030,
+        "slot": "Axe",
+        "binding": "Account"
+      },
+      {
+        "id": 23031,
+        "slot": "Pick",
+        "binding": "Account"
+      }
+    ]
+  }
+]

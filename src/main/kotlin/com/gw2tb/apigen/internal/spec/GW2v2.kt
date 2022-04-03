@@ -806,6 +806,52 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_CHARACTERS_EQUIPMENT(
+        summary = "Returns information about a character's equipment.",
+        security = security(ACCOUNT, BUILDS, CHARACTERS)
+    ) {
+        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+
+        schema(record(name = "CharactersEquipment", description = "Information about a character's equipment.") {
+            "Equipment"(
+                description = "the character's equipment",
+                type = array(record(name = "EquipmentSlot", description = "Information a character's equipment slot.") {
+                    CamelCase("id").."ID"(INTEGER, "the equipment piece's item ID")
+                    until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Slot"(STRING, "the equipment piece's slot")
+                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Slot"(STRING, "the equipment piece's slot")
+                    optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
+                    optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
+                    optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
+                    optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
+                    optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
+                    optional.."Binding"(STRING, "the binding of the item")
+                    optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                    optional.."Stats"(
+                        description = "contains information on the stats chosen if the item offers an option for stats/prefix",
+                        type = record(name = "Stats", description = "Information about an item's stats.") {
+                            CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                            "Attributes"(
+                                description = "the item's attributes",
+                                type = record(name = "Attributes", description = "Information about an item's attributes.") {
+                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                    optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the item")
+                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                                }
+                            )
+                        }
+                    )
+                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Location"(STRING, "the storage location of the equipment piece")
+                    since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
+                })
+            )
+        })
+    }
     V2_CHARACTERS_EQUIPMENTTABS(
         idTypeKey = "tab",
         summary = "Returns information about a character's equipment.",
