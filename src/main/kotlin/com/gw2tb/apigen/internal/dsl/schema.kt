@@ -265,6 +265,8 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
     /** Marks a deprecated property. */
     val deprecated get() = Modifiers.deprecated
 
+    val lenient get() = Modifiers.lenient
+
     /** Marks a localized property. */
     val localized get() = Modifiers.localized
 
@@ -446,6 +448,14 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
+    var isLenient = false
+        set(value) {
+            check(isUnused)
+            require(value) { "Property::isLenient is `false` by default and should only be set to `true`." }
+
+            field = value
+        }
+
     var isLocalized = false
         set(value) {
             check(isUnused)
@@ -507,6 +517,7 @@ internal class SchemaRecordPropertyBuilder(
                     description = description,
                     optionality = optionality ?: Optionality.REQUIRED,
                     isDeprecated = isDeprecated,
+                    isLenient = isLenient,
                     isLocalized = isLocalized,
                     since = since,
                     until = until,

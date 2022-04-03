@@ -42,6 +42,12 @@ internal object Modifiers {
 
     }
 
+    val lenient = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isLenient = true
+        }
+    }
+
     val localized = object : PropertyModifier() {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.isLocalized = true

@@ -168,6 +168,7 @@ public data class SchemaProperty internal constructor(
     public val type: SchemaTypeUse,
     public val description: String,
     public val isDeprecated: Boolean,
+    public val isLenient: Boolean,
     public val isLocalized: Boolean,
     public val optionality: Optionality,
     public val since: V2SchemaVersion?,
