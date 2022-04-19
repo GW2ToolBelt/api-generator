@@ -30,10 +30,6 @@ import kotlinx.serialization.json.*
 
 private val json = Json
 
-private val lenientJson = Json(json) {
-    isLenient = true
-}
-
 fun testSchema(
     expected: SchemaTypeDeclaration,
     actual: JsonElement,
@@ -272,8 +268,6 @@ private fun testPrimitive(
             if (lenient) this.lenientNullable else this.nullable
         else
             this
-
-    val json = if (lenient) lenientJson else json
 
     try {
         when (expected) {
