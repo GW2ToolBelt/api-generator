@@ -2554,8 +2554,6 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
     }
 
     override fun testType(type: APIType.V2) = sequence<DynamicTest> {
-        if (type.name == "Character") println(type._schema.entries)
-
         type.significantVersions.forEach { version ->
             val schema = type[version].data
 
