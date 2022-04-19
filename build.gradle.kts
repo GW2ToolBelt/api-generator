@@ -77,6 +77,10 @@ tasks {
 
     withType<Test> {
         useJUnitPlatform()
+
+        testLogging {
+            showStandardStreams = true
+        }
     }
 
     create<Jar>("sourcesJar") {
