@@ -2706,14 +2706,30 @@ internal val GW2v2 = GW2APISpecV2 {
             "Disciplines"(array(STRING), "the crafting disciplines that can use the recipe")
             SerialName("min_rating").."MinRating"(INTEGER, "the minimum rating required to use the recipe")
             "Flags"(array(STRING), "the flags applying to the recipe")
-            "Ingredients"(
+            until(V2_SCHEMA_2022_03_09T02_00_00_000Z).."Ingredients"(
                 description = "the recipe's ingredients",
                 type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
                     SerialName("item_id").."ItemID"(ITEM_ID, "the ingredient's item ID")
                     "Count"(INTEGER, "the quantity of this ingredient")
                 })
             )
-            optional..SerialName("guild_ingredients").."GuildIngredients"(
+            since(V2_SCHEMA_2022_03_09T02_00_00_000Z).."Ingredients"(
+                description = "the recipe's ingredients",
+                type = array(conditional(
+                    name = "Ingredient",
+                    description = "Information about a recipe ingredient.",
+                    sharedConfigure = {
+                        "Type"(STRING, "the ingredient's type")
+                        CamelCase("id").."ID"(INTEGER, "the ingredient's ID")
+                        "Count"(INTEGER, "the amount")
+                    }
+                ) {
+                    +record(name = "Currency", description = "A currency ingredient.") {}
+                    +record(name = "GuildUpgrade", description = "A guild upgrade ingredient.") {}
+                    +record(name = "Item", description = "An item ingredient.") {}
+                })
+            )
+            optional..until(V2_SCHEMA_2022_03_09T02_00_00_000Z)..SerialName("guild_ingredients").."GuildIngredients"(
                 description = "the recipe's guild ingredients",
                 type = array(record(name = "GuildIngredient", description = "Information about a recipe guild ingredient.") {
                     SerialName("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
