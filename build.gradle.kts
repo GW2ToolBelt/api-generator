@@ -26,10 +26,10 @@ import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.dsl.*
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.serialization") version "1.5.31"
-    id("org.jetbrains.dokka") version "1.6.20"
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.9.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.binary.compatibility.validator)
     signing
     `maven-publish`
 }
