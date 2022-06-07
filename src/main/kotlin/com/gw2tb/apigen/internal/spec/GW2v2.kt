@@ -2448,7 +2448,7 @@ internal val GW2v2 = GW2APISpecV2 {
         })
     }
     V2_PVP_SEASONS(
-        summary = "", // TODO
+        summary = "Returns information about PvP seasons.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
