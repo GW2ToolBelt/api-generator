@@ -1,5 +1,5 @@
 [versions]
-binary-compatibility-validator = "0.10.0"
+binary-compatibility-validator = "0.10.1"
 dokka = "1.6.21"
 junit = "5.8.2"
 kotlin = "1.5.31"
