@@ -221,7 +221,6 @@ internal class QueriesBuilderV2Impl(
         _schema = schema
     )
 
-    @OptIn(ExperimentalStdlibApi::class)
     override fun finalize(): Collection<APIQuery.V2> = buildList {
         if (queryTypes != null) {
             val idType: SchemaPrimitive = when (val schema = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC].data) {

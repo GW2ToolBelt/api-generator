@@ -134,7 +134,6 @@ internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
 
 }
 
-@OptIn(ExperimentalStdlibApi::class)
 internal fun defaultQueryTypes(all: Boolean = false): QueryTypes = QueryTypes(buildSet {
     add(QueryType.IDs)
     add(QueryType.ByID)
@@ -142,7 +141,6 @@ internal fun defaultQueryTypes(all: Boolean = false): QueryTypes = QueryTypes(bu
     add(QueryType.ByPage)
 })
 
-@OptIn(ExperimentalStdlibApi::class)
 internal fun queryTypes(first: QueryType, vararg values: QueryType): QueryTypes = QueryTypes(buildSet {
     add(first)
     addAll(values)
