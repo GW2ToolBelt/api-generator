@@ -1,59 +1,11 @@
-### 0.5.0
+### 0.6.0
 
-_Released 2022 Jun 07_
+_Released 2022 Jul 14_
 
 #### Improvements
 
-- Endpoints:
-  - Added support for `/v2/account/legendaryarmory`. [[GH-179](https://github.com/GW2ToolBelt/api-generator/issues/179)]
-  - Added support for `/v2/characters`. [[GH-46](https://github.com/GW2ToolBelt/api-generator/issues/46)]
-  - Added support for `/v2/characters/:id/buildtabs/active`. [[GH-49](https://github.com/GW2ToolBelt/api-generator/issues/49)]
-  - Added support for `/v2/characters/:id/equipment`. [[GH-53](https://github.com/GW2ToolBelt/api-generator/issues/53)]
-  - Added support for `/v2/characters/:id/equipmenttabs`. [[GH-54](https://github.com/GW2ToolBelt/api-generator/issues/54)]
-  - Added support for `/v2/characters/:id/equipmenttabs/active`. [[GH-55](https://github.com/GW2ToolBelt/api-generator/issues/55)]
-  - Added support for `/v2/guild/:id/log`. [[GH-82](https://github.com/GW2ToolBelt/api-generator/issues/82)]
-  - Added support for `/v2/guild/:id/stash`. [[GH-85](https://github.com/GW2ToolBelt/api-generator/issues/85)]
-  - Added support for `/v2/legendaryarmory`. [[GH-178](https://github.com/GW2ToolBelt/api-generator/issues/178)]
-  - Added support for `/v2/skills`. [[GH-128](https://github.com/GW2ToolBelt/api-generator/issues/128)]
-  - Added support for `/v2/traits`. [[GH-135](https://github.com/GW2ToolBelt/api-generator/issues/135)]
-  - `/v2/account`:
-    - Added support for `build_storage_slots` (since `2019-12-19T00:00:00.000Z`).
-  - `/v2/legends`:
-    - Added support for `code` (since `2019-12-19T00:00:00.000Z`).
-- Added support for V2 schema `2021-07-15T13:00:00.000Z`.
-- Added support for V2 schema `2022-03-09T02:00:00.000Z`.
-
-#### Fixes
-
-- Endpoints:
-  - `/v1/guild_details`
-    - Changed types of color and emblem ID fields from `STRING` to `INTEGER`.
-  - `/v1/map_floor`:
-    - Changed type of file IDs from `STRING` to `INTEGER`.
-  - `/v2/guild/:id`
-    - Changed types of emblem ID fields from `STRING` to `INTEGER`.
-  - `/v2/guild/:id/stash`
-    - Changed types of `upgrade_id`, `id` and `count` from `STRING` to `INTEGER`.
-  - `/v2/guild/upgrades`
-    - Changed types of `count` from `STRING` to `INTEGER`.
-  - `/v2/mounts/skins`
-    - Changed type of color ID fields from `STRING` to `INTEGER.`
-  - `/v2/pets`:
-    - Changed `ID` type of pet skill objects from `STRING` to `INTEGER`.
-  - `/v2/pvp/seasons/:id/leaderboards/:board/:region`:
-    - Rename type `LeaderboardEntry` to `PvPSeasonsLeaderboardEntry`.
-    - Changed type of `team` from `INTEGER` to `STRING`.
-    - Changed type of `value` from `STRING` to `INTEGER`.
-  - `/v2/pvp/seasons`:
-    - Made `duration` optional.
-  - `/v2/wvw/matches`:
-    - Changed types of map and skirmish IDs from `STRING` to `INTEGER`.
-  - `/v2/wvw/matches/stats`:
-    - Changed types of map and skirmish IDs from `STRING` to `INTEGER`.
-  - `/v2/wvw/matches/scores`:
-    - Changed types of map and skirmish IDs from `STRING` to `INTEGER`.
+- Updated the library to Kotlin 1.6 and replaced all experimental functionality.
 
 #### Breaking Changes
 
-- The libraries' API was restructured to support working with only a subset of
-  endpoints and to implement a better type-system.
+- The library now requires Kotlin 1.6.
