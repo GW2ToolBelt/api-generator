@@ -55,15 +55,10 @@ kotlin {
     target {
         compilations.all {
             kotlinOptions {
-                languageVersion = "1.4"
-                apiVersion = "1.4"
+                languageVersion = "1.6"
+                apiVersion = "1.6"
 
                 jvmTarget = "1.8"
-
-                freeCompilerArgs += listOf(
-                    "-opt-in=kotlin.RequiresOptIn",
-                    "-opt-in=kotlin.time.ExperimentalTime"
-                )
             }
         }
     }
@@ -72,6 +67,12 @@ kotlin {
 tasks {
     withType<JavaCompile> {
         options.release.set(8)
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = (freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn")
+        }
     }
 
     withType<Test> {
