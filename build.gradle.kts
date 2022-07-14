@@ -61,7 +61,6 @@ kotlin {
                 jvmTarget = "1.8"
 
                 freeCompilerArgs += listOf(
-                    "-Xinline-classes",
                     "-Xopt-in=kotlin.RequiresOptIn",
                     "-Xopt-in=kotlin.time.ExperimentalTime"
                 )
