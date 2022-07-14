@@ -148,8 +148,8 @@ internal fun queryTypes(first: QueryType, vararg values: QueryType): QueryTypes 
     addAll(values)
 })
 
-internal inline class QueryTypes(val values: Set<QueryType>)
+internal data class QueryTypes(val values: Set<QueryType>)
 
 internal fun security(vararg scopes: TokenScope): Security = Security(setOf(*scopes))
 
-internal inline class Security(val scopes: Set<TokenScope>)
+internal data class Security(val scopes: Set<TokenScope>)
