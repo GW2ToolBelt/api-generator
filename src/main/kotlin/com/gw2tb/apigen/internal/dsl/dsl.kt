@@ -38,7 +38,7 @@ internal val BY_ID get() = QueryType.ByID
 internal fun BY_ID(
     qpName: String,
     qpDescription: String,
-    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
+    qpKey: String = qpName.lowercase(),
     qpCamelCase: String = qpName.firstToLowerCase()
 ) = QueryType.ByID(
     qpKey = qpKey,
@@ -64,7 +64,7 @@ internal fun BY_IDS(
     qpName: String,
     qpDescription: String,
     all: Boolean = true,
-    qpKey: String = qpName.toLowerCase(Locale.ENGLISH),
+    qpKey: String = qpName.lowercase(),
     qpCamelCase: String = qpName.firstToLowerCase()
 ) = QueryType.ByIDs(
     supportsAll = all,

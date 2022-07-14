@@ -25,7 +25,6 @@ import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
-import java.util.*
 
 @APIGenDSL
 internal interface QueriesBuilder<T : APIType> {
@@ -42,7 +41,7 @@ internal interface QueriesBuilder<T : APIType> {
         name: String,
         type: DeferredSchemaType<out SchemaPrimitive>,
         description: String,
-        key: String = name.toLowerCase(Locale.ENGLISH),
+        key: String = name.lowercase(),
         camelCase: String = name.firstToLowerCase(),
         isOptional: Boolean = false
     )

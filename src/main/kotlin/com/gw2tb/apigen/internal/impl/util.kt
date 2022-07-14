@@ -24,7 +24,7 @@ package com.gw2tb.apigen.internal.impl
 import com.gw2tb.apigen.model.v2.*
 
 internal fun String.firstToLowerCase(): String =
-    "${toCharArray()[0].toLowerCase()}${substring(1)}"
+    "${toCharArray()[0].lowercaseChar()}${substring(1)}"
 
 internal fun requireCamelCase(str: String, ctx: String) = require(str[0].isLowerCase()) { "$ctx should be in camelCase: $str" }
 internal fun requireTitleCase(str: String, ctx: String) = require(str[0].isUpperCase()) { "$ctx should be in TitleCase: $str" }

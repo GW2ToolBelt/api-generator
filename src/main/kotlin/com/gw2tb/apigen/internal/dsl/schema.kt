@@ -209,13 +209,13 @@ internal class SchemaConditionalBuilder<T : APIType>(
      */
     operator fun String.invoke(
         type: DeferredSchemaClass<T>,
-        nestProperty: String = this.toLowerCase()
+        nestProperty: String = this.lowercase()
     ): SchemaConditionalInterpretationBuilder =
         SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
 
     /** Registers a conditional interpretation using the @receiver's name as key. */
     operator fun DeferredSchemaClass<T>.unaryPlus(): SchemaConditionalInterpretationBuilder =
-        SchemaConditionalInterpretationBuilder(name, name.toLowerCase(), this).also { this@SchemaConditionalBuilder._interpretations += it }
+        SchemaConditionalInterpretationBuilder(name, name.lowercase(), this).also { this@SchemaConditionalBuilder._interpretations += it }
 
     /** Marks a deprecated interpretation. */
     val deprecated get() = Modifiers.deprecated
@@ -521,8 +521,8 @@ internal class SchemaRecordPropertyBuilder(
                     isLocalized = isLocalized,
                     since = since,
                     until = until,
-                    serialName = serialName ?: propertyName.toLowerCase(),
-                    camelCaseName = camelCase ?: propertyName.run { "${toCharArray()[0].toLowerCase()}${substring(1)}" }
+                    serialName = serialName ?: propertyName.lowercase(),
+                    camelCaseName = camelCase ?: propertyName.run { "${toCharArray()[0].lowercase()}${substring(1)}" }
                 )
             }
         }
