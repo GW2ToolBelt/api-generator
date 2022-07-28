@@ -31,12 +31,15 @@ import kotlin.time.Duration
 
 @Suppress("FunctionName")
 internal val GW2v2 = GW2APISpecV2 {
+    val ACHIEVEMENT_ID = "AchievementID"(INTEGER)
+    val ACHIEVEMENT_CATEGORY_ID = "AchievementCategoryID"(INTEGER)
+    val ACHIEVEMENT_GROUP_ID = "AchievementGroupID"(STRING)
     val BUILD_ID = "BuildID"(INTEGER)
     val ITEM_ID = "ItemID"(INTEGER)
     val SKIN_ID = "SkinID"(INTEGER)
 
     val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.", endpoint = "/Achievements/Daily") {
-        CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+        CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
         "Level"(
             description = "the level requirement for the daily achievement to appear",
             type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
@@ -382,7 +385,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of progress information towards all achievements the account has made progress.",
             items = record(name = "AccountAchievement", description = "Information about a player's progress towards an achievement.") {
-                CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+                CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
                 "Done"(BOOLEAN, "a flag indicating whether or not the account has completed the achievement")
                 optional.."Bits"(array(INTEGER), "an array of numbers (whose exact meaning differs) giving information about the progress towards an achievement")
                 optional.."Current"(INTEGER, "the account's current progress towards the achievement")
@@ -741,7 +744,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Achievement", description = "Information about an achievement.") {
-            CamelCase("id").."ID"(INTEGER, "the achievement's ID")
+            CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
             optional.."Icon"(STRING, "the URL for the achievement's icon")
             localized.."Name"(STRING, "the achievement's localized name")
             localized.."Description"(STRING, "the achievement's localized description")
@@ -799,12 +802,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "AchievementCategory", description = "Information about an achievement category.") {
-            CamelCase("id").."ID"(INTEGER, "the achievement category's ID")
+            CamelCase("id").."ID"(ACHIEVEMENT_CATEGORY_ID, "the achievement category's ID")
             "Icon"(STRING, "the URL for the achievement category's icon")
             localized.."Name"(STRING, "the achievement category's localized name")
             localized.."Description"(STRING, "the achievement category's localized description")
             "Order"(INTEGER, "a number that can be used to sort the list of categories")
-            "Achievements"(array(INTEGER), "an array containing the IDs of the achievements that this category contains")
+            "Achievements"(array(ACHIEVEMENT_ID), "an array containing the IDs of the achievements that this category contains")
         })
     }
     V2_ACHIEVEMENTS_DAILY(summary = "Returns information about daily achievements.") {
@@ -831,11 +834,11 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "AchievementGroups", description = "Information about an achievement group.") {
-            CamelCase("id").."ID"(STRING, "the achievement group's ID")
+            CamelCase("id").."ID"(ACHIEVEMENT_GROUP_ID, "the achievement group's ID")
             localized.."Name"(STRING, "the achievement group's localized name")
             localized.."Description"(STRING, "the achievement group's localized description")
             "Order"(INTEGER, "a number that can be used to sort the list of groups")
-            "Categories"(array(INTEGER), "an array containing the IDs of the categories that this group contains")
+            "Categories"(array(ACHIEVEMENT_CATEGORY_ID), "an array containing the IDs of the categories that this group contains")
         })
     }
     V2_BACKSTORY(
