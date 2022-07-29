@@ -88,7 +88,7 @@ internal val GW2v2 = GW2APISpecV2 {
         "Name"(STRING, "the character's name")
         "Race"(STRING, "the ID of the character's race")
         "Gender"(STRING, "the character's gender")
-        "Profession"(STRING, "the ID of the characters's profession")
+        "Profession"(STRING, "the ID of the character's profession")
         "Level"(INTEGER, "the character's level")
         optional.."Guild"(STRING, "the ID of the character's represented guild")
         "Age"(INTEGER, "the amount of seconds the character was played")
@@ -3256,7 +3256,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "WvWUpgrade", description = "Information about an upgrade for objectives in the World versus World game mode.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the upgrade")
+            CamelCase("id").."ID"(INTEGER, "the upgrade's ID")
             "Tiers"(
                 description = "the different tiers of the upgrade",
                 type = array(record(name = "Tier", description = "Information about an upgrade tier.") {
