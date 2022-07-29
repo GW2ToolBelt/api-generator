@@ -57,7 +57,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
     val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.", endpoint = "/Characters/:ID/BuildTabs") {
         "Tab"(INTEGER, "the tab's ID")
-        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
         "Build"(
             description = "the stored build",
             type = record(name = "Build", description = "Information about a build.") {
@@ -105,7 +105,7 @@ internal val GW2v2 = GW2APISpecV2 {
             type = array(record(name = "Discipline", description = "Information about a character's crafting discipline.") {
                 "Discipline"(STRING, "the name of the discipline")
                 "Rating"(INTEGER, "the character's crafting level for the discipline")
-                "Active"(BOOLEAN, "a flag indicating whether or not the discipline is currently active on the character")
+                "Active"(BOOLEAN, "a flag indicating wether the discipline is currently active on the character")
             })
         )
     }
@@ -154,7 +154,7 @@ internal val GW2v2 = GW2APISpecV2 {
     val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.", endpoint = "/Characters/:ID/EquipmentTabs") {
         "Tab"(INTEGER, "the tab's ID")
         "Name"(STRING, "the equipment configuration's name")
-        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
         "Equipment"(
             description = "the stored equipment",
             type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
@@ -263,7 +263,7 @@ internal val GW2v2 = GW2APISpecV2 {
             type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
                 CamelCase("id").."ID"(INTEGER, "the skill tree's ID")
                 "Spent"(INTEGER, "the amount of hero points spent in the tree")
-                "Done"(BOOLEAN, "a flag indicating whether or not the tree is fully trained")
+                "Done"(BOOLEAN, "a flag indicating wether the tree is fully trained")
             })
         )
     }
@@ -357,7 +357,7 @@ internal val GW2v2 = GW2APISpecV2 {
             )
             "Created"(STRING, "the ISO-8601 standard timestamp of when the account was created")
             "Access"(array(STRING), "an array of what content this account has access to")
-            "Commander"(BOOLEAN, "a flag indicating whether or not the commander tag is unlocked for the account")
+            "Commander"(BOOLEAN, "a flag indicating wether the commander tag is unlocked for the account")
             optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(
                 INTEGER,
                 "the account's personal fractal level"
@@ -386,12 +386,12 @@ internal val GW2v2 = GW2APISpecV2 {
             description = "A list of progress information towards all achievements the account has made progress.",
             items = record(name = "AccountAchievement", description = "Information about a player's progress towards an achievement.") {
                 CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
-                "Done"(BOOLEAN, "a flag indicating whether or not the account has completed the achievement")
+                "Done"(BOOLEAN, "a flag indicating wether the account has completed the achievement")
                 optional.."Bits"(array(INTEGER), "an array of numbers (whose exact meaning differs) giving information about the progress towards an achievement")
                 optional.."Current"(INTEGER, "the account's current progress towards the achievement")
                 optional.."Max"(INTEGER, "the amount of progress required to complete the achievement")
                 optional.."Repeated"(INTEGER, "the number of times the achievement has been completed (if the achievement is repeatable)")
-                optional.."Unlocked"(BOOLEAN, "a flag indicating whether or not the achievement is unlocked (if the achievement can be unlocked)")
+                optional.."Unlocked"(BOOLEAN, "a flag indicating wether the achievement is unlocked (if the achievement can be unlocked)")
             }
         ))
     }
@@ -507,7 +507,7 @@ internal val GW2v2 = GW2APISpecV2 {
             description = "the finishers unlocked by the account",
             items = record(name = "AccountFinisher", description = "Information about finishers unlocked by an account.") {
                 CamelCase("id").."ID"(INTEGER, "the finisher's ID")
-                "Permanent"(BOOLEAN, "whether or not the finisher is unlock permanently")
+                "Permanent"(BOOLEAN, "wether the finisher is unlock permanently")
                 optional.."Quantity"(INTEGER, "the remaining uses")
             }
         ))
@@ -922,7 +922,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 type = array(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
                     "Tab"(INTEGER, "the tab's ID")
                     "Name"(STRING, "the equipment configuration's name")
-                    SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether or not this tab is the active tab")
+                    SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
                     "Equipment"(
                         description = "the stored equipment",
                         type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
@@ -1235,7 +1235,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(record(name = "CommercePrices", description = "Information about an item listed in the trading post.") {
             CamelCase("id").."ID"(ITEM_ID, "the item's ID")
-            "Whitelisted"(BOOLEAN, "indicates whether or not a free to play account can purchase or sell this item on the trading post")
+            "Whitelisted"(BOOLEAN, "indicates wether a free to play account can purchase or sell this item on the trading post")
             "Buys"(
                 description = "the buy information",
                 type = record(name = "BuyListing", description = "Information about an item's buy listing.") {
@@ -2423,7 +2423,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     CamelCase("id").."ID"(INTEGER, "the PvP hero skin's ID")
                     localized.."Name"(STRING, "the hero skin's localized name")
                     "Icon"(STRING, "a render service URL for the skin's icon")
-                    "Default"(BOOLEAN, "whether or not the skin is the champion's default skin")
+                    "Default"(BOOLEAN, "wether the skin is the champion's default skin")
                     SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the skin")
                 })
             )
@@ -2461,7 +2461,7 @@ internal val GW2v2 = GW2APISpecV2 {
             localized.."Name"(STRING, "the season's localized name")
             "Start"(STRING, "the ISO-8601 standard timestamp of when the season started")
             "End"(STRING, "the ISO-8601 standard timestamp of when the season ended")
-            "Active"(BOOLEAN, "whether or not the season is currently active")
+            "Active"(BOOLEAN, "wether the season is currently active")
             "Divisions"(
                 description = "the season's divisions",
                 type = array(record(name = "Division", description = "Information about a division.") {
@@ -2887,7 +2887,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CamelCase("id").."ID"(INTEGER, "the ID of the specialization")
             localized.."Name"(STRING, "the localized name of the specialization")
             "Profession"(STRING, "the ID of the profession the specialization belongs to")
-            "Elite"(BOOLEAN, "a flag indicating whether or not the specialization is an elite specialization")
+            "Elite"(BOOLEAN, "a flag indicating wether the specialization is an elite specialization")
             "Icon"(STRING, "a render service URL for the specialization's icon")
             "Background"(STRING, "a render service URL for the specialization's background image")
             SerialName("minor_traits").."MinorTraits"(array(INTEGER), "a list of all IDs of the specialization's minor traits")

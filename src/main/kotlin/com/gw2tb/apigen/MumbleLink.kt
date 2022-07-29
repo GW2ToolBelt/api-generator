@@ -49,7 +49,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
             SerialName("map_id").."MapId"(INTEGER, "the ID of the current map")
             SerialName("world_id").."WorldId"(INTEGER, "the ID of the current world")
             SerialName("team_color_id").."TeamColorId"(INTEGER, "the ID of the current team")
-            "Commander"(BOOLEAN, "whether or not the player currently is commanding a squad")
+            "Commander"(BOOLEAN, "a flag indicating whether the player currently is commanding a squad")
             "Map"(INTEGER, "the ID of the current map")
             "FoV"(DECIMAL, "the scaling of the FOV")
             SerialName("uisz").."UISize"(INTEGER, "the selected UI size")
