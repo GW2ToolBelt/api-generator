@@ -47,7 +47,7 @@ public val MUMBLELINK_IDENTITY_DEFINITION: SchemaRecord by lazy {
             "Spec"(INTEGER, "the ID of the current elite-specialization of the currently played character, or 0")
             "Race"(INTEGER, "the ID of the race of the currently played character")
             SerialName("map_id").."MapId"(INTEGER, "the ID of the current map")
-            SerialName("world_id").."WorldId"(INTEGER, "the ID of the current world")
+            SerialName("world_id").."WorldId"(BITFIELD, "the ID of the current world")
             SerialName("team_color_id").."TeamColorId"(INTEGER, "the ID of the current team")
             "Commander"(BOOLEAN, "a flag indicating whether the player currently is commanding a squad")
             "Map"(INTEGER, "the ID of the current map")

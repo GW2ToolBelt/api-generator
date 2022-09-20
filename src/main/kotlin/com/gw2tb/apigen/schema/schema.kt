@@ -60,6 +60,11 @@ public sealed class SchemaPrimitive : SchemaTypeUse() {
 
 }
 
+/** A schema representing bitfield types. */
+public data class SchemaBitfield(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
+    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
+}
+
 /** A schema representing primitive boolean types. */
 public data class SchemaBoolean(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
     override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)

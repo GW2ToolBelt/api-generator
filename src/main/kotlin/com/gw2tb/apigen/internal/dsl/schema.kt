@@ -27,6 +27,9 @@ import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 
+/** Alias for [SchemaBitfield] */
+internal val BITFIELD: DeferredPrimitiveType = DeferredPrimitiveType(SchemaBitfield())
+
 /** Alias for [SchemaBoolean]. */
 internal val BOOLEAN: DeferredPrimitiveType = DeferredPrimitiveType(SchemaBoolean())
 

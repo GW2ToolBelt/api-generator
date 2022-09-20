@@ -28,6 +28,7 @@ import kotlin.contracts.*
 
 fun assertHintedEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
     fun equalsSignature(expected: SchemaTypeUse, actual: SchemaTypeUse): Boolean = when (expected) {
+        is SchemaBitfield -> actual is SchemaBitfield
         is SchemaBoolean -> actual is SchemaBoolean
         is SchemaDecimal -> actual is SchemaDecimal
         is SchemaInteger -> actual is SchemaInteger

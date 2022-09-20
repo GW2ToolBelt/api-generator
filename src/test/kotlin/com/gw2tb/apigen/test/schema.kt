@@ -271,6 +271,7 @@ private fun testPrimitive(
 
     try {
         when (expected) {
+            is SchemaBitfield -> json.decodeFromJsonElement(ULong.serializer().adjustNullable(), actual)
             is SchemaBoolean -> json.decodeFromJsonElement(Boolean.serializer().adjustNullable(), actual)
             is SchemaDecimal -> json.decodeFromJsonElement(Double.serializer().adjustNullable(), actual)
             is SchemaInteger -> json.decodeFromJsonElement(Long.serializer().adjustNullable(), actual)
