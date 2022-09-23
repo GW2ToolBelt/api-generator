@@ -24,6 +24,7 @@
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.dsl.*
+import java.net.URL
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -47,6 +48,9 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 kotlin {
@@ -83,18 +87,52 @@ tasks {
         }
     }
 
-    create<Jar>("sourcesJar") {
-        archiveBaseName.set(artifactName)
-        archiveClassifier.set("sources")
-        from(sourceSets["main"].allSource)
+    named<Jar>("javadocJar").configure {
+        dependsOn(dokkaJavadoc)
+        from(dokkaJavadoc.get().outputs)
     }
 
-    create<Jar>("javadocJar") {
-        dependsOn(dokkaJavadoc)
+    dokkaHtml {
+        outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api").map { it.asFile })
+//        failOnWarning.set(true) // TODO fix warnings
 
-        archiveBaseName.set(artifactName)
-        archiveClassifier.set("javadoc")
-        from(dokkaJavadoc.get().outputs)
+        dokkaSourceSets.configureEach {
+            reportUndocumented.set(true)
+            skipEmptyPackages.set(true)
+            jdkVersion.set(8)
+
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URL("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
+
+    create("mkdocs") {
+        dependsOn(dokkaHtml)
+
+        val inputDir = layout.projectDirectory.dir("docs/mkdocs")
+        inputs.dir(inputDir)
+        inputs.file(layout.projectDirectory.file("mkdocs.yml"))
+
+        val workDir =  layout.buildDirectory.dir("mkdocs")
+
+        val outputDir = workDir.map { it.dir("site") }
+        outputs.dir(outputDir)
+
+        doLast {
+            copy {
+                from(inputDir)
+                into(workDir.map { it.dir("sources") }.get())
+                filter { it.replace("docs/mkdocs/([a-zA-Z-]*).md".toRegex(), "$1") }
+            }
+
+            exec {
+                executable = "mkdocs"
+                args("build", "-d", outputDir.get())
+            }
+        }
     }
 }
 
@@ -112,9 +150,6 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["javadocJar"])
-
             artifactId = artifactName
 
             pom {

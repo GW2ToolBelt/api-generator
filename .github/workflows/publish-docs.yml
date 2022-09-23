@@ -21,11 +21,11 @@ jobs:
           python3 -m pip install mkdocs
           python3 -m pip install mkdocs-material
 
-      - name: Generate docs
-        run: ./generate_docs.sh
-
-      - name: Build site
-        run: mkdocs build -d build/mkdocs/site
+      - name: Gradle MkDocs
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: mkdocs --info -S --show-version
+          gradle-home-cache-cleanup: true
 
       - name: Deploy
         uses: GW2ToolBelt/actions-gh-pages@v3
