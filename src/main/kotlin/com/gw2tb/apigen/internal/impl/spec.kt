@@ -47,7 +47,6 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
     override fun conditional(
         name: String,
         description: String,
-        endpoint: String,
         disambiguationBy: String,
         disambiguationBySideProperty: Boolean,
         interpretationInNestedProperty: Boolean,
@@ -68,7 +67,6 @@ internal abstract class SpecBuilderImplBase<E, Q : APIQuery, T : APIType, QB : Q
     override fun record(
         name: String,
         description: String,
-        endpoint: String,
         block: SchemaRecordBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T> = recordImpl(
         name,

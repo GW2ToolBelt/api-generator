@@ -63,7 +63,6 @@ internal interface SpecBuilder<T : APIType> {
     fun conditional(
         name: String,
         description: String,
-        endpoint: String,
         disambiguationBy: String = "type",
         disambiguationBySideProperty: Boolean = false,
         interpretationInNestedProperty: Boolean = false,
@@ -74,7 +73,6 @@ internal interface SpecBuilder<T : APIType> {
     fun record(
         name: String,
         description: String,
-        endpoint: String,
         block: SchemaRecordBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T>
 

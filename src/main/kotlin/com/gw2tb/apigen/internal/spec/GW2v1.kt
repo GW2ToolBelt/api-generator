@@ -46,7 +46,7 @@ internal val GW2v1 = GW2APISpecV1 {
     val WVW_MATCH_ID = "WvWMatchID"(STRING, camelCaseName = "wvwMatchID")
     val WVW_OBJECTIVE_ID = "ObjectiveID"(STRING)
 
-    val GuildDetails = record(name = "GuildDetails", description = "Information about events.", endpoint = "/GuildDetails") {
+    val GuildDetails = record(name = "GuildDetails", description = "Information about events.") {
         SerialName("guild_id").."GuildID"(GUILD_ID, "the guild's ID")
         SerialName("guild_name").."GuildName"(STRING, "the guild's name")
         "Tag"(STRING, "the guild's tag")

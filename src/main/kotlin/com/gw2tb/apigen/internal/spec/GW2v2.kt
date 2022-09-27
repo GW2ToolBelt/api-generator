@@ -38,7 +38,7 @@ internal val GW2v2 = GW2APISpecV2 {
     val ITEM_ID = "ItemID"(INTEGER)
     val SKIN_ID = "SkinID"(INTEGER)
 
-    val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.", endpoint = "/Achievements/Daily") {
+    val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.") {
         CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
         "Level"(
             description = "the level requirement for the daily achievement to appear",
@@ -55,7 +55,7 @@ internal val GW2v2 = GW2APISpecV2 {
         "Backstory"(array(STRING), "the IDs of the character's backstory answers")
     }
 
-    val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.", endpoint = "/Characters/:ID/BuildTabs") {
+    val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.") {
         "Tab"(INTEGER, "the tab's ID")
         SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
         "Build"(
@@ -151,7 +151,7 @@ internal val GW2v2 = GW2APISpecV2 {
         )
     }
 
-    val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.", endpoint = "/Characters/:ID/EquipmentTabs") {
+    val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
         "Tab"(INTEGER, "the tab's ID")
         "Name"(STRING, "the equipment configuration's name")
         SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
@@ -232,7 +232,7 @@ internal val GW2v2 = GW2APISpecV2 {
         )
     }
 
-    val CHARACTERS_SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.", endpoint = "/Characters/:ID/Skills") {
+    val CHARACTERS_SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
         val SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
             optional.."Heal"(INTEGER, "the heal skill's ID")
             "Utilities"(array(INTEGER, nullableItems = true), "the IDs of the utility skills")
@@ -245,7 +245,7 @@ internal val GW2v2 = GW2APISpecV2 {
         CamelCase("wvw").."WvW"(SKILLS, "the character's WvW skills")
     }
 
-    val CHARACTERS_SPECIALIZATIONS = record(name = "Specializations", description = "Information about a character's equipped specializations.", endpoint = "/Characters/:ID/Specializations") {
+    val CHARACTERS_SPECIALIZATIONS = record(name = "Specializations", description = "Information about a character's equipped specializations.") {
         val SPECIALIZATION = record(name = "Specialization", description = "Information about an equipped specialization.") {
             optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
             "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
