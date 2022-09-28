@@ -1940,16 +1940,14 @@ internal val GW2v2 = GW2APISpecV2 {
                         )
                     }
 
-                    val INFUSION_SLOTS = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
-                        "Flags"(array(STRING), "infusion slot type of infusion upgrades")
-                        optional..SerialName("item_id").."ItemID"(ITEM_ID, "the infusion upgrade in the armor piece")
-                    })
-
-                    +record(name = "Armor", description = "Additional information about an armor item.") {
-                        "Type"(STRING, "the armor slot type")
-                        SerialName("weight_class").."WeightClass"(STRING, "the weight class")
-                        "Defense"(INTEGER, "the defense value of the armor piece")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the armor piece")
+                    val UPGRADES = record(name = "Upgrades", description = "Information about an item's upgrades.") {
+                        SerialName("infusion_slots").."InfusionSlots"(
+                            description = "infusion slots of the armor piece",
+                            type = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
+                                "Flags"(array(STRING), "infusion slot type of infusion upgrades")
+                                optional..SerialName("item_id").."ItemID"(ITEM_ID, "the infusion upgrade in the armor piece")
+                            })
+                        )
                         optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
                         until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
@@ -1957,14 +1955,15 @@ internal val GW2v2 = GW2APISpecV2 {
                         optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
                         optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
                     }
+
+                    +record(name = "Armor", description = "Additional information about an armor item.") {
+                        "Type"(STRING, "the armor slot type")
+                        SerialName("weight_class").."WeightClass"(STRING, "the weight class")
+                        "Defense"(INTEGER, "the defense value of the armor piece")
+                        inline.."Upgrades"(UPGRADES, "the item's upgrades")
+                    }
                     +record(name = "Back", description = "Additional information about a backpiece.") {
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the back item")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                        optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
-                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
+                        inline.."Upgrades"(UPGRADES, "the item's upgrades")
                     }
                     +record(name = "Bag", description = "Additional information about a bag.") {
                         "Size"(INTEGER, "the number of bag slots")
@@ -2004,13 +2003,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     })
                     +record(name = "Trinket", description = "Additional information about a trinket.") {
                         "Type"(STRING, "the trinket type")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the trinket")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                        optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
-                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
+                        inline.."Upgrades"(UPGRADES, "the item's upgrades")
                     }
                     +record(name = "UpgradeComponent", description = "Additional information about an upgrade component.") {
                         "Type"(STRING, "the type of the upgrade component")
@@ -2027,13 +2020,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
                         SerialName("damage_type").."DamageType"(STRING, "the damage type")
                         "Defense"(INTEGER, "the defense value of the weapon")
-                        SerialName("infusion_slots").."InfusionSlots"(INFUSION_SLOTS, "infusion slots of the weapon")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                        optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
-                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
+                        inline.."Upgrades"(UPGRADES, "the item's upgrades")
                     }
                 }
             )
@@ -2966,9 +2953,14 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(STRING)
                 )
                 "Type"(STRING, "the type of the access token given")
-                optional..SerialName("expires_at").."ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
-                optional..SerialName("issued_at").."IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
-                optional..CamelCase("urls").."URLs"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
+                inline..optional.."SubtokenDetails"(
+                    description = "",
+                    type = record(name = "SubtokenDetails", description = "Additional information about a subtoken") {
+                        SerialName("expires_at").."ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
+                        SerialName("issued_at").."IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
+                        CamelCase("urls").."URLs"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
+                    }
+                )
             }
         )
     }

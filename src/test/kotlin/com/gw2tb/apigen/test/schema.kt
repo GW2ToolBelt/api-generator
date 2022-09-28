@@ -22,360 +22,398 @@
 package com.gw2tb.apigen.test
 
 import com.gw2tb.apigen.schema.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
 
-private val json = Json
-
 fun testSchema(
-    expected: SchemaTypeDeclaration,
+    schema: SchemaTypeDeclaration,
     actual: JsonElement,
-    context: RootSchemaMatcherContext = RootSchemaMatcherContext()
-): List<SchemaMatcherContext.MatchingError> {
-    testDeclaration(context, expected, actual, nullable = false)
-    return context.errors.toList()
+    path: String = ""
+): List<SchemaMismatch> {
+    val context = SchemaMatcher(actual, path)
+    context.use { testDeclaration(it, schema) }
+
+    return context.errors
 }
 
-private fun test(
-    context: SchemaMatcherContext,
-    expected: SchemaTypeUse,
-    actual: JsonElement,
-    nullable: Boolean,
-    lenient: Boolean,
-    inheritedExpectedProperties: Map<String, SchemaProperty> = emptyMap(),
-    sidePropertyInterpretationKey: String? = null
-) {
-    when (expected) {
-        is SchemaArray -> testArray(context, expected, actual, nullable)
-        is SchemaPrimitive -> testPrimitive(context, expected, actual, nullable, lenient)
-        is SchemaMap -> testMap(context, expected, actual, nullable)
-        is SchemaTypeReference -> testDeclaration(context, expected.declaration, actual, nullable, inheritedExpectedProperties, sidePropertyInterpretationKey)
-        else -> error("Unexpected type: ${expected::class.simpleName}")
-    }
-}
-
-private fun testDeclaration(
-    context: SchemaMatcherContext,
-    expected: SchemaTypeDeclaration,
-    actual: JsonElement,
-    nullable: Boolean,
-    inheritedExpectedProperties: Map<String, SchemaProperty> = emptyMap(),
-    sidePropertyInterpretationKey: String? = null
-) {
-    when (expected) {
-        is SchemaConditional -> testConditional(context, expected, actual, nullable, inheritedExpectedProperties, sidePropertyInterpretationKey)
-        is SchemaRecord -> testRecord(context, expected, actual, nullable, inheritedExpectedProperties)
-        else -> error("Unexpected type: ${expected::class.simpleName}")
-    }
-}
+data class SchemaMismatch(
+    val path: String,
+    val message: String,
+    val cause: Throwable?
+)
 
 private fun testArray(
     context: SchemaMatcherContext,
-    expected: SchemaArray,
-    actual: JsonElement,
+    schema: SchemaArray,
     nullable: Boolean
 ) {
-    val jsonArray = try {
-        actual.jsonArray
-    } catch (e: IllegalArgumentException) {
-        if (nullable) {
-            try {
-                actual.jsonNull
-            } catch (e: IllegalArgumentException) {
-                context.error("Expected nullable array but found ${actual::class.simpleName}", e)
-            }
-        } else {
-            context.error("Expected array but found ${actual::class.simpleName}", e)
+    val jsonArray = context.deriveActual(JsonElement::jsonArray, nullable) ?: return
+
+    jsonArray.indices.forEach { index ->
+        context.push(index).use { childContext ->
+            testTypeUse(
+                context = childContext,
+                schema = schema.elements,
+                nullable = schema.nullableElements
+            )
         }
-
-        return
-    }
-
-    jsonArray.forEachIndexed { index, element ->
-        test(
-            context.push("[$index]"),
-            expected.elements,
-            element,
-            expected.nullableElements,
-            lenient = false
-        )
     }
 }
 
 private fun testConditional(
     context: SchemaMatcherContext,
-    expected: SchemaConditional,
-    actual: JsonElement,
-    nullable: Boolean,
-    inheritedExpectedProperties: Map<String, SchemaProperty> = emptyMap(),
-    sidePropertyInterpretationKey: String?
+    schema: SchemaConditional,
+    nullable: Boolean = false,
+    inline: Boolean = false,
+    sidePropertyInterpretationKey: String? = null
 ) {
-    val jsonObject = try {
-        actual.jsonObject
-    } catch (e: IllegalArgumentException) {
-        if (nullable) {
-            try {
-                actual.jsonNull
-            } catch (e: IllegalArgumentException) {
-                context.error("Expected nullable object but found ${actual::class.simpleName}", e)
-            }
-        } else {
-            context.error("Expected object but found ${actual::class.simpleName}", e)
-        }
+    val jsonObject = context.deriveActual(JsonElement::jsonObject, nullable) ?: return
 
-        return
-    }
-
-    val expectedProperties = (expected.sharedProperties + inheritedExpectedProperties)
-
-    val interpretationKey = if (expected.disambiguationBySideProperty) {
-        if (sidePropertyInterpretationKey == null) {
-            error("No side property interpretation key was provided")
+    val interpretationKey = if (schema.disambiguationBySideProperty) {
+        if (sidePropertyInterpretationKey === null) {
+            context.error("No side property interpretation key was provided")
+            return
         }
 
         sidePropertyInterpretationKey
     } else {
-        jsonObject[expected.disambiguationBy]?.jsonPrimitive?.content ?: run {
-            context.error("Could not find discriminator '${expected.disambiguationBy}'")
+        jsonObject[schema.disambiguationBy]?.jsonPrimitive?.content ?: run {
+            context.error("Could not find discriminator '${schema.disambiguationBy}'")
             return
         }
     }
 
-    val expectedInterpretation = expected.interpretations[interpretationKey]
-    if (expectedInterpretation == null) {
+    val interpretation = schema.interpretations[interpretationKey]
+    if (interpretation === null) {
         context.error("Could not find interpretation for key '$interpretationKey'")
         return
     }
 
-    val interpretation = if (expected.interpretationInNestedProperty) {
-        jsonObject[expectedInterpretation.interpretationNestProperty] ?: run {
-            context.error("Interpretation nest property '${expectedInterpretation.interpretationNestProperty}' not found")
-            return
-        }
-    } else {
-        jsonObject
+    schema.sharedProperties.values.forEach { property ->
+        testProperty(
+            context = context,
+            schema = property,
+            isInlinedOptional = inline && nullable
+        )
     }
 
-    if (expected.interpretationInNestedProperty) { // Test base class separately
-        val unvisitedActualKeys = jsonObject.keys.toMutableSet()
-        val unvisitedRequiredKeys = expectedProperties.values
-            .filter { !it.optionality.isOptional }
-            .map(SchemaProperty::serialName)
-            .toMutableSet()
-
-        expected.interpretations.forEach { (_, interpretation) ->
-            unvisitedActualKeys.remove(interpretation.interpretationNestProperty!!)
-        }
-
-        expectedProperties.forEach { (_, property) ->
-            val value = jsonObject[property.serialName] ?: return@forEach
-            unvisitedActualKeys -= property.serialName
-            unvisitedRequiredKeys -= property.serialName
-
-            val propertyType = property.type
-
-            @Suppress("NAME_SHADOWING")
-            val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference
-                && propertyType.declaration is SchemaConditional
-                && propertyType.declaration.disambiguationBySideProperty
-            ) {
-                jsonObject[propertyType.declaration.disambiguationBy]?.jsonPrimitive?.content ?: run {
-                    context.error("Could not find required discriminator '${propertyType.declaration.disambiguationBy}'")
-                    return@forEach
-                }
-            } else {
-                null
+    testTypeUse(
+        context = if (schema.interpretationInNestedProperty) {
+            context.push(interpretation.interpretationNestProperty!!) ?: run {
+                context.error("")
+                return
             }
-
-            test(
-                context.push(property.serialName),
-                expected = propertyType,
-                actual = value,
-                nullable = property.optionality.isOptional,
-                lenient = property.isLenient,
-                sidePropertyInterpretationKey = sidePropertyInterpretationKey
-            )
-        }
-
-        unvisitedActualKeys.forEach { context.error("Found unexpected property '$it'") }
-        unvisitedRequiredKeys.forEach { context.error("Could not find required property '$it'") }
-    }
-
-    test(
-        if (expected.interpretationInNestedProperty) context.push(expectedInterpretation.interpretationNestProperty!!) else context,
-        expected = expectedInterpretation.type,
-        actual = interpretation,
-        nullable = false,
-        lenient = false,
-        inheritedExpectedProperties = if (expected.interpretationInNestedProperty) emptyMap() else expectedProperties
+        } else {
+            context
+        },
+        schema = interpretation.type
     )
+}
+
+private fun testDeclaration(
+    context: SchemaMatcherContext,
+    schema: SchemaTypeDeclaration,
+    nullable: Boolean = false,
+    inline: Boolean = false,
+    sidePropertyInterpretationKey: String? = null
+) {
+    when (schema) {
+        is SchemaRecord -> testRecord(context, schema, nullable, inline)
+        is SchemaConditional -> testConditional(context, schema, nullable, sidePropertyInterpretationKey = sidePropertyInterpretationKey)
+    }
 }
 
 private fun testMap(
     context: SchemaMatcherContext,
-    expected: SchemaMap,
-    actual: JsonElement,
+    schema: SchemaMap,
     nullable: Boolean
 ) {
-    val jsonObject = try {
-        actual.jsonObject
-    } catch (e: IllegalArgumentException) {
-        if (nullable) {
-            try {
-                actual.jsonNull
-            } catch (e: IllegalArgumentException) {
-                context.error("Expected nullable object but found ${actual::class.simpleName}", e)
-            }
-        } else {
-            context.error("Expected object but found ${actual::class.simpleName}", e)
-        }
+    val jsonObject = context.deriveActual(JsonElement::jsonObject, nullable) ?: return
 
-        return
-    }
-
-    jsonObject.forEach { key, value ->
+    jsonObject.forEach { key, _ ->
         // TODO test key
 
-//        test(
-//            context.push(),
-//            expected.keys,
-//            key,
-//            nullable = false
-//        )
+        context.push(key, path = "[$key]")!!.use { childContext ->
+            testTypeUse(
+                context = childContext,
+                schema = schema.values,
+                nullable = schema.nullableValues
+            )
+        }
+    }
+}
 
-        test(
-            context.push("[$key]"),
-            expected.values,
-            value,
-            expected.nullableValues,
-            lenient = false
+private fun testRecord(
+    context: SchemaMatcherContext,
+    schema: SchemaRecord,
+    nullable: Boolean = false,
+    inline: Boolean = false
+) {
+    context.deriveActual(JsonElement::jsonObject, nullable) ?: return
+
+    schema.properties.values.forEach { property ->
+        testProperty(
+            context = context,
+            schema = property,
+            isInlinedOptional = inline && nullable
         )
     }
 }
 
 private fun testPrimitive(
     context: SchemaMatcherContext,
-    expected: SchemaPrimitive,
-    actual: JsonElement,
+    schema: SchemaPrimitive,
     nullable: Boolean,
     lenient: Boolean
 ) {
-    fun <T : Any> KSerializer<T>.adjustNullable(): KSerializer<*> =
-        if (nullable)
-            if (lenient) this.lenientNullable else this.nullable
-        else
-            this
+    // lenient -> nullable
+    require(!lenient || nullable) { "A primitive may not be lenient but not nullable" }
+
+    fun <T : Any> KSerializer<T>.adjust(): KSerializer<*> = when {
+        lenient -> this.lenientNullable
+        nullable -> this.nullable
+        else -> this
+    }
+
+    @OptIn(ExperimentalSerializationApi::class, ExperimentalUnsignedTypes::class)
+    val serializer = when (schema) {
+        is SchemaBitfield -> ULong.serializer()
+        is SchemaBoolean -> Boolean.serializer()
+        is SchemaDecimal -> Double.serializer()
+        is SchemaInteger -> Long.serializer()
+        is SchemaString -> String.serializer()
+    }.adjust()
 
     try {
-        when (expected) {
-            is SchemaBitfield -> json.decodeFromJsonElement(ULong.serializer().adjustNullable(), actual)
-            is SchemaBoolean -> json.decodeFromJsonElement(Boolean.serializer().adjustNullable(), actual)
-            is SchemaDecimal -> json.decodeFromJsonElement(Double.serializer().adjustNullable(), actual)
-            is SchemaInteger -> json.decodeFromJsonElement(Long.serializer().adjustNullable(), actual)
-            is SchemaString -> json.decodeFromJsonElement(String.serializer().adjustNullable(), actual)
-        }
+        Json.decodeFromJsonElement(serializer, context.actual)
     } catch (e: SerializationException) {
-        context.error("Could not decode ${expected::class.simpleName} from ${actual::class.simpleName}", e)
+        context.error("Failed to decode ${schema::class.simpleName} from ${context.actual::class.simpleName}", e)
     }
 }
 
-private fun testRecord(
+private fun testTypeUse(
     context: SchemaMatcherContext,
-    expected: SchemaRecord,
-    actual: JsonElement,
-    nullable: Boolean,
-    inheritedExpectedProperties: Map<String, SchemaProperty> = emptyMap()
+    schema: SchemaTypeUse,
+    nullable: Boolean = false,
+    lenient: Boolean = false,
+    inline: Boolean = false,
+    sidePropertyInterpretationKey: String? = null
 ) {
-    val jsonObject = try {
-        actual.jsonObject
-    } catch (e: IllegalArgumentException) {
-        if (nullable) {
-            try {
-                actual.jsonNull
-            } catch (e: IllegalArgumentException) {
-                context.error("Expected nullable object but found ${actual::class.simpleName}", e)
-            }
-        } else {
-            context.error("Expected object but found ${actual::class.simpleName}", e)
-        }
+    require(schema is SchemaPrimitive || !lenient) { "Only primitives may be lenient" }
 
-        return
+    when (schema) {
+        is SchemaArray -> testArray(context, schema, nullable)
+        is SchemaMap -> testMap(context, schema, nullable)
+        is SchemaPrimitive -> testPrimitive(context, schema, nullable, lenient)
+        is SchemaTypeReference -> testDeclaration(
+            context,
+            schema.declaration,
+            nullable,
+            inline,
+            sidePropertyInterpretationKey = sidePropertyInterpretationKey
+        )
+        else -> error("Unexpected schema type: ${schema::class.simpleName}")
+    }
+}
+
+private fun testProperty(
+    context: SchemaMatcherContext,
+    schema: SchemaProperty,
+    isInlinedOptional: Boolean
+) {
+    val childContext = if (schema.isInline) {
+        context.pushVirtual(schema.propertyName)
+    } else {
+        context.push(schema.serialName)
     }
 
-    val unvisitedActualKeys = jsonObject.keys.toMutableSet()
+    if (childContext === null) {
+        // It's fine if an optional property cannot be found
+        if (schema.optionality.isOptional || (isInlinedOptional)) return
 
-    val expectedProperties = (expected.properties + inheritedExpectedProperties)
-    val unvisitedRequiredKeys = expectedProperties.values
-        .filter { !it.optionality.isOptional }
-        .map(SchemaProperty::serialName)
-        .toMutableSet()
-
-    expectedProperties.forEach { (_, property) ->
-        val value = jsonObject[property.serialName] ?: return@forEach
-        unvisitedActualKeys -= property.serialName
-        unvisitedRequiredKeys -= property.serialName
-
-        val propertyType = property.type
-
+        context.error("Could not find required property: ${schema.serialName}")
+    } else {
+        val propertyType = schema.type
         val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference
             && propertyType.declaration is SchemaConditional
             && propertyType.declaration.disambiguationBySideProperty
         ) {
-            jsonObject[propertyType.declaration.disambiguationBy]?.jsonPrimitive?.content ?: run {
+            context.actual.jsonObject[propertyType.declaration.disambiguationBy]?.jsonPrimitive?.content ?: run {
                 context.error("Could not find required discriminator '${propertyType.declaration.disambiguationBy}'")
-                return@forEach
+                return
             }
         } else {
             null
         }
 
-        test(
-            context.push(property.serialName),
-            expected = propertyType,
-            actual = value,
-            nullable = property.optionality.isOptional,
-            lenient = property.isLenient,
+        testTypeUse(
+            context = childContext,
+            schema = schema.type,
+            nullable = schema.optionality.isOptional,
+            lenient = schema.isLenient,
+            inline = schema.isInline,
             sidePropertyInterpretationKey = sidePropertyInterpretationKey
         )
     }
-
-    unvisitedActualKeys.forEach { context.error("Found unexpected property '$it'") }
-    unvisitedRequiredKeys.forEach { context.error("Could not find required property '$it'") }
 }
 
-interface SchemaMatcherContext {
+private inline fun <reified T> SchemaMatcherContext.deriveActual(transform: (JsonElement) -> T, nullable: Boolean = false): T? {
+    return try {
+        transform(actual)
+    } catch (e: IllegalArgumentException) {
+        if (nullable) {
+            try {
+                actual.jsonNull
+            } catch (e: IllegalArgumentException) {
+                this.error("Expected nullable ${T::class.simpleName} but found ${actual::class.simpleName}")
+            }
+        } else {
+            this.error("Expected ${T::class.simpleName} but found ${actual::class.simpleName}")
+        }
 
+        return null
+    }
+}
+
+private interface SchemaMatcherContext : AutoCloseable {
+
+    val trackingConsumer: TrackingConsumer
+
+    val actual: JsonElement
     val path: String
 
-    fun push(path: String): SchemaMatcherContext {
-        return object : SchemaMatcherContext {
-            override val path: String = "${this@SchemaMatcherContext.path}/$path"
+    fun error(message: String, cause: Throwable? = null)
 
-            override fun error(message: String, cause: Exception?, path: String) {
-                this@SchemaMatcherContext.error(message, cause, path)
+    private fun doPush(actual: JsonElement, path: String): SchemaMatcherContext {
+        return object : SchemaMatcherContext {
+
+            override val trackingConsumer = TrackingConsumer(actual)
+
+            override val actual: JsonElement get() = actual
+            override val path: String get() = "${this@SchemaMatcherContext.path}/$path"
+
+            override fun error(message: String, cause: Throwable?) {
+                // TODO preserve path
+                this@SchemaMatcherContext.error(message, cause)
             }
+
+            override fun close() {
+                trackingConsumer.report(this::error)
+            }
+
         }
     }
 
-    fun error(message: String, cause: Exception? = null, path: String = this.path)
+    fun push(index: Int): SchemaMatcherContext {
+        val jsonElement = actual.jsonArray[index]
+        (trackingConsumer as TrackingConsumer.Array).consume(index)
 
-    data class MatchingError(
-        val path: String,
-        val message: String,
-        val cause: Exception?
-    )
+        return doPush(actual = jsonElement, path = "[$index]")
+    }
+
+    fun push(key: String, path: String = key): SchemaMatcherContext? {
+        val jsonElement = actual.jsonObject[key] ?: return null
+        (trackingConsumer as TrackingConsumer.Object).consume(key)
+
+        return doPush(actual = jsonElement, path)
+    }
+
+    fun pushVirtual(path: String): SchemaMatcherContext {
+        return object : SchemaMatcherContext by this {
+            override val actual: JsonElement get() = this@SchemaMatcherContext.actual
+            override val path: String get() = "${this@SchemaMatcherContext.path}/<<$path>>"
+
+            override fun close() {}
+        }
+    }
 
 }
 
-class RootSchemaMatcherContext(override val path: String = "") : SchemaMatcherContext {
+@Suppress("TestFunctionName")
+private fun TrackingConsumer(actual: JsonElement): TrackingConsumer =
+    when (actual) {
+        is JsonArray -> TrackingConsumer.Array(actual)
+        is JsonObject -> TrackingConsumer.Object(actual)
+        else -> TrackingConsumer.Element(actual)
+    }
 
-    val errors = mutableListOf<SchemaMatcherContext.MatchingError>()
+private sealed class TrackingConsumer {
 
-    override fun error(message: String, cause: Exception?, path: String) {
-        errors += SchemaMatcherContext.MatchingError(path, message, cause)
+    abstract fun report(error: (String) -> Unit)
+
+    class Array(actual: JsonArray) : TrackingConsumer() {
+
+        private val consumedElements = mutableMapOf<Int, Boolean>()
+
+        init {
+            consumedElements.putAll(actual.indices.associateWith { false })
+        }
+
+        fun consume(index: Int) {
+            require(index in consumedElements) { "Element at index '$index' does not exist in ${consumedElements.keys}" }
+            consumedElements[index] = true
+        }
+
+        override fun report(error: (String) -> Unit) {
+            val unconsumedKeys = consumedElements.filter { (_, v) -> !v }.keys
+            unconsumedKeys.forEach { key -> error("Array element was not visited: $key") }
+        }
+
+    }
+
+    class Element(actual: JsonElement) : TrackingConsumer() {
+        override fun report(error: (String) -> Unit) {}
+    }
+
+    class Object(actual: JsonObject) : TrackingConsumer() {
+
+        private val consumedElements = mutableMapOf<String, Boolean>()
+
+        init {
+            consumedElements.putAll(actual.mapValues { false })
+        }
+
+        fun consume(key: String) {
+            require(key in consumedElements) { "Element with key '$key' does not exist in ${consumedElements.keys}" }
+            consumedElements[key] = true
+        }
+
+        override fun report(error: (String) -> Unit) {
+            val unconsumedKeys = consumedElements.filter { (_, v) -> !v }.keys
+            unconsumedKeys.forEach { key -> error("Found unexpected element: $key") }
+        }
+
+    }
+
+}
+
+private class SchemaMatcher(
+    override val actual: JsonElement,
+    override val path: String = ""
+) : SchemaMatcherContext {
+
+    override val trackingConsumer = TrackingConsumer(actual)
+
+    private val mutableErrors = mutableListOf<SchemaMismatch>()
+
+    private lateinit var _errors: List<SchemaMismatch>
+    val errors: List<SchemaMismatch> get() {
+        check(this::_errors.isInitialized) { "SchemaMatcher has not been closed" }
+        return _errors.toList()
+    }
+
+    override fun error(message: String, cause: Throwable?) {
+        check(!this::_errors.isInitialized) { "SchemaMatcher has already been closed" }
+        mutableErrors += SchemaMismatch(path, message, cause)
+    }
+
+    override fun close() {
+        check(!this::_errors.isInitialized) { "SchemaMatcher has already been closed" }
+        _errors = mutableErrors.toList()
     }
 
 }

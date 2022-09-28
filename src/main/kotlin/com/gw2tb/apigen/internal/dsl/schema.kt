@@ -265,17 +265,6 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
     operator fun String.invoke(type: DeferredSchemaType<out SchemaTypeUse>, description: String): SchemaRecordPropertyBuilder =
         SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
 
-    /** Marks a deprecated property. */
-    val deprecated get() = Modifiers.deprecated
-
-    val lenient get() = Modifiers.lenient
-
-    /** Marks a localized property. */
-    val localized get() = Modifiers.localized
-
-    /** Marks an optional property. */
-    val optional get() = Modifiers.optional
-
     /** Marks an optional property whose presents is mandated by the given `scope`. */
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {

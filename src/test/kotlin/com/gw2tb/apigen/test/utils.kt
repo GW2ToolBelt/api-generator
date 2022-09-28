@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:OptIn(InternalSerializationApi::class)
 package com.gw2tb.apigen.test
 
 import com.gw2tb.apigen.schema.*

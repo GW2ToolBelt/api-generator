@@ -19,25 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.test
+@file:Suppress("FunctionName")
+package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.schema.*
-import org.junit.jupiter.api.Assertions.*
-
-fun assertHintedEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
-    fun equalsSignature(expected: SchemaTypeUse, actual: SchemaTypeUse): Boolean = when (expected) {
-        is SchemaBitfield -> actual is SchemaBitfield
-        is SchemaBoolean -> actual is SchemaBoolean
-        is SchemaDecimal -> actual is SchemaDecimal
-        is SchemaInteger -> actual is SchemaInteger
-        is SchemaString -> actual is SchemaString
-
-        is SchemaArray -> actual is SchemaArray && equalsSignature(expected.elements, actual.elements)
-        is SchemaEnum -> actual is SchemaEnum && TODO()
-        is SchemaMap -> actual is SchemaMap && equalsSignature(expected.keys, actual.keys) && equalsSignature(expected.values, actual.values)
-
-        is SchemaTypeReference -> TODO("Not yet implemented")
-    }
-
-    if (!equalsSignature(expected, actual)) fail<Unit>("Expected type did not match. Expected: $expected; got $actual")
-}
+@DslMarker
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE, AnnotationTarget.PROPERTY)
+internal annotation class APIGenDSL

@@ -19,9 +19,75 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:Suppress("UnusedReceiverParameter")
 package com.gw2tb.apigen.internal.dsl
 
-import kotlin.time.*
+import com.gw2tb.apigen.internal.impl.*
+import com.gw2tb.apigen.model.QueryType
+import com.gw2tb.apigen.schema.*
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
+
+/** Marks a [deprecated][SchemaProperty.isDeprecated] property. */
+@APIGenDSL internal val AbstractSchemaRecordBuilder<*>.deprecated get() = Modifiers.deprecated
+
+/** Marks an [inline][SchemaProperty.isInline] property. */
+@APIGenDSL internal val AbstractSchemaRecordBuilder<*>.inline get() = Modifiers.inline
+
+/** Marks a [lenient][SchemaProperty.isLenient] property. */
+@APIGenDSL internal val AbstractSchemaRecordBuilder<*>.lenient get() = Modifiers.lenient
+
+/** Marks a [localized][SchemaProperty.isLocalized] property. */
+@APIGenDSL internal val AbstractSchemaRecordBuilder<*>.localized get() = Modifiers.localized
+
+/** Marks an [optional][SchemaProperty.optionality] property. */
+@APIGenDSL internal val AbstractSchemaRecordBuilder<*>.optional get() = Modifiers.optional
+
+
+/** Alias for [QueryType.ByID]. */
+internal val BY_ID get() = QueryType.ByID
+
+/** Alias for [QueryType.ByID]. */
+internal fun BY_ID(
+    qpName: String,
+    qpDescription: String,
+    qpKey: String = qpName.lowercase(),
+    qpCamelCase: String = qpName.firstToLowerCase()
+) = QueryType.ByID(
+    qpKey = qpKey,
+    qpDescription = qpDescription,
+    qpName = qpName,
+    qpCamelCase = qpCamelCase
+)
+
+/** Alias for [QueryType.ByPage]. */
+internal val IDS get() = QueryType.IDs
+
+/** Alias for [QueryType.ByPage]. */
+internal val BY_PAGE get() = QueryType.ByPage
+
+/** Alias for [QueryType.ByIDs]. */
+internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
+
+/** Alias for [QueryType.ByIDs]. */
+internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
+
+/** Alias for [QueryType.ByIDs]. */
+internal fun BY_IDS(
+    qpName: String,
+    qpDescription: String,
+    all: Boolean = true,
+    qpKey: String = qpName.lowercase(),
+    qpCamelCase: String = qpName.firstToLowerCase()
+) = QueryType.ByIDs(
+    supportsAll = all,
+    qpKey = qpKey,
+    qpDescription = qpDescription,
+    qpName = qpName,
+    qpCamelCase = qpCamelCase
+)
+
 
 public val Int.nanoseconds: Duration get() = toDuration(DurationUnit.NANOSECONDS)
 public val Long.nanoseconds: Duration get() = toDuration(DurationUnit.NANOSECONDS)

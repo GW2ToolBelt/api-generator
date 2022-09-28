@@ -42,6 +42,12 @@ internal object Modifiers {
 
     }
 
+    val inline = object : PropertyModifier() {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.isInline = true
+        }
+    }
+
     val lenient = object : PropertyModifier() {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.isLenient = true

@@ -195,8 +195,9 @@ public data class SchemaRecord(
  * 2. [camelCaseName] - the name of the property in camelCase (e.g. `itemID`), and
  * 3. [serialName] - the name of the property in snake_case (e.g. `item_id`).
  *
- * The serial name is also the original name of the property as used in the
- * encoded JSON.
+ * The serial name is also the name of the property that should be used during
+ * de-/serialization (hence its name). It exactly matches name of the property
+ * in the JSON-encoded API response.
  *
  * Additionally, a property also has a [description]. The description of a
  * property should be worded to fit into the following sentence:
@@ -237,16 +238,15 @@ public data class SchemaRecord(
  *
  * ### Schema versioning
  *
- * Since the schema is versioned in version two of the API, some properties may
- * be dependent on the schema version. These dependencies are expressed using
- * the two attributes [since] which specifies the minimal schema version
- * required for the property (inclusive) and [until] which specifies the schema
- * version until which the property is available. (i.e. `[since, until)`).
+ * Since the schema is versioned in version 2 of the API, some properties may be
+ * dependent on the schema version. These dependencies are expressed using the
+ * two attributes [since] which specifies the minimal schema version required
+ * for the property (inclusive) and [until] which specifies the schema version
+ * until which the property is available. (Note that `since` is an inclusive
+ * bound while `until` is an exclusive bound: `[since, until)`).
  *
- * Note that entirely possible that properties with the same name but different
- * types are available in different schema versions. Thus, it is generally
- * recommended to use a specific schema version.
- *
+ * Note that it is possible that properties with the same name but different
+ * types are available in different schema versions.
  *
  * @param type          the type of the property
  * @param optionality   the [Optionality] of the property
@@ -256,6 +256,7 @@ public data class SchemaProperty internal constructor(
     public val type: SchemaTypeUse,
     public val description: String,
     public val isDeprecated: Boolean,
+    public val isInline: Boolean,
     public val isLenient: Boolean,
     public val isLocalized: Boolean,
     public val optionality: Optionality,

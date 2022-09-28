@@ -86,9 +86,9 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
     fun assertSchema(schema: SchemaTypeDeclaration, data: List<JsonElement>) {
         data.forEachIndexed { index, entry ->
             val errors = testSchema(
-                expected = schema,
+                schema = schema,
                 actual = entry,
-                context = RootSchemaMatcherContext("Sample[$index]")
+                path = "Sample[$index]"
             )
 
             if (errors.isNotEmpty()) {
