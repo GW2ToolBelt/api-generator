@@ -28,6 +28,7 @@ import java.net.URL
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.gradle.toolchain.switches)
     alias(libs.plugins.dokka)
     alias(libs.plugins.binary.compatibility.validator)
     signing
@@ -115,6 +116,12 @@ tasks {
         inputs.dir(inputDir)
         inputs.file(layout.projectDirectory.file("mkdocs.yml"))
 
+        val changelogFile = layout.projectDirectory.file("docs/changelog/full.md")
+        inputs.file(changelogFile)
+
+        val contributingFile = layout.projectDirectory.file(".github/CONTRIBUTING.md")
+        inputs.file(contributingFile)
+
         val workDir =  layout.buildDirectory.dir("mkdocs")
 
         val outputDir = workDir.map { it.dir("site") }
@@ -125,6 +132,18 @@ tasks {
                 from(inputDir)
                 into(workDir.map { it.dir("sources") }.get())
                 filter { it.replace("docs/mkdocs/([a-zA-Z-]*).md".toRegex(), "$1") }
+            }
+
+            copy {
+                from(changelogFile)
+                into(workDir.map { it.dir("sources") }.get())
+                rename("full.md", "changelog.md")
+            }
+
+            copy {
+                from(contributingFile)
+                into(workDir.map { it.dir("sources") }.get())
+                rename("CONTRIBUTING.md", "contributing.md")
             }
 
             exec {
