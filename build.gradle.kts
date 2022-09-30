@@ -23,7 +23,6 @@
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
-import org.jetbrains.kotlin.gradle.dsl.*
 import java.net.URL
 
 plugins {
@@ -54,7 +53,7 @@ java {
 }
 
 kotlin {
-    explicitApi = ExplicitApiMode.Strict
+    explicitApi()
 
     target {
         compilations.all {
