@@ -7,6 +7,8 @@ on:
 
 env:
   JDK_VERSION: "18"
+  WORKSPACE_ARCHIVE: workspace.tar
+  WORKSPACE_ARTIFACT: build-results
 
 
 jobs:
