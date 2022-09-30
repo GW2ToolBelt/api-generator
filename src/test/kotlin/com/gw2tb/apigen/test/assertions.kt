@@ -33,7 +33,6 @@ fun assertHintedEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
         is SchemaString -> actual is SchemaString
 
         is SchemaArray -> actual is SchemaArray && equalsSignature(expected.elements, actual.elements)
-        is SchemaEnum -> actual is SchemaEnum && TODO()
         is SchemaMap -> actual is SchemaMap && equalsSignature(expected.keys, actual.keys) && equalsSignature(expected.values, actual.values)
 
         is SchemaTypeReference -> TODO("Not yet implemented")
