@@ -1,9 +1,16 @@
 name: Publish docs
 on: workflow_dispatch
 
+
 jobs:
   deploy_docs:
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v3
 
@@ -27,8 +34,11 @@ jobs:
           arguments: mkdocs --info -S --show-version
           gradle-home-cache-cleanup: true
 
-      - name: Deploy
-        uses: GW2ToolBelt/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/mkdocs/site
+          input: ./build/mkdocs/site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v1
