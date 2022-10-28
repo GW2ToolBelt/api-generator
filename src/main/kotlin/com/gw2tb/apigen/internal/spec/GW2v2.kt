@@ -186,8 +186,8 @@ internal val GW2v2 = GW2APISpecV2 {
         SerialName("equipment_pvp").."EquipmentPvP"(
             description = "the character's PvP equipment",
             type = record(name = "PvPEquipment", "Information about a character's PvP equipment.") {
-                "Amulet"(INTEGER, "the ID of the selected amulet")
-                "Rune"(INTEGER, "the ID of the selected rune")
+                optional.."Amulet"(INTEGER, "the ID of the selected amulet")
+                optional.."Rune"(INTEGER, "the ID of the selected rune")
                 "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
             }
         )
