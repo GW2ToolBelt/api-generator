@@ -24,28 +24,11 @@ package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.APIv1Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
 
+@OptIn(LowLevelApiGenApi::class)
 @Suppress("FunctionName")
 internal val GW2v1 = GW2APISpecV1 {
-    val BUILD_ID = "BuildID"(INTEGER)
-    val COLOR_ID = "ColorID"(INTEGER)
-    val CONTINENT_ID = "ContinentID"(INTEGER)
-    val EVENT_ID = "EventID"(STRING)
-    val FLOOR_ID = "FloorID"(INTEGER)
-    val GUILD_ID = "GuildID"(STRING)
-    val GUILD_UPGRADE_ID = "GuildUpgradeID"(INTEGER)
-    val ITEM_ID = "ItemID"(INTEGER)
-    val ITEMSTAT_ID = "ItemStatID"(INTEGER)
-    val MAP_ID = "MapID"(INTEGER)
-    val MINI_ID = "MiniID"(INTEGER)
-    val RECIPE_ID = "RecipeID"(INTEGER)
-    val REGION_ID = "RegionID"(INTEGER)
-    val SKILL_ID = "SkillID"(INTEGER)
-    val SKIN_ID = "SkinID"(INTEGER)
-    val WORLD_ID = "WorldID"(INTEGER)
-    val WVW_MATCH_ID = "WvWMatchID"(STRING, camelCaseName = "wvwMatchID")
-    val WVW_OBJECTIVE_ID = "ObjectiveID"(STRING)
-
     val GuildDetails = record(name = "GuildDetails", description = "Information about events.") {
         SerialName("guild_id").."GuildID"(GUILD_ID, "the guild's ID")
         SerialName("guild_name").."GuildName"(STRING, "the guild's name")

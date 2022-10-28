@@ -19,21 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.test.spec
 
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.internal.spec.*
+import com.gw2tb.apigen.ir.*
+import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
+import java.util.*
 import kotlin.time.Duration
 
-class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
+class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
     "GW2v2",
-    APIVersion.getV2(),
+    GW2v2.build(EnumSet.allOf(APIv2Endpoint::class.java)),
     V2SpecBuilder {
         expectQuery(
             "/Account",
@@ -208,21 +213,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Achievements",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Achievements",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Achievements",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Achievements",
@@ -232,27 +237,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Achievements/Categories",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Achievements/Categories",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Achievements/Categories",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Achievements/Categories",
@@ -262,7 +267,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery("/Achievements/Daily")
@@ -272,21 +277,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Achievements/Groups",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Achievements/Groups",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Achievements/Groups",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Achievements/Groups",
@@ -296,7 +301,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -307,21 +312,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Backstory/Answers",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Backstory/Answers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Backstory/Answers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Backstory/Answers",
@@ -331,27 +336,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Backstory/Questions",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Backstory/Questions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Backstory/Questions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Backstory/Questions",
@@ -361,7 +366,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery("/Build")
@@ -369,19 +374,19 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Characters",
             security = setOf(ACCOUNT, CHARACTERS),
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Characters",
             security = setOf(ACCOUNT, CHARACTERS),
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Characters",
             security = setOf(ACCOUNT, CHARACTERS),
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Characters",
@@ -390,7 +395,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -407,7 +412,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             pathParameters = listOf(
                 ExpectedPathParameter("ID", STRING)
             ),
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/BuildTabs",
@@ -416,7 +421,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", STRING)
             ),
             queryParameters = listOf(ExpectedQueryParameter("tab", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/BuildTabs",
@@ -425,7 +430,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", STRING)
             ),
             queryParameters = listOf(ExpectedQueryParameter("tabs", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/BuildTabs",
@@ -437,7 +442,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -478,7 +483,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             pathParameters = listOf(
                 ExpectedPathParameter("ID", STRING)
             ),
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/EquipmentTabs",
@@ -487,7 +492,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", STRING)
             ),
             queryParameters = listOf(ExpectedQueryParameter("tab", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/EquipmentTabs",
@@ -496,7 +501,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", STRING)
             ),
             queryParameters = listOf(ExpectedQueryParameter("tabs", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Characters/:ID/EquipmentTabs",
@@ -508,7 +513,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -586,21 +591,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Colors",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Colors",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Colors",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Colors",
@@ -610,7 +615,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -631,17 +636,17 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Commerce/Listings",
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Commerce/Listings",
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Commerce/Listings",
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Commerce/Listings",
@@ -649,22 +654,22 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Commerce/Prices",
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Commerce/Prices",
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Commerce/Prices",
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Commerce/Prices",
@@ -672,7 +677,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -700,27 +705,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Continents",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Continents",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Continents",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Continents",
@@ -730,7 +735,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -739,7 +744,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             pathParameters = listOf(
                 ExpectedPathParameter("ID", INTEGER)
             ),
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Continents/:ID/Floors",
@@ -749,7 +754,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", INTEGER)
             ),
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Continents/:ID/Floors",
@@ -759,7 +764,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedPathParameter("ID", INTEGER)
             ),
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Continents/:ID/Floors",
@@ -772,7 +777,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -788,21 +793,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Currencies",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Currencies",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Currencies",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Currencies",
@@ -812,25 +817,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/DailyCrafting",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/DailyCrafting",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/DailyCrafting",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/DailyCrafting",
@@ -839,25 +844,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Dungeons",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Dungeons",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Dungeons",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Dungeons",
@@ -866,7 +871,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -878,21 +883,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             "/Emblem/:Type",
             cache = 1.hours,
             pathParameters = listOf(ExpectedPathParameter("Type", STRING)),
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Emblem/:Type",
             cache = 1.hours,
             pathParameters = listOf(ExpectedPathParameter("Type", STRING)),
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Emblem/:Type",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
             pathParameters = listOf(ExpectedPathParameter("Type", STRING)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Emblem/:Type",
@@ -902,25 +907,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Emotes",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Emotes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Emotes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Emotes",
@@ -929,25 +934,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Files",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Files",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Files",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Files",
@@ -956,27 +961,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Finishers",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Finishers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Finishers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Finishers",
@@ -986,7 +991,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -1063,21 +1068,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Guild/Permissions",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Guild/Permissions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Guild/Permissions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Guild/Permissions",
@@ -1087,7 +1092,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -1098,21 +1103,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Guild/Upgrades",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Guild/Upgrades",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Guild/Upgrades",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Guild/Upgrades",
@@ -1122,27 +1127,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Gliders",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Gliders",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Gliders",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Gliders",
@@ -1152,7 +1157,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -1163,19 +1168,19 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Home/Cats",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Home/Cats",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Home/Cats",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Home/Cats",
@@ -1184,25 +1189,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Home/Nodes",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Home/Nodes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Home/Nodes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Home/Nodes",
@@ -1211,27 +1216,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Items",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Items",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Items",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Items",
@@ -1241,25 +1246,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/ItemStats",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/ItemStats",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/ItemStats",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/ItemStats",
@@ -1268,25 +1273,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/LegendaryArmory",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/LegendaryArmory",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/LegendaryArmory",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/LegendaryArmory",
@@ -1295,25 +1300,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Legends",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Legends",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Legends",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Legends",
@@ -1322,27 +1327,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Mailcarriers",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Mailcarriers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Mailcarriers",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Mailcarriers",
@@ -1352,25 +1357,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/MapChests",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/MapChests",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/MapChests",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/MapChests",
@@ -1379,27 +1384,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Maps",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Maps",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Maps",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Maps",
@@ -1409,27 +1414,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Masteries",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Masteries",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Masteries",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Masteries",
@@ -1439,27 +1444,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Materials",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Materials",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Materials",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Materials",
@@ -1469,27 +1474,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Minis",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Minis",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Minis",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Minis",
@@ -1499,7 +1504,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -1510,21 +1515,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Mounts/Skins",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Mounts/Skins",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Mounts/Skins",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Mounts/Skins",
@@ -1534,27 +1539,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Mounts/Types",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Mounts/Types",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Mounts/Types",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Mounts/Types",
@@ -1564,27 +1569,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Novelties",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Novelties",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Novelties",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Novelties",
@@ -1594,27 +1599,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Outfits",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Outfits",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Outfits",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Outfits",
@@ -1624,27 +1629,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Pets",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Pets",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Pets",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Pets",
@@ -1654,27 +1659,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Professions",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Professions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Professions",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Professions",
@@ -1684,7 +1689,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -1695,21 +1700,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/PvP/Amulets",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/PvP/Amulets",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/PvP/Amulets",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/PvP/Amulets",
@@ -1719,28 +1724,28 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/PvP/Games",
             cache = 1.hours,
             security = setOf(ACCOUNT, PVP),
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/PvP/Games",
             cache = 1.hours,
             security = setOf(ACCOUNT, PVP),
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/PvP/Games",
             cache = 1.hours,
             security = setOf(ACCOUNT, PVP),
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/PvP/Games",
@@ -1750,27 +1755,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/PvP/Heroes",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/PvP/Heroes",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/PvP/Heroes",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/PvP/Heroes",
@@ -1780,27 +1785,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/PvP/Ranks",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/PvP/Ranks",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/PvP/Ranks",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/PvP/Ranks",
@@ -1810,27 +1815,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/PvP/Seasons",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/PvP/Seasons",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/PvP/Seasons",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/PvP/Seasons",
@@ -1840,7 +1845,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
@@ -1872,7 +1877,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -1889,19 +1894,19 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Quaggans",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Quaggans",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Quaggans",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Quaggans",
@@ -1910,27 +1915,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Quests",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Quests",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Quests",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Quests",
@@ -1940,27 +1945,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Races",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Races",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Races",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Races",
@@ -1970,25 +1975,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Raids",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Raids",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Raids",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Raids",
@@ -1997,25 +2002,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Recipes",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Recipes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Recipes",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Recipes",
@@ -2024,7 +2029,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -2039,21 +2044,21 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Skills",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Skills",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Skills",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Skills",
@@ -2063,27 +2068,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Skins",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Skins",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Skins",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Skins",
@@ -2093,27 +2098,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Specializations",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Specializations",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Specializations",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Specializations",
@@ -2123,27 +2128,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Stories",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Stories",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Stories",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Stories",
@@ -2153,27 +2158,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Stories/Seasons",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/Stories/Seasons",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/Stories/Seasons",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/Stories/Seasons",
@@ -2183,27 +2188,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Titles",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Titles",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Titles",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Titles",
@@ -2213,27 +2218,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/Traits",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Traits",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Traits",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>(supportsAll = false)
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
         )
         expectQuery(
             "/Traits",
@@ -2243,7 +2248,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
@@ -2254,19 +2259,19 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/WorldBosses",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WorldBosses",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/WorldBosses",
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WorldBosses",
@@ -2275,27 +2280,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/Worlds",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/Worlds",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/Worlds",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/Worlds",
@@ -2305,27 +2310,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/WvW/Abilities",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Abilities",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/WvW/Abilities",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Abilities",
@@ -2335,25 +2340,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/WvW/Matches",
             cache = 1.seconds,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/WvW/Matches",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches",
@@ -2362,25 +2367,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/WvW/Matches/Overview",
             cache = 1.seconds,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Overview",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Overview",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Overview",
@@ -2389,25 +2394,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/WvW/Matches/Scores",
             cache = 1.seconds,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Scores",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Scores",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Scores",
@@ -2416,25 +2421,25 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/WvW/Matches/Stats",
             cache = 1.seconds,
-            queryDetails = QueryIDs<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Stats",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryByID<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Stats",
             cache = 1.seconds,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WvW/Matches/Stats",
@@ -2443,27 +2448,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/WvW/Objectives",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaString>()
-        )
-        expectQuery(
-            "/WvW/Objectives",
-            isLocalized = true,
-            cache = 1.hours,
-            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
-            queryDetails = QueryByID<SchemaString>()
+            queryDetails = QueryIDs<IRString>()
         )
         expectQuery(
             "/WvW/Objectives",
             isLocalized = true,
             cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", STRING)),
+            queryDetails = QueryByID<IRString>()
+        )
+        expectQuery(
+            "/WvW/Objectives",
+            isLocalized = true,
+            cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", STRING.array)),
-            queryDetails = QueryByIDs<SchemaString>()
+            queryDetails = QueryByIDs<IRString>()
         )
         expectQuery(
             "/WvW/Objectives",
@@ -2473,27 +2478,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaString>()
+            queryDetails = QueryByPage<IRString>()
         )
 
         expectQuery(
             "/WvW/Ranks",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Ranks",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/WvW/Ranks",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Ranks",
@@ -2503,27 +2508,27 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
         expectQuery(
             "/WvW/Upgrades",
             cache = 1.hours,
-            queryDetails = QueryIDs<SchemaInteger>()
+            queryDetails = QueryIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Upgrades",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
-            queryDetails = QueryByID<SchemaInteger>()
+            queryDetails = QueryByID<IRInteger>()
         )
         expectQuery(
             "/WvW/Upgrades",
             isLocalized = true,
             cache = 1.hours,
             queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
-            queryDetails = QueryByIDs<SchemaInteger>()
+            queryDetails = QueryByIDs<IRInteger>()
         )
         expectQuery(
             "/WvW/Upgrades",
@@ -2533,13 +2538,13 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
                 ExpectedQueryParameter("page", INTEGER),
                 ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
             ),
-            queryDetails = QueryByPage<SchemaInteger>()
+            queryDetails = QueryByPage<IRInteger>()
         )
 
     }
 ) {
 
-    override fun assertProperties(expected: ExpectedAPIv2Query, actual: APIQuery.V2) {
+    override fun assertProperties(expected: ExpectedAPIv2Query, actual: IRAPIQuery.V2) {
         val qdp = expected.queryDetails
         if (qdp == null) {
             assertNull(actual.queryDetails)
@@ -2550,12 +2555,13 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         assertEquals(expected.security, actual.security)
 
         // TODO: In the future we might have to check the isLocalized flag specifically for schema versions.
-        assertEquals(expected.isLocalized, actual.flatMapData { it.isLocalized }, "Mismatched 'isLocalized' flag for ${actual.route}")
+        assertEquals(expected.isLocalized, actual.flatMapData { it.resolve(VoidResolverContext, actual.since).isLocalized }, "Mismatched 'isLocalized' flag for ${actual.route}")
     }
 
-    override fun testType(type: APIType.V2) = sequence<DynamicTest> {
-        type.significantVersions.forEach { version ->
-            val schema = type[version].data
+    override fun testType(irType: IRAPIType.V2) = sequence<DynamicTest> {
+        irType.significantVersions.forEach { version ->
+            val type = irType.resolve(VoidResolverContext, v2SchemaVersion = version)
+            val schema = type.schema
 
             yield(DynamicTest.dynamicTest("$prefix${type.name}${if (version != com.gw2tb.apigen.model.v2.V2SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
                 val data = TestData[type, version]
@@ -2570,7 +2576,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
         override val cache: Duration?,
         override val pathParameters: List<ExpectedPathParameter>,
         override val queryParameters: List<ExpectedQueryParameter>,
-        val queryDetails: ((QueryDetails) -> Boolean)?,
+        val queryDetails: ((IRAPIQuery.Details) -> Boolean)?,
         val security: Set<TokenScope>
     ) : ExpectedAPIQuery
 
@@ -2585,16 +2591,16 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             }
         }
 
-        inline fun <reified T : SchemaTypeUse> QueryIDs(): (QueryDetails) -> Boolean =
+        inline fun <reified T : IRTypeUse<*>> QueryIDs(): (IRAPIQuery.Details) -> Boolean =
             { it.queryType is QueryType.IDs && it.idType is T}
 
-        inline fun <reified T : SchemaTypeUse> QueryByID(): (QueryDetails) -> Boolean =
+        inline fun <reified T : IRTypeUse<*>> QueryByID(): (IRAPIQuery.Details) -> Boolean =
             { it.queryType is QueryType.ByID && it.idType is T}
 
-        inline fun <reified T : SchemaTypeUse> QueryByIDs(supportsAll: Boolean = true): (QueryDetails) -> Boolean =
+        inline fun <reified T : IRTypeUse<*>> QueryByIDs(supportsAll: Boolean = true): (IRAPIQuery.Details) -> Boolean =
             { it.queryType.let { qt -> qt is QueryType.ByIDs && qt.supportsAll == supportsAll } && it.idType is T }
 
-        inline fun <reified T : SchemaTypeUse> QueryByPage(): (QueryDetails) -> Boolean =
+        inline fun <reified T : IRTypeUse<*>> QueryByPage(): (IRAPIQuery.Details) -> Boolean =
             { it.queryType is QueryType.ByPage && it.idType is T }
 
         fun expectQuery(
@@ -2603,7 +2609,7 @@ class GW2v2 : SpecTest<APIQuery.V2, APIType.V2, GW2v2.ExpectedAPIv2Query>(
             cache: Duration? = null,
             pathParameters: List<ExpectedPathParameter> = emptyList(),
             queryParameters: List<ExpectedQueryParameter> = emptyList(),
-            queryDetails: ((QueryDetails) -> Boolean)? = null,
+            queryDetails: ((IRAPIQuery.Details) -> Boolean)? = null,
             security: Set<TokenScope> = emptySet()
         ) {
             queries += ExpectedAPIv2Query(

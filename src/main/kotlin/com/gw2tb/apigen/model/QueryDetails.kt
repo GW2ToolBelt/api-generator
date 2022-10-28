@@ -26,10 +26,12 @@ import com.gw2tb.apigen.schema.*
 /**
  * TODO doc
  *
- * @param queryType the [QueryType]
+ * @param queryType the [type of query][QueryType]
  * @param idType    the ID-type of the endpoint
+ *
+ * @since   0.7.0
  */
 public data class QueryDetails internal constructor(
     val queryType: QueryType,
-    val idType: SchemaPrimitive
+    val idType: SchemaPrimitiveIdentifier
 )

@@ -21,17 +21,46 @@
  */
 package com.gw2tb.apigen.schema
 
-import com.gw2tb.apigen.model.TypeLocation
+import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.model.v2.V2SchemaVersion
 
 /**
- * A reference to a schema representation of a complex type (i.e. a [SchemaTypeDeclaration]).
+ * A reference to a schema representation of a type.
+ *
+ * @since   0.7.0
  */
-public data class SchemaTypeReference(
-    val typeLocation: TypeLocation,
-    val version: V2SchemaVersion,
-    internal val declaration: SchemaTypeDeclaration
-) : SchemaTypeUse() {
-    val name: String get() = declaration.name
-    override val isLocalized: Boolean get() = declaration.isLocalized
+public sealed class SchemaTypeReference : SchemaTypeUse() {
+
+    /**
+     * The [qualified name][QualifiedTypeName] of the referenced type.
+     *
+     * @since   0.7.0
+     */
+    public abstract val name: QualifiedTypeName
+
+    /**
+     * Returns `true` if the referenced type is localized, or `false` otherwise.
+     *
+     * @since   0.7.0
+     */
+    abstract override val isLocalized: Boolean
+
+    internal data class Alias constructor(
+        override val name: QualifiedTypeName.Alias,
+        val alias: SchemaAlias
+    ) : SchemaTypeReference() {
+
+        override val isLocalized: Boolean get() = alias.isLocalized
+
+    }
+
+    internal data class Declaration constructor(
+        override val name: QualifiedTypeName.Declaration,
+        val declaration: SchemaTypeDeclaration
+    ) : SchemaTypeReference() {
+
+        override val isLocalized: Boolean get() = declaration.isLocalized
+
+    }
+
 }

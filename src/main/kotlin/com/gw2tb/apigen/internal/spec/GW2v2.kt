@@ -24,20 +24,14 @@ package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
 import kotlin.time.Duration
 
+@OptIn(LowLevelApiGenApi::class)
 @Suppress("FunctionName")
 internal val GW2v2 = GW2APISpecV2 {
-    val ACHIEVEMENT_ID = "AchievementID"(INTEGER)
-    val ACHIEVEMENT_CATEGORY_ID = "AchievementCategoryID"(INTEGER)
-    val ACHIEVEMENT_GROUP_ID = "AchievementGroupID"(STRING)
-    val BUILD_ID = "BuildID"(INTEGER)
-    val ITEM_ID = "ItemID"(INTEGER)
-    val SKIN_ID = "SkinID"(INTEGER)
-
     val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.") {
         CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
         "Level"(
@@ -269,7 +263,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
 
     @APIGenDSL
-    fun SchemaConditionalBuilder<APIType.V2>.FACTS() {
+    fun SchemaConditionalBuilder<*>.FACTS() {
         +record(name = "AttributeAdjust", description = "Additional information about an attribute adjustment.") {
             optional.."Value"(INTEGER, "the amount 'target' gets adjusted, based on a level 80 character at base stats")
             optional.."Target"(STRING, "the attribute this fact adjusts")
@@ -1177,7 +1171,42 @@ internal val GW2v2 = GW2APISpecV2 {
             "Metal"(APPEARANCE, "detailed information on its appearance when applied on metal armor")
             optional.."Fur"(APPEARANCE, "detailed information on its appearance when applied on fur armor")
             optional.."Item"(INTEGER, "the ID of the dye item")
-            "Categories"(array(STRING), "the categories of the color")
+            optional.."Categories"(
+                description = "the categories of the color",
+                type = tuple(name = "Category", description = "") {
+                    "Hue"(
+                        description = "the color's hue",
+                        type = enum(STRING, name = "Hue", description = "A hue.") {
+                            "Blue"(description = "Blue")
+                            "Brown"(description = "Brown")
+                            "Gray"(description = "Gray")
+                            "Green"(description = "Green")
+                            "Orange"(description = "Orange")
+                            "Purple"(description = "Purple")
+                            "Red"(description = "Red")
+                            "Yellow"(description = "Yellow")
+                        }
+                    )
+                    "Material"(
+                        description = "the color's material",
+                        type = enum(STRING, "Material", description = "The material of a color.") {
+                            "Vibrant"("Vibrant")
+                            "Leather"("Leather")
+                            "Metal"("Metal")
+                        }
+                    )
+                    "Rarity"(
+                        description = "the color's rarity",
+                        type = enum(STRING, "Rarity", description = "The rarity of a color.") {
+                            "Starter"("Indicates that the color is unlocked from the start.")
+                            "Common"("Common rarity.")
+                            "Uncommon"("Uncommon rarity.")
+                            "Rare"("Rare rarity.")
+                            "Exclusive"("Exclusive rarity.")
+                        }
+                    )
+                }
+            )
         })
     }
     V2_COMMERCE_DELIVERY(
@@ -3237,7 +3266,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "WvWRank", description = "Information about an achievable rank in the World versus World game mode.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the rank")
+            CamelCase("id").."ID"(WVW_RANK_ID, "the ID of the rank")
             localized.."Title"(STRING, "the title of the rank")
             SerialName("min_rank").."MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })

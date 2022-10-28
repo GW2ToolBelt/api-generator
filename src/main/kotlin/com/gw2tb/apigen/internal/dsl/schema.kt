@@ -19,77 +19,106 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 @file:Suppress("FunctionName")
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.internal.impl.*
+import com.gw2tb.apigen.ir.*
+import com.gw2tb.apigen.ir.model.IRAPIType
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 
-/** Alias for [SchemaBitfield] */
-internal val BITFIELD: DeferredPrimitiveType = DeferredPrimitiveType(SchemaBitfield())
+internal fun Alias(type: DeferredPrimitiveType, name: String): DeferredPrimitiveType =
+    Alias(type, Name.deriveFromTitleCase(name))
 
-/** Alias for [SchemaBoolean]. */
-internal val BOOLEAN: DeferredPrimitiveType = DeferredPrimitiveType(SchemaBoolean())
-
-/** Alias for [SchemaDecimal]. */
-internal val DECIMAL: DeferredPrimitiveType = DeferredPrimitiveType(SchemaDecimal())
-
-/** Alias for [SchemaInteger]. */
-internal val INTEGER: DeferredPrimitiveType = DeferredPrimitiveType(SchemaInteger())
-
-/** Alias for [SchemaString]. */
-internal val STRING: DeferredPrimitiveType = DeferredPrimitiveType(SchemaString())
-
-internal fun <T : SchemaTypeUse> DeferredSchemaType(factory: (TypeRegistryScope?, Boolean) -> SchemaVersionedData<out T>): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out T> = factory(typeRegistry, isTopLevel)
+internal fun Alias(type: DeferredPrimitiveType, name: Name): DeferredPrimitiveType {
+    return type // TODO impl
 }
 
-internal abstract class DeferredSchemaType<T : SchemaTypeUse> {
+/** Alias for [SchemaBitfield] */
+internal val BITFIELD: DeferredPrimitiveType = DeferredPrimitiveType(IRBitfield)
 
-    abstract fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean = false): SchemaVersionedData<out T>
+/** Alias for [SchemaBoolean]. */
+internal val BOOLEAN: DeferredPrimitiveType = DeferredPrimitiveType(IRBoolean)
 
-    fun getFlat(): T = get(typeRegistry = null, interpretationHint = null).single().data
+/** Alias for [SchemaDecimal]. */
+internal val DECIMAL: DeferredPrimitiveType = DeferredPrimitiveType(IRDecimal)
+
+/** Alias for [SchemaInteger]. */
+internal val INTEGER: DeferredPrimitiveType = DeferredPrimitiveType(IRInteger)
+
+/** Alias for [SchemaString]. */
+internal val STRING: DeferredPrimitiveType = DeferredPrimitiveType(IRString)
+
+internal fun <T : IRTypeUse<*>> DeferredSchemaType(
+    factory: (ScopedTypeRegistry<*>?, Boolean) -> SchemaVersionedData<out T>
+): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
+
+    override fun get(
+        typeRegistry: ScopedTypeRegistry<*>?,
+        interpretationHint: APIType.InterpretationHint?,
+        isTopLevel: Boolean
+    ): SchemaVersionedData<out T> = factory(typeRegistry, isTopLevel)
+
+}
+
+internal abstract class DeferredSchemaType<T : IRTypeUse<*>> {
+
+    abstract fun get(
+        typeRegistry: ScopedTypeRegistry<*>?,
+        interpretationHint: APIType.InterpretationHint?,
+        isTopLevel: Boolean = false
+    ): SchemaVersionedData<out T>
+
+    fun getFlat(): T =
+        get(typeRegistry = null, interpretationHint = null).single().data
 
 }
 
 internal data class DeferredPrimitiveType(
-    private val value: SchemaPrimitive,
-) : DeferredSchemaType<SchemaPrimitive>() {
+    private val value: IRPrimitive,
+) : DeferredSchemaType<IRPrimitive>() {
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaPrimitive> {
+    override fun get(
+        typeRegistry: ScopedTypeRegistry<*>?,
+        interpretationHint: APIType.InterpretationHint?,
+        isTopLevel: Boolean
+    ): SchemaVersionedData<out IRPrimitive> {
         return wrapVersionedSchemaData(value)
     }
-
-    fun withTypeHint(typeHint: SchemaPrimitive.TypeHint?): DeferredPrimitiveType =
-        copy(value = value.withTypeHint(typeHint = typeHint))
 
 }
 
 @APIGenDSL
-internal abstract class DeferredSchemaClass<T : APIType> : DeferredSchemaType<SchemaTypeReference>() {
+internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredSchemaType<IRTypeReference>() {
 
-    abstract val name: String
+    abstract val name: Name
 
-    abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T
+    abstract val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
 
-    abstract val typeRegistry: TypeRegistryScope?
+    abstract val typeRegistry: ScopedTypeRegistry<T>?
 
-    open val nestedTypeRegistry: TypeRegistryScope? get() = typeRegistry?.nestedScope(name)
+    open val nestedTypeRegistry: ScopedTypeRegistry<T>? get() = typeRegistry?.nestedScope(name)
 
     fun array(
-        items: DeferredSchemaType<out SchemaTypeUse>,
+        items: DeferredSchemaType<out IRTypeUse<*>>,
         nullableItems: Boolean = false
-    ): DeferredSchemaType<SchemaArray> =
-        DeferredSchemaType { typeRegistry, isTopLevel -> items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaArray(it, nullableItems, description = null) } }
+    ): DeferredSchemaType<IRArray> =
+        DeferredSchemaType { typeRegistry, isTopLevel ->
+            items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRArray(it, nullableItems, description = null) }
+        }
 
     fun map(
-        keys: DeferredSchemaType<out SchemaPrimitive>,
-        values: DeferredSchemaType<out SchemaTypeUse>,
+        keys: DeferredSchemaType<out IRPrimitive>,
+        values: DeferredSchemaType<out IRTypeUse<*>>,
         nullableValues: Boolean = false
-    ): DeferredSchemaType<SchemaMap> =
-        DeferredSchemaType { typeRegistry, isTopLevel -> values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description = null) } }
+    ): DeferredSchemaType<IRMap> =
+        DeferredSchemaType { typeRegistry, isTopLevel ->
+            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat(), it, nullableValues, description = null) }
+        }
+
 
     fun conditional(
         name: String,
@@ -98,152 +127,52 @@ internal abstract class DeferredSchemaClass<T : APIType> : DeferredSchemaType<Sc
         disambiguationBySideProperty: Boolean = false,
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): DeferredSchemaClass<T> = conditionalImpl(
-        name,
-        description,
-        disambiguationBy,
-        disambiguationBySideProperty,
-        interpretationInNestedProperty,
-        sharedConfigure,
-        apiTypeFactory,
-        nestedTypeRegistry,
-        configure
-    )
+        block: SchemaConditionalBuilder<T>.() -> Unit
+    ): DeferredSchemaClass<T> =
+        conditional(Name.deriveFromTitleCase(name), description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, block)
 
-    fun record(
-        name: String,
+    fun conditional(
+        name: Name,
         description: String,
-        block: SchemaRecordBuilder<T>.() -> Unit
-    ): DeferredSchemaClass<T> = recordImpl(
-        name,
-        description,
-        apiTypeFactory,
-        nestedTypeRegistry,
-        block
-    )
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
+        block: SchemaConditionalBuilder<T>.() -> Unit
+    ): DeferredSchemaClass<T> =
+        SchemaConditionalBuilder(
+            name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty,
+            sharedConfigure, apiTypeFactory, nestedTypeRegistry
+        ).also(block)
+
+
+    fun enum(type: DeferredPrimitiveType, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        enum(type, Name.deriveFromTitleCase(name), description, block)
+
+    fun enum(type: DeferredPrimitiveType, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        SchemaEnumBuilder(type, name, description, apiTypeFactory, typeRegistry).also(block)
+
+
+    fun record(name: String, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        record(Name.deriveFromTitleCase(name), description, block)
+
+    fun record(name: Name, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        SchemaRecordBuilder(name, description, apiTypeFactory, nestedTypeRegistry).also(block)
+
+
+    fun tuple(name: String, description: String, block: SchemaTupleBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        tuple(Name.deriveFromTitleCase(name), description, block)
+
+    fun tuple(name: Name, description: String, block: SchemaTupleBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        SchemaTupleBuilder(name, description, apiTypeFactory, nestedTypeRegistry).also(block)
 
 }
 
-internal class SchemaConditionalBuilder<T : APIType>(
-    override val name: String,
-    private val description: String,
-    private val disambiguationBy: String,
-    private val disambiguationBySideProperty: Boolean,
-    private val interpretationInNestedProperty: Boolean,
-    private val sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
-    override val typeRegistry: TypeRegistryScope?
-) : DeferredSchemaClass<T>() {
-
-    private val _interpretations = mutableListOf<SchemaConditionalInterpretationBuilder>()
-
-    private fun buildInterpretations(conditionalBase: TypeLocation, typeRegistry: TypeRegistryScope?): SchemaVersionedData<Map<String, SchemaConditional.Interpretation>> = buildVersionedSchemaData {
-        V2SchemaVersion.values().forEach { version ->
-            val relevantInterpretations = _interpretations.getForVersion(
-                SchemaConditionalInterpretationBuilder::since,
-                SchemaConditionalInterpretationBuilder::until,
-                version
-            )
-
-            if (relevantInterpretations.any { it.hasChangedInVersion(typeRegistry, version, conditionalBase) }) {
-                add(relevantInterpretations.map {
-                    it.get(typeRegistry, version, conditionalBase)
-                }.associateBy { it.interpretationKey }, since = version)
-            }
-        }
-    }
-
-    private fun buildProperties(typeRegistry: TypeRegistryScope?): SchemaVersionedData<Map<String, SchemaProperty>>? =
-        if (sharedConfigure != null)
-            SchemaConditionalSharedPropertyBuilder(apiTypeFactory, typeRegistry).also(sharedConfigure).buildProperties(typeRegistry) // TODO stub scope leaks
-        else
-            null
-
-    private lateinit var _value: SchemaVersionedData<SchemaTypeReference>
-
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaTypeReference> {
-        if (!this::_value.isInitialized) {
-            @Suppress("NAME_SHADOWING")
-            val typeRegistry = this.typeRegistry
-
-            val nestedTypeRegistry = typeRegistry?.nestedScope(name)
-            val sharedProperties = buildProperties(nestedTypeRegistry)
-
-            val loc = typeRegistry?.getLocationFor(name) ?: error("TypeRegistry is required")
-            val interpretations = buildInterpretations(loc, nestedTypeRegistry)
-
-            val versions = buildVersionedSchemaData<SchemaConditional> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || interpretations.hasChangedInVersion(version) || sharedProperties?.hasChangedInVersion(version) == true }
-                    .zipSchemaVersionConstraints()
-                    .forEach { (since, until) ->
-                        add(
-                            datum = SchemaConditional(
-                                name,
-                                disambiguationBy,
-                                disambiguationBySideProperty,
-                                interpretationInNestedProperty,
-                                sharedProperties?.get(since)?.data ?: emptyMap(),
-                                interpretations[since].data,
-                                description
-                            ),
-                            since = since,
-                            until = until
-                        )
-                    }
-            }
-
-            val apiType = apiTypeFactory(versions, interpretationHint, isTopLevel)
-            typeRegistry.register(name, apiType)
-
-            _value = versions.mapVersionedData { version, data -> SchemaTypeReference(loc, version, data) }
-        }
-
-        return _value
-    }
-
-    /**
-     * Registers a conditional interpretation using the @receiver as key.
-     *
-     * The name should be in _TitleCase_.
-     *
-     * @param type  the type of the interpretation
-     */
-    operator fun String.invoke(
-        type: DeferredSchemaClass<T>,
-        nestProperty: String = this.lowercase()
-    ): SchemaConditionalInterpretationBuilder =
-        SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
-
-    /** Registers a conditional interpretation using the @receiver's name as key. */
-    operator fun DeferredSchemaClass<T>.unaryPlus(): SchemaConditionalInterpretationBuilder =
-        SchemaConditionalInterpretationBuilder(name, name.lowercase(), this).also { this@SchemaConditionalBuilder._interpretations += it }
-
-    /** Marks a deprecated interpretation. */
-    val deprecated get() = Modifiers.deprecated
-
-    /** The minimal [V2SchemaVersion] (inclusive) required for the interpretation. */
-    fun since(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
-        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
-            interpretation.since = version
-        }
-    }
-
-    /** The maximum [V2SchemaVersion] (exclusive) required for the interpretation. */
-    fun until(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
-        override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
-            interpretation.until = version
-        }
-    }
-
-}
-
-internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchemaClass<T>() {
+internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSchemaClass<T>() {
 
     private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
 
-    fun buildProperties(typeRegistry: TypeRegistryScope?): SchemaVersionedData<Map<String, SchemaProperty>>? =
+    fun buildProperties(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedData<Map<String, IRProperty>>? =
         if (_properties.isEmpty()) {
             null
         } else {
@@ -262,7 +191,7 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
             }
         }
 
-    operator fun String.invoke(type: DeferredSchemaType<out SchemaTypeUse>, description: String): SchemaRecordPropertyBuilder =
+    operator fun String.invoke(type: DeferredSchemaType<out IRTypeUse<*>>, description: String): SchemaRecordPropertyBuilder =
         SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
 
     /** Marks an optional property whose presents is mandated by the given `scope`. */
@@ -304,227 +233,23 @@ internal abstract class AbstractSchemaRecordBuilder<T : APIType> : DeferredSchem
 
 }
 
-internal class SchemaRecordBuilder<T : APIType>(
-    override val name: String,
-    private val description: String,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
-    override val typeRegistry: TypeRegistryScope?
+internal class SchemaConditionalSharedPropertyBuilder<T : IRAPIType>(
+    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val typeRegistry: ScopedTypeRegistry<T>?
 ) : AbstractSchemaRecordBuilder<T>() {
 
-    private lateinit var _value: SchemaVersionedData<SchemaTypeReference>
-
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<SchemaTypeReference> {
-        if (!this::_value.isInitialized) {
-            @Suppress("NAME_SHADOWING")
-            val typeRegistry = this.typeRegistry
-
-            val properties: SchemaVersionedData<Map<String, SchemaProperty>>? = buildProperties(typeRegistry?.nestedScope(name))
-
-            val versions = buildVersionedSchemaData<SchemaRecord> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || properties?.hasChangedInVersion(version) == true }
-                    .zipSchemaVersionConstraints()
-                    .forEach { (since, until) ->
-                        add(
-                            datum = SchemaRecord(
-                                name,
-                                properties?.get(since)?.data ?: emptyMap(),
-                                description
-                            ),
-                            since = since,
-                            until = until
-                        )
-                    }
-            }
-
-            val apiType = apiTypeFactory(versions, interpretationHint, isTopLevel)
-            val loc = typeRegistry?.register(name, apiType) ?: error("TypeRegistry is required")
-
-            _value = versions.mapVersionedData { version, data -> SchemaTypeReference(loc, version, data) }
-        }
-
-        return _value
-    }
-
-}
-
-internal class SchemaConditionalInterpretationBuilder(
-    private val interpretationKey: String,
-    private val interpretationNestProperty: String,
-    private val type: DeferredSchemaType<out SchemaTypeReference>
-) {
-
-    var isDeprecated = false
-        set(value) {
-            require(isUnused)
-            field = value
-        }
-
-    var since: V2SchemaVersion? = null
-        set(value) {
-            require(isUnused)
-            field = value
-        }
-
-    var until: V2SchemaVersion? = null
-        set(value) {
-            require(isUnused)
-            field = value
-        }
-
-    private lateinit var _value: SchemaVersionedData<SchemaConditional.Interpretation>
-    private val isUnused get() = !this::_value.isInitialized
-
-    fun get(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion?, conditionalBase: TypeLocation): SchemaConditional.Interpretation {
-        if (!this::_value.isInitialized) {
-            val interpretationHint = InterpretationHint(
-                conditionalBase = conditionalBase,
-                interpretationKey = interpretationKey,
-                interpretationNestProperty = interpretationNestProperty
-            )
-
-            _value = type.get(typeRegistry, interpretationHint = interpretationHint).mapData {
-                SchemaConditional.Interpretation(
-                    interpretationKey = interpretationKey,
-                    interpretationNestProperty = interpretationNestProperty,
-                    type = it,
-                    isDeprecated = isDeprecated,
-                    since = since,
-                    until = until
-                )
-            }
-        }
-
-        return _value[version ?: V2SchemaVersion.V2_SCHEMA_CLASSIC].data
-    }
-
-    fun hasChangedInVersion(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion, conditionalBase: TypeLocation): Boolean {
-        get(typeRegistry, version, conditionalBase)
-        return version.containsChangeForBounds(since, until) || _value.hasChangedInVersion(version)
-    }
-
-}
-
-internal class SchemaConditionalSharedPropertyBuilder<T : APIType>(
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T,
-    override val typeRegistry: TypeRegistryScope?
-) : AbstractSchemaRecordBuilder<T>() {
-
-    override val nestedTypeRegistry: TypeRegistryScope?
+    override val nestedTypeRegistry: ScopedTypeRegistry<T>?
         get() = typeRegistry
 
-    override val name: String
+    override val name: Name
         get() = error("Not implemented")
 
-    override fun get(typeRegistry: TypeRegistryScope?, interpretationHint: InterpretationHint?, isTopLevel: Boolean): SchemaVersionedData<out SchemaTypeReference> {
+    override fun get(
+        typeRegistry: ScopedTypeRegistry<*>?,
+        interpretationHint: APIType.InterpretationHint?,
+        isTopLevel: Boolean
+    ): SchemaVersionedData<out IRTypeReference> {
         error("Not implemented")
-    }
-
-}
-
-internal class SchemaRecordPropertyBuilder(
-    private val propertyName: String,
-    val type: DeferredSchemaType<out SchemaTypeUse>,
-    private val description: String
-) {
-
-    init {
-        requireTitleCase(propertyName, "propertyName")
-    }
-
-    var isDeprecated = false
-        set(value) {
-            check(isUnused)
-            require(value) { "Property::isDeprecated is `false` by default and should only be set to `true`." }
-
-            field = value
-        }
-
-    var isLenient = false
-        set(value) {
-            check(isUnused)
-            require(value) { "Property::isLenient is `false` by default and should only be set to `true`." }
-
-            field = value
-        }
-
-    var isLocalized = false
-        set(value) {
-            check(isUnused)
-            require(value) { "Property::isLocalized is `false` by default and should only be set to `true`." }
-
-            field = value
-        }
-
-    var optionality: Optionality? = null
-        set(value) {
-            check(isUnused)
-            requireNotNull(value)
-
-            field = value
-        }
-
-    var since: V2SchemaVersion? = null
-        set(value) {
-            check(isUnused)
-            requireNotNull(value)
-
-            field = value
-        }
-
-    var until: V2SchemaVersion? = null
-        set(value) {
-            check(isUnused)
-            requireNotNull(value)
-
-            field = value
-        }
-
-    var serialName: String? = null
-        set(value) {
-            check(isUnused)
-            requireNotNull(value)
-
-            field = value
-        }
-
-    var camelCase: String? = null
-        set(value) {
-            check(isUnused)
-            requireNotNull(value)
-            requireCamelCase(value, "Property::camelCase")
-
-            field = value
-        }
-
-    private lateinit var _value: SchemaVersionedData<SchemaProperty>
-    private val isUnused get() = !this::_value.isInitialized
-
-    fun get(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion?): SchemaProperty {
-        if (!this::_value.isInitialized) {
-            _value = type.get(typeRegistry, interpretationHint = null).mapData {
-                SchemaProperty(
-                    propertyName = propertyName,
-                    type = it,
-                    description = description,
-                    optionality = optionality ?: Optionality.REQUIRED,
-                    isDeprecated = isDeprecated,
-                    isLenient = isLenient,
-                    isLocalized = isLocalized,
-                    since = since,
-                    until = until,
-                    serialName = serialName ?: propertyName.lowercase(),
-                    camelCaseName = camelCase ?: propertyName.run { "${toCharArray()[0].lowercase()}${substring(1)}" }
-                )
-            }
-        }
-
-        return _value[version ?: V2SchemaVersion.V2_SCHEMA_CLASSIC].data
-    }
-
-    fun hasChangedInVersion(typeRegistry: TypeRegistryScope?, version: V2SchemaVersion): Boolean {
-        get(typeRegistry, version)
-        return version.containsChangeForBounds(since, until) || _value.hasChangedInVersion(version)
     }
 
 }

@@ -21,12 +21,6 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
-internal operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
-internal operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
-
-internal operator fun IPropertyModifier.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { this.applyTo(it) }
-internal operator fun Set<IPropertyModifier>.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
-
 internal operator fun IInterpretationModifier.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(this, modifier)
 internal operator fun Set<IInterpretationModifier>.rangeTo(modifier: IInterpretationModifier): Set<IInterpretationModifier> = setOf(modifier, *this.toTypedArray())
 
@@ -37,6 +31,24 @@ internal interface IInterpretationModifier {
     fun applyTo(interpretation: SchemaConditionalInterpretationBuilder)
 }
 
+
+internal operator fun IPropertyModifier.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(this, modifier)
+internal operator fun Set<IPropertyModifier>.rangeTo(modifier: IPropertyModifier): Set<IPropertyModifier> = setOf(modifier, *this.toTypedArray())
+
+internal operator fun IPropertyModifier.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { this.applyTo(it) }
+internal operator fun Set<IPropertyModifier>.rangeTo(property: SchemaRecordPropertyBuilder): SchemaRecordPropertyBuilder = property.also { forEach { mod -> mod.applyTo(it) } }
+
 internal interface IPropertyModifier {
     fun applyTo(property: SchemaRecordPropertyBuilder)
+}
+
+
+internal operator fun ITupleElementModifier.rangeTo(modifier: ITupleElementModifier): Set<ITupleElementModifier> = setOf(this, modifier)
+internal operator fun Set<ITupleElementModifier>.rangeTo(modifier: ITupleElementModifier): Set<ITupleElementModifier> = setOf(modifier, *this.toTypedArray())
+
+internal operator fun ITupleElementModifier.rangeTo(interpretation: SchemaTupleElementBuilder): SchemaTupleElementBuilder = interpretation.also { this.applyTo(it) }
+internal operator fun Set<ITupleElementModifier>.rangeTo(interpretation: SchemaTupleElementBuilder): SchemaTupleElementBuilder = interpretation.also { forEach { mod -> mod.applyTo(it) } }
+
+internal interface ITupleElementModifier {
+    fun applyTo(element: SchemaTupleElementBuilder)
 }

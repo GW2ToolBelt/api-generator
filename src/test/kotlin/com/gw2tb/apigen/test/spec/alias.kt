@@ -24,13 +24,13 @@ package com.gw2tb.apigen.test.spec
 import com.gw2tb.apigen.schema.*
 
 /** Alias for [SchemaBoolean]. */
-internal val BOOLEAN get() = SchemaBoolean()
+internal val BOOLEAN get() = SchemaBoolean
 
 /** Alias for [SchemaDecimal]. */
-internal val DECIMAL get() = SchemaDecimal()
+internal val DECIMAL get() = SchemaDecimal
 
 /** Alias for [SchemaInteger]. */
-internal val INTEGER get() = SchemaInteger()
+internal val INTEGER get() = SchemaInteger
 
 /** Alias for [SchemaString]. */
-internal val STRING get() = SchemaString()
+internal val STRING get() = SchemaString

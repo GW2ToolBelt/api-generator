@@ -19,20 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.test.spec
 
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.APIv1Endpoint.*
 import com.gw2tb.apigen.internal.dsl.hours
+import com.gw2tb.apigen.internal.spec.GW2v1
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
+import com.gw2tb.apigen.ir.VoidResolverContext
+import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.test.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
+import java.util.*
 import kotlin.time.Duration
 
-class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
+class GW2v1 : SpecTest<IRAPIQuery.V1, IRAPIType.V1, GW2v1.ExpectedAPIv1Query>(
     "GW2v1",
-    APIVersion.getV1(),
+    GW2v1.build(EnumSet.allOf(APIv1Endpoint::class.java)),
     V1SpecBuilder {
         expectQuery(V1_BUILD)
 
@@ -125,12 +131,15 @@ class GW2v1 : SpecTest<APIQuery.V1, APIType.V1, GW2v1.ExpectedAPIv1Query>(
     }
 ) {
 
-    override fun assertProperties(expected: ExpectedAPIv1Query, actual: APIQuery.V1) {
-        assertEquals(expected.isLocalized, actual.schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
+    override fun assertProperties(expected: ExpectedAPIv1Query, actual: IRAPIQuery.V1) {
+        val schema = actual.resolve(VoidResolverContext, v2SchemaVersion = null).schema
+        assertEquals(expected.isLocalized, schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
     }
 
-    override fun testType(type: APIType.V1): Iterable<DynamicTest> = sequence {
-        yield(DynamicTest.dynamicTest("$prefix${type.name}") {
+    override fun testType(irType: IRAPIType.V1): Iterable<DynamicTest> = sequence {
+        yield(DynamicTest.dynamicTest("$prefix${irType.name}") {
+            val type = irType.resolve(VoidResolverContext, v2SchemaVersion = null)
+
             val data = TestData[type]
             assertSchema(type.schema, data)
         })

@@ -21,38 +21,21 @@
  */
 package com.gw2tb.apigen.model
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
-import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.schema.SchemaTypeDeclaration
 
-public sealed class APIType {
+public data class APIType(
+    public val name: Name,
+    public val schema: SchemaTypeDeclaration,
+    public val interpretationHint: InterpretationHint?,
+    internal val isTopLevel: Boolean,
+    internal val testSet: Int?
+) {
 
-    public abstract val name: String
-
-    public abstract val interpretationHint: InterpretationHint?
-
-    internal abstract val isTopLevel: Boolean
-
-    public data class V1 internal constructor(
-        val schema: SchemaTypeDeclaration,
-        override val interpretationHint: InterpretationHint?,
-        override val isTopLevel: Boolean
-    ) : APIType() {
-        override val name: String get() = schema.name
-    }
-
-    public data class V2 internal constructor(
-        internal val _schema: SchemaVersionedData<out SchemaTypeDeclaration>,
-        override val interpretationHint: InterpretationHint?,
-        override val isTopLevel: Boolean
-    ) : APIType(), VersionedData<SchemaTypeDeclaration> by _schema {
-        override val name: String get() = _schema.flatMapData(SchemaTypeDeclaration::name)
-    }
+    public data class InterpretationHint(
+        val conditionalBase: QualifiedTypeName,
+        val interpretationKey: String,
+        val interpretationNestProperty: String?
+    )
 
 }
-
-public data class InterpretationHint(
-    val conditionalBase: TypeLocation,
-    val interpretationKey: String,
-    val interpretationNestProperty: String?
-)

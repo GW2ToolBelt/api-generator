@@ -19,34 +19,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen
+package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.spec.*
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
+import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
-import java.util.*
+import com.gw2tb.apigen.schema.Name
 
-/**
- * A Guild Wars 2 API version.
- *
- * @param supportedLanguages    the version's supported languages
- * @param supportedQueries      the version's supported queries
- * @param supportedTypes        the version's supported types
- */
-public data class APIVersion<Q : APIQuery, T : APIType> internal constructor(
-    val supportedLanguages: EnumSet<Language>,
-    val supportedQueries: Set<Q>,
-    val supportedTypes: Map<TypeLocation, T>,
-    internal val version: String
+@OptIn(LowLevelApiGenApi::class)
+internal class ScopedTypeRegistry<T : IRAPIType>(
+    private val nest: List<Name> = emptyList(),
+    private val declarationCollector: (QualifiedTypeName.Declaration, T) -> Unit
 ) {
 
-    public companion object {
+    fun nestedScope(name: Name): ScopedTypeRegistry<T> =
+        ScopedTypeRegistry(
+            nest = nest + name,
+            declarationCollector = declarationCollector
+        )
 
-        public fun getV1(endpoints: Set<APIv1Endpoint> = EnumSet.allOf(APIv1Endpoint::class.java)): APIVersion<APIQuery.V1, APIType.V1> =
-            GW2v1.build(endpoints)
+    fun getQualifiedDeclarationName(name: Name) =
+        QualifiedTypeName.Declaration(
+            nest = nest.ifEmpty { null },
+            name = name
+        )
 
-        public fun getV2(endpoints: Set<APIv2Endpoint> = EnumSet.allOf(APIv2Endpoint::class.java)): APIVersion<APIQuery.V2, APIType.V2> =
-            GW2v2.build(endpoints)
+    fun registerDeclaration(name: Name, value: T): QualifiedTypeName {
+        val qualifiedName = getQualifiedDeclarationName(name)
+        declarationCollector(qualifiedName, value)
 
+        return qualifiedName
     }
 
 }

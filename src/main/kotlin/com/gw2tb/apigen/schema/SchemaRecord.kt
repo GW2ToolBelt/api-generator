@@ -21,12 +21,35 @@
  */
 package com.gw2tb.apigen.schema
 
-public data class SchemaRecord(
-    public override val name: String,
+/**
+ * A `SchemaRecord` represents a JSON object.
+ *
+ * Contrary to a [SchemaMap], a record provides strong guarantees about the
+ * object's entries.
+ *
+ * ### Mapping
+ *
+ * SchemaRecords should be mapped to a representation that provides strong
+ * typing for all [properties] where possible (e.g. using a class in Java).
+ *
+ * @param name          the name of the record
+ * @param properties    the properties of the record
+ * @param description   a description of the record
+ *
+ * @since   0.7.0
+ */
+public data class SchemaRecord internal constructor(
+    public override val name: Name,
     public val properties: Map<String, SchemaProperty>,
     public val description: String
 ) : SchemaTypeDeclaration() {
 
+    /**
+     * Returns `true` if at least one of the [properties] is either [localized][SchemaProperty.isLocalized]
+     * or its [type][SchemaProperty.type] is [SchemaTypeUse.isLocalized], or `false` otherwise.
+     *
+     * @since   0.7.0
+     */
     override val isLocalized: Boolean by lazy {
         properties.any { (_, v) -> v.isLocalized || v.type.isLocalized }
     }

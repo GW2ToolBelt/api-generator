@@ -21,9 +21,18 @@
  */
 package com.gw2tb.apigen.schema
 
-/** A type usage. */
+/**
+ * A type usage.
+ *
+ * @since   0.7.0
+ */
 public sealed class SchemaTypeUse {
 
+    /**
+     * Returns whether the type is localized.
+     *
+     * @since   0.7.0
+     */
     public abstract val isLocalized: Boolean
 
 }

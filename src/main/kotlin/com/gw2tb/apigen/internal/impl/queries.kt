@@ -19,17 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.impl
 
 import com.gw2tb.apigen.internal.dsl.*
+import com.gw2tb.apigen.ir.*
+import com.gw2tb.apigen.ir.model.IRAPIQuery
+import com.gw2tb.apigen.ir.model.IRAPIType
+import com.gw2tb.apigen.ir.model.IRPathParameter
+import com.gw2tb.apigen.ir.model.IRQueryParameter
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.schema.SchemaArray
+import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifier
+import com.gw2tb.apigen.schema.SchemaTypeUse
 import kotlin.time.*
 
-internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : QueriesBuilder<T> {
+internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : QueriesBuilder<T> {
 
-    protected abstract val typeRegistry: TypeRegistryScope
+    protected abstract val typeRegistry: ScopedTypeRegistry<T>
 
     protected abstract val route: String
     protected abstract val endpointTitleCase: String
@@ -39,56 +48,60 @@ internal abstract class QueriesBuilderImplBase<Q : APIQuery, T : APIType> : Quer
     protected abstract val cache: Duration?
     protected abstract val security: Security?
     protected abstract val queryTypes: QueryTypes?
-    protected abstract val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> T
+    protected abstract val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
 
-    protected val pathParameters: MutableMap<String, PathParameter> = mutableMapOf()
-    override fun pathParameter(name: String, type: DeferredSchemaType<out SchemaPrimitive>, description: String, key: String, camelCase: String) {
+    protected val pathParameters: MutableMap<String, IRPathParameter> = mutableMapOf()
+    override fun pathParameter(name: String, type: DeferredSchemaType<out IRPrimitive>, description: String, key: String, camelCase: String) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
 
-        pathParameters[key] = PathParameter(key, type.getFlat(), description, name, camelCase)
+        pathParameters[key] = IRPathParameter(key, type.getFlat(), description, name, camelCase)
     }
 
-    protected val queryParameters: MutableMap<String, QueryParameter> = mutableMapOf()
-    override fun queryParameter(name: String, type: DeferredSchemaType<out SchemaPrimitive>, description: String, key: String, camelCase: String, isOptional: Boolean) {
+    protected val queryParameters: MutableMap<String, IRQueryParameter> = mutableMapOf()
+    override fun queryParameter(name: String, type: DeferredSchemaType<out IRPrimitive>, description: String, key: String, camelCase: String, isOptional: Boolean) {
         check(key !in queryParameters)
 
-        queryParameters[key] = QueryParameter(key, type.getFlat(), description, name, camelCase, isOptional)
+        queryParameters[key] = IRQueryParameter(key, type.getFlat(), description, name, camelCase, isOptional)
     }
 
     override fun conditional(
-        name: String,
+        name: Name,
         description: String,
         disambiguationBy: String,
         disambiguationBySideProperty: Boolean,
         interpretationInNestedProperty: Boolean,
         sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
         block: SchemaConditionalBuilder<T>.() -> Unit
-    ): DeferredSchemaClass<T> = conditionalImpl(
-        name,
-        description,
-        disambiguationBy,
-        disambiguationBySideProperty,
-        interpretationInNestedProperty,
-        sharedConfigure,
-        apiTypeFactory,
-        typeRegistry,
-        block
-    )
+    ): DeferredSchemaClass<T> =
+        SchemaConditionalBuilder(
+            name, description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty,
+            sharedConfigure, apiTypeFactory, typeRegistry
+        ).also(block)
+
+    override fun enum(
+        type: DeferredPrimitiveType,
+        name: Name,
+        description: String,
+        block: SchemaEnumBuilder<T>.() -> Unit
+    ): DeferredSchemaClass<T> =
+        SchemaEnumBuilder(type, name, description, apiTypeFactory, typeRegistry).also(block)
 
     override fun record(
-        name: String,
+        name: Name,
         description: String,
         block: SchemaRecordBuilder<T>.() -> Unit
-    ): DeferredSchemaClass<T> = recordImpl(
-        name,
-        description,
-        apiTypeFactory,
-        typeRegistry,
-        block
-    )
+    ): DeferredSchemaClass<T> =
+        SchemaRecordBuilder(name, description, apiTypeFactory, typeRegistry).also(block)
 
-    abstract fun finalize(): Collection<Q>
+    override fun tuple(
+        name: Name,
+        description: String,
+        block: SchemaTupleBuilder<T>.() -> Unit
+    ): DeferredSchemaClass<T> =
+        SchemaTupleBuilder(name, description, apiTypeFactory, typeRegistry).also(block)
+
+    abstract fun collect(): Collection<Q>
 
 }
 
@@ -101,19 +114,19 @@ internal class QueriesBuilderV1Impl(
     override val cache: Duration?,
     override val security: Security?,
     override val queryTypes: QueryTypes?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> APIType.V1,
-    override val typeRegistry: TypeRegistryScope
-) : QueriesBuilderImplBase<APIQuery.V1, APIType.V1>(), QueriesBuilderV1 {
+    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> IRAPIType.V1,
+    override val typeRegistry: ScopedTypeRegistry<IRAPIType.V1>
+) : QueriesBuilderImplBase<IRAPIQuery.V1, IRAPIType.V1>(), QueriesBuilderV1 {
 
-    private lateinit var _schema: SchemaTypeUse
+    private lateinit var _schema: IRTypeUse<*>
 
-    override fun schema(schema: DeferredSchemaType<out SchemaTypeUse>) {
+    override fun schema(schema: DeferredSchemaType<out IRTypeUse<*>>) {
         check(!this::_schema.isInitialized)
         _schema = schema.get(typeRegistry, interpretationHint = null, isTopLevel = true).single().data
     }
 
-    override fun finalize(): Collection<APIQuery.V1> = listOf(
-        APIQuery.V1(
+    override fun collect(): Collection<IRAPIQuery.V1> = listOf(
+        IRAPIQuery.V1(
             route = route,
             endpoint = endpointTitleCase,
             summary = summary,
@@ -121,7 +134,7 @@ internal class QueriesBuilderV1Impl(
             queryParameters = queryParameters,
             querySuffix = querySuffix,
             cache = cache,
-            schema = _schema
+            type = _schema
         )
     )
 
@@ -138,18 +151,18 @@ internal class QueriesBuilderV2Impl(
     override val queryTypes: QueryTypes?,
     private val since: V2SchemaVersion,
     private val until: V2SchemaVersion?,
-    override val apiTypeFactory: (SchemaVersionedData<out SchemaTypeDeclaration>, InterpretationHint?, Boolean) -> APIType.V2,
-    override val typeRegistry: TypeRegistryScope
-) : QueriesBuilderImplBase<APIQuery.V2, APIType.V2>(), QueriesBuilderV2 {
+    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> IRAPIType.V2,
+    override val typeRegistry: ScopedTypeRegistry<IRAPIType.V2>
+) : QueriesBuilderImplBase<IRAPIQuery.V2, IRAPIType.V2>(), QueriesBuilderV2 {
 
-    private lateinit var _schema: SchemaVersionedData<out SchemaTypeUse>
+    private lateinit var _schema: SchemaVersionedData<out IRTypeUse<*>>
 
-    override fun schema(schema: DeferredSchemaType<out SchemaTypeUse>) {
+    override fun schema(schema: DeferredSchemaType<out IRTypeUse<*>>) {
         check(!this::_schema.isInitialized)
         _schema = schema.get(typeRegistry, interpretationHint = null, isTopLevel = true)
     }
 
-    override fun schema(vararg schemas: Pair<V2SchemaVersion, DeferredSchemaType<out SchemaTypeUse>>) {
+    override fun schema(vararg schemas: Pair<V2SchemaVersion, DeferredSchemaType<out IRTypeUse<*>>>) {
         check(!this::_schema.isInitialized)
 
         /*
@@ -160,13 +173,9 @@ internal class QueriesBuilderV2Impl(
         require(schemas.none { (version, _) -> version < since })
         require(until == null || schemas.none { (version, _) -> version >= until })
 
-        val deferredTypeRegistry = object : TypeRegistryScope() {
-            override fun getLocationFor(name: String): TypeLocation = TypeLocation(nest = null, name)
-            override fun register(name: String, value: APIType): TypeLocation = TypeLocation(nest = null, name)
-            override fun nestedScope(nestName: String) = typeRegistry.nestedScope(nestName)
-        }
+        val deferredTypeRegistry = ScopedTypeRegistry<IRAPIType.V2>(declarationCollector = { _, _ -> })
 
-        val versions = buildVersionedSchemaData<SchemaTypeUse> {
+        val versions = buildVersionedSchemaData<IRTypeUse<*>> {
             schemas.asIterable()
                 .sortedBy { it.first }
                 .zipSchemaVersionConstraints()
@@ -188,25 +197,25 @@ internal class QueriesBuilderV2Impl(
                 }
         }
 
-        if (versions.any { it.data is SchemaTypeReference }) {
+        if (versions.any { it.data is IRTypeReference.Declaration }) {
             val apiType = apiTypeFactory(buildVersionedSchemaData {
                 versions.forEach { (schema, since, until) ->
-                    if (schema is SchemaTypeReference)
+                    if (schema is IRTypeReference.Declaration)
                         add(schema.declaration, since, until)
                 }
             }, null, true)
 
-            typeRegistry.register(apiType.name, apiType)
+            typeRegistry.registerDeclaration(apiType.name, apiType)
         }
 
         _schema = versions
     }
 
     private fun buildQuery(
-        schema: SchemaVersionedData<out SchemaTypeUse>,
-        queryParameters: Map<String, QueryParameter>? = null,
-        queryDetails: QueryDetails? = null
-    ) = APIQuery.V2(
+        schema: SchemaVersionedData<out IRTypeUse<*>>,
+        queryParameters: Map<String, IRQueryParameter>? = null,
+        queryDetails: IRAPIQuery.Details? = null
+    ) = IRAPIQuery.V2(
         route = route,
         endpoint = endpointTitleCase,
         summary = summary,
@@ -218,49 +227,50 @@ internal class QueriesBuilderV2Impl(
         since = since,
         until = until,
         security = security?.scopes ?: emptySet(),
-        _schema = schema
+        _type = schema
     )
 
-    override fun finalize(): Collection<APIQuery.V2> = buildList {
+    override fun collect(): Collection<IRAPIQuery.V2> = buildList {
         if (queryTypes != null) {
-            val idType: SchemaPrimitive = when (val schema = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC].data) {
-                is SchemaTypeReference -> when (val declaration = schema.declaration) {
-                    is SchemaConditional -> declaration.sharedProperties[idTypeKey]?.type
-                    is SchemaRecord -> declaration.properties[idTypeKey]?.type
+            val idType: IRPrimitiveIdentifier = when (val schema = _schema[V2SchemaVersion.V2_SCHEMA_CLASSIC].data) {
+                is IRTypeReference.Declaration -> when (val declaration = schema.declaration) {
+                    is IRConditional -> declaration.sharedProperties.find { it.serialName == idTypeKey }?.type
+                    is IRRecord -> declaration.properties.find { it.serialName == idTypeKey }?.type
+                    else -> error("Cannot extract ID type for key \"$idTypeKey\" from type: ${schema.javaClass}")
                 }
                 else -> error("Cannot extract ID type for key \"$idTypeKey\" from type: ${schema.javaClass}")
             }.let {
                 if (it == null) error("Could not find ID member \"$idTypeKey\" for endpoint \"$endpointTitleCase\"")
-                it as? SchemaPrimitive ?: error("ID type is not a primitive type: ${it.javaClass}")
+                it as? IRPrimitiveIdentifier ?: error("ID type is not a primitive identifier type: ${it.javaClass}")
             }
 
             queryTypes.values.forEach { queryType ->
-                val schema: SchemaVersionedData<out SchemaTypeUse>
+                val schema: SchemaVersionedData<out IRTypeUse<*>>
 
-                val queryParameters = mutableMapOf<String, QueryParameter>()
+                val queryParameters = mutableMapOf<String, IRQueryParameter>()
                 queryParameters += this@QueriesBuilderV2Impl.queryParameters
 
                 when (queryType) {
                     is QueryType.IDs -> {
                         schema = buildVersionedSchemaData {
-                            add(SchemaArray(idType, false, description = "the available IDs"), since = since, until = until)
+                            add(IRArray(idType, false, description = "the available IDs"), since = since, until = until)
                         }
                     }
                     is QueryType.ByID -> {
                         schema = _schema
-                        QueryParameter(queryType.qpKey, idType, queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
+                        IRQueryParameter(queryType.qpKey, idType, queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
                             .also { queryParameters[it.key] = it }
                     }
                     is QueryType.ByIDs -> {
-                        schema = _schema.mapData { v -> SchemaArray(v, false, "") }
-                        QueryParameter(queryType.qpKey, SchemaArray(idType, false, null), queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
+                        schema = _schema.mapData { v -> IRArray(v, false, "") }
+                        IRQueryParameter(queryType.qpKey, IRArray(idType, false, null), queryType.qpDescription, queryType.qpName, queryType.qpCamelCase, false)
                             .also { queryParameters[it.key] = it }
                     }
                     is QueryType.ByPage -> {
-                        schema = _schema.mapData { v -> SchemaArray(v, false, "") }
-                        QueryParameter(QueryParameter.PAGE_KEY, SchemaInteger(), "the index of the requested page", "Page", "page", false)
+                        schema = _schema.mapData { v -> IRArray(v, false, "") }
+                        IRQueryParameter(QueryParameter.PAGE_KEY, IRInteger, "the index of the requested page", "Page", "page", false)
                             .also { queryParameters[it.key] = it }
-                        QueryParameter(QueryParameter.PAGE_SIZE_KEY, SchemaInteger(), "the size of the requested page", "PageSize", "pageSize", true)
+                        IRQueryParameter(QueryParameter.PAGE_SIZE_KEY, IRInteger, "the size of the requested page", "PageSize", "pageSize", true)
                             .also { queryParameters[it.key] = it }
                     }
                 }
@@ -268,7 +278,7 @@ internal class QueriesBuilderV2Impl(
                 add(buildQuery(
                     schema = schema,
                     queryParameters = queryParameters,
-                    queryDetails = QueryDetails(queryType, idType)
+                    queryDetails = IRAPIQuery.Details(queryType, idType)
                 ))
             }
         } else {

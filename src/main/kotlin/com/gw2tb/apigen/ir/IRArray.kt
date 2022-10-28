@@ -19,21 +19,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.ir
+
+import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.schema.SchemaArray
 
 /**
- * A type location.
+ * A low-level representation of a [SchemaArray].
  *
- * @param nest      the type's nest (`/`-separated, list of type names)
+ * @since   0.7.0
  */
-public data class TypeLocation(
-    val nest: String?,
-    val name: String
-) {
+@LowLevelApiGenApi
+public data class IRArray(
+    public val elements: IRTypeUse<*>,
+    public val nullableElements: Boolean,
+    public val description: String?
+): IRTypeUse<SchemaArray>() {
 
-    init {
-        require(nest == null || nest.isNotBlank())
-        require(name.isNotBlank())
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaArray {
+        val elements = elements.resolve(resolverContext, v2SchemaVersion)
+
+        return SchemaArray(
+            elements = elements,
+            nullableElements = nullableElements,
+            description = description
+        )
     }
 
 }

@@ -21,10 +21,8 @@
  */
 package com.gw2tb.apigen.model
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
-import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
-import kotlin.time.*
+import com.gw2tb.apigen.schema.SchemaTypeUse
+import kotlin.time.Duration
 
 /**
  * An API query.
@@ -40,55 +38,19 @@ import kotlin.time.*
  * @property queryParameters    the query parameters
  * @property querySuffix        TODO
  * @property cache              TODO
+ * @property schema
+ *
+ * @since   0.7.0
  */
-public sealed class APIQuery {
-
-    public abstract val route: String
-    public abstract val endpoint: String
-    public abstract val summary: String
-    public abstract val pathParameters: Map<String, PathParameter>
-    public abstract val queryParameters: Map<String, QueryParameter>
-    public abstract val querySuffix: String?
-    public abstract val cache: Duration?
-
-    /**
-     * An APIv1 query.
-     *
-     * @param schema
-     */
-    public data class V1 internal constructor(
-        override val route: String,
-        override val endpoint: String,
-        override val summary: String,
-        override val pathParameters: Map<String, PathParameter>,
-        override val queryParameters: Map<String, QueryParameter>,
-        override val querySuffix: String?,
-        override val cache: Duration?,
-        val schema: SchemaTypeUse
-    ) : APIQuery()
-
-    /**
-     * An APIv2 query.
-     *
-     * @param queryDetails
-     * @param querySuffix
-     * @param since
-     * @param until
-     * @param security
-     */
-    public data class V2 internal constructor(
-        override val route: String,
-        override val endpoint: String,
-        override val summary: String,
-        override val pathParameters: Map<String, PathParameter>,
-        override val queryParameters: Map<String, QueryParameter>,
-        override val querySuffix: String?,
-        override val cache: Duration?,
-        val queryDetails: QueryDetails?,
-        val since: V2SchemaVersion,
-        val until: V2SchemaVersion?,
-        val security: Set<TokenScope>,
-        private val _schema: SchemaVersionedData<out SchemaTypeUse>
-    ) : APIQuery(), VersionedData<SchemaTypeUse> by _schema
-
-}
+public data class APIQuery(
+    public val route: String,
+    public val endpoint: String,
+    public val summary: String,
+    public val pathParameters: Map<String, PathParameter>,
+    public val queryParameters: Map<String, QueryParameter>,
+    public val querySuffix: String?,
+    public val cache: Duration?,
+    val queryDetails: QueryDetails?,
+    val security: Set<TokenScope>,
+    public val schema: SchemaTypeUse
+)

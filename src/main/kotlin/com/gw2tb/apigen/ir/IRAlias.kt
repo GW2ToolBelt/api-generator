@@ -19,24 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.internal.dsl
+package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.*
+import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.schema.SchemaAlias
 
-internal abstract class TypeRegistryScope {
+/**
+ * A low-level representation of a [SchemaAlias].
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public data class IRAlias internal constructor(
+    public override val name: Name,
+    public val type: IRPrimitive,
+    public val description: String
+) : IRTypeDeclaration<SchemaAlias>() {
 
-    abstract fun getLocationFor(name: String): TypeLocation
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaAlias {
+        val type = type.resolve(resolverContext, v2SchemaVersion)
 
-    abstract fun register(name: String, value: APIType): TypeLocation
-
-    open fun nestedScope(nestName: String): TypeRegistryScope = object : TypeRegistryScope() {
-
-        override fun getLocationFor(name: String): TypeLocation =
-            this@TypeRegistryScope.getLocationFor("$nestName/$name")
-
-        override fun register(name: String, value: APIType): TypeLocation =
-            this@TypeRegistryScope.register("$nestName/$name", value)
-
+        return SchemaAlias(
+            name = name,
+            type = type,
+            description = description
+        )
     }
 
 }

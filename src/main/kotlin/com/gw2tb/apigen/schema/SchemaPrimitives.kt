@@ -21,27 +21,65 @@
  */
 package com.gw2tb.apigen.schema
 
-/** A schema representing bitfield types. */
-public data class SchemaBitfield(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
+/**
+ * A schema primitive representing integral JSON numbers.
+ *
+ * Contrary to a [SchemaInteger], a SchemaBitfield does not represent values
+ * that should be treated as integers. Instead, it should be considered to
+ * represent a list of bits encoded in a number.
+ *
+ * ### Mapping
+ *
+ * SchemaBitmaps should be mapped to either bit-field abstractions (e.g. Java's
+ * BitSet) or integral types with a size of at least 64 bits.
+ *
+ * @since   0.7.0
+ */
+public object SchemaBitfield : SchemaPrimitive()
 
-/** A schema representing primitive boolean types. */
-public data class SchemaBoolean(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
+/**
+ * A schema primitive representing JSON booleans.
+ *
+ * ### Mapping
+ *
+ * SchemaBooleans should be mapped to boolean types.
+ *
+ * @since   0.7.0
+ */
+public object SchemaBoolean : SchemaPrimitive()
 
-/** A schema representing primitive decimal types. */
-public data class SchemaDecimal(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
+/**
+ * A schema primitive representing decimal floating point JSON numbers.
+ *
+ * ### Mapping
+ *
+ * SchemaDecimals should be mapped to floating point types with at least 32 bits
+ * of precision. (It is recommended to prefer 64 bits of precision when
+ * possible.)
+ *
+ * @since   0.7.0
+ */
+public object SchemaDecimal : SchemaPrimitive()
 
-/** A schema representing primitive integer types. */
-public data class SchemaInteger(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
+/**
+ * A schema primitive representing integral JSON numbers.
+ *
+ * ### Mapping
+ *
+ * SchemaIntegers should be mapped to integral types with a size of at least
+ * 32 bits. (It is recommended to prefer 64 bits of size when possible.)
+ *
+ * @since   0.7.0
+ */
+public object SchemaInteger : SchemaPrimitiveIdentifier()
 
-/** A schema representing primitive string types. */
-public data class SchemaString(override val typeHint: TypeHint? = null) : SchemaPrimitive() {
-    override fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive = copy(typeHint = typeHint)
-}
+/**
+ * A schema primitive representing JSON strings.
+ *
+ * ### Mapping
+ *
+ * SchemaStrings should be mapped to string types.
+ *
+ * @since   0.7.0
+ */
+public object SchemaString : SchemaPrimitiveIdentifier()

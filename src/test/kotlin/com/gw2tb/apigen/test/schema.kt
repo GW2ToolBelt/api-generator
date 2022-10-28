@@ -21,6 +21,7 @@
  */
 package com.gw2tb.apigen.test
 
+import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.schema.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -122,9 +123,42 @@ private fun testDeclaration(
     sidePropertyInterpretationKey: String? = null
 ) {
     when (schema) {
-        is SchemaRecord -> testRecord(context, schema, nullable, inline)
+        is SchemaAlias -> TODO()
+        is SchemaEnum -> testEnum(context, schema, nullable)
         is SchemaConditional -> testConditional(context, schema, nullable, sidePropertyInterpretationKey = sidePropertyInterpretationKey)
+        is SchemaRecord -> testRecord(context, schema, nullable, inline)
+        is SchemaTuple -> testTuple(context, schema, nullable)
     }
+}
+
+private fun testEnum(
+    context: SchemaMatcherContext,
+    schema: SchemaEnum,
+    nullable: Boolean
+) {
+    fun <T : Any> KSerializer<T>.adjust(): KSerializer<*> = when {
+        nullable -> this.nullable
+        else -> this
+    }
+
+    @OptIn(ExperimentalSerializationApi::class, ExperimentalUnsignedTypes::class)
+    val serializer = when (schema.type) {
+        is SchemaBitfield -> ULong.serializer()
+        is SchemaBoolean -> Boolean.serializer()
+        is SchemaDecimal -> Double.serializer()
+        is SchemaInteger -> Long.serializer()
+        is SchemaString -> String.serializer()
+    }.adjust()
+
+    val element = try {
+        Json.decodeFromJsonElement(serializer, context.actual)
+    } catch (e: SerializationException) {
+        context.error("Failed to decode ${schema::class.simpleName} from ${context.actual::class.simpleName}", e)
+        return
+    }
+
+    val enumValue = schema.values.find { it.value == element.toString() }
+    if (enumValue == null) context.error("Could not find value for element: $element")
 }
 
 private fun testMap(
@@ -195,6 +229,30 @@ private fun testPrimitive(
     }
 }
 
+private fun testTuple(
+    context: SchemaMatcherContext,
+    schema: SchemaTuple,
+    nullable: Boolean
+) {
+    val jsonArray = context.deriveActual(JsonElement::jsonArray, nullable) ?: return
+
+    if (jsonArray.size == 0) {
+        if (nullable) return
+
+        context.error("Non-optional tuple must not be empty")
+    }
+
+    schema.elements.forEachIndexed { index, element ->
+        context.push(index).use { childContext ->
+            testTypeUse(
+                context = childContext,
+                schema = element.type,
+                nullable = false
+            )
+        }
+    }
+}
+
 private fun testTypeUse(
     context: SchemaMatcherContext,
     schema: SchemaTypeUse,
@@ -209,14 +267,21 @@ private fun testTypeUse(
         is SchemaArray -> testArray(context, schema, nullable)
         is SchemaMap -> testMap(context, schema, nullable)
         is SchemaPrimitive -> testPrimitive(context, schema, nullable, lenient)
-        is SchemaTypeReference -> testDeclaration(
-            context,
-            schema.declaration,
-            nullable,
-            inline,
-            sidePropertyInterpretationKey = sidePropertyInterpretationKey
-        )
-        else -> error("Unexpected schema type: ${schema::class.simpleName}")
+        is SchemaTypeReference -> when (schema.name) {
+            is QualifiedTypeName.Alias -> testPrimitive(
+                context,
+                (schema as SchemaTypeReference.Alias).alias.type,
+                nullable,
+                lenient
+            )
+            is QualifiedTypeName.Declaration -> testDeclaration(
+                context,
+                (schema as SchemaTypeReference.Declaration).declaration,
+                nullable,
+                inline,
+                sidePropertyInterpretationKey = sidePropertyInterpretationKey
+            )
+        }
     }
 }
 
@@ -226,7 +291,7 @@ private fun testProperty(
     isInlinedOptional: Boolean
 ) {
     val childContext = if (schema.isInline) {
-        context.pushVirtual(schema.propertyName)
+        context.pushVirtual(schema.serialName)
     } else {
         context.push(schema.serialName)
     }
@@ -238,7 +303,7 @@ private fun testProperty(
         context.error("Could not find required property: ${schema.serialName}")
     } else {
         val propertyType = schema.type
-        val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference
+        val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference.Declaration
             && propertyType.declaration is SchemaConditional
             && propertyType.declaration.disambiguationBySideProperty
         ) {

@@ -23,6 +23,7 @@
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
+import org.jetbrains.kotlin.gradle.tasks.*
 import java.net.URL
 
 plugins {
@@ -73,7 +74,7 @@ tasks {
         options.release.set(8)
     }
 
-    compileTestKotlin {
+    withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = (freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn")
         }

@@ -176,6 +176,12 @@
             "active": true
         },
         {
+            "path": "/v2/account/progression",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
             "path": "/v2/account/pvp/heroes",
             "lang": false,
             "auth": true,
@@ -986,6 +992,14 @@
         {
             "v": "2021-07-15T13:00:00.000Z",
             "desc": "Add `EquippedFromLegendaryArmory` and `LegendaryArmory` values to `equipment[i].location` field"
+        },
+        {
+            "v": "2022-03-09T02:00:00.000Z",
+            "desc": "Change `ingredients` to `item_ingredients` and add `currency_ingredients` to `/v2/recipes`."
+        },
+        {
+            "v": "2022-03-23T19:00:00.000Z",
+            "desc": "Change `/v2/achievements/categories` to show tomorrow's dailies and show access requirements for relevant achievements."
         }
     ]
 }

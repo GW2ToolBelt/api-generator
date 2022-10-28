@@ -23,11 +23,23 @@ package com.gw2tb.apigen.schema
 
 /**
  * A type declaration.
+ *
+ * @since   0.7.0
  */
 public sealed class SchemaTypeDeclaration {
 
-    public abstract val name: String
+    /**
+     * The name of the declared type.
+     *
+     * @since   0.7.0
+     */
+    public abstract val name: Name
 
+    /**
+     * Returns whether the declared type is localized.
+     *
+     * @since   0.7.0
+     */
     internal abstract val isLocalized: Boolean
 
 }

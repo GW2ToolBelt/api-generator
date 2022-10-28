@@ -22,16 +22,44 @@
 package com.gw2tb.apigen.schema
 
 /**
- * A schema representation of an array/list.
+ * A `SchemaArray` represents a JSON array.
  *
- * ### Localization
+ * A SchemaArray provides no guarantees about the semantic meaning of the JSON
+ * array's elements and its size. To describe a specific layout, a [SchemaTuple]
+ * should be used instead.
  *
- * An array is considered to be localized when its elements are localized.
+ * This abstraction assumes that all values in the array have the same shape
+ * (which might not be true in other contexts).
+ *
+ * ### Mapping
+ *
+ * SchemaArrays should be mapped to arrays or lists. If the target permits, the
+ * [type of the elements][elements] should be used to provide additional
+ * type-safety (e.g. by using it as type argument).
+ *
+ * The optional [description] may be used to document the array for some
+ * targets. The wording of the description is phrased to complete the sentence:
+ *
+ * > The array contains ...
+ *
+ * @param elements          the type of the array's elements
+ * @param nullableElements  whether the array's elements may be `null`
+ * @param description       an optional description of the array
+ *
+ * @since   0.7.0
  */
-public data class SchemaArray(
-    val elements: SchemaTypeUse,
-    val nullableElements: Boolean,
-    val description: String?
+public data class SchemaArray internal constructor(
+    public val elements: SchemaTypeUse,
+    public val nullableElements: Boolean,
+    public val description: String?
 ) : SchemaTypeUse() {
+
+    /**
+     * Returns `true` if the [type of the elements][elements] is localized, or
+     * `false` otherwise.
+     *
+     * @since   0.7.0
+     */
     override val isLocalized: Boolean get() = elements.isLocalized
+
 }

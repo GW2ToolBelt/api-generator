@@ -36,7 +36,7 @@ import com.gw2tb.apigen.schema.*
  */
 public data class PathParameter internal constructor(
     val key: String,
-    val type: SchemaPrimitive,
+    val type: SchemaTypeUse,
     val description: String,
     val name: String,
     val camelCaseName: String

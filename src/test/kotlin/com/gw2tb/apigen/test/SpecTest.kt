@@ -19,9 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.test
 
-import com.gw2tb.apigen.*
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
+import com.gw2tb.apigen.ir.VoidResolverContext
+import com.gw2tb.apigen.ir.model.IRAPIQuery
+import com.gw2tb.apigen.ir.model.IRAPIType
+import com.gw2tb.apigen.ir.model.IRAPIVersion
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 import kotlinx.serialization.json.*
@@ -30,9 +35,9 @@ import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.Assertions.*
 import kotlin.time.*
 
-abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuery>(
+abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPIQuery> internal constructor(
     protected val prefix: String,
-    private val spec: APIVersion<Q, T>,
+    private val spec: IRAPIVersion<Q, T>,
     private val expectedQueries: List<EQ>
 ) {
 
@@ -41,7 +46,7 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
     @TestFactory
     fun testQueries(): Iterator<DynamicTest> = sequence<DynamicTest> {
         val expectedQueries = ArrayList(expectedQueries)
-        val actualQueries = HashSet(spec.supportedQueries)
+        val actualQueries = HashSet(spec.queries)
 
         with(expectedQueries.iterator()) {
             while (hasNext()) {
@@ -63,11 +68,11 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
 
                     actualQuery.pathParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.pathParameters.find { actualParam.key == it.key }!!
-                        assertHintedEquals(expectedParam.type, actualParam.type)
+                        assertHintedEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
                     }
                     actualQuery.queryParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.queryParameters.find { actualParam.key == it.key }!!
-                        assertHintedEquals(expectedParam.type, actualParam.type)
+                        assertHintedEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
                         assertEquals(expectedParam.isOptional, actualParam.isOptional)
                     }
                 })
@@ -102,17 +107,13 @@ abstract class SpecTest<Q : APIQuery, T : APIType, EQ : SpecTest.ExpectedAPIQuer
         }
     }
 
-    abstract fun testType(type: T): Iterable<DynamicTest>
+    abstract fun testType(irType: T): Iterable<DynamicTest>
 
     @TestFactory
     fun testTypes(): Iterator<DynamicTest> = sequence {
-        spec.supportedTypes
+        spec.types
             .filter { (loc, _) -> loc.nest == null }
-            .map { it.value }
-            .filter { it.isTopLevel }
-            .forEach { type ->
-                yieldAll(testType(type))
-            }
+            .forEach { (_, type) -> yieldAll(testType(type)) }
     }.iterator()
 
     interface ExpectedAPIQuery {

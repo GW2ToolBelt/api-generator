@@ -21,10 +21,11 @@
  */
 package com.gw2tb.apigen.schema
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-
 /**
  * A schema property.
+ *
+ * TODO documentation pass
+ *
  *
  * ### Names and Description
  *
@@ -82,24 +83,11 @@ import com.gw2tb.apigen.model.v2.V2SchemaVersion
  * Localized properties are exempt from this rule and should and are expected to
  * return localized results.
  *
- *
- * ### Schema versioning
- *
- * Since the schema is versioned in version 2 of the API, some properties may be
- * dependent on the schema version. These dependencies are expressed using the
- * two attributes [since] which specifies the minimal schema version required
- * for the property (inclusive) and [until] which specifies the schema version
- * until which the property is available. (Note that `since` is an inclusive
- * bound while `until` is an exclusive bound: `[since, until)`).
- *
- * Note that it is possible that properties with the same name but different
- * types are available in different schema versions.
- *
  * @param type          the type of the property
  * @param optionality   the [Optionality] of the property
  */
 public data class SchemaProperty internal constructor(
-    public val propertyName: String,
+    public val name: Name,
     public val type: SchemaTypeUse,
     public val description: String,
     public val isDeprecated: Boolean,
@@ -107,11 +95,5 @@ public data class SchemaProperty internal constructor(
     public val isLenient: Boolean,
     public val isLocalized: Boolean,
     public val optionality: Optionality,
-    public val since: V2SchemaVersion?,
-    public val until: V2SchemaVersion?,
-    public val serialName: String,
-    public val camelCaseName: String
-) {
-
-
-}
+    public val serialName: String
+)

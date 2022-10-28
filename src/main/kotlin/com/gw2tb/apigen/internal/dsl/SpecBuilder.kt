@@ -19,17 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.impl.*
+import com.gw2tb.apigen.ir.*
+import com.gw2tb.apigen.ir.model.IRAPIQuery
+import com.gw2tb.apigen.ir.model.IRAPIType
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 import kotlin.time.*
 
 @Suppress("FunctionName")
-private fun <E, Q : APIQuery, T : APIType, S : SpecBuilderImplBase<E, Q, T, *>> GW2APISpec(builder: S, block: S.() -> Unit): S =
+private fun <
+    E,
+    Q : IRAPIQuery,
+    T : IRAPIType,
+    S : SpecBuilderImplBase<E, Q, T, *>
+> GW2APISpec(builder: S, block: S.() -> Unit): S =
     builder.also(block)
 
 @Suppress("FunctionName")
@@ -41,24 +50,27 @@ internal fun GW2APISpecV2(block: SpecBuilderV2.() -> Unit): SpecBuilderV2Impl =
     GW2APISpec(SpecBuilderV2Impl(), block)
 
 @APIGenDSL
-internal interface SpecBuilder<T : APIType> {
-
-    operator fun String.invoke(type: DeferredPrimitiveType, camelCaseName: String = this): DeferredPrimitiveType
+internal interface SpecBuilder<T : IRAPIType> {
 
     fun array(
-        items: DeferredSchemaType<out SchemaTypeUse>,
+        items: DeferredSchemaType<out IRTypeUse<*>>,
         description: String,
         nullableItems: Boolean = false
-    ): DeferredSchemaType<SchemaArray> =
-        DeferredSchemaType { typeRegistry, isTopLevel -> items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaArray(it, nullableItems, description) } }
+    ): DeferredSchemaType<IRArray> =
+        DeferredSchemaType { typeRegistry, isTopLevel ->
+            items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRArray(it, nullableItems, description) }
+        }
 
     fun map(
-        keys: DeferredSchemaType<out SchemaPrimitive>,
-        values: DeferredSchemaType<out SchemaTypeUse>,
+        keys: DeferredSchemaType<out IRPrimitive>,
+        values: DeferredSchemaType<out IRTypeUse<*>>,
         description: String,
         nullableValues: Boolean = false
-    ): DeferredSchemaType<SchemaMap> =
-        DeferredSchemaType { typeRegistry, isTopLevel -> values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { SchemaMap(keys.getFlat(), it, nullableValues, description) } }
+    ): DeferredSchemaType<IRMap> =
+        DeferredSchemaType { typeRegistry, isTopLevel ->
+            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat(), it, nullableValues, description) }
+        }
+
 
     fun conditional(
         name: String,
@@ -67,18 +79,41 @@ internal interface SpecBuilder<T : APIType> {
         disambiguationBySideProperty: Boolean = false,
         interpretationInNestedProperty: Boolean = false,
         sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
-        configure: SchemaConditionalBuilder<T>.() -> Unit
-    ): DeferredSchemaClass<T>
+        block: SchemaConditionalBuilder<T>.() -> Unit
+    ): DeferredSchemaClass<T> =
+        conditional(Name.deriveFromTitleCase(name), description, disambiguationBy, disambiguationBySideProperty, interpretationInNestedProperty, sharedConfigure, block)
 
-    fun record(
-        name: String,
+    fun conditional(
+        name: Name,
         description: String,
-        block: SchemaRecordBuilder<T>.() -> Unit
+        disambiguationBy: String = "type",
+        disambiguationBySideProperty: Boolean = false,
+        interpretationInNestedProperty: Boolean = false,
+        sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)? = null,
+        block: SchemaConditionalBuilder<T>.() -> Unit
     ): DeferredSchemaClass<T>
 
+
+    fun enum(type: DeferredPrimitiveType, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        enum(type, Name.deriveFromTitleCase(name), description, block)
+
+    fun enum(type: DeferredPrimitiveType, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T>
+
+
+    fun record(name: String, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        record(Name.deriveFromTitleCase(name), description, block)
+
+    fun record(name: Name, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T>
+
+
+    fun tuple(name: String, description: String, block: SchemaTupleBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+        tuple(Name.deriveFromTitleCase(name), description, block)
+
+    fun tuple(name: Name, description: String, block: SchemaTupleBuilder<T>.() -> Unit): DeferredSchemaClass<T>
+
 }
 
-internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
+internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
 
     operator fun APIv1Endpoint.invoke(
         endpointTitleCase: String = endpointName,
@@ -103,7 +138,7 @@ internal interface SpecBuilderV1 : SpecBuilder<APIType.V1> {
 
 }
 
-internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
+internal interface SpecBuilderV2 : SpecBuilder<IRAPIType.V2> {
 
     operator fun APIv2Endpoint.invoke(
         endpointTitleCase: String = endpointName,
@@ -131,21 +166,3 @@ internal interface SpecBuilderV2 : SpecBuilder<APIType.V2> {
     )
 
 }
-
-internal fun defaultQueryTypes(all: Boolean = false): QueryTypes = QueryTypes(buildSet {
-    add(QueryType.IDs)
-    add(QueryType.ByID)
-    add(QueryType.ByIDs(supportsAll = all))
-    add(QueryType.ByPage)
-})
-
-internal fun queryTypes(first: QueryType, vararg values: QueryType): QueryTypes = QueryTypes(buildSet {
-    add(first)
-    addAll(values)
-})
-
-internal data class QueryTypes(val values: Set<QueryType>)
-
-internal fun security(vararg scopes: TokenScope): Security = Security(setOf(*scopes))
-
-internal data class Security(val scopes: Set<TokenScope>)

@@ -22,29 +22,25 @@
 package com.gw2tb.apigen.schema
 
 /**
- * A schema representation of a primitive type.
+ * A primitive schema type.
  *
- * ### Localization
- *
- * A primitive does not make any assumptions about the value and, thus, is never
- * considered to be [isLocalized].
- *
- * ### Type Hints
- *
- * Primitives may be enhanced with [TypeHint]s. These hints are used to provide
- * usage information about a type and can be used to generate type-safe wrappers
- * or type-aliases.
+ * @since   0.7.0
  */
 public sealed class SchemaPrimitive : SchemaTypeUse() {
 
+    /**
+     * Always returns `false` as a primitive types on their own are never
+     * localized.
+     *
+     * @since   0.7.0
+     */
     override val isLocalized: Boolean get() = false
 
-    public abstract val typeHint: TypeHint?
-
-    public abstract fun withTypeHint(typeHint: TypeHint?): SchemaPrimitive
-
-    public data class TypeHint(
-        val camelCaseName: String
-    )
-
 }
+
+/**
+ * A primitive schema type that may serve as identifier.
+ *
+ * @since   0.7.0
+ */
+public sealed class SchemaPrimitiveIdentifier : SchemaPrimitive()

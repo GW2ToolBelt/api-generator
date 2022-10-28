@@ -32,11 +32,14 @@ public object TestData {
     public operator fun get(type: APIType, version: V2SchemaVersion? = null): List<JsonElement> {
         val resourceName = buildString {
             append("/com/gw2tb/apigen/")
-            append(if (type is APIType.V2) "v2" else "v1")
-            append("_")
-            append(type.name)
 
-            if (type is APIType.V2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
+            val testSet = type.testSet ?: return emptyList()
+            append("v$testSet")
+
+            append("_")
+            append(type.name.toTitleCase())
+
+            if (testSet == 2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
                 append("+")
                 append(version.identifier!!.replace(':', '_'))
             }
@@ -47,7 +50,7 @@ public object TestData {
         return Json.decodeFromString<JsonArray>(TestData::class.java.getResourceAsStream(resourceName).use {
             if (it == null) {
                 if (type.isTopLevel) {
-                    error("Did not find test vectors for top-level type ${type.name} (Resource: '$resourceName')")
+                    error("Did not find test vectors for top-level type ${type.name.toTitleCase()} (Resource: '$resourceName')")
                 }
 
                 return emptyList()
