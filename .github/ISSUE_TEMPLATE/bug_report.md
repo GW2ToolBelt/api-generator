@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve the library
 title: ''
 labels: a:bug
 assignees: ''
@@ -30,9 +30,9 @@ necessary. :)
 
 #### Environment:
 <!--
-Please replace the examples with the information about your environment. If have
-additional information that might be relevant to the issue (such as JDK vendor)
-please specify it.
+Please replace the examples with the information about your environment. If you
+have additional information that might be relevant to the issue (such as your
+JDK vendor) please specify it.
 -->
 
  - api-generator version: `(e.g. 0.1.0)`
