@@ -1,4 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Ask a question (using GitHub Discussions)
+  - name: GitHub Discussions
     url: https://github.com/GW2ToolBelt/api-generator/discussions
+    about: Please ask ans answer questions here.
