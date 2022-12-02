@@ -5,6 +5,8 @@ public final class com/gw2tb/apigen/APIGenerator {
 	public final fun getAliases ()Ljava/util/Map;
 	public final fun getApiV1 ()Lcom/gw2tb/apigen/model/APIVersion;
 	public final fun getApiV2 ()Lcom/gw2tb/apigen/model/APIVersion;
+	public final fun getIrApiV1 ()Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
+	public final fun getIrApiV2 ()Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
 	public final fun getMumbleIdentity ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 }
 
@@ -623,6 +625,21 @@ public final class com/gw2tb/apigen/ir/model/IRAPIType$V2 : com/gw2tb/apigen/ir/
 	public fun getVersions ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun isSupported (Lcom/gw2tb/apigen/model/v2/V2SchemaVersion;)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gw2tb/apigen/ir/model/IRAPIVersion {
+	public fun <init> (Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;)Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIVersion;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLanguages ()Ljava/util/Set;
+	public final fun getQueries ()Ljava/util/Set;
+	public final fun getTypes ()Ljava/util/Map;
+	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 

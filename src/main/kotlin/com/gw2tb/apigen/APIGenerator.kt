@@ -28,6 +28,8 @@ import com.gw2tb.apigen.ir.ReferenceCollector
 import com.gw2tb.apigen.ir.ResolverContext
 import com.gw2tb.apigen.ir.collectAliases
 import com.gw2tb.apigen.ir.model.IRAPIQuery
+import com.gw2tb.apigen.ir.model.IRAPIType
+import com.gw2tb.apigen.ir.model.IRAPIVersion
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.V2SchemaVersion
 import com.gw2tb.apigen.schema.SchemaAlias
@@ -67,11 +69,25 @@ public class APIGenerator(
     public val aliases: Map<QualifiedTypeName.Alias, SchemaAlias>
 
     /**
+     * A low-level representation of version 1 (`v1`) of the Guild Wars 2 API.
+     *
+     * @since   0.7.0
+     */
+    public val irApiV1: IRAPIVersion<IRAPIQuery.V1, IRAPIType.V1>
+
+    /**
      * Version 1 (`v1`) of the Guild Wars 2 API.
      *
      * @since   0.7.0
      */
     public val apiV1: APIVersion
+
+    /**
+     * A low-level representation of version 2 (`v2`) of the Guild Wars 2 API.
+     *
+     * @since   0.7.0
+     */
+    public val irApiV2: IRAPIVersion<IRAPIQuery.V2, IRAPIType.V2>
 
     /**
      * Version 2 (`v2`) of the Guild Wars 2 API.
@@ -88,8 +104,8 @@ public class APIGenerator(
     public val mumbleIdentity: SchemaTypeDeclaration?
 
     init {
-        val irApiV1 = GW2v1.build(v1Endpoints)
-        val irApiV2 = GW2v2.build(v2Endpoints)
+        irApiV1 = GW2v1.build(v1Endpoints)
+        irApiV2 = GW2v2.build(v2Endpoints)
 
         aliases = collectAliases { collector ->
             apiV1 = irApiV1.resolve(collector)

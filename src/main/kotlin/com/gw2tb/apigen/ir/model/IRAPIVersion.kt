@@ -35,13 +35,13 @@ import com.gw2tb.apigen.schema.SchemaTypeDeclaration
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-internal class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType>(
+public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType>(
     val languages: Set<Language>,
     val queries: Set<Q>,
     val types: Map<QualifiedTypeName.Declaration, T>
 ) {
 
-    fun resolve(aliasCollector: AliasCollector, v2SchemaVersion: V2SchemaVersion? = null): APIVersion {
+    internal fun resolve(aliasCollector: AliasCollector, v2SchemaVersion: V2SchemaVersion? = null): APIVersion {
         val referencedTypes = mutableMapOf<QualifiedTypeName.Declaration, SchemaTypeDeclaration>()
 
         val referenceCollector = ReferenceCollector { name, schema ->
