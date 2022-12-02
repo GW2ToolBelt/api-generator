@@ -34,6 +34,7 @@ public enum class Language(
     GERMAN("de", "DE"),
     SPANISH("es", "ES");
 
+    @Suppress("DEPRECATION")
     constructor(language: String, country: String): this(Locale(language, country))
 
 }
