@@ -21,16 +21,70 @@
  */
 package com.gw2tb.apigen.model
 
-/** An API key permission scope. */
+/**
+ * An API key permission scope.
+ *
+ * @since   0.7.0
+ */
 public enum class TokenScope {
+    /**
+     * The `account` scope.
+     *
+     * @since   0.7.0
+     */
     ACCOUNT,
+    /**
+     * The `builds` scope.
+     *
+     * @since   0.7.0
+     */
     BUILDS,
+    /**
+     * The `characters` scope.
+     *
+     * @since   0.7.0
+     */
     CHARACTERS,
+    /**
+     * The `guilds` scope.
+     *
+     * @since   0.7.0
+     */
     GUILDS,
+    /**
+     * The `inventories` scope.
+     *
+     * @since   0.7.0
+     */
     INVENTORIES,
+    /**
+     * The `progression` scope.
+     *
+     * @since   0.7.0
+     */
     PROGRESSION,
+    /**
+     * The `pvp` scope.
+     *
+     * @since   0.7.0
+     */
     PVP,
-    TRADINGPOST,
+    /**
+     * The `tradingpost` scope.
+     *
+     * @since   0.7.0
+     */
+    TRADING_POST,
+    /**
+     * The `unlock` scope.
+     *
+     * @since   0.7.0
+     */
     UNLOCKS,
+    /**
+     * The `wallet` scope.
+     *
+     * @since   0.7.0
+     */
     WALLET
 }
