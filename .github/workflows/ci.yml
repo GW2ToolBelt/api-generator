@@ -58,6 +58,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip3 install -r mkdocs-requirements.txt
+
       - name: Gradle MkDocs
         uses: gradle/gradle-build-action@v2
         with:

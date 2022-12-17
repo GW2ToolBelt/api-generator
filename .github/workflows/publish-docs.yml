@@ -23,10 +23,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install mkdocs
-          python3 -m pip install mkdocs-material
+        run: pip3 install -r mkdocs-requirements.txt
 
       - name: Gradle MkDocs
         uses: gradle/gradle-build-action@v2
