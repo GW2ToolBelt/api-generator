@@ -19,6 +19,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
+
   build:
     name: Build
     needs: [validate-gradle]
@@ -69,7 +70,7 @@ jobs:
     strategy:
       matrix:
         jdk: [ 8, 11, 17, 19 ]
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -110,7 +111,7 @@ jobs:
   cleanup:
     name: Cleanup
     if: ${{ always() }}
-    needs: ['check']
+    needs: [check]
     runs-on: ubuntu-latest
     steps:
       - name: Cleanup
