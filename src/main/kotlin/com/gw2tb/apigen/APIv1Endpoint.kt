@@ -21,24 +21,164 @@
  */
 package com.gw2tb.apigen
 
+/**
+ * The endpoints exposed by version 1 (`v1`) old the Guild Wars 2 API.
+ *
+ * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1)
+ *
+ * @since   0.7.0
+ */
 public enum class APIv1Endpoint(internal val endpointName: String) {
+    /**
+     * The `/v1/build` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/build)
+     *
+     * @since   0.7.0
+     */
     V1_BUILD("/Build"),
+    /**
+     * The `/v1/colors` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/colors)
+     *
+     * @since   0.7.0
+     */
     V1_COLORS("/Colors"),
+    /**
+     * The `/v1/continents` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/continents)
+     *
+     * @since   0.7.0
+     */
     V1_CONTINENTS("/Continents"),
+    /**
+     * The `/v1/event_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/event_details)
+     *
+     * @since   0.7.0
+     */
     V1_EVENT_DETAILS("/event_details"),
+    /**
+     * The `/v1/files` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/files)
+     *
+     * @since   0.7.0
+     */
     V1_FILES("/Files"),
+    /**
+     * The `/v1/guild_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/guild_details)
+     *
+     * @since   0.7.0
+     */
     V1_GUILD_DETAILS("/guild_details"),
+    /**
+     * The `/v1/item_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/item_details)
+     *
+     * @since   0.7.0
+     */
     V1_ITEM_DETAILS("/item_details"),
+    /**
+     * The `/v1/items` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/items)
+     *
+     * @since   0.7.0
+     */
     V1_ITEMS("/Items"),
+    /**
+     * The `/v1/map_floor` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/map_floor)
+     *
+     * @since   0.7.0
+     */
     V1_MAP_FLOOR("/map_floor"),
+    /**
+     * The `/v1/map_names` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/map_names)
+     *
+     * @since   0.7.0
+     */
     V1_MAP_NAMES("/map_names"),
+    /**
+     * The `/v1/maps` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/maps)
+     *
+     * @since   0.7.0
+     */
     V1_MAPS("/Maps"),
+    /**
+     * The `/v1/recipe_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/recipe_details)
+     *
+     * @since   0.7.0
+     */
     V1_RECIPE_DETAILS("/recipe_details"),
+    /**
+     * The `/v1/recipes` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/recipes)
+     *
+     * @since   0.7.0
+     */
     V1_RECIPES("/Recipes"),
+    /**
+     * The `/v1/skin_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/skin_details)
+     *
+     * @since   0.7.0
+     */
     V1_SKIN_DETAILS("/skin_details"),
+    /**
+     * The `/v1/skins` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/skins)
+     *
+     * @since   0.7.0
+     */
     V1_SKINS("/Skins"),
+    /**
+     * The `/v1/world_names` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/world_names)
+     *
+     * @since   0.7.0
+     */
     V1_WORLD_NAMES("/world_names"),
+    /**
+     * The `/v1/wvw/match_details` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/wvw/match_details)
+     *
+     * @since   0.7.0
+     */
     V1_WVW_MATCH_DETAILS("/wvw/match_details"),
+    /**
+     * The `/v1/wvw/matches` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/wvw/matches)
+     *
+     * @since   0.7.0
+     */
     V1_WVW_MATCHES("/wvw/matches"),
+    /**
+     * The `/v1/wvw/objective_names` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1/wvw/objetive_names)
+     *
+     * @since   0.7.0
+     */
     V1_WVW_OBJECTIVE_NAMES("/wvw/objective_names")
 }
