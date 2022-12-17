@@ -12,8 +12,16 @@ env:
 
 
 jobs:
+  validate-gradle:
+    name: Validate Gradle wrapper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
   build:
     name: Build
+    needs: [validate-gradle]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +37,7 @@ jobs:
       - name: Gradle Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assemble dokkaHtml -Psnapshot --info -S --show-version
+          arguments: assemble -Psnapshot --info -S --show-version
           gradle-home-cache-cleanup: true
 
       - name: Tar files
@@ -40,6 +48,20 @@ jobs:
           name: ${{ env.WORKSPACE_ARTIFACT }}
           path: ${{ env.WORKSPACE_ARCHIVE }}
           retention-days: 1
+
+
+  mkdocs:
+    name: Gradle MkDocs
+    needs: [validate-gradle]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Gradle MkDocs
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: mkdocs --info -S --show-version
+          gradle-home-cache-cleanup: true
 
 
   check:
