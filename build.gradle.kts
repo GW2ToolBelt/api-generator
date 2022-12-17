@@ -95,7 +95,7 @@ tasks {
 
     dokkaHtml {
         outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api").map { it.asFile })
-//        failOnWarning.set(true) // TODO fix warnings
+        failOnWarning.set(true)
 
         dokkaSourceSets.configureEach {
             reportUndocumented.set(true)
