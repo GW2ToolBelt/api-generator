@@ -21,47 +21,48 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.buildVersionedSchemaData
 import com.gw2tb.apigen.internal.impl.zipSchemaVersionConstraints
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.IRAPIType
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.*
 
 @OptIn(LowLevelApiGenApi::class)
 internal class SchemaRecordBuilder<T : IRAPIType>(
     override val name: Name,
     private val description: String,
-    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
     override val typeRegistry: ScopedTypeRegistry<T>?
 ) : AbstractSchemaRecordBuilder<T>() {
 
-    private lateinit var _value: SchemaVersionedData<IRTypeReference>
+    private lateinit var _value: SchemaVersionedDataImpl<IRTypeReference>
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRTypeReference> {
+    ): SchemaVersionedDataImpl<out IRTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
 
-            val properties: SchemaVersionedData<Map<String, IRProperty>>? = buildProperties(typeRegistry?.nestedScope(name))
+            val properties: SchemaVersionedDataImpl<Map<String, IRProperty>>? = buildProperties(typeRegistry?.nestedScope(name))
 
             val versions = buildVersionedSchemaData<IRRecord> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || properties?.hasChangedInVersion(version) == true }
+                SchemaVersion.values()
+                    .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || properties?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
                     .forEach { (since, until) ->
                         add(
                             datum = IRRecord(
                                 name,
                                 description,
-                                properties?.get(since)?.data?.values?.toSet() ?: emptySet()
+                                properties?.getOrThrow(since)?.data?.values?.toSet() ?: emptySet()
                             ),
                             since = since,
                             until = until

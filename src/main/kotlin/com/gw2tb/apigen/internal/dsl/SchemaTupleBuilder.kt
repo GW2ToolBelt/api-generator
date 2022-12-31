@@ -22,32 +22,31 @@
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.internal.impl.*
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.buildVersionedSchemaData
-import com.gw2tb.apigen.internal.impl.wrapVersionedSchemaData
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.IRAPIType
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 
 @OptIn(LowLevelApiGenApi::class)
 internal class SchemaTupleBuilder<T : IRAPIType>(
     override val name: Name,
     private val description: String,
-    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
     override val typeRegistry: ScopedTypeRegistry<T>?
 ) : DeferredSchemaClass<T>() {
 
     private val _elements = mutableListOf<SchemaTupleElementBuilder>()
 
-    private fun buildElements(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedData<Set<IRTuple.Element>>? =
+    private fun buildElements(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedDataImpl<Set<IRTuple.Element>>? =
         if (_elements.isEmpty()) {
             null
         } else {
             buildVersionedSchemaData {
-                V2SchemaVersion.values().forEach { version ->
+                SchemaVersion.values().forEach { version ->
                     if (_elements.any { it.hasChangedInVersion(typeRegistry, version) }) {
                         add(_elements.map { it.get(typeRegistry, version) }.toSet(), since = version)
                     }
@@ -55,28 +54,28 @@ internal class SchemaTupleBuilder<T : IRAPIType>(
             }
         }
 
-    private lateinit var _value: SchemaVersionedData<IRTypeReference>
+    private lateinit var _value: SchemaVersionedDataImpl<IRTypeReference>
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRTypeReference> {
+    ): SchemaVersionedDataImpl<out IRTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
 
-            val elements: SchemaVersionedData<Set<IRTuple.Element>>? = buildElements(typeRegistry?.nestedScope(name))
+            val elements: SchemaVersionedDataImpl<Set<IRTuple.Element>>? = buildElements(typeRegistry?.nestedScope(name))
 
             val versions = buildVersionedSchemaData<IRTuple> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || elements?.hasChangedInVersion(version) == true }
+                SchemaVersion.values()
+                    .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || elements?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
                     .forEach { (since, until) ->
                         add(
                             datum = IRTuple(
                                 name = name,
-                                elements = elements?.get(since)?.data ?: emptySet(),
+                                elements = elements?.getOrThrow(since)?.data ?: emptySet(),
                                 description = description
                             ),
                             since = since,

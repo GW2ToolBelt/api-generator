@@ -19,20 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model.v2
+package com.gw2tb.apigen.schema.model
 
-public interface VersionedData<out T> {
+import com.gw2tb.apigen.model.Language
+import com.gw2tb.apigen.model.QualifiedTypeName
 
-    public val versions: List<V2SchemaVersion>
-
-    public val significantVersions: List<V2SchemaVersion>
-
-    public fun <R> flatMapData(transform: (T) -> R): R
-
-    public operator fun get(version: V2SchemaVersion): VersionConstrainedData<out T>
-
-    public fun getOrNull(version: V2SchemaVersion): VersionConstrainedData<out T>?
-
-    public fun isSupported(version: V2SchemaVersion): Boolean
-
-}
+/**
+ * A Guild Wars 2 API version.
+ *
+ * @param supportedLanguages    the version's supported languages
+ * @param supportedQueries      the version's supported queries
+ * @param supportedTypes        the version's supported types
+ *
+ * @since   0.7.0
+ */
+public data class APIVersion internal constructor(
+    val supportedLanguages: Set<Language>,
+    val supportedQueries: Set<APIQuery>,
+    val supportedTypes: Map<QualifiedTypeName.Declaration, APIType>
+)

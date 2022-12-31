@@ -29,6 +29,7 @@ import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.model.APIType
 import java.util.*
 import kotlin.time.*
 
@@ -39,7 +40,7 @@ internal abstract class SpecBuilderImplBase<E, Q : IRAPIQuery, T : IRAPIType, QB
     abstract val typeRegistry: ScopedTypeRegistry<T>?
 
     abstract fun createType(
-        data: SchemaVersionedData<out IRTypeDeclaration<*>>,
+        data: SchemaVersionedDataImpl<out IRTypeDeclaration<*>>,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
     ): T
@@ -82,9 +83,9 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
         val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistry).collect() } }.toSet()
 
         return IRAPIVersion(
-            languages = EnumSet.of(Language.ENGLISH, Language.FRENCH, Language.GERMAN, Language.SPANISH),
-            queries = queries,
-            types = types
+            supportedLanguages = EnumSet.of(Language.ENGLISH, Language.FRENCH, Language.GERMAN, Language.SPANISH),
+            supportedQueries = queries,
+            supportedTypes = types
         )
     }
 
@@ -101,7 +102,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
             QueriesBuilderV1Impl(
                 route = route,
                 querySuffix = querySuffix,
-                endpointTitleCase = endpointTitleCase,
+                endpoint = this,
                 idTypeKey = null,
                 summary = summary,
                 cache = cache,
@@ -127,7 +128,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
             QueriesBuilderV1Impl(
                 route = route,
                 querySuffix = null,
-                endpointTitleCase = endpointTitleCase,
+                endpoint = this,
                 idTypeKey = idTypeKey,
                 summary = summary,
                 cache = cache,
@@ -140,7 +141,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
     }
 
     override fun createType(
-        data: SchemaVersionedData<out IRTypeDeclaration<*>>,
+        data: SchemaVersionedDataImpl<out IRTypeDeclaration<*>>,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
     ): IRAPIType.V1 =
@@ -160,9 +161,9 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
         val queries = endpoints.flatMap { endpoint -> queries[endpoint]!!.flatMap { it(typeRegistry).collect() } }.toSet()
 
         return IRAPIVersion(
-            languages = EnumSet.allOf(Language::class.java),
-            queries = queries,
-            types = types
+            supportedLanguages = EnumSet.allOf(Language::class.java),
+            supportedQueries = queries,
+            supportedTypes = types
         )
     }
 
@@ -173,15 +174,15 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
         summary: String,
         cache: Duration?,
         security: Security?,
-        since: V2SchemaVersion,
-        until: V2SchemaVersion?,
+        since: SchemaVersion,
+        until: SchemaVersion?,
         block: QueriesBuilderV2.() -> Unit
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV2Impl(
                 route = route,
                 querySuffix = querySuffix,
-                endpointTitleCase = endpointTitleCase,
+                endpoint = this,
                 idTypeKey = null,
                 summary = summary,
                 cache = cache,
@@ -203,15 +204,15 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
         queryTypes: QueryTypes,
         cache: Duration?,
         security: Security?,
-        since: V2SchemaVersion,
-        until: V2SchemaVersion?,
+        since: SchemaVersion,
+        until: SchemaVersion?,
         block: QueriesBuilderV2.() -> Unit
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV2Impl(
                 route = route,
                 querySuffix = null,
-                endpointTitleCase = endpointTitleCase,
+                endpoint = this,
                 idTypeKey = idTypeKey,
                 summary = summary,
                 cache = cache,
@@ -226,7 +227,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
     }
 
     override fun createType(
-        data: SchemaVersionedData<out IRTypeDeclaration<*>>,
+        data: SchemaVersionedDataImpl<out IRTypeDeclaration<*>>,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
     ): IRAPIType.V2 =

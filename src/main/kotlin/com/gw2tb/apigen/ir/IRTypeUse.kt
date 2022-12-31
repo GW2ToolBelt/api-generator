@@ -21,7 +21,7 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaTypeUse
 
 /**
@@ -32,6 +32,6 @@ import com.gw2tb.apigen.schema.SchemaTypeUse
 @LowLevelApiGenApi
 public sealed class IRTypeUse<S : SchemaTypeUse> {
 
-    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion? = null): S
+    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion? = null): S
 
 }

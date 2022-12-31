@@ -116,8 +116,8 @@ internal interface SpecBuilder<T : IRAPIType> {
 internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
 
     operator fun APIv1Endpoint.invoke(
-        endpointTitleCase: String = endpointName,
-        route: String = endpointName,
+        endpointTitleCase: String = path,
+        route: String = path,
         querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
@@ -126,8 +126,8 @@ internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
     )
 
     operator fun APIv1Endpoint.invoke(
-        endpointTitleCase: String = endpointName,
-        route: String = endpointName,
+        endpointTitleCase: String = path,
+        route: String = path,
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,
@@ -141,27 +141,27 @@ internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
 internal interface SpecBuilderV2 : SpecBuilder<IRAPIType.V2> {
 
     operator fun APIv2Endpoint.invoke(
-        endpointTitleCase: String = endpointName,
-        route: String = endpointName,
+        endpointTitleCase: String = path,
+        route: String = path,
         querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
         security: Security? = null,
-        since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
-        until: V2SchemaVersion? = null,
+        since: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC,
+        until: SchemaVersion? = null,
         block: QueriesBuilderV2.() -> Unit
     )
 
     operator fun APIv2Endpoint.invoke(
-        endpointTitleCase: String = endpointName,
-        route: String = endpointName,
+        endpointTitleCase: String = path,
+        route: String = path,
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,
         cache: Duration? = null,
         security: Security? = null,
-        since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
-        until: V2SchemaVersion? = null,
+        since: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC,
+        until: SchemaVersion? = null,
         block: QueriesBuilderV2.() -> Unit
     )
 

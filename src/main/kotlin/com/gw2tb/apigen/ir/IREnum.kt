@@ -21,12 +21,17 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.SchemaEnum
 
 /**
  * A low-level representation of a [SchemaEnum].
+ *
+ * @param name          the name of the enum
+ * @param type          the type of the enum's values
+ * @param values        the enum's values
+ * @param description   a description of the enum
  *
  * @since   0.7.0
  */
@@ -38,7 +43,7 @@ public data class IREnum internal constructor(
     public val description: String
 ) : IRTypeDeclaration<SchemaEnum>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaEnum {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaEnum {
         val type = type.resolve(resolverContext, v2SchemaVersion)
         val values = values.map { it.resolve(resolverContext, v2SchemaVersion) }.toSet()
 
@@ -50,6 +55,15 @@ public data class IREnum internal constructor(
         )
     }
 
+    /**
+     * A low-level representation of a [SchemaEnum.Value].
+     *
+     * @param name          the name of the value
+     * @param value         the serial representation of the value
+     * @param description   a description of the value
+     *
+     * @since   0.7.0
+     */
     public data class Value(
         public val name: Name,
         public val value: String,
@@ -58,7 +72,7 @@ public data class IREnum internal constructor(
 
         internal fun resolve(
             @Suppress("UNUSED_PARAMETER") resolverContext: ResolverContext,
-            @Suppress("UNUSED_PARAMETER") v2SchemaVersion: V2SchemaVersion?
+            @Suppress("UNUSED_PARAMETER") v2SchemaVersion: SchemaVersion?
         ): SchemaEnum.Value {
             return SchemaEnum.Value(
                 name = name,

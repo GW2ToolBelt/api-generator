@@ -22,19 +22,49 @@
 @file:Suppress("unused")
 package com.gw2tb.apigen.model
 
-import java.util.*
+import com.gw2tb.apigen.schema.model.*
 
-/** A language supported by at least one version of the Guild Wars 2 API. */
+/**
+ * A language supported by the Guild Wars 2 API.
+ *
+ * The subset of languages supported by a given version of the Guild Wars 2 API
+ * are available in a corresponding [APIVersion] object.
+ *
+ * @param language  the ISO 639 alpha-2 or alpha-3 language code
+ *
+ * @since   0.7.0
+ */
 public enum class Language(
-    public val locale: Locale
+    public val language: String
 ) {
-    CHINESE("zh", "CH"),
-    ENGLISH("en", "US"),
-    FRENCH("fr", "FR"),
-    GERMAN("de", "DE"),
-    SPANISH("es", "ES");
-
-    @Suppress("DEPRECATION")
-    constructor(language: String, country: String): this(Locale(language, country))
-
+    /**
+     * The Chinese language (`zh`).
+     *
+     * @since   0.7.0
+     */
+    CHINESE("zh"),
+    /**
+     * The English language (`en`).
+     *
+     * @since   0.7.0
+     */
+    ENGLISH("en"),
+    /**
+     * The French language (`fr`).
+     *
+     * @since   0.7.0
+     */
+    FRENCH("fr"),
+    /**
+     * The German language (`de`).
+     *
+     * @since   0.7.0
+     */
+    GERMAN("de"),
+    /**
+     * The Spanish language (`es`).
+     *
+     * @since   0.7.0
+     */
+    SPANISH("es");
 }

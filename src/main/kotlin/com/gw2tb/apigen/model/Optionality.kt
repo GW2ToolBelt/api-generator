@@ -21,21 +21,51 @@
  */
 package com.gw2tb.apigen.model
 
-import com.gw2tb.apigen.schema.Name
-import com.gw2tb.apigen.schema.SchemaTypeDeclaration
+/**
+ * A property's optionality. There are three different _levels_ of optionality:
+ *
+ * 1. Optional - The property is unconditionally optional,
+ * 2. Mandated - The property is required under certain conditions, and
+ * 3. Required - The property is required.
+ *
+ * @since   0.7.0
+ */
+public sealed class Optionality {
 
-public data class APIType(
-    public val name: Name,
-    public val schema: SchemaTypeDeclaration,
-    public val interpretationHint: InterpretationHint?,
-    internal val isTopLevel: Boolean,
-    internal val testSet: Int?
-) {
+    /**
+     * Returns `true` for [OPTIONAL] and [MANDATED], and `false` otherwise.
+     *
+     * @since   0.7.0
+     */
+    public abstract val isOptional: Boolean
 
-    public data class InterpretationHint(
-        val conditionalBase: QualifiedTypeName,
-        val interpretationKey: String,
-        val interpretationNestProperty: String?
-    )
+    /**
+     * The property is optional.
+     *
+     * @since   0.7.0
+     */
+    public object OPTIONAL : Optionality() {
+        override val isOptional: Boolean = true
+    }
+
+    /**
+     * The property is required for a key with the appropriate [scope].
+     *
+     * @param scope the mandating scope
+     *
+     * @since   0.7.0
+     */
+    public class MANDATED(public val scope: TokenScope) : Optionality() {
+        override val isOptional: Boolean = true
+    }
+
+    /**
+     * The property is required.
+     *
+     * @since   0.7.0
+     */
+    public object REQUIRED : Optionality() {
+        override val isOptional: Boolean = false
+    }
 
 }

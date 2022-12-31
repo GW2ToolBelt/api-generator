@@ -19,8 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.schema.model
 
+import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.schema.*
 
 /**
@@ -28,32 +29,57 @@ import com.gw2tb.apigen.schema.*
  *
  * @param key           the name of the parameter (as used in the query)
  * @param type          the type of the parameter
+ * @param name          the name of the parameter
  * @param description   the description of the parameter
- * @param name          the name of the parameter in _TitleCase_
- * @param camelCaseName the name of the parameter in _camelCase_
  * @param isOptional    whether the parameter is optional
+ *
+ * @since   0.7.0
  */
 public data class QueryParameter internal constructor(
     val key: String,
     val type: SchemaTypeUse,
+    val name: Name,
     val description: String,
-    val name: String,
-    val camelCaseName: String,
     val isOptional: Boolean
 ) {
 
+    /**
+     * Additional [QueryParameter]-related utility properties and functions.
+     *
+     * @since   0.7.0
+     */
     public companion object {
 
-        /** Key for ID query-parameter for ByID queries. */
+        /**
+         * The default key for the "ID" query-parameter for [QueryType.ByID]
+         * queries.
+         *
+         * @since   0.7.0
+         */
         public const val BY_ID_KEY: String = "id"
 
-        /** Key for IDs query-parameter for ByIDs queries. */
+        /**
+         * The default key for the "IDs" query-parameter for [QueryType.ByIDs]
+         * queries.
+         *
+         * @since   0.7.0
+         */
         public const val BY_IDS_KEY: String = "ids"
 
-        /** Key for page query-parameter for ByPage queries. */
+        /**
+         * The default key for the "page" query-parameter for [QueryType.ByPage]
+         * queries.
+         *
+         * @since   0.7.0
+         */
         public const val PAGE_KEY: String = "page"
 
-        /** Key for page-size query-parameter for ByPage queries. */
+        /**
+         * The default key for the "page-size" query-parameter for [QueryType.ByPage]
+         * queries.
+         *
+         * @since   0.7.0
+         */
         public const val PAGE_SIZE_KEY: String = "page_size"
 
     }

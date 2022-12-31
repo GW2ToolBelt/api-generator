@@ -23,6 +23,7 @@
 package com.gw2tb.apigen.internal.dsl
 
 import com.gw2tb.apigen.internal.impl.*
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.QueryType
 import com.gw2tb.apigen.schema.*
 import kotlin.time.Duration
@@ -46,19 +47,20 @@ import kotlin.time.toDuration
 
 
 /** Alias for [QueryType.ByID]. */
-internal val BY_ID get() = QueryType.ByID
+@APIGenDSL
+internal val SpecBuilder<*>.BY_ID get() = QueryType.ByID
 
 /** Alias for [QueryType.ByID]. */
-internal fun BY_ID(
+@APIGenDSL
+internal fun SpecBuilder<*>.BY_ID(
     qpName: String,
     qpDescription: String,
     qpKey: String = qpName.lowercase(),
-    qpCamelCase: String = qpName.firstToLowerCase()
+    qpCamelCase: String? = null
 ) = QueryType.ByID(
     qpKey = qpKey,
-    qpDescription = qpDescription,
-    qpName = qpName,
-    qpCamelCase = qpCamelCase
+    qpName = Name.derive(titleCase = qpName, camelCase = qpCamelCase),
+    qpDescription = qpDescription
 )
 
 /** Alias for [QueryType.ByPage]. */
@@ -74,19 +76,33 @@ internal val BY_IDS = QueryType.ByIDs(supportsAll = true)
 internal fun BY_IDS(all: Boolean = true) = QueryType.ByIDs(supportsAll = all)
 
 /** Alias for [QueryType.ByIDs]. */
-internal fun BY_IDS(
+@APIGenDSL
+internal fun SpecBuilder<*>.BY_IDS(
     qpName: String,
     qpDescription: String,
     all: Boolean = true,
-    qpKey: String = qpName.lowercase(),
-    qpCamelCase: String = qpName.firstToLowerCase()
-) = QueryType.ByIDs(
-    supportsAll = all,
-    qpKey = qpKey,
-    qpDescription = qpDescription,
-    qpName = qpName,
-    qpCamelCase = qpCamelCase
-)
+    qpKey: String = qpName.lowercase()
+): QueryType =
+    BY_IDS(qpName = Name.derive(titleCase = qpName), qpDescription = qpDescription, all = all, qpKey = qpKey)
+
+/** Alias for [QueryType.ByIDs]. */
+@APIGenDSL
+internal fun SpecBuilder<*>.BY_IDS(
+    qpName: Name,
+    qpDescription: String,
+    all: Boolean = true,
+    qpKey: String = qpName.toSnakeCase()
+): QueryType =
+    QueryType.ByIDs(
+        supportsAll = all,
+        qpKey = qpKey,
+        qpName = qpName,
+        qpDescription = qpDescription
+    )
+
+
+
+
 
 
 internal val Int.nanoseconds: Duration get() = toDuration(DurationUnit.NANOSECONDS)

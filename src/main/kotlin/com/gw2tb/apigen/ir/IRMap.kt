@@ -21,14 +21,16 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.SchemaArray
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaMap
-import com.gw2tb.apigen.schema.SchemaPrimitive
-import com.gw2tb.apigen.schema.SchemaTypeUse
 
 /**
  * A low-level representation of a [SchemaMap].
+ *
+ * @param keys              the type of the map's keys
+ * @param values            the type of the map's values
+ * @param nullableValues    whether the map's values may be `null`
+ * @param description       an optional description of the map
  *
  * @since   0.7.0
  */
@@ -40,7 +42,7 @@ public data class IRMap(
     public val description: String?
 ): IRTypeUse<SchemaMap>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaMap {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaMap {
         val keys = keys.resolve(resolverContext, v2SchemaVersion)
         val values = values.resolve(resolverContext, v2SchemaVersion)
 

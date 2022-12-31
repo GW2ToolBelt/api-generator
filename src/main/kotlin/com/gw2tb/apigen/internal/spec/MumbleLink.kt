@@ -23,6 +23,8 @@ package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.ir.*
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.model.Optionality
 import com.gw2tb.apigen.schema.*
 
 @OptIn(LowLevelApiGenApi::class)

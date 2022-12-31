@@ -19,18 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model.v2
+package com.gw2tb.apigen.schema.model
 
-public data class VersionConstrainedData<T> internal constructor(
-    val data: T,
-    val since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
-    val until: V2SchemaVersion? = null,
-) : Comparable<VersionConstrainedData<T>> {
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.schema.*
 
-    init {
-        require(until == null || since < until)
-    }
-
-    override fun compareTo(other: VersionConstrainedData<T>): Int = (until ?: since).compareTo(other.since)
-
-}
+/**
+ * A parameter that is part of a query's path.
+ *
+ * See [APIQuery] for further information.
+ *
+ * @param key           the key of the parameter (that is used in the route definition)
+ * @param type          the type of the parameter
+ * @param name          the name of the parameter
+ * @param description   the description of the parameter
+ *
+ * @since   0.7.0
+ */
+public data class PathParameter internal constructor(
+    public val key: String,
+    public val type: SchemaTypeUse,
+    public val name: Name,
+    public val description: String
+)

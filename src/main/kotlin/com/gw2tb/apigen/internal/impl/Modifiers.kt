@@ -23,7 +23,7 @@ package com.gw2tb.apigen.internal.impl
 
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.internal.dsl.IPropertyModifier
-import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.model.Optionality
 
 internal object Modifiers {
 

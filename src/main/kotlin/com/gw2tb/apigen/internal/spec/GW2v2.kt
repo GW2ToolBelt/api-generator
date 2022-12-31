@@ -22,11 +22,11 @@
 @file:Suppress("LocalVariableName")
 package com.gw2tb.apigen.internal.spec
 
-import com.gw2tb.apigen.APIv2Endpoint.*
+import com.gw2tb.apigen.model.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.model.TokenScope.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion.*
+import com.gw2tb.apigen.model.v2.SchemaVersion.*
 import kotlin.time.Duration
 
 @OptIn(LowLevelApiGenApi::class)
@@ -660,7 +660,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
-    V2_ACCOUNT_MOUNTS_SKIN(
+    V2_ACCOUNT_MOUNTS_SKINS(
         summary = "Returns information about a player's unlocked mount skins.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
@@ -1211,7 +1211,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_COMMERCE_DELIVERY(
         summary = "Returns information about the items and coins currently available for pickup.",
-        security = security(ACCOUNT, TRADINGPOST)
+        security = security(ACCOUNT, TRADING_POST)
     ) {
         schema(record(name = "CommerceDelivery", description = "Information about the items and coins currently available for pickup.") {
             "Coins"(INTEGER, "the amount of coins ready for pickup")
@@ -1284,7 +1284,7 @@ internal val GW2v2 = GW2APISpecV2 {
     V2_COMMERCE_TRANSACTIONS(
         summary = "Returns information about an account's transactions.",
         cache = Duration.INFINITE, // We don't expect this to change. Ever.
-        security = security(ACCOUNT, TRADINGPOST)
+        security = security(ACCOUNT, TRADING_POST)
     ) {
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -1292,7 +1292,7 @@ internal val GW2v2 = GW2APISpecV2 {
         route = "/Commerce/Transactions/:Relevance",
         summary = "Returns information about an account's transactions.",
         cache = Duration.INFINITE, // We don't expect this to change. Ever.
-        security = security(ACCOUNT, TRADINGPOST)
+        security = security(ACCOUNT, TRADING_POST)
     ) {
         pathParameter("Relevance", STRING, "the temporal relevance")
 
@@ -1303,7 +1303,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about an account's transactions.",
         queryTypes = queryTypes(BY_PAGE),
         cache = 1.minutes,
-        security = security(ACCOUNT, TRADINGPOST)
+        security = security(ACCOUNT, TRADING_POST)
     ) {
         pathParameter("Relevance", STRING, "the temporal relevance")
         pathParameter("Type", STRING, "the transaction type")

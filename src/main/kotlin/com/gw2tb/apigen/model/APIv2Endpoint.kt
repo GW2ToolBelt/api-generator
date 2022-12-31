@@ -19,16 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen
+package com.gw2tb.apigen.model
 
 /**
  * The endpoints exposed by version 2 (`v2`) old the Guild Wars 2 API.
  *
  * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2)
  *
+ * @param endpointName  the name of the endpoint
+ * @param path          the path to the endpoint
+ *
  * @since   0.7.0
  */
-public enum class APIv2Endpoint(internal val endpointName: String) {
+public enum class APIv2Endpoint(
+    override val endpointName: Name,
+    override val path: String = endpointName.toCamelCase()
+) : APIEndpoint {
     /**
      * The `/v2/account` endpoint.
      *
@@ -1164,5 +1170,8 @@ public enum class APIv2Endpoint(internal val endpointName: String) {
      *
      * @since   0.7.0
      */
-    V2_WVW_UPGRADES("/WvW/Upgrades")
+    V2_WVW_UPGRADES("/WvW/Upgrades");
+
+    constructor(p: String): this(Name.derive(titleCase = p))
+
 }

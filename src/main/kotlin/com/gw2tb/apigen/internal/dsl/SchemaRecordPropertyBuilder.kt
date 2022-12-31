@@ -22,16 +22,16 @@
 @file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.containsChangeForBounds
 import com.gw2tb.apigen.internal.impl.requireCamelCase
 import com.gw2tb.apigen.internal.impl.requireTitleCase
 import com.gw2tb.apigen.ir.IRProperty
 import com.gw2tb.apigen.ir.IRTypeUse
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
-import com.gw2tb.apigen.schema.Optionality
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.model.Optionality
 
 internal class SchemaRecordPropertyBuilder(
     private val nameTitleCase: String,
@@ -83,7 +83,7 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
-    var since: V2SchemaVersion? = null
+    var since: SchemaVersion? = null
         set(value) {
             check(isUnused)
             requireNotNull(value)
@@ -91,7 +91,7 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
-    var until: V2SchemaVersion? = null
+    var until: SchemaVersion? = null
         set(value) {
             check(isUnused)
             requireNotNull(value)
@@ -116,10 +116,10 @@ internal class SchemaRecordPropertyBuilder(
             field = value
         }
 
-    private lateinit var _value: SchemaVersionedData<IRProperty>
+    private lateinit var _value: SchemaVersionedDataImpl<IRProperty>
     private val isUnused get() = !this::_value.isInitialized
 
-    fun get(typeRegistry: ScopedTypeRegistry<*>?, v2SchemaVersion: V2SchemaVersion?): IRProperty {
+    fun get(typeRegistry: ScopedTypeRegistry<*>?, v2SchemaVersion: SchemaVersion?): IRProperty {
         if (!this::_value.isInitialized) {
             val name = Name.derive(camelCase = camelCase, snakeCase = serialName, titleCase = nameTitleCase)
 
@@ -140,10 +140,10 @@ internal class SchemaRecordPropertyBuilder(
             }
         }
 
-        return _value[v2SchemaVersion ?: V2SchemaVersion.V2_SCHEMA_CLASSIC].data
+        return _value.getOrThrow(v2SchemaVersion ?: SchemaVersion.V2_SCHEMA_CLASSIC).data
     }
 
-    fun hasChangedInVersion(typeRegistry: ScopedTypeRegistry<*>?, version: V2SchemaVersion): Boolean {
+    fun hasChangedInVersion(typeRegistry: ScopedTypeRegistry<*>?, version: SchemaVersion): Boolean {
         get(typeRegistry, version)
         return version.containsChangeForBounds(since, until) || _value.hasChangedInVersion(version)
     }

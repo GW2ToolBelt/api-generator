@@ -620,7 +620,7 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/Commerce/Delivery",
-            security = setOf(ACCOUNT, TRADINGPOST)
+            security = setOf(ACCOUNT, TRADING_POST)
         )
 
         expectQuery(
@@ -683,20 +683,20 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         expectQuery(
             "/Commerce/Transactions",
             cache = Duration.INFINITE,
-            security = setOf(ACCOUNT, TRADINGPOST)
+            security = setOf(ACCOUNT, TRADING_POST)
         )
 
         expectQuery(
             "/Commerce/Transactions/:Relevance",
             cache = Duration.INFINITE,
-            security = setOf(ACCOUNT, TRADINGPOST),
+            security = setOf(ACCOUNT, TRADING_POST),
             pathParameters = listOf(ExpectedPathParameter("Relevance", STRING))
         )
 
         expectQuery(
             "/Commerce/Transactions/:Relevance/:Type",
             cache = 1.minutes,
-            security = setOf(ACCOUNT, TRADINGPOST),
+            security = setOf(ACCOUNT, TRADING_POST),
             pathParameters = listOf(
                 ExpectedPathParameter("Relevance", STRING),
                 ExpectedPathParameter("Type", STRING)
@@ -2547,15 +2547,15 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
     override fun assertProperties(expected: ExpectedAPIv2Query, actual: IRAPIQuery.V2) {
         val qdp = expected.queryDetails
         if (qdp == null) {
-            assertNull(actual.queryDetails)
+            assertNull(actual.details)
         } else {
-            assertTrue(qdp(actual.queryDetails!!))
+            assertTrue(qdp(actual.details!!))
         }
 
         assertEquals(expected.security, actual.security)
 
         // TODO: In the future we might have to check the isLocalized flag specifically for schema versions.
-        assertEquals(expected.isLocalized, actual.flatMapData { it.resolve(VoidResolverContext, actual.since).isLocalized }, "Mismatched 'isLocalized' flag for ${actual.route}")
+        assertEquals(expected.isLocalized, actual.flatten { it.resolve(VoidResolverContext, actual.since).isLocalized }, "Mismatched 'isLocalized' flag for ${actual.path}")
     }
 
     override fun testType(irType: IRAPIType.V2) = sequence<DynamicTest> {
@@ -2563,7 +2563,7 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
             val type = irType.resolve(VoidResolverContext, v2SchemaVersion = version)
             val schema = type.schema
 
-            yield(DynamicTest.dynamicTest("$prefix${type.name}${if (version != com.gw2tb.apigen.model.v2.V2SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
+            yield(DynamicTest.dynamicTest("$prefix${type.name}${if (version != com.gw2tb.apigen.model.v2.SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
                 val data = TestData[type, version]
                 assertSchema(schema, data)
             })

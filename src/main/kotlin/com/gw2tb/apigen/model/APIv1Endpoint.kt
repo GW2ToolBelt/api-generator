@@ -19,16 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen
+package com.gw2tb.apigen.model
 
 /**
  * The endpoints exposed by version 1 (`v1`) old the Guild Wars 2 API.
  *
  * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1)
  *
+ * @param endpointName  the name of the endpoint
+ * @param path          the path to the endpoint
+ *
  * @since   0.7.0
  */
-public enum class APIv1Endpoint(internal val endpointName: String) {
+public enum class APIv1Endpoint(
+    override val endpointName: Name,
+    override val path: String = endpointName.toCamelCase()
+) : APIEndpoint {
     /**
      * The `/v1/build` endpoint.
      *
@@ -36,7 +42,7 @@ public enum class APIv1Endpoint(internal val endpointName: String) {
      *
      * @since   0.7.0
      */
-    V1_BUILD("/Build"),
+    V1_BUILD(Name.derive(titleCase = "/Build")),
     /**
      * The `/v1/colors` endpoint.
      *
@@ -180,5 +186,8 @@ public enum class APIv1Endpoint(internal val endpointName: String) {
      *
      * @since   0.7.0
      */
-    V1_WVW_OBJECTIVE_NAMES("/wvw/objective_names")
+    V1_WVW_OBJECTIVE_NAMES("/wvw/objective_names");
+
+    constructor(p: String): this(Name.derive(titleCase = p))
+
 }

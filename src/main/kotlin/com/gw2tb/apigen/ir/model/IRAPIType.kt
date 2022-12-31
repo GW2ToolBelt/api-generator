@@ -21,32 +21,50 @@
  */
 package com.gw2tb.apigen.ir.model
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
 import com.gw2tb.apigen.ir.IRTypeDeclaration
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.ir.ResolverContext
-import com.gw2tb.apigen.model.APIType
-import com.gw2tb.apigen.model.APIType.InterpretationHint
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.model.v2.VersionedData
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.schema.model.APIType
+import com.gw2tb.apigen.schema.model.APIType.InterpretationHint
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersionedData
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.schema.SchemaConditional
 
 /**
- * A low-level representation of a [APIType].
+ * A low-level representation of an [APIType].
  *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
 public sealed class IRAPIType {
 
+    /**
+     * The type's name
+     *
+     * @since   0.7.0
+     */
     public abstract val name: Name
 
+    /**
+     * Additional information about the type if it represents an [interpretation][SchemaConditional.Interpretation].
+     *
+     * @since   0.7.0
+     */
     public abstract val interpretationHint: InterpretationHint?
 
     internal abstract val isTopLevel: Boolean
 
-    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIType
+    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIType
 
+    /**
+     * A low-level representation of an [APIType] for version 1 (`v1`) of the
+     * Guild Wars 2 API.
+     *
+     * @param declaration   the schema definition of the type
+     *
+     * @since   0.7.0
+     */
     public data class V1 internal constructor(
         val declaration: IRTypeDeclaration<*>,
         override val interpretationHint: InterpretationHint?,
@@ -55,7 +73,7 @@ public sealed class IRAPIType {
 
         override val name: Name get() = declaration.name
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIType {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIType {
             val schema = declaration.resolve(resolverContext, v2SchemaVersion)
 
             return APIType(
@@ -69,16 +87,22 @@ public sealed class IRAPIType {
 
     }
 
+    /**
+     * A low-level representation of an [APIType] for version 2 (`v2`) of the
+     * Guild Wars 2 API.
+     *
+     * @since   0.7.0
+     */
     public data class V2 internal constructor(
-        private val _declaration: SchemaVersionedData<out IRTypeDeclaration<*>>,
+        private val _declaration: SchemaVersionedData<IRTypeDeclaration<*>>,
         override val interpretationHint: InterpretationHint?,
         override val isTopLevel: Boolean
-    ) : IRAPIType(), VersionedData<IRTypeDeclaration<*>> by _declaration {
+    ) : IRAPIType(), SchemaVersionedData<IRTypeDeclaration<*>> by _declaration {
 
-        override val name: Name get() = _declaration.flatMapData(IRTypeDeclaration<*>::name)
+        override val name: Name get() = _declaration.flatten(IRTypeDeclaration<*>::name)
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIType {
-            val schema = _declaration[v2SchemaVersion!!].data.resolve(resolverContext, v2SchemaVersion)
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIType {
+            val schema = _declaration.getOrThrow(v2SchemaVersion!!).data.resolve(resolverContext, v2SchemaVersion)
 
             return APIType(
                 name = name,

@@ -29,6 +29,7 @@ import com.gw2tb.apigen.ir.model.IRAPIType
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.model.APIType
 
 internal fun Alias(type: DeferredPrimitiveType, name: String): DeferredPrimitiveType =
     Alias(type, Name.deriveFromTitleCase(name))
@@ -53,14 +54,14 @@ internal val INTEGER: DeferredPrimitiveType = DeferredPrimitiveType(IRInteger)
 internal val STRING: DeferredPrimitiveType = DeferredPrimitiveType(IRString)
 
 internal fun <T : IRTypeUse<*>> DeferredSchemaType(
-    factory: (ScopedTypeRegistry<*>?, Boolean) -> SchemaVersionedData<out T>
+    factory: (ScopedTypeRegistry<*>?, Boolean) -> SchemaVersionedDataImpl<T>
 ): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out T> = factory(typeRegistry, isTopLevel)
+    ): SchemaVersionedDataImpl<T> = factory(typeRegistry, isTopLevel)
 
 }
 
@@ -70,7 +71,7 @@ internal abstract class DeferredSchemaType<T : IRTypeUse<*>> {
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean = false
-    ): SchemaVersionedData<out T>
+    ): SchemaVersionedDataImpl<out T>
 
     fun getFlat(): T =
         get(typeRegistry = null, interpretationHint = null).single().data
@@ -85,7 +86,7 @@ internal data class DeferredPrimitiveType(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRPrimitive> {
+    ): SchemaVersionedDataImpl<IRPrimitive> {
         return wrapVersionedSchemaData(value)
     }
 
@@ -96,7 +97,7 @@ internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredSchemaType<
 
     abstract val name: Name
 
-    abstract val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
+    abstract val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
 
     abstract val typeRegistry: ScopedTypeRegistry<T>?
 
@@ -172,12 +173,12 @@ internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSch
 
     private val _properties = mutableListOf<SchemaRecordPropertyBuilder>()
 
-    fun buildProperties(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedData<Map<String, IRProperty>>? =
+    fun buildProperties(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedDataImpl<Map<String, IRProperty>>? =
         if (_properties.isEmpty()) {
             null
         } else {
             buildVersionedSchemaData {
-                V2SchemaVersion.values().forEach { version ->
+                SchemaVersion.values().forEach { version ->
                     if (_properties.any { it.hasChangedInVersion(typeRegistry, version) }) {
                         val relevantProperties = _properties.getForVersion(
                             SchemaRecordPropertyBuilder::since,
@@ -201,15 +202,15 @@ internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSch
         }
     }
 
-    /** The minimal [V2SchemaVersion] (inclusive) required for the property. */
-    fun since(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+    /** The minimal [SchemaVersion] (inclusive) required for the property. */
+    fun since(version: SchemaVersion): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.since = version
         }
     }
 
-    /** The maximum [V2SchemaVersion] (exclusive) required for the property. */
-    fun until(version: V2SchemaVersion): IPropertyModifier = object : IPropertyModifier {
+    /** The maximum [SchemaVersion] (exclusive) required for the property. */
+    fun until(version: SchemaVersion): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {
             property.until = version
         }
@@ -234,7 +235,7 @@ internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSch
 }
 
 internal class SchemaConditionalSharedPropertyBuilder<T : IRAPIType>(
-    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
     override val typeRegistry: ScopedTypeRegistry<T>?
 ) : AbstractSchemaRecordBuilder<T>() {
 
@@ -248,7 +249,7 @@ internal class SchemaConditionalSharedPropertyBuilder<T : IRAPIType>(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRTypeReference> {
+    ): SchemaVersionedDataImpl<IRTypeReference> {
         error("Not implemented")
     }
 

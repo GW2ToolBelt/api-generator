@@ -24,11 +24,18 @@ package com.gw2tb.apigen.ir.model
 import com.gw2tb.apigen.ir.IRTypeUse
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.ir.ResolverContext
-import com.gw2tb.apigen.model.QueryParameter
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.schema.model.QueryParameter
+import com.gw2tb.apigen.model.v2.SchemaVersion
 
 /**
  * A low-level representation of a [QueryParameter].
+ *
+ * @param key           the name of the parameter (as used in the query)
+ * @param type          the type of the parameter
+ * @param name          the name of the parameter
+ * @param description   the description of the parameter
+ * @param isOptional    whether the parameter is optional
  *
  * @since   0.7.0
  */
@@ -36,21 +43,19 @@ import com.gw2tb.apigen.model.v2.V2SchemaVersion
 public data class IRQueryParameter internal constructor(
     val key: String,
     val type: IRTypeUse<*>,
+    val name: Name,
     val description: String,
-    val name: String,
-    val camelCaseName: String,
     val isOptional: Boolean
 ) {
 
-    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): QueryParameter {
+    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): QueryParameter {
         val type = type.resolve(resolverContext, v2SchemaVersion)
 
         return QueryParameter(
             key = key,
             type = type,
-            description = description,
             name = name,
-            camelCaseName = camelCaseName,
+            description = description,
             isOptional = isOptional
         )
     }

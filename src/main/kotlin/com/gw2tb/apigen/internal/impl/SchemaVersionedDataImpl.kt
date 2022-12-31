@@ -21,25 +21,26 @@
  */
 package com.gw2tb.apigen.internal.impl
 
+import com.gw2tb.apigen.internal.model.v2.compareTo
 import com.gw2tb.apigen.model.v2.*
 import java.util.*
 
-internal fun <T> buildVersionedSchemaData(block: Builder<T>.() -> Unit): SchemaVersionedData<T> =
-    SchemaVersionedData(TreeSet<VersionConstrainedData<T>>().apply {
+internal fun <T> buildVersionedSchemaData(block: Builder<T>.() -> Unit): SchemaVersionedDataImpl<T> =
+    SchemaVersionedDataImpl(TreeSet<SchemaVersionConstrainedData<T>> { a, b -> a.compareTo(b) }.apply {
         Builder<T>().apply(block).data.forEach { (constraint, data) ->
-            add(VersionConstrainedData(data, constraint.since, constraint.until))
+            add(SchemaVersionConstrainedData(data, constraint.since, constraint.until))
         }
     })
 
-internal fun <T> wrapVersionedSchemaData(value: T): SchemaVersionedData<T> =
-    buildVersionedSchemaData { add(value, since = V2SchemaVersion.V2_SCHEMA_CLASSIC, until = null) }
+internal fun <T> wrapVersionedSchemaData(value: T): SchemaVersionedDataImpl<T> =
+    buildVersionedSchemaData { add(value, since = SchemaVersion.V2_SCHEMA_CLASSIC, until = null) }
 
 internal class Builder<T> {
 
     internal val data = mutableMapOf<VersionConstraint, T>()
-    private var unboundSince: V2SchemaVersion? = null
+    private var unboundSince: SchemaVersion? = null
 
-    fun add(datum: T, since: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC, until: V2SchemaVersion? = null) {
+    fun add(datum: T, since: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC, until: SchemaVersion? = null) {
         require(until == null || since < until)
 //        require(data.none { (other, _) -> (other.until == null || since < other.until) && (until == null || other.since < until) })
 
@@ -57,43 +58,43 @@ internal class Builder<T> {
 }
 
 internal data class VersionConstraint(
-    val since: V2SchemaVersion,
-    val until: V2SchemaVersion?
+    val since: SchemaVersion,
+    val until: SchemaVersion?
 )
 
-internal class SchemaVersionedData<T>(
-    internal val entries: TreeSet<VersionConstrainedData<T>>
-) : VersionedData<T>, Iterable<VersionConstrainedData<T>> by entries {
+internal class SchemaVersionedDataImpl<T>(
+    internal val entries: TreeSet<SchemaVersionConstrainedData<T>>
+) : SchemaVersionedData<T>, Iterable<SchemaVersionConstrainedData<T>> by entries {
 
     init {
         require(entries.isNotEmpty()) { "SchemaVersionedData requires at least one entry" }
     }
 
     val isConsistent get() =
-        (entries.size == 1) && (entries.first().since == V2SchemaVersion.V2_SCHEMA_CLASSIC) && (entries.first().until == null)
+        (entries.size == 1) && (entries.first().since == SchemaVersion.V2_SCHEMA_CLASSIC) && (entries.first().until == null)
 
-    override val versions: List<V2SchemaVersion> get() =
-        V2SchemaVersion.values().filter { getOrNull(it) != null }
+    override val versions: List<SchemaVersion> get() =
+        SchemaVersion.values().filter { get(it) != null }
 
     override val significantVersions get() =
-        V2SchemaVersion.values().filter { hasChangedInVersion(it) && isSupported(it) }
+        SchemaVersion.values().filter { hasChangedInVersion(it) && isSupported(it) }
 
-    fun first(): VersionConstrainedData<T> =
+    fun first(): SchemaVersionConstrainedData<T> =
         entries.first()
 
-    override operator fun get(version: V2SchemaVersion): VersionConstrainedData<T> =
-        getOrNull(version) ?: error("No data for version $version")
+    override fun getOrThrow(version: SchemaVersion): SchemaVersionConstrainedData<T> =
+        get(version) ?: error("No data for version $version")
 
-    override fun getOrNull(version: V2SchemaVersion): VersionConstrainedData<T>? =
+    override fun get(version: SchemaVersion): SchemaVersionConstrainedData<T>? =
         entries.firstOrNull { (_, since, until) -> since <= version && (until == null || version < until) }
 
-    fun hasChangedInVersion(version: V2SchemaVersion): Boolean =
+    fun hasChangedInVersion(version: SchemaVersion): Boolean =
         entries.any { constraint -> constraint.since == version || constraint.until == version }
 
-    override fun isSupported(version: V2SchemaVersion): Boolean =
-        getOrNull(version) != null
+    override fun isSupported(version: SchemaVersion): Boolean =
+        get(version) != null
 
-    fun readjustConstraints(since: V2SchemaVersion, until: V2SchemaVersion?): SchemaVersionedData<T> {
+    fun readjustConstraints(since: SchemaVersion, until: SchemaVersion?): SchemaVersionedDataImpl<T> {
         if (entries.first().since == since && entries.last().until == until) return this
 
         return buildVersionedSchemaData {
@@ -114,11 +115,11 @@ internal class SchemaVersionedData<T>(
         }
     }
 
-    fun forEach(block: (T, V2SchemaVersion, V2SchemaVersion?) -> Unit) {
+    fun forEach(block: (T, SchemaVersion, SchemaVersion?) -> Unit) {
         entries.forEach { block(it.data, it.since, it.until) }
     }
 
-    override fun <R> flatMapData(transform: (T) -> R): R {
+    override fun <R> flatten(transform: (T) -> R): R {
         val itr = entries.iterator()
         val data = transform(itr.next().data)
 
@@ -130,28 +131,16 @@ internal class SchemaVersionedData<T>(
         return data
     }
 
-    fun <R> mapData(transform: (T) -> R): SchemaVersionedData<R> =
-        SchemaVersionedData(entries.asSequence().map { it.map(transform) }.toCollection(TreeSet()))
+    fun <R> mapData(transform: (T) -> R): SchemaVersionedDataImpl<R> =
+        SchemaVersionedDataImpl(entries.asSequence().map { it.map(transform) }.toCollection(TreeSet { a, b -> a.compareTo(b) }))
 
-    fun <R> mapVersionedData(transform: (V2SchemaVersion, T) -> R): SchemaVersionedData<R> =
-        SchemaVersionedData(entries.asSequence().map { it.mapVersioned(transform) }.toCollection(TreeSet()))
+    fun <R> mapVersionedData(transform: (SchemaVersion, T) -> R): SchemaVersionedDataImpl<R> =
+        SchemaVersionedDataImpl(entries.asSequence().map { it.mapVersioned(transform) }.toCollection(TreeSet { a, b -> a.compareTo(b) }))
 
-    fun <R> mapDataOrNull(transform: (T) -> R?): SchemaVersionedData<R>? {
-        val set = entries.asSequence().mapNotNull { it.mapOrNull(transform) }.toCollection(TreeSet())
+    private fun <R> SchemaVersionConstrainedData<T>.map(transform: (T) -> R) =
+        SchemaVersionConstrainedData(transform(data), since, until)
 
-        return if (set.isNotEmpty())
-            SchemaVersionedData(set)
-        else
-            null
-    }
-
-    private fun <R> VersionConstrainedData<T>.map(transform: (T) -> R) =
-        VersionConstrainedData(transform(data), since, until)
-
-    private fun <R> VersionConstrainedData<T>.mapVersioned(transform: (V2SchemaVersion, T) -> R) =
-        VersionConstrainedData(transform(since, data), since, until)
-
-    private fun <R> VersionConstrainedData<T>.mapOrNull(transform: (T) -> R?): VersionConstrainedData<R>? =
-        transform(data)?.let { VersionConstrainedData(it, since, until) }
+    private fun <R> SchemaVersionConstrainedData<T>.mapVersioned(transform: (SchemaVersion, T) -> R) =
+        SchemaVersionConstrainedData(transform(since, data), since, until)
 
 }

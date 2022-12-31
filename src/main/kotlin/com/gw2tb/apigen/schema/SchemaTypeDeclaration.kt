@@ -21,6 +21,8 @@
  */
 package com.gw2tb.apigen.schema
 
+import com.gw2tb.apigen.model.Name
+
 /**
  * A type declaration.
  *

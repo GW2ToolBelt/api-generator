@@ -21,40 +21,92 @@
  */
 package com.gw2tb.apigen.ir.model
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.ResolverContext
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
+import com.gw2tb.apigen.schema.model.APIQuery
 import kotlin.time.*
 
 /**
- * A low-level representation of a [APIQuery].
+ * A low-level representation of an [APIQuery].
  *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
 public sealed class IRAPIQuery {
 
-    public abstract val route: String
-    public abstract val endpoint: String
+    /**
+     * The relative path of the query.
+     *
+     * @since   0.7.0
+     */
+    public abstract val path: String
+
+    /**
+     * The [APIEndpoint] this query targets.
+     *
+     * @since   0.7.0
+     */
+    public abstract val endpoint: APIEndpoint
+
+    /**
+     * A short description of the query's purpose (e.g. "Returns the current
+     * build ID." for `/v2/build`).
+     *
+     * @since   0.7.0
+     */
     public abstract val summary: String
+
+    /**
+     * The query's [path parameters][IRPathParameter].
+     *
+     * @since   0.7.0
+     */
     public abstract val pathParameters: Map<String, IRPathParameter>
+
+    /**
+     * The query's [query parameters][IRQueryParameter].
+     *
+     * @since   0.7.0
+     */
     public abstract val queryParameters: Map<String, IRQueryParameter>
+
+    /**
+     * A suffix that may be used to properly discriminate this query, or `null`
+     * if none is necessary.
+     *
+     * @since   0.7.0
+     */
     public abstract val querySuffix: String?
+
+    /**
+     * The expected cache time for responses from this query.
+     *
+     * @since   0.7.0
+     */
     public abstract val cache: Duration?
 
-    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIQuery?
+    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIQuery?
 
-    public data class Details(
+    /**
+     * A low-level representation of a [APIQuery.Details].
+     *
+     * @param queryType the [type of query][QueryType]
+     * @param idType    the ID type of the endpoint
+     *
+     * @since   0.7.0
+     */
+    public data class Details internal constructor(
         val queryType: QueryType,
         val idType: IRPrimitiveIdentifier
     ) {
 
-        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): QueryDetails {
+        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIQuery.Details {
             val idType = idType.resolve(resolverContext, v2SchemaVersion)
 
-            return QueryDetails(
+            return APIQuery.Details(
                 queryType = queryType,
                 idType = idType
             )
@@ -62,18 +114,17 @@ public sealed class IRAPIQuery {
 
     }
 
-    public data class QueryParameter(
-        val key: String,
-        val type: IRTypeUse<*>,
-        val description: String,
-        val name: String,
-        val camelCaseName: String,
-        val isOptional: Boolean
-    )
-
+    /**
+     * A low-level representation of an [APIQuery] for version 1 (`v1`) of the
+     * Guild Wars 2 API.
+     *
+     * @param type  the type of responses from this query
+     *
+     * @since   0.7.0
+     */
     public data class V1 internal constructor(
-        override val route: String,
-        override val endpoint: String,
+        override val path: String,
+        override val endpoint: APIEndpoint,
         override val summary: String,
         override val pathParameters: Map<String, IRPathParameter>,
         override val queryParameters: Map<String, IRQueryParameter>,
@@ -82,7 +133,7 @@ public sealed class IRAPIQuery {
         val type: IRTypeUse<*>
     ) : IRAPIQuery() {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIQuery {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIQuery {
             require(v2SchemaVersion == null)
 
             val pathParameters = pathParameters.mapValues { (_, parameter) -> parameter.resolve(resolverContext, v2SchemaVersion) }
@@ -91,14 +142,14 @@ public sealed class IRAPIQuery {
             val schema = type.resolve(resolverContext, v2SchemaVersion)
 
             return APIQuery(
-                route = route,
+                path = path,
                 endpoint = endpoint,
                 summary = summary,
                 pathParameters = pathParameters,
                 queryParameters = queryParameters,
                 querySuffix = querySuffix,
                 cache = cache,
-                queryDetails = null,
+                details = null,
                 security = emptySet(),
                 schema = schema
             )
@@ -106,22 +157,34 @@ public sealed class IRAPIQuery {
 
     }
 
+    /**
+     * A low-level representation of an [APIQuery] for version 2 (`v2`) of the
+     * Guild Wars 2 API.
+     *
+     * @param details   additional details for queries that may be used to
+     *                  access indexed resources
+     * @param security  the permissions required to access this resource
+     * @param since     the lower bound version (inclusive)
+     * @param until     the upper bound version (exclusive)
+     *
+     * @since   0.7.0
+     */
     public data class V2 internal constructor(
-        override val route: String,
-        override val endpoint: String,
+        override val path: String,
+        override val endpoint: APIEndpoint,
         override val summary: String,
         override val pathParameters: Map<String, IRPathParameter>,
         override val queryParameters: Map<String, IRQueryParameter>,
         override val querySuffix: String?,
         override val cache: Duration?,
-        val queryDetails: Details?,
-        val since: V2SchemaVersion?,
-        val until: V2SchemaVersion?,
+        val details: Details?,
         val security: Set<TokenScope>,
-        private val _type: SchemaVersionedData<out IRTypeUse<*>>
-    ) : IRAPIQuery(), VersionedData<IRTypeUse<*>> by _type {
+        val since: SchemaVersion?,
+        val until: SchemaVersion?,
+        private val _type: SchemaVersionedDataImpl<out IRTypeUse<*>>
+    ) : IRAPIQuery(), SchemaVersionedData<IRTypeUse<*>> by _type {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): APIQuery? {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIQuery? {
             require(v2SchemaVersion != null)
 
             if (since != null && since > v2SchemaVersion) return null
@@ -130,18 +193,18 @@ public sealed class IRAPIQuery {
             val pathParameters = pathParameters.mapValues { (_, parameter) -> parameter.resolve(resolverContext, v2SchemaVersion) }
             val queryParameters = queryParameters.mapValues { (_, parameter) -> parameter.resolve(resolverContext, v2SchemaVersion) }
 
-            val details = queryDetails?.resolve(resolverContext, v2SchemaVersion)
-            val schema = this[v2SchemaVersion].data.resolve(resolverContext, v2SchemaVersion)
+            val details = details?.resolve(resolverContext, v2SchemaVersion)
+            val schema = this.getOrThrow(v2SchemaVersion).data.resolve(resolverContext, v2SchemaVersion)
 
             return APIQuery(
-                route = route,
+                path = path,
                 endpoint = endpoint,
                 summary = summary,
                 pathParameters = pathParameters,
                 queryParameters = queryParameters,
                 querySuffix = querySuffix,
                 cache = cache,
-                queryDetails = details,
+                details = details,
                 security = security,
                 schema = schema
             )

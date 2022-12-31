@@ -21,13 +21,17 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.SchemaProperty
 import com.gw2tb.apigen.schema.SchemaRecord
 
 /**
  * A low-level representation of a [SchemaRecord].
+ *
+ * @param name          the name of the record
+ * @param properties    the properties of the record
+ * @param description   a description of the record
  *
  * @since   0.7.0
  */
@@ -38,7 +42,7 @@ public data class IRRecord internal constructor(
     public val properties: Set<IRProperty>
 ) : IRTypeDeclaration<SchemaRecord>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaRecord {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaRecord {
         val properties = properties.mapNotNull { it.resolve(resolverContext, v2SchemaVersion) }
             .associateBy(SchemaProperty::serialName)
 

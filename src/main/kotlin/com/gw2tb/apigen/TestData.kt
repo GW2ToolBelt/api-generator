@@ -21,15 +21,26 @@
  */
 package com.gw2tb.apigen
 
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.v2.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
-/** Provides access to data that may be used for testing. */
+/** Provides access to data that may be used for testing.
+ *
+ * @since   0.7.0
+ */
 public object TestData {
 
-    public operator fun get(type: APIType, version: V2SchemaVersion? = null): List<JsonElement> {
+    /**
+     * Returns a list of elements that may be used for testing the type.
+     *
+     * @param type
+     * @param version
+     *
+     * @since   0.7.0
+     */
+    public operator fun get(type: APIType, version: SchemaVersion? = null): List<JsonElement> {
         val resourceName = buildString {
             append("/com/gw2tb/apigen/")
 
@@ -39,7 +50,7 @@ public object TestData {
             append("_")
             append(type.name.toTitleCase())
 
-            if (testSet == 2 && version != null && version != V2SchemaVersion.V2_SCHEMA_CLASSIC) {
+            if (testSet == 2 && version != null && version != SchemaVersion.V2_SCHEMA_CLASSIC) {
                 append("+")
                 append(version.identifier!!.replace(':', '_'))
             }

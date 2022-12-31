@@ -22,14 +22,14 @@
 @file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.containsChangeForBounds
 import com.gw2tb.apigen.ir.IRConditional
 import com.gw2tb.apigen.ir.IRTypeUse
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 
 internal class SchemaConditionalInterpretationBuilder constructor(
     private val interpretationKey: String,
@@ -43,24 +43,24 @@ internal class SchemaConditionalInterpretationBuilder constructor(
             field = value
         }
 
-    var since: V2SchemaVersion? = null
+    var since: SchemaVersion? = null
         set(value) {
             require(isUnused)
             field = value
         }
 
-    var until: V2SchemaVersion? = null
+    var until: SchemaVersion? = null
         set(value) {
             require(isUnused)
             field = value
         }
 
-    private lateinit var _value: SchemaVersionedData<IRConditional.Interpretation>
+    private lateinit var _value: SchemaVersionedDataImpl<IRConditional.Interpretation>
     private val isUnused get() = !this::_value.isInitialized
 
     fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
-        version: V2SchemaVersion?,
+        version: SchemaVersion?,
         conditionalBase: QualifiedTypeName
     ): IRConditional.Interpretation {
         if (!this::_value.isInitialized) {
@@ -82,12 +82,12 @@ internal class SchemaConditionalInterpretationBuilder constructor(
             }
         }
 
-        return _value[version ?: V2SchemaVersion.V2_SCHEMA_CLASSIC].data
+        return _value.getOrThrow(version ?: SchemaVersion.V2_SCHEMA_CLASSIC).data
     }
 
     fun hasChangedInVersion(
         typeRegistry: ScopedTypeRegistry<*>?,
-        version: V2SchemaVersion,
+        version: SchemaVersion,
         conditionalBase: QualifiedTypeName
     ): Boolean {
         get(typeRegistry, version, conditionalBase)

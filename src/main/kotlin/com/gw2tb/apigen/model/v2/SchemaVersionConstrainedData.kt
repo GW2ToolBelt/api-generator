@@ -19,35 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.schema
-
-import com.gw2tb.apigen.model.TokenScope
+package com.gw2tb.apigen.model.v2
 
 /**
- * A property's optionality. There are three different _levels_ of optionality:
+ * A [SchemaVersionedData] entry that is constrained to a version range.
  *
- * 1. Optional - The property is unconditionally optional,
- * 2. Mandated - The property is required under certain conditions, and
- * 3. Required - The property is required.
+ * @param data  the underlying data
+ * @param since the lower bound version (inclusive)
+ * @param until the upper bound version (exclusive)
+ *
+ * @since   0.7.0
  */
-public sealed class Optionality {
+public data class SchemaVersionConstrainedData<out T> internal constructor(
+    val data: T,
+    val since: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC,
+    val until: SchemaVersion? = null,
+) {
 
-    /** Returns `true` for [OPTIONAL] and [MANDATED], and `false` otherwise. */
-    public abstract val isOptional: Boolean
-
-    /** The property is optional. */
-    public object OPTIONAL : Optionality() {
-        override val isOptional: Boolean = true
-    }
-
-    /** The property is required for a key with the appropriate [scope]. */
-    public class MANDATED(public val scope: TokenScope) : Optionality() {
-        override val isOptional: Boolean = true
-    }
-
-    /** The property is required. */
-    public object REQUIRED : Optionality() {
-        override val isOptional: Boolean = false
+    init {
+        require(until == null || since < until)
     }
 
 }

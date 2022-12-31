@@ -19,19 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.model
+package com.gw2tb.apigen.internal.model.v2
 
-import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.model.v2.*
 
-/**
- * TODO doc
- *
- * @param queryType the [type of query][QueryType]
- * @param idType    the ID-type of the endpoint
- *
- * @since   0.7.0
- */
-public data class QueryDetails internal constructor(
-    val queryType: QueryType,
-    val idType: SchemaPrimitiveIdentifier
-)
+internal operator fun <T> SchemaVersionConstrainedData<T>.compareTo(other: SchemaVersionConstrainedData<T>): Int =
+    (until ?: since).compareTo(other.since)

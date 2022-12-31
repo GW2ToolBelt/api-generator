@@ -22,11 +22,11 @@
 @file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.requireCamelCase
 import com.gw2tb.apigen.ir.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 
 internal class SchemaTupleElementBuilder(
     val nameTitleCase: String,
@@ -67,10 +67,10 @@ internal class SchemaTupleElementBuilder(
             field = value
         }
 
-    private lateinit var _value: SchemaVersionedData<IRTuple.Element>
+    private lateinit var _value: SchemaVersionedDataImpl<IRTuple.Element>
     private val isUnused get() = !this::_value.isInitialized
 
-    fun get(typeRegistry: ScopedTypeRegistry<*>?, v2SchemaVersion: V2SchemaVersion?): IRTuple.Element {
+    fun get(typeRegistry: ScopedTypeRegistry<*>?, v2SchemaVersion: SchemaVersion?): IRTuple.Element {
         if (!this::_value.isInitialized) {
             val name = Name.derive(camelCase = camelCase, snakeCase = serialName, titleCase = nameTitleCase)
 
@@ -85,10 +85,10 @@ internal class SchemaTupleElementBuilder(
             }
         }
 
-        return _value[v2SchemaVersion ?: V2SchemaVersion.V2_SCHEMA_CLASSIC].data
+        return _value.getOrThrow(v2SchemaVersion ?: SchemaVersion.V2_SCHEMA_CLASSIC).data
     }
 
-    fun hasChangedInVersion(typeRegistry: ScopedTypeRegistry<*>?, version: V2SchemaVersion): Boolean {
+    fun hasChangedInVersion(typeRegistry: ScopedTypeRegistry<*>?, version: SchemaVersion): Boolean {
         get(typeRegistry, version)
         return _value.hasChangedInVersion(version)
     }

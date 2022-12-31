@@ -21,12 +21,12 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.SchemaTypeDeclaration
 
 /**
- * TODO doc
+ * A low-level representation of a [SchemaTypeDeclaration].
  *
  * @since   0.7.0
  */
@@ -40,6 +40,6 @@ public sealed class IRTypeDeclaration<S : SchemaTypeDeclaration> {
      */
     public abstract val name: Name
 
-    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion? = null): S
+    internal abstract fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion? = null): S
 
 }

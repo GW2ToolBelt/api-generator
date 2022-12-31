@@ -46,13 +46,13 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
     @TestFactory
     fun testQueries(): Iterator<DynamicTest> = sequence<DynamicTest> {
         val expectedQueries = ArrayList(expectedQueries)
-        val actualQueries = HashSet(spec.queries)
+        val actualQueries = HashSet(spec.supportedQueries)
 
         with(expectedQueries.iterator()) {
             while (hasNext()) {
                 val expectedQuery = next()
                 val actualQuery = actualQueries.find {
-                    it.route == expectedQuery.route
+                    it.path == expectedQuery.route
                         && it.pathParameters.all { p -> expectedQuery.pathParameters.any { p.key == it.key } }
                         && it.queryParameters.all { p -> expectedQuery.queryParameters.any { p.key == it.key } }
                         && expectedQuery.pathParameters.all { p -> it.pathParameters.any { p.key == it.key } }
@@ -63,7 +63,7 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
                 yield(DynamicTest.dynamicTest("$prefix${expectedQuery.route}") {
                     if (actualQuery == null) fail("Could not find matching actual query for: $expectedQuery")
 
-                    assertEquals(expectedQuery.cache, actualQuery.cache, "Mismatched 'cache' flag for ${actualQuery.route}")
+                    assertEquals(expectedQuery.cache, actualQuery.cache, "Mismatched 'cache' flag for ${actualQuery.path}")
                     assertProperties(expectedQuery, actualQuery)
 
                     actualQuery.pathParameters.forEach { (_, actualParam) ->
@@ -82,7 +82,7 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
         }
 
         actualQueries.forEach {
-            yield(DynamicTest.dynamicTest("$prefix${it.route}") {
+            yield(DynamicTest.dynamicTest("$prefix${it.path}") {
                 fail("Did not expect query: $it")
             })
         }
@@ -111,7 +111,7 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
 
     @TestFactory
     fun testTypes(): Iterator<DynamicTest> = sequence {
-        spec.types
+        spec.supportedTypes
             .filter { (loc, _) -> loc.nest == null }
             .forEach { (_, type) -> yieldAll(testType(type)) }
     }.iterator()

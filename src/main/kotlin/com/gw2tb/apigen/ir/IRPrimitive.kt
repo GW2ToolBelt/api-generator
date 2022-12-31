@@ -21,26 +21,36 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaPrimitive
 import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifier
 
+/**
+ * A low-level representation of a [SchemaPrimitive].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public sealed class IRPrimitive(protected open val schema: SchemaPrimitive) : IRTypeUse<SchemaPrimitive>() {
 
     internal open fun resolve(): SchemaPrimitive = schema
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaPrimitive =
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitive =
         resolve()
 
 }
 
+/**
+ * A low-level representation of a [SchemaPrimitiveIdentifier].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public sealed class IRPrimitiveIdentifier(override val schema: SchemaPrimitiveIdentifier) : IRPrimitive(schema) {
 
     override fun resolve(): SchemaPrimitiveIdentifier = schema
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaPrimitiveIdentifier =
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitiveIdentifier =
         resolve()
 
 }

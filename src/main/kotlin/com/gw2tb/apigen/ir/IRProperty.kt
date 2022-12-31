@@ -21,32 +21,45 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
-import com.gw2tb.apigen.schema.Optionality
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.model.Optionality
 import com.gw2tb.apigen.schema.SchemaProperty
 
 /**
  * A low-level representation of a [SchemaProperty].
  *
+ * @param name          the name of the property
+ * @param type          the type of the property
+ * @param isDeprecated  whether the property is deprecated
+ * @param isInline      whether the property is referencing an object that is
+ *                      embedded into the containing object
+ * @param isLenient     TODO doc
+ * @param isLocalized   TODO doc
+ * @param optionality   TODO doc
+ * @param serialName    TODO doc
+ * @param description   a description of the property
+ * @param since         the lower bound version (inclusive)
+ * @param until         the upper bound version (exclusive)
+ *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-public data class IRProperty(
+public data class IRProperty internal constructor(
     public val name: Name,
     public val type: IRTypeUse<*>,
-    public val description: String,
     public val isDeprecated: Boolean,
     public val isInline: Boolean,
     public val isLenient: Boolean,
     public val isLocalized: Boolean,
     public val optionality: Optionality,
     public val serialName: String,
-    public val since: V2SchemaVersion?,
-    public val until: V2SchemaVersion?
+    public val description: String,
+    public val since: SchemaVersion?,
+    public val until: SchemaVersion?
 ) {
 
-    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaProperty? {
+    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaProperty? {
         if (v2SchemaVersion != null) {
             if (since != null && since > v2SchemaVersion) return null
             if (until != null && until < v2SchemaVersion) return null

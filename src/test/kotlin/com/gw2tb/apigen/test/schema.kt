@@ -74,7 +74,7 @@ private fun testConditional(
 ) {
     val jsonObject = context.deriveActual(JsonElement::jsonObject, nullable) ?: return
 
-    val interpretationKey = if (schema.disambiguationBySideProperty) {
+    val interpretationKey = if (schema.selectorInSideProperty) {
         if (sidePropertyInterpretationKey === null) {
             context.error("No side property interpretation key was provided")
             return
@@ -82,8 +82,8 @@ private fun testConditional(
 
         sidePropertyInterpretationKey
     } else {
-        jsonObject[schema.disambiguationBy]?.jsonPrimitive?.content ?: run {
-            context.error("Could not find discriminator '${schema.disambiguationBy}'")
+        jsonObject[schema.selector]?.jsonPrimitive?.content ?: run {
+            context.error("Could not find discriminator '${schema.selector}'")
             return
         }
     }
@@ -305,10 +305,10 @@ private fun testProperty(
         val propertyType = schema.type
         val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference.Declaration
             && propertyType.declaration is SchemaConditional
-            && propertyType.declaration.disambiguationBySideProperty
+            && propertyType.declaration.selectorInSideProperty
         ) {
-            context.actual.jsonObject[propertyType.declaration.disambiguationBy]?.jsonPrimitive?.content ?: run {
-                context.error("Could not find required discriminator '${propertyType.declaration.disambiguationBy}'")
+            context.actual.jsonObject[propertyType.declaration.selector]?.jsonPrimitive?.content ?: run {
+                context.error("Could not find required discriminator '${propertyType.declaration.selector}'")
                 return
             }
         } else {

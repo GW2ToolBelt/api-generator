@@ -21,12 +21,16 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.SchemaTuple
 
 /**
  * A low-level representation of a [SchemaTuple].
+ *
+ * @param name          the name of the tuple
+ * @param elements      the elements of the tuple
+ * @param description   a description of the tuple
  *
  * @since   0.7.0
  */
@@ -37,7 +41,7 @@ public data class IRTuple internal constructor(
     public val description: String
 ) : IRTypeDeclaration<SchemaTuple>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaTuple {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTuple {
         val elements = elements.map { it.resolve(resolverContext, v2SchemaVersion) }
 
         return SchemaTuple(
@@ -47,6 +51,17 @@ public data class IRTuple internal constructor(
         )
     }
 
+    /**
+     * A low-level representation of a [SchemaTuple.Element].
+     *
+     * @param name          the name of the element
+     * @param type          the type of the element's value
+     * @param description   a description of the element
+     * @param isLenient     whether to perform type-coercion on the input
+     * @param isLocalized   whether the element's value is localized
+     *
+     * @since   0.7.0
+     */
     public data class Element(
         public val name: Name,
         public val type: IRTypeUse<*>,
@@ -55,7 +70,7 @@ public data class IRTuple internal constructor(
         public val isLocalized: Boolean
     ) {
 
-        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaTuple.Element {
+        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTuple.Element {
             val type = type.resolve(resolverContext, v2SchemaVersion)
 
             return SchemaTuple.Element(

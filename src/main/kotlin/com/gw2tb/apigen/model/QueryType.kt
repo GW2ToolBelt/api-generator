@@ -21,96 +21,158 @@
  */
 package com.gw2tb.apigen.model
 
-/** A query type. */
+import com.gw2tb.apigen.schema.model.QueryParameter
+
+/**
+ * A type of query exposed by the Guild Wars 2 API.
+ *
+ * @since   0.7.0
+ */
 public sealed class QueryType {
 
     internal companion object {
 
         internal val ByID : QueryType get() = QueryType.ByID.Default
 
-        @Suppress("FunctionName")
         @JvmStatic
-        internal fun ByID(
-            qpKey: String,
-            qpDescription: String,
-            qpName: String,
-            qpCamelCase: String
-        ): ByID =
-            QueryType.ByID.Custom(qpKey, qpDescription, qpName, qpCamelCase)
+        internal fun ByID(qpKey: String, qpName: Name, qpDescription: String): ByID =
+            QueryType.ByID.Custom(qpKey, qpName, qpDescription)
 
-        @Suppress("FunctionName")
         @JvmStatic
         internal fun ByIDs(supportsAll: Boolean): ByIDs =
             if (supportsAll) ByIDs.DefaultAll else ByIDs.Default
 
-        @Suppress("FunctionName")
         @JvmStatic
-        internal fun ByIDs(
-            supportsAll: Boolean,
-            qpKey: String,
-            qpDescription: String,
-            qpName: String,
-            qpCamelCase: String
-        ): ByIDs =
-            ByIDs.Custom(supportsAll, qpKey, qpDescription, qpName, qpCamelCase)
+        internal fun ByIDs(supportsAll: Boolean, qpKey: String, qpName: Name, qpDescription: String): ByIDs =
+            ByIDs.Custom(supportsAll, qpKey, qpName, qpDescription)
 
     }
 
-    /** Queries all available IDs. */
+    /**
+     * The `IDs` type represents queries that are used to retrieve a list of
+     * available IDs.
+     *
+     * @since   0.7.0
+     */
     public object IDs : QueryType() {
+
+        /**
+         * Returns a string representation of this `QueryType`.
+         *
+         * @return  a string representation
+         *
+         * @since   0.7.0
+         */
         override fun toString(): String = "IDs"
+
     }
 
-    /** Queries by ID `?id={id}`. */
+    /**
+     * The `ByID` type represents queries that are used to retrieve an object
+     * for a given identifier.
+     *
+     * This type mandates a query parameter that is used to specify the
+     * identifier to look up.
+     *
+     * @param qpKey         the key for the [QueryParameter]
+     * @param qpName        the name for the [QueryParameter]
+     * @param qpDescription the description for the [QueryParameter]
+     *
+     * @since   0.7.0
+     */
     public sealed class ByID(
         public val qpKey: String,
-        public val qpDescription: String,
-        public val qpName: String,
-        public val qpCamelCase: String
+        public val qpName: Name,
+        public val qpDescription: String
     ) : QueryType() {
+
+        /**
+         * Returns a string representation of this `QueryType`.
+         *
+         * @return  a string representation
+         *
+         * @since   0.7.0
+         */
         override fun toString(): String = "ByID"
 
-        // TODO Add description
         internal object Default : ByID(
-            QueryParameter.BY_ID_KEY,
-            "",
-            "ID",
-            "id"
+            qpKey = QueryParameter.BY_ID_KEY,
+            qpName = Name("ID"),
+            qpDescription = "the ID of the requested object",
         )
 
-        internal class Custom(
-            qpKey: String,
-            qpDescription: String,
-            qpName: String,
-            qpCamelCase: String
-        ) : ByID(qpKey, qpDescription, qpName, qpCamelCase)
+        internal class Custom(qpKey: String, qpName: Name, qpDescription: String) : ByID(qpKey, qpName, qpDescription)
 
     }
 
-    /** Queries by page `?page={index}&page_size={size}`. */
+    /**
+     * The `ByPage` type represents queries that are used to retrieve objects by
+     * pages.
+     *
+     * This type mandates two query parameters:
+     *
+     * - The `page` query parameter is used to specify the index of the page to
+     *   look up.
+     * - The `page_size` query parameter is used to specify the number of
+     *   objects that should be treated as one page.
+     *
+     * @since   0.7.0
+     */
     public object ByPage : QueryType() {
+
+        /**
+         * Returns a string representation of this `QueryType`.
+         *
+         * @return  a string representation
+         *
+         * @since   0.7.0
+         */
         override fun toString(): String = "ByPage"
+
     }
 
-    /** Queries by IDs `?ids={ids}`. */
+    /**
+     * The `ByIDs` type represents queries that are used to retrieve objects by
+     * a set of IDs.
+     *
+     * This type mandates a query parameter that is used to specify the
+     * identifiers to look up.
+     *
+     * @param qpKey         the key for the [QueryParameter]
+     * @param qpName        the name for the [QueryParameter]
+     * @param qpDescription the description for the [QueryParameter]
+     *
+     * @since   0.7.0
+     */
     public sealed class ByIDs(
         public val qpKey: String,
-        public val qpDescription: String,
-        public val qpName: String,
-        public val qpCamelCase: String
+        public val qpName: Name,
+        public val qpDescription: String
     ) : QueryType() {
 
-        /** Whether or not `?ids=all` is supported. */
+        /**
+         * Indicates whether the query supports retrieving all objects at once.
+         *
+         * If a query supports querying all objects, the value `all` receives
+         * special treatment for the mandated parameter.
+         *
+         * @since   0.1.0
+         */
         public abstract val supportsAll: Boolean
 
+        /**
+         * Returns a string representation of this `QueryType`.
+         *
+         * @return  a string representation
+         *
+         * @since   0.7.0
+         */
         override fun toString(): String = "ByIDs(all=$supportsAll)"
 
-        // TODO Add description
         internal abstract class AbstractDefault : ByIDs(
-            QueryParameter.BY_IDS_KEY,
-            "",
-            "IDs",
-            "ids"
+            qpKey = QueryParameter.BY_IDS_KEY,
+            qpName = Name("IDs"),
+            qpDescription = "the IDs of the requested objects"
         )
 
         internal object Default : AbstractDefault() { override val supportsAll = false }
@@ -119,10 +181,9 @@ public sealed class QueryType {
         internal class Custom(
             override val supportsAll: Boolean,
             qpKey: String,
+            qpName: Name,
             qpDescription: String,
-            qpName: String,
-            qpCamelCase: String
-        ) : ByIDs(qpKey, qpDescription, qpName, qpCamelCase)
+        ) : ByIDs(qpKey, qpName, qpDescription)
 
     }
 

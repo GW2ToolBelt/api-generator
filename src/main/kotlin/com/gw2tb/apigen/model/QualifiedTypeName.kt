@@ -22,7 +22,6 @@
 package com.gw2tb.apigen.model
 
 import com.gw2tb.apigen.APIGenerator
-import com.gw2tb.apigen.schema.Name
 import com.gw2tb.apigen.schema.SchemaAlias
 import com.gw2tb.apigen.schema.SchemaTypeDeclaration
 

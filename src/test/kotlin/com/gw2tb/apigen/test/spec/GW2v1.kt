@@ -23,7 +23,7 @@
 package com.gw2tb.apigen.test.spec
 
 import com.gw2tb.apigen.*
-import com.gw2tb.apigen.APIv1Endpoint.*
+import com.gw2tb.apigen.model.APIv1Endpoint.*
 import com.gw2tb.apigen.internal.dsl.hours
 import com.gw2tb.apigen.internal.spec.GW2v1
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
@@ -133,7 +133,7 @@ class GW2v1 : SpecTest<IRAPIQuery.V1, IRAPIType.V1, GW2v1.ExpectedAPIv1Query>(
 
     override fun assertProperties(expected: ExpectedAPIv1Query, actual: IRAPIQuery.V1) {
         val schema = actual.resolve(VoidResolverContext, v2SchemaVersion = null).schema
-        assertEquals(expected.isLocalized, schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.route}")
+        assertEquals(expected.isLocalized, schema.isLocalized, "Mismatched 'isLocalized' flag for ${actual.path}")
     }
 
     override fun testType(irType: IRAPIType.V1): Iterable<DynamicTest> = sequence {
@@ -166,7 +166,7 @@ class GW2v1 : SpecTest<IRAPIQuery.V1, IRAPIType.V1, GW2v1.ExpectedAPIv1Query>(
 
         fun expectQuery(
             endpoint: APIv1Endpoint,
-            route: String = endpoint.endpointName,
+            route: String = endpoint.path,
             isLocalized: Boolean = false,
             cache: Duration? = null,
             pathParameters: List<ExpectedPathParameter> = emptyList(),

@@ -31,9 +31,10 @@ import com.gw2tb.apigen.ir.model.IRAPIQuery
 import com.gw2tb.apigen.ir.model.IRAPIType
 import com.gw2tb.apigen.ir.model.IRAPIVersion
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaAlias
 import com.gw2tb.apigen.schema.SchemaTypeDeclaration
+import com.gw2tb.apigen.schema.model.APIVersion
 import java.util.*
 
 /**
@@ -57,7 +58,7 @@ import java.util.*
 public class APIGenerator(
     v1Endpoints: Set<APIv1Endpoint> = EnumSet.allOf(APIv1Endpoint::class.java),
     v2Endpoints: Set<APIv2Endpoint> = EnumSet.allOf(APIv2Endpoint::class.java),
-    v2SchemaVersion: V2SchemaVersion = V2SchemaVersion.V2_SCHEMA_CLASSIC,
+    v2SchemaVersion: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC,
     includeMumbleLink: Boolean = true
 ) {
 

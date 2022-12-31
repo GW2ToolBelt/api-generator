@@ -23,17 +23,42 @@ package com.gw2tb.apigen.ir
 
 import com.gw2tb.apigen.schema.*
 
+/**
+ * A low-level representation of a [SchemaBitfield].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public object IRBitfield : IRPrimitive(SchemaBitfield)
 
+/**
+ * A low-level representation of a [SchemaBoolean].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public object IRBoolean : IRPrimitive(SchemaBoolean)
 
+/**
+ * A low-level representation of a [SchemaDecimal].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public object IRDecimal : IRPrimitive(SchemaDecimal)
 
+/**
+ * A low-level representation of a [SchemaInteger].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public object IRInteger : IRPrimitiveIdentifier(SchemaInteger)
 
+/**
+ * A low-level representation of a [SchemaString].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public object IRString : IRPrimitiveIdentifier(SchemaString)

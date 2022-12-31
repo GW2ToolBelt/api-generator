@@ -24,6 +24,7 @@ package com.gw2tb.apigen.internal.dsl
 import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.*
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 
@@ -125,6 +126,6 @@ internal interface QueriesBuilderV1 : QueriesBuilder<IRAPIType.V1>
 @OptIn(LowLevelApiGenApi::class)
 internal interface QueriesBuilderV2 : QueriesBuilder<IRAPIType.V2> {
 
-    fun schema(vararg schemas: Pair<V2SchemaVersion, DeferredSchemaType<out IRTypeUse<*>>>)
+    fun schema(vararg schemas: Pair<SchemaVersion, DeferredSchemaType<out IRTypeUse<*>>>)
 
 }

@@ -22,33 +22,33 @@
 @file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.SchemaVersionedData
+import com.gw2tb.apigen.internal.impl.SchemaVersionedDataImpl
 import com.gw2tb.apigen.internal.impl.buildVersionedSchemaData
 import com.gw2tb.apigen.internal.impl.getForVersion
 import com.gw2tb.apigen.internal.impl.zipSchemaVersionConstraints
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.IRAPIType
-import com.gw2tb.apigen.model.APIType
+import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 
 internal class SchemaEnumBuilder<T : IRAPIType>(
     private val type: DeferredPrimitiveType,
     override val name: Name,
     private val description: String,
-    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
     override val typeRegistry: ScopedTypeRegistry<T>?
 ): DeferredSchemaClass<T>() {
 
     private val _enumValues = mutableListOf<SchemaEnumValueBuilder>()
 
-    private fun buildEnumValues(): SchemaVersionedData<Set<IREnum.Value>>? =
+    private fun buildEnumValues(): SchemaVersionedDataImpl<Set<IREnum.Value>>? =
         if (_enumValues.isEmpty()) {
             null
         } else {
             buildVersionedSchemaData {
-                V2SchemaVersion.values().forEach { version ->
+                SchemaVersion.values().forEach { version ->
                     if (_enumValues.any { it.hasChangedInVersion(version) }) {
                         val relevantProperties = _enumValues.getForVersion(
                             SchemaEnumValueBuilder::since,
@@ -62,13 +62,13 @@ internal class SchemaEnumBuilder<T : IRAPIType>(
             }
         }
 
-    private lateinit var _value: SchemaVersionedData<IRTypeReference>
+    private lateinit var _value: SchemaVersionedDataImpl<IRTypeReference>
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRTypeReference> {
+    ): SchemaVersionedDataImpl<IRTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
@@ -77,15 +77,15 @@ internal class SchemaEnumBuilder<T : IRAPIType>(
             val enumValues = buildEnumValues()
 
             val versions = buildVersionedSchemaData<IREnum> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || enumValues?.hasChangedInVersion(version) == true }
+                SchemaVersion.values()
+                    .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || enumValues?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
                     .forEach { (since, until) ->
                         add(
                             datum = IREnum(
                                 name = name,
-                                type = type[since].data,
-                                values = enumValues?.get(since)?.data ?: emptySet(),
+                                type = type.getOrThrow(since).data,
+                                values = enumValues?.getOrThrow(since)?.data ?: emptySet(),
                                 description = description
                             ),
                             since = since,

@@ -24,7 +24,7 @@ package com.gw2tb.apigen.internal.dsl
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.Name
 
 @OptIn(LowLevelApiGenApi::class)
 internal class ScopedTypeRegistry<T : IRAPIType>(

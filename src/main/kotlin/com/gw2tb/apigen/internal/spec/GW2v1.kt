@@ -22,7 +22,7 @@
 @file:Suppress("FunctionName", "LocalVariableName")
 package com.gw2tb.apigen.internal.spec
 
-import com.gw2tb.apigen.APIv1Endpoint.*
+import com.gw2tb.apigen.model.APIv1Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 

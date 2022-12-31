@@ -21,38 +21,17 @@
  */
 package com.gw2tb.apigen.schema
 
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.model.Optionality
+
 /**
- * A schema property.
- *
- * TODO documentation pass
- *
- *
- * ### Names and Description
- *
- * A property has multiple name attributes which differ mostly in casing:
- *
- * 1. [propertyName] - the name of the property in TitleCase (e.g. `ItemID`),
- * 2. [camelCaseName] - the name of the property in camelCase (e.g. `itemID`), and
- * 3. [serialName] - the name of the property in snake_case (e.g. `item_id`).
- *
- * The serial name is also the name of the property that should be used during
- * de-/serialization (hence its name). It exactly matches name of the property
- * in the JSON-encoded API response.
- *
- * Additionally, a property also has a [description]. The description of a
- * property should be worded to fit into the following sentence:
- *
- * > This property holds {description}.
- *
- * (i.e. "This property holds the item's ID")
- *
+ * A `SchemaProperty` typically represents an entry in a JSON object.
  *
  * ### Deprecation
  *
  * Properties may be [isDeprecated]. This attribute is purely informational and
- * does not have any semantic meaning. However, it is good practice to consume
- * and to make it visible in generated sources anyway when including the
- * property.
+ * does not have any semantic meaning. However, it is good practice to relay
+ * this information (e.g. using the `@Deprecated` annotation in Java).
  *
  * Usually, there are more flexible alternatives or replacements to retrieve the
  * data exposed in deprecated properties.
@@ -60,10 +39,12 @@ package com.gw2tb.apigen.schema
  *
  * ### Inlining
  *
- * A property of a reference type may be marked as [inlined][isInline]. Inlined
- * properties are
+ * A property of a [reference type][SchemaTypeReference] may be marked as [inlined][isInline].
+ * Inlined properties do not represent an entry in a JSON object and instead
+ * indicate that the referenced type is embedded in the object.
  *
- * TODO
+ * Inlining properties is useful for extracting logical groups that are not
+ * strongly grouped in the data.
  *
  *
  * ### Type coercion
@@ -83,17 +64,27 @@ package com.gw2tb.apigen.schema
  * Localized properties are exempt from this rule and should and are expected to
  * return localized results.
  *
+ * @param name          the name of the property
  * @param type          the type of the property
- * @param optionality   the [Optionality] of the property
+ * @param isDeprecated  whether the property is deprecated
+ * @param isInline      whether the property is referencing an object that is
+ *                      embedded into the containing object
+ * @param isLenient     TODO doc
+ * @param isLocalized   TODO doc
+ * @param optionality   TODO doc
+ * @param serialName    TODO doc
+ * @param description   a description of the property
+ *
+ * @since   0.7.0
  */
 public data class SchemaProperty internal constructor(
     public val name: Name,
     public val type: SchemaTypeUse,
-    public val description: String,
     public val isDeprecated: Boolean,
     public val isInline: Boolean,
     public val isLenient: Boolean,
     public val isLocalized: Boolean,
     public val optionality: Optionality,
-    public val serialName: String
+    public val serialName: String,
+    public val description: String
 )

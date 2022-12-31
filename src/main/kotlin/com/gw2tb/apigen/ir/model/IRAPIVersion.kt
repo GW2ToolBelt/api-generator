@@ -26,22 +26,27 @@ import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.ir.ReferenceCollector
 import com.gw2tb.apigen.ir.ResolverContext
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaTypeDeclaration
+import com.gw2tb.apigen.schema.model.APIVersion
 
 /**
  * A low-level representation of a [APIVersion].
  *
+ * @param supportedLanguages    the version's supported languages
+ * @param supportedQueries      the version's supported queries
+ * @param supportedTypes        the version's supported types
+ *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType>(
-    val languages: Set<Language>,
-    val queries: Set<Q>,
-    val types: Map<QualifiedTypeName.Declaration, T>
+public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType> internal constructor(
+    val supportedLanguages: Set<Language>,
+    val supportedQueries: Set<Q>,
+    val supportedTypes: Map<QualifiedTypeName.Declaration, T>
 ) {
 
-    internal fun resolve(aliasCollector: AliasCollector, v2SchemaVersion: V2SchemaVersion? = null): APIVersion {
+    internal fun resolve(aliasCollector: AliasCollector, v2SchemaVersion: SchemaVersion? = null): APIVersion {
         val referencedTypes = mutableMapOf<QualifiedTypeName.Declaration, SchemaTypeDeclaration>()
 
         val referenceCollector = ReferenceCollector { name, schema ->
@@ -53,9 +58,9 @@ public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType>(
             override val referenceCollector: ReferenceCollector get() = referenceCollector
         }
 
-        val queries = queries.mapNotNull { it.resolve(resolverContext, v2SchemaVersion) }.toSet()
+        val queries = supportedQueries.mapNotNull { it.resolve(resolverContext, v2SchemaVersion) }.toSet()
 
-        val types = types.entries.mapNotNull { (qualifiedName, type) ->
+        val types = supportedTypes.entries.mapNotNull { (qualifiedName, type) ->
             if (qualifiedName in referencedTypes) {
                 val apiType = type.resolve(resolverContext, v2SchemaVersion)
                 qualifiedName to apiType
@@ -65,7 +70,7 @@ public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType>(
         }.toMap()
 
         return APIVersion(
-            supportedLanguages = languages,
+            supportedLanguages = supportedLanguages,
             supportedQueries = queries,
             supportedTypes = types
         )

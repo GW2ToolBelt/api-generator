@@ -26,8 +26,8 @@ import com.gw2tb.apigen.internal.impl.containsChangeForBounds
 import com.gw2tb.apigen.internal.impl.requireCamelCase
 import com.gw2tb.apigen.internal.impl.requireTitleCase
 import com.gw2tb.apigen.ir.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 
 internal class SchemaEnumValueBuilder(
     private val nameTitleCase: String,
@@ -47,7 +47,7 @@ internal class SchemaEnumValueBuilder(
             field = value
         }
 
-    var since: V2SchemaVersion? = null
+    var since: SchemaVersion? = null
         set(value) {
             check(isUnused)
             requireNotNull(value)
@@ -55,7 +55,7 @@ internal class SchemaEnumValueBuilder(
             field = value
         }
 
-    var until: V2SchemaVersion? = null
+    var until: SchemaVersion? = null
         set(value) {
             check(isUnused)
             requireNotNull(value)
@@ -97,7 +97,7 @@ internal class SchemaEnumValueBuilder(
         return _value
     }
 
-    fun hasChangedInVersion(version: V2SchemaVersion): Boolean {
+    fun hasChangedInVersion(version: SchemaVersion): Boolean {
         get()
         return version.containsChangeForBounds(since, until)
     }

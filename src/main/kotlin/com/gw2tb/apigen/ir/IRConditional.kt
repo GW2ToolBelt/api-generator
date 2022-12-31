@@ -21,28 +21,39 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.SchemaConditional
 import com.gw2tb.apigen.schema.SchemaProperty
 
 /**
  * A low-level representation of a [SchemaConditional].
  *
+ * @param name                              the name of the conditional
+ * @param selector                          the key of the property which's value is used to select the appropriate
+ *                                          interpretation
+ * @param selectorInSideProperty            `true` if the selector property resides next to the object, or `false` if it
+ *                                          is nested in the object
+ * @param interpretationInNestedProperty    `true` if the interpretations are nested in separate properties, or `false`
+ *                                          if they are embedded in the object
+ * @param sharedProperties                  the properties that are common to all interpretations
+ * @param interpretations                   the interpretations of the conditional
+ * @param description                       a description of the conditional
+ *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
 public data class IRConditional internal constructor(
     public override val name: Name,
-    public val description: String,
-    public val disambiguationBy: String,
-    public val disambiguationBySideProperty: Boolean,
+    public val selector: String,
+    public val selectorInSideProperty: Boolean,
     public val interpretationInNestedProperty: Boolean,
     public val sharedProperties: Set<IRProperty>,
-    public val interpretations: Set<Interpretation>
+    public val interpretations: Set<Interpretation>,
+    public val description: String
 ) : IRTypeDeclaration<SchemaConditional>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaConditional {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaConditional {
         val sharedProperties = sharedProperties.mapNotNull { it.resolve(resolverContext, v2SchemaVersion) }
             .associateBy(SchemaProperty::serialName)
 
@@ -52,24 +63,36 @@ public data class IRConditional internal constructor(
         return SchemaConditional(
             name = name,
             description = description,
-            disambiguationBy = disambiguationBy,
-            disambiguationBySideProperty = disambiguationBySideProperty,
+            selector = selector,
+            selectorInSideProperty = selectorInSideProperty,
             interpretationInNestedProperty = interpretationInNestedProperty,
             sharedProperties = sharedProperties,
             interpretations = interpretations
         )
     }
 
-    public data class Interpretation(
+    /**
+     * A low-level representation of an [SchemaConditional.Interpretation].
+     *
+     * @param interpretationKey             the key used to identify the interpretation
+     * @param interpretationNestProperty    the serial name of the property which the interpretation is nested in
+     * @param type                          the schema definition for this interpretation
+     * @param isDeprecated                  whether the interpretation is deprecated
+     * @param since                         the lower bound version (inclusive)
+     * @param until                         the upper bound version (exclusive)
+     *
+     * @since   0.7.0
+     */
+    public data class Interpretation internal constructor(
         public val interpretationKey: String,
         public val interpretationNestProperty: String?,
         public val type: IRTypeUse<*>,
         public val isDeprecated: Boolean,
-        public val since: V2SchemaVersion?,
-        public val until: V2SchemaVersion?
+        public val since: SchemaVersion?,
+        public val until: SchemaVersion?
     ) {
 
-        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaConditional.Interpretation? {
+        internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaConditional.Interpretation? {
             if (v2SchemaVersion != null) {
                 if (since != null && since > v2SchemaVersion) return null
                 if (until != null && until < v2SchemaVersion) return null

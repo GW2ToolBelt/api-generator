@@ -22,20 +22,30 @@
 package com.gw2tb.apigen.ir
 
 import com.gw2tb.apigen.model.QualifiedTypeName
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaTypeReference
 
+/**
+ * A low-level representation of a [SchemaTypeReference].
+ *
+ * @since   0.7.0
+ */
 @LowLevelApiGenApi
 public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
 
+    /**
+     * The [qualified name][QualifiedTypeName] of the referenced type.
+     *
+     * @since   0.7.0
+     */
     public abstract val name: QualifiedTypeName
 
-    public data class Alias internal constructor(
+    internal data class Alias internal constructor(
         override val name: QualifiedTypeName.Alias,
         internal val alias: IRAlias
     ) : IRTypeReference() {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaTypeReference {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference {
             val alias = alias.resolve(resolverContext, v2SchemaVersion)
             resolverContext.aliasCollector.collect(name, alias)
 
@@ -44,12 +54,12 @@ public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
 
     }
 
-    public data class Declaration internal constructor(
+    internal data class Declaration internal constructor(
         override val name: QualifiedTypeName.Declaration,
         internal val declaration: IRTypeDeclaration<*>
     ) : IRTypeReference() {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaTypeReference {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference {
             val declaration = declaration.resolve(resolverContext, v2SchemaVersion)
             resolverContext.referenceCollector.collect(name, declaration)
 

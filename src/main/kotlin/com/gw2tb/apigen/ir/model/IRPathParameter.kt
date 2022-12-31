@@ -24,34 +24,37 @@ package com.gw2tb.apigen.ir.model
 import com.gw2tb.apigen.ir.IRTypeUse
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.ir.ResolverContext
-import com.gw2tb.apigen.model.PathParameter
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.schema.model.PathParameter
+import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.model.Name
 
 /**
  * A low-level representation of a [PathParameter].
+ *
+ * @param key           the key of the parameter (that is used in the route definition)
+ * @param type          the type of the parameter
+ * @param name          the name of the parameter
+ * @param description   the description of the parameter
  *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
 public data class IRPathParameter internal constructor(
-    val key: String,
-    val type: IRTypeUse<*>,
-    val description: String,
-    val name: String,
-    val camelCaseName: String
+    public val key: String,
+    public val type: IRTypeUse<*>,
+    public val name: Name,
+    public val description: String
 ) {
 
-    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): PathParameter {
+    internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): PathParameter {
         val type = type.resolve(resolverContext, v2SchemaVersion)
 
         return PathParameter(
             key = key,
             type = type,
-            description = description,
             name = name,
-            camelCaseName = camelCaseName
+            description = description
         )
     }
-
 
 }

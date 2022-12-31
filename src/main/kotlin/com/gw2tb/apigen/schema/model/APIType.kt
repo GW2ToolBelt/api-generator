@@ -19,47 +19,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.schema
+package com.gw2tb.apigen.schema.model
 
 import com.gw2tb.apigen.model.QualifiedTypeName
+import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.schema.*
 
 /**
- * A reference to a schema representation of a type.
+ * A type used by the Guild Wars 2 API.
+ *
+ * @param name                  the type's name
+ * @param schema                the type's schema definition
+ * @param interpretationHint    additional information about the type if it represents an interpretation of a [SchemaConditional]
  *
  * @since   0.7.0
  */
-public sealed class SchemaTypeReference : SchemaTypeUse() {
+public data class APIType(
+    public val name: Name,
+    public val schema: SchemaTypeDeclaration,
+    public val interpretationHint: InterpretationHint?,
+    internal val isTopLevel: Boolean,
+    internal val testSet: Int?
+) {
 
     /**
-     * The [qualified name][QualifiedTypeName] of the referenced type.
+     * Additional information about a type that represents an [interpretation][SchemaConditional.Interpretation].
+     *
+     * @param conditionalBase               the qualified name of the conditional base type
+     * @param interpretationKey             the key that identifies this interpretation
+     * @param interpretationNestProperty    the key of the property in which this interpretation is nested, or `null`
      *
      * @since   0.7.0
      */
-    public abstract val name: QualifiedTypeName
-
-    /**
-     * Returns `true` if the referenced type is localized, or `false` otherwise.
-     *
-     * @since   0.7.0
-     */
-    abstract override val isLocalized: Boolean
-
-    internal data class Alias constructor(
-        override val name: QualifiedTypeName.Alias,
-        val alias: SchemaAlias
-    ) : SchemaTypeReference() {
-
-        override val isLocalized: Boolean get() = alias.isLocalized
-
-    }
-
-    internal data class Declaration constructor(
-        override val name: QualifiedTypeName.Declaration,
-        val declaration: SchemaTypeDeclaration
-    ) : SchemaTypeReference() {
-
-        override val isLocalized: Boolean get() = declaration.isLocalized
-
-    }
+    public data class InterpretationHint(
+        val conditionalBase: QualifiedTypeName,
+        val interpretationKey: String,
+        val interpretationNestProperty: String?
+    )
 
 }

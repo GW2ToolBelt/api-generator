@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.schema
+package com.gw2tb.apigen.model
 
 internal fun Name(vararg segments: String): Name = Name(
     camelCase = segments.first().lowercase() + segments.joinToString(separator = ""),
@@ -53,10 +53,10 @@ public data class Name internal constructor(
                 var remaining = this@splitCasing
 
                 while (remaining.isNotEmpty()) {
-                    var segment = remaining.takeWhile { it.isUpperCase() }
+                    var segment = remaining.takeWhile { it == '/' || it.isUpperCase() }
 
-                    if (segment.length <= 1) {
-                        segment += remaining.drop(segment.length).takeWhile { !it.isUpperCase() }
+                    if (segment.length <= (if (segment.startsWith('/')) 2 else 1)) {
+                        segment += remaining.drop(segment.length).takeWhile { it != '/' && !it.isUpperCase() }
                     }
 
                     if (segment.isNotEmpty()) {

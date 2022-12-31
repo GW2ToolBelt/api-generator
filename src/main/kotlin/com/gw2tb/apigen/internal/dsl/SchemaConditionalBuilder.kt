@@ -26,18 +26,19 @@ import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.*
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.model.APIType
 
 @OptIn(LowLevelApiGenApi::class)
 internal class SchemaConditionalBuilder<T : IRAPIType>(
     override val name: Name,
     private val description: String,
-    private val disambiguationBy: String,
-    private val disambiguationBySideProperty: Boolean,
+    private val selector: String,
+    private val selectorInSideProperty: Boolean,
     private val interpretationInNestedProperty: Boolean,
     private val sharedConfigure: (AbstractSchemaRecordBuilder<T>.() -> Unit)?,
-    override val apiTypeFactory: (SchemaVersionedData<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
+    override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
     override val typeRegistry: ScopedTypeRegistry<T>?
 ) : DeferredSchemaClass<T>() {
 
@@ -46,8 +47,8 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
     private fun buildInterpretations(
         conditionalBase: QualifiedTypeName,
         typeRegistry: ScopedTypeRegistry<T>?
-    ): SchemaVersionedData<Map<String, IRConditional.Interpretation>> = buildVersionedSchemaData {
-        V2SchemaVersion.values().forEach { version ->
+    ): SchemaVersionedDataImpl<Map<String, IRConditional.Interpretation>> = buildVersionedSchemaData {
+        SchemaVersion.values().forEach { version ->
             val relevantInterpretations = _interpretations.getForVersion(
                 SchemaConditionalInterpretationBuilder::since,
                 SchemaConditionalInterpretationBuilder::until,
@@ -62,19 +63,19 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
         }
     }
 
-    private fun buildProperties(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedData<Map<String, IRProperty>>? =
+    private fun buildProperties(typeRegistry: ScopedTypeRegistry<T>?): SchemaVersionedDataImpl<Map<String, IRProperty>>? =
         if (sharedConfigure != null)
             SchemaConditionalSharedPropertyBuilder(apiTypeFactory, typeRegistry).also(sharedConfigure).buildProperties(typeRegistry)
         else
             null
 
-    private lateinit var _value: SchemaVersionedData<IRTypeReference>
+    private lateinit var _value: SchemaVersionedDataImpl<IRTypeReference>
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
         interpretationHint: APIType.InterpretationHint?,
         isTopLevel: Boolean
-    ): SchemaVersionedData<out IRTypeReference> {
+    ): SchemaVersionedDataImpl<out IRTypeReference> {
         if (!this::_value.isInitialized) {
             @Suppress("NAME_SHADOWING")
             val typeRegistry = this.typeRegistry
@@ -86,19 +87,19 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
             val interpretations = buildInterpretations(loc, nestedTypeRegistry)
 
             val versions = buildVersionedSchemaData<IRConditional> {
-                V2SchemaVersion.values()
-                    .filter { version -> version == V2SchemaVersion.V2_SCHEMA_CLASSIC || interpretations.hasChangedInVersion(version) || sharedProperties?.hasChangedInVersion(version) == true }
+                SchemaVersion.values()
+                    .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || interpretations.hasChangedInVersion(version) || sharedProperties?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
                     .forEach { (since, until) ->
                         add(
                             datum = IRConditional(
-                                name,
-                                description,
-                                disambiguationBy,
-                                disambiguationBySideProperty,
-                                interpretationInNestedProperty,
-                                sharedProperties?.get(since)?.data?.values?.toSet() ?: emptySet(),
-                                interpretations[since].data.values.toSet(),
+                                name = name,
+                                selector = selector,
+                                selectorInSideProperty = selectorInSideProperty,
+                                interpretationInNestedProperty = interpretationInNestedProperty,
+                                sharedProperties = sharedProperties?.get(since)?.data?.values?.toSet() ?: emptySet(),
+                                interpretations = interpretations.getOrThrow(since).data.values.toSet(),
+                                description
                             ),
                             since = since,
                             until = until
@@ -140,15 +141,15 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
     /** Marks a deprecated interpretation. */
     val deprecated get() = Modifiers.deprecated
 
-    /** The minimal [V2SchemaVersion] (inclusive) required for the interpretation. */
-    fun since(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
+    /** The minimal [SchemaVersion] (inclusive) required for the interpretation. */
+    fun since(version: SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
         override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
             interpretation.since = version
         }
     }
 
-    /** The maximum [V2SchemaVersion] (exclusive) required for the interpretation. */
-    fun until(version: V2SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
+    /** The maximum [SchemaVersion] (exclusive) required for the interpretation. */
+    fun until(version: SchemaVersion): IInterpretationModifier = object : IInterpretationModifier {
         override fun applyTo(interpretation: SchemaConditionalInterpretationBuilder) {
             interpretation.until = version
         }

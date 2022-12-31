@@ -22,16 +22,24 @@
 package com.gw2tb.apigen.model
 
 /**
- * A Guild Wars 2 API version.
- *
- * @param supportedLanguages    the version's supported languages
- * @param supportedQueries      the version's supported queries
- * @param supportedTypes        the version's supported types
+ * An endpoint of a version of the Guild Wars 2 API.
  *
  * @since   0.7.0
  */
-public data class APIVersion internal constructor(
-    val supportedLanguages: Set<Language>,
-    val supportedQueries: Set<APIQuery>,
-    val supportedTypes: Map<QualifiedTypeName.Declaration, APIType>
-)
+public sealed interface APIEndpoint {
+
+    /**
+     * The name of the endpoint.
+     *
+     * @since   0.7.0
+     */
+    public val endpointName: Name
+
+    /**
+     * The relative path to the endpoint from the API versions root path.
+     *
+     * @since   0.7.0
+     */
+    public val path: String
+
+}

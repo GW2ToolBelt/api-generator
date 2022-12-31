@@ -22,7 +22,7 @@
 package com.gw2tb.apigen.internal.spec
 
 import com.gw2tb.apigen.internal.dsl.*
-import com.gw2tb.apigen.schema.Name
+import com.gw2tb.apigen.model.Name
 
 /** A common alias for achievement IDs. */
 internal val ACHIEVEMENT_ID = Alias(INTEGER, "AchievementID")

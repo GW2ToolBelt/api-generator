@@ -21,11 +21,15 @@
  */
 package com.gw2tb.apigen.ir
 
-import com.gw2tb.apigen.model.v2.V2SchemaVersion
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaArray
 
 /**
  * A low-level representation of a [SchemaArray].
+ *
+ * @param elements          the type of the array's elements
+ * @param nullableElements  whether the array's elements may be `null`
+ * @param description       an optional description of the array
  *
  * @since   0.7.0
  */
@@ -36,7 +40,7 @@ public data class IRArray(
     public val description: String?
 ): IRTypeUse<SchemaArray>() {
 
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: V2SchemaVersion?): SchemaArray {
+    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaArray {
         val elements = elements.resolve(resolverContext, v2SchemaVersion)
 
         return SchemaArray(

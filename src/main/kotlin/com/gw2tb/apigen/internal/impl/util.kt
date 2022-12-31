@@ -29,10 +29,10 @@ internal fun String.firstToLowerCase(): String =
 internal fun requireCamelCase(str: String, ctx: String) = require(str[0].isLowerCase()) { "$ctx should be in camelCase: $str" }
 internal fun requireTitleCase(str: String, ctx: String) = require(str[0].isUpperCase()) { "$ctx should be in TitleCase: $str" }
 
-internal fun V2SchemaVersion.containsChangeForBounds(since: V2SchemaVersion?, until: V2SchemaVersion?): Boolean =
-    (since ?: V2SchemaVersion.V2_SCHEMA_CLASSIC) == this || until == this
+internal fun SchemaVersion.containsChangeForBounds(since: SchemaVersion?, until: SchemaVersion?): Boolean =
+    (since ?: SchemaVersion.V2_SCHEMA_CLASSIC) == this || until == this
 
-internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> V2SchemaVersion?, untilSelector: (T) -> V2SchemaVersion?, version: V2SchemaVersion): List<T> =
+internal fun <T> List<T>.getForVersion(sinceSelector: (T) -> SchemaVersion?, untilSelector: (T) -> SchemaVersion?, version: SchemaVersion): List<T> =
     filter {
         val since = sinceSelector(it)
         if (since != null && version < since) return@filter false
