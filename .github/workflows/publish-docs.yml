@@ -34,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          input: ./build/mkdocs/site
+          path: ./build/mkdocs/site
 
       - name: Deploy
         id: deployment
