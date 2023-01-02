@@ -74,6 +74,11 @@ jobs:
           arguments: mkdocs --info -S --show-version
           gradle-home-cache-cleanup: true
 
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          input: ./build/mkdocs/site
+          retention-days: 3
 
   check:
     name: Check
