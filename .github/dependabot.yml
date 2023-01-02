@@ -7,6 +7,9 @@ updates:
     open-pull-requests-limit: 20
     commit-message:
       prefix: "build"
+    labels:
+      - "a:chore"
+      - "in:dependencies"
 
   - package-ecosystem: "pip"
     directory: "/.github/workflows/"
@@ -15,3 +18,6 @@ updates:
     open-pull-requests-limit: 20
     commit-message:
       prefix: "build"
+    labels:
+      - "a:chore"
+      - "in:dependencies"
