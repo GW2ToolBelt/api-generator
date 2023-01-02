@@ -6,7 +6,7 @@ site_url: 'https://gw2toolbelt.github.io/api-generator'
 edit_uri: 'tree/master/docs'
 remote_branch: 'gh-pages'
 
-docs_dir: 'build/mkdocs/docs'
+docs_dir: 'build/mkdocs/sources'
 
 # Repository
 repo_name: 'api-generator'
