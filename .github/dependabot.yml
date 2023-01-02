@@ -7,3 +7,11 @@ updates:
     open-pull-requests-limit: 20
     commit-message:
       prefix: "build"
+
+  - package-ecosystem: "pip"
+    directory: "/.github/workflows/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: "build"
