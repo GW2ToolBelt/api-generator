@@ -23,9 +23,9 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: pip3 install -r mkdocs-requirements.txt
+        run: pip3 install -r .github/workflows/mkdocs-requirements.txt
 
-      - name: Gradle MkDocs
+      - name: Build documentation
         uses: gradle/gradle-build-action@v2
         with:
           arguments: mkdocs --info -S --show-version

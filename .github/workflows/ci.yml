@@ -54,7 +54,7 @@ jobs:
 
 
   mkdocs:
-    name: Gradle MkDocs
+    name: Build documentation
     needs: [validate-gradle]
     runs-on: ubuntu-latest
     steps:
