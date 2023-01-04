@@ -23,6 +23,8 @@
 
 import com.gw2tb.apigen.build.*
 import com.gw2tb.apigen.build.BuildType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
 import java.net.URL
 
@@ -59,11 +61,11 @@ kotlin {
 
     target {
         compilations.all {
-            kotlinOptions {
-                languageVersion = "1.6"
-                apiVersion = "1.6"
+            compilerOptions.configure {
+                apiVersion.set(KotlinVersion.KOTLIN_1_8)
+                languageVersion.set(KotlinVersion.KOTLIN_1_8)
 
-                jvmTarget = "1.8"
+                freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
             }
         }
     }
@@ -75,8 +77,8 @@ tasks {
     }
 
     withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = (freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn")
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
 
@@ -214,7 +216,7 @@ repositories {
 }
 
 dependencies {
-    api(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib"))
     api(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit.jupiter.api)
