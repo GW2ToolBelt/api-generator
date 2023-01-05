@@ -72,17 +72,17 @@ kotlin {
 }
 
 tasks {
-    withType<JavaCompile> {
+    withType<JavaCompile>().configureEach {
         options.release.set(8)
     }
 
-    withType<KotlinCompile> {
+    withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
 
-    withType<Test> {
+    withType<Test>().configureEach {
         useJUnitPlatform()
 
         testLogging {
