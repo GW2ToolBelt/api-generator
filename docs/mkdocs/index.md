@@ -2,7 +2,7 @@
 
 **api-generator** is a library for programmatically creating programs that
 interface with the official Guild Wars 2 API. It provides information about the
-API's available REST resources and the format of the exposed data.
+API's available endpoints and the format of the exposed data.
 
 api-generator is intended to be used as source of information for static code
 generation. It does not make any assumption about the generated output.
