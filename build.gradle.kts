@@ -125,12 +125,16 @@ tasks {
         val contributingFile = layout.projectDirectory.file(".github/CONTRIBUTING.md")
         inputs.file(contributingFile)
 
-        val workDir =  layout.buildDirectory.dir("mkdocs")
+        val workDir = layout.buildDirectory.dir("mkdocs")
 
         val outputDir = workDir.map { it.dir("site") }
         outputs.dir(outputDir)
 
         doLast {
+            delete(fileTree(workDir) {
+                exclude("sources/api")
+            })
+
             copy {
                 from(inputDir)
                 into(workDir.map { it.dir("sources") }.get())
