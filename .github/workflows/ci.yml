@@ -62,8 +62,6 @@ jobs:
 
       - name: Setup Python
         uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
 
       - name: Install dependencies
         run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
