@@ -2,7 +2,7 @@
 binary-compatibility-validator = "0.12.1"
 dokka = "1.7.20"
 gradle-toolchain-switches = "0.2.0"
-junit = "5.9.1"
+junit = "5.9.2"
 kotlin = "1.8.0"
 kotlinx-serialization = "1.4.1"
 
