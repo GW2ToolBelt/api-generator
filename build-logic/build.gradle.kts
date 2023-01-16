@@ -19,10 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.build
+plugins {
+    `kotlin-dsl`
+}
 
-enum class BuildType {
-    LOCAL,
-    SNAPSHOT,
-    RELEASE
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

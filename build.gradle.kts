@@ -21,8 +21,6 @@
  */
 @file:Suppress("UnstableApiUsage", "SuspiciousCollectionReassignment")
 
-import com.gw2tb.apigen.build.*
-import com.gw2tb.apigen.build.BuildType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
@@ -34,18 +32,10 @@ plugins {
     alias(libs.plugins.gradle.toolchain.switches)
     alias(libs.plugins.dokka)
     alias(libs.plugins.binary.compatibility.validator)
-    signing
-    `maven-publish`
+    id("com.gw2tb.maven-publish-conventions")
 }
 
 val artifactName = "api-generator"
-val nextVersion = "0.7.0"
-
-group = "com.gw2tb.api-generator"
-version = when (deployment.type) {
-    BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
-    else -> nextVersion
-}
 
 java {
     toolchain {
@@ -162,57 +152,12 @@ tasks {
 }
 
 publishing {
-    repositories {
-        maven {
-            url = uri(deployment.repo)
-
-            credentials {
-                username = deployment.user
-                password = deployment.password
-            }
-        }
-    }
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             artifactId = artifactName
-
-            pom {
-                name.set(project.name)
-                description.set("A library for generating programs that interface with the official Guild Wars 2 API.")
-                packaging = "jar"
-                url.set("https://github.com/GW2ToolBelt/api-generator")
-
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://github.com/GW2ToolBelt/api-generator/blob/master/LICENSE")
-                        distribution.set("repo")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("TheMrMilchmann")
-                        name.set("Leon Linhart")
-                        email.set("themrmilchmann@gmail.com")
-                        url.set("https://github.com/TheMrMilchmann")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
-                    developerConnection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
-                    url.set("https://github.com/GW2ToolBelt/api-generator.git")
-                }
-            }
         }
     }
-}
-
-signing {
-    isRequired = (deployment.type === BuildType.RELEASE)
-    sign(publishing.publications)
 }
 
 repositories {

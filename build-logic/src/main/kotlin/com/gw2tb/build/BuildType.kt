@@ -19,11 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.build
+package com.gw2tb.build
 
-data class Deployment internal constructor(
-    val type: BuildType,
-    val repo: String,
-    val user: String? = null,
-    val password: String? = null
-)
+enum class BuildType {
+    LOCAL,
+    SNAPSHOT,
+    RELEASE
+}

@@ -19,13 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-rootProject.name = "api-generator"
+package com.gw2tb.build
 
-pluginManagement {
-    includeBuild("build-logic")
-
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
+data class Deployment internal constructor(
+    val type: BuildType,
+    val repo: String,
+    val user: String? = null,
+    val password: String? = null
+)

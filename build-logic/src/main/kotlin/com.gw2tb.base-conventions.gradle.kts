@@ -19,8 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-plugins {
-    `kotlin-dsl`
+import com.gw2tb.build.*
+import com.gw2tb.build.BuildType
+
+group = "com.gw2tb.api-generator"
+
+val nextVersion = "0.7.0"
+version = when (deployment.type) {
+    BuildType.SNAPSHOT -> "$nextVersion-SNAPSHOT"
+    else -> nextVersion
 }
 
 repositories {

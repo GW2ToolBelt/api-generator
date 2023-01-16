@@ -19,13 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-rootProject.name = "api-generator"
+rootProject.name = "build-logic"
 
-pluginManagement {
-    includeBuild("build-logic")
-
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
     }
 }
