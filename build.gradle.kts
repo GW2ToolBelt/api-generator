@@ -157,10 +157,6 @@ publishing {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     api(kotlin("stdlib"))
     api(libs.kotlinx.serialization.json)
