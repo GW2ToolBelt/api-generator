@@ -53,8 +53,6 @@ kotlin {
             compilerOptions.configure {
                 apiVersion.set(KotlinVersion.KOTLIN_1_8)
                 languageVersion.set(KotlinVersion.KOTLIN_1_8)
-
-                freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
             }
         }
     }
