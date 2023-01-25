@@ -34,8 +34,6 @@ plugins {
     id("com.gw2tb.maven-publish-conventions")
 }
 
-val artifactName = "api-generator"
-
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(19))
@@ -152,7 +150,6 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = artifactName
         }
     }
 }
