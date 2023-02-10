@@ -21,14 +21,3 @@ updates:
     labels:
       - "a:chore"
       - "in:dependencies"
-
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 20
-    commit-message:
-      prefix: "build"
-    labels:
-      - "a:chore"
-      - "in:dependencies"
