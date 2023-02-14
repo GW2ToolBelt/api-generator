@@ -19,9 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-rootProject.name = "api-generator"
-
 pluginManagement {
+    plugins {
+        id("org.gradle.toolchains.foojay-resolver-convention") version("0.4.0")
+    }
+
     includeBuild("build-logic")
 
     repositories {
@@ -29,3 +31,9 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention")
+}
+
+rootProject.name = "api-generator"
