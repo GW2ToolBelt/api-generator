@@ -43,7 +43,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
-public data class SchemaEnum(
+public data class SchemaEnum internal constructor(
     public override val name: Name,
     public val type: SchemaPrimitive,
     public val values: Set<Value>,
@@ -67,7 +67,7 @@ public data class SchemaEnum(
      *
      * @since   0.7.0
      */
-    public data class Value(
+    public data class Value internal constructor(
         public val name: Name,
         public val value: String,
         public val description: String

@@ -34,7 +34,7 @@ import com.gw2tb.apigen.schema.SchemaArray
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-public data class IRArray(
+public data class IRArray internal constructor(
     public val elements: IRTypeUse<*>,
     public val nullableElements: Boolean,
     public val description: String?

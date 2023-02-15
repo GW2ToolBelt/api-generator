@@ -80,7 +80,7 @@ public data class SchemaTuple internal constructor(
      *
      * @since   0.7.0
      */
-    public data class Element(
+    public data class Element internal constructor(
         public val name: Name,
         public val type: SchemaTypeUse,
         public val description: String,

@@ -64,7 +64,7 @@ public data class IREnum internal constructor(
      *
      * @since   0.7.0
      */
-    public data class Value(
+    public data class Value internal constructor(
         public val name: Name,
         public val value: String,
         public val description: String
