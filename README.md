@@ -46,7 +46,7 @@ refer to the [user guide](docs/mkdocs/userguide).
 
 ### Setup
 
-This project uses [Gradle's toolchain support](https://docs.gradle.org/7.6/userguide/toolchains.html)
+This project uses [Gradle's toolchain support](https://docs.gradle.org/8.0/userguide/toolchains.html)
 to detect and select the JDKs required to run the build. Please refer to the
 build scripts to find out which toolchains are requested.
 
