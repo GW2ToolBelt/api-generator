@@ -29,7 +29,7 @@ import com.gw2tb.apigen.schema.*
 
 @OptIn(LowLevelApiGenApi::class)
 internal val MUMBLE_IDENTITY by lazy {
-    operator fun String.invoke(type: DeferredPrimitiveType, description: String, serialName: String? = null): IRProperty {
+    operator fun String.invoke(type: DeferredPrimitiveType<*>, description: String, serialName: String? = null): IRProperty {
         val name = Name.derive(titleCase = this, snakeCase = serialName)
 
         return IRProperty(

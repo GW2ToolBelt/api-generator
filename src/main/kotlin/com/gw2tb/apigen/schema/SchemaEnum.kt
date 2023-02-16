@@ -45,7 +45,7 @@ import com.gw2tb.apigen.model.Name
  */
 public data class SchemaEnum internal constructor(
     public override val name: Name,
-    public val type: SchemaPrimitive,
+    public val type: SchemaPrimitiveOrAlias,
     public val values: Set<Value>,
     public val description: String
 ) : SchemaTypeDeclaration() {

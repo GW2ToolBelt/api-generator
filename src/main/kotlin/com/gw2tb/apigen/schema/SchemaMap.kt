@@ -50,7 +50,7 @@ package com.gw2tb.apigen.schema
  * @since   0.7.0
  */
 public data class SchemaMap internal constructor(
-    public val keys: SchemaPrimitive,
+    public val keys: SchemaPrimitiveOrAlias,
     public val values: SchemaTypeUse,
     public val nullableValues: Boolean,
     public val description: String?

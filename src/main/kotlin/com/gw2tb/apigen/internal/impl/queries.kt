@@ -50,7 +50,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
     protected abstract val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
 
     protected val pathParameters: MutableMap<String, IRPathParameter> = mutableMapOf()
-    override fun pathParameter(name: String, type: DeferredSchemaType<out IRPrimitive>, description: String, key: String, camelCase: String) {
+    override fun pathParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String) {
         check(":$key" in (route.split('/')))
         check(key !in pathParameters)
 
@@ -63,7 +63,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
     }
 
     protected val queryParameters: MutableMap<String, IRQueryParameter> = mutableMapOf()
-    override fun queryParameter(name: String, type: DeferredSchemaType<out IRPrimitive>, description: String, key: String, camelCase: String, isOptional: Boolean) {
+    override fun queryParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String, isOptional: Boolean) {
         check(key !in queryParameters)
 
         queryParameters[key] = IRQueryParameter(
@@ -90,7 +90,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
         ).also(block)
 
     override fun enum(
-        type: DeferredPrimitiveType,
+        type: DeferredPrimitiveType<*>,
         name: Name,
         description: String,
         block: SchemaEnumBuilder<T>.() -> Unit
@@ -130,7 +130,7 @@ internal class QueriesBuilderV1Impl(
 
     private lateinit var _schema: IRTypeUse<*>
 
-    override fun schema(schema: DeferredSchemaType<out IRTypeUse<*>>) {
+    override fun schema(schema: DeferredType<IRTypeUse<*>>) {
         check(!this::_schema.isInitialized)
         _schema = schema.get(typeRegistry, interpretationHint = null, isTopLevel = true).single().data
     }
@@ -167,12 +167,12 @@ internal class QueriesBuilderV2Impl(
 
     private lateinit var _schema: SchemaVersionedDataImpl<out IRTypeUse<*>>
 
-    override fun schema(schema: DeferredSchemaType<out IRTypeUse<*>>) {
+    override fun schema(schema: DeferredType<IRTypeUse<*>>) {
         check(!this::_schema.isInitialized)
         _schema = schema.get(typeRegistry, interpretationHint = null, isTopLevel = true)
     }
 
-    override fun schema(vararg schemas: Pair<SchemaVersion, DeferredSchemaType<out IRTypeUse<*>>>) {
+    override fun schema(vararg schemas: Pair<SchemaVersion, DeferredType<IRTypeUse<*>>>) {
         check(!this::_schema.isInitialized)
 
         /*
@@ -185,7 +185,7 @@ internal class QueriesBuilderV2Impl(
 
         val deferredTypeRegistry = ScopedTypeRegistry<IRAPIType.V2>(declarationCollector = { _, _ -> })
 
-        val versions = buildVersionedSchemaData<IRTypeUse<*>> {
+        val versions = buildVersionedSchemaData {
             schemas.asIterable()
                 .sortedBy { it.first }
                 .zipSchemaVersionConstraints()

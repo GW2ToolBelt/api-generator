@@ -34,7 +34,7 @@ import com.gw2tb.apigen.model.v2.SchemaVersion
 internal class SchemaConditionalInterpretationBuilder constructor(
     private val interpretationKey: String,
     private val interpretationNestProperty: String,
-    private val type: DeferredSchemaType<out IRTypeUse<*>>
+    private val type: DeferredType<IRTypeUse<*>>
 ) {
 
     var isDeprecated = false

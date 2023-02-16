@@ -36,7 +36,7 @@ import com.gw2tb.apigen.schema.SchemaMap
  */
 @LowLevelApiGenApi
 public data class IRMap internal constructor(
-    public val keys: IRPrimitive,
+    public val keys: IRPrimitiveOrAlias,
     public val values: IRTypeUse<*>,
     public val nullableValues: Boolean,
     public val description: String?

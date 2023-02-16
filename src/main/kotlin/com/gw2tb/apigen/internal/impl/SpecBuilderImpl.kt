@@ -59,7 +59,7 @@ internal abstract class SpecBuilderImplBase<E, Q : IRAPIQuery, T : IRAPIType, QB
             sharedConfigure, ::createType, typeRegistry
         ).also(block)
 
-    override fun enum(type: DeferredPrimitiveType, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+    override fun enum(type: DeferredPrimitiveType<*>, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
         SchemaEnumBuilder(type, name, description, ::createType, typeRegistry).also(block)
 
     override fun record(name: Name, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =

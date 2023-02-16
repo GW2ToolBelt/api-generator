@@ -30,7 +30,7 @@ import com.gw2tb.apigen.model.Name
 
 internal class SchemaTupleElementBuilder(
     val nameTitleCase: String,
-    val type: DeferredSchemaType<out IRTypeUse<*>>,
+    val type: DeferredType<IRTypeUse<*>>,
     val description: String
 ) {
 

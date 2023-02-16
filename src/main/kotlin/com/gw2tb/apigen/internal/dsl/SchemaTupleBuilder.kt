@@ -67,7 +67,7 @@ internal class SchemaTupleBuilder<T : IRAPIType>(
 
             val elements: SchemaVersionedDataImpl<Set<IRTuple.Element>>? = buildElements(typeRegistry?.nestedScope(name))
 
-            val versions = buildVersionedSchemaData<IRTuple> {
+            val versions = buildVersionedSchemaData {
                 SchemaVersion.values()
                     .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || elements?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
@@ -98,7 +98,7 @@ internal class SchemaTupleBuilder<T : IRAPIType>(
         return _value
     }
 
-    operator fun String.invoke(type: DeferredSchemaType<out IRTypeUse<*>>, description: String): SchemaTupleElementBuilder =
+    operator fun String.invoke(type: DeferredType<IRTypeUse<*>>, description: String): SchemaTupleElementBuilder =
         SchemaTupleElementBuilder(this, type, description).also { _elements += it }
 
 }

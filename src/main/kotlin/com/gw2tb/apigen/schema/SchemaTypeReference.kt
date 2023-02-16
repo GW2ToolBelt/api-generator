@@ -47,7 +47,7 @@ public sealed class SchemaTypeReference : SchemaTypeUse() {
     internal data class Alias constructor(
         override val name: QualifiedTypeName.Alias,
         val alias: SchemaAlias
-    ) : SchemaTypeReference() {
+    ) : SchemaTypeReference(), SchemaPrimitiveOrAlias {
 
         override val isLocalized: Boolean get() = alias.isLocalized
 

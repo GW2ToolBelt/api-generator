@@ -34,7 +34,7 @@ import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.model.Name
 
 internal class SchemaEnumBuilder<T : IRAPIType>(
-    private val type: DeferredPrimitiveType,
+    private val type: DeferredPrimitiveType<*>,
     override val name: Name,
     private val description: String,
     override val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T,
@@ -76,7 +76,7 @@ internal class SchemaEnumBuilder<T : IRAPIType>(
             val type = type.get(typeRegistry, interpretationHint = null)
             val enumValues = buildEnumValues()
 
-            val versions = buildVersionedSchemaData<IREnum> {
+            val versions = buildVersionedSchemaData {
                 SchemaVersion.values()
                     .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || enumValues?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()
@@ -84,7 +84,7 @@ internal class SchemaEnumBuilder<T : IRAPIType>(
                         add(
                             datum = IREnum(
                                 name = name,
-                                type = type.getOrThrow(since).data,
+                                type = type.getOrThrow(since).data as IRPrimitiveOrAlias,
                                 values = enumValues?.getOrThrow(since)?.data ?: emptySet(),
                                 description = description
                             ),

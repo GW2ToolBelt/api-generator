@@ -43,9 +43,9 @@ public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
     internal data class Alias internal constructor(
         override val name: QualifiedTypeName.Alias,
         internal val alias: IRAlias
-    ) : IRTypeReference() {
+    ) : IRTypeReference(), IRPrimitiveOrAlias {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference.Alias {
             val alias = alias.resolve(resolverContext, v2SchemaVersion)
             resolverContext.aliasCollector.collect(name, alias)
 
@@ -59,7 +59,7 @@ public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
         internal val declaration: IRTypeDeclaration<*>
     ) : IRTypeReference() {
 
-        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference {
+        override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaTypeReference.Declaration {
             val declaration = declaration.resolve(resolverContext, v2SchemaVersion)
             resolverContext.referenceCollector.collect(name, declaration)
 

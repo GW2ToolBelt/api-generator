@@ -53,7 +53,7 @@ internal class SchemaRecordBuilder<T : IRAPIType>(
 
             val properties: SchemaVersionedDataImpl<Map<String, IRProperty>>? = buildProperties(typeRegistry?.nestedScope(name))
 
-            val versions = buildVersionedSchemaData<IRRecord> {
+            val versions = buildVersionedSchemaData {
                 SchemaVersion.values()
                     .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || properties?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()

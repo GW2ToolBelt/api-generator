@@ -31,31 +31,9 @@ import com.gw2tb.apigen.model.v2.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.schema.model.APIType
 
-internal fun Alias(type: DeferredPrimitiveType, name: String): DeferredPrimitiveType =
-    Alias(type, Name.deriveFromTitleCase(name))
-
-internal fun Alias(type: DeferredPrimitiveType, name: Name): DeferredPrimitiveType {
-    return type // TODO impl
-}
-
-/** Alias for [SchemaBitfield] */
-internal val BITFIELD: DeferredPrimitiveType = DeferredPrimitiveType(IRBitfield)
-
-/** Alias for [SchemaBoolean]. */
-internal val BOOLEAN: DeferredPrimitiveType = DeferredPrimitiveType(IRBoolean)
-
-/** Alias for [SchemaDecimal]. */
-internal val DECIMAL: DeferredPrimitiveType = DeferredPrimitiveType(IRDecimal)
-
-/** Alias for [SchemaInteger]. */
-internal val INTEGER: DeferredPrimitiveType = DeferredPrimitiveType(IRInteger)
-
-/** Alias for [SchemaString]. */
-internal val STRING: DeferredPrimitiveType = DeferredPrimitiveType(IRString)
-
 internal fun <T : IRTypeUse<*>> DeferredSchemaType(
     factory: (ScopedTypeRegistry<*>?, Boolean) -> SchemaVersionedDataImpl<T>
-): DeferredSchemaType<T> = object : DeferredSchemaType<T>() {
+): DeferredType<T> = object : DeferredType<T>() {
 
     override fun get(
         typeRegistry: ScopedTypeRegistry<*>?,
@@ -65,35 +43,10 @@ internal fun <T : IRTypeUse<*>> DeferredSchemaType(
 
 }
 
-internal abstract class DeferredSchemaType<T : IRTypeUse<*>> {
 
-    abstract fun get(
-        typeRegistry: ScopedTypeRegistry<*>?,
-        interpretationHint: APIType.InterpretationHint?,
-        isTopLevel: Boolean = false
-    ): SchemaVersionedDataImpl<out T>
-
-    fun getFlat(): T =
-        get(typeRegistry = null, interpretationHint = null).single().data
-
-}
-
-internal data class DeferredPrimitiveType(
-    private val value: IRPrimitive,
-) : DeferredSchemaType<IRPrimitive>() {
-
-    override fun get(
-        typeRegistry: ScopedTypeRegistry<*>?,
-        interpretationHint: APIType.InterpretationHint?,
-        isTopLevel: Boolean
-    ): SchemaVersionedDataImpl<IRPrimitive> {
-        return wrapVersionedSchemaData(value)
-    }
-
-}
 
 @APIGenDSL
-internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredSchemaType<IRTypeReference>() {
+internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredType<IRTypeReference>() {
 
     abstract val name: Name
 
@@ -104,20 +57,20 @@ internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredSchemaType<
     open val nestedTypeRegistry: ScopedTypeRegistry<T>? get() = typeRegistry?.nestedScope(name)
 
     fun array(
-        items: DeferredSchemaType<out IRTypeUse<*>>,
+        items: DeferredType<IRTypeUse<*>>,
         nullableItems: Boolean = false
-    ): DeferredSchemaType<IRArray> =
+    ): DeferredType<IRArray> =
         DeferredSchemaType { typeRegistry, isTopLevel ->
             items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRArray(it, nullableItems, description = null) }
         }
 
     fun map(
-        keys: DeferredSchemaType<out IRPrimitive>,
-        values: DeferredSchemaType<out IRTypeUse<*>>,
+        keys: DeferredPrimitiveType<*>,
+        values: DeferredType<IRTypeUse<*>>,
         nullableValues: Boolean = false
-    ): DeferredSchemaType<IRMap> =
+    ): DeferredType<IRMap> =
         DeferredSchemaType { typeRegistry, isTopLevel ->
-            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat(), it, nullableValues, description = null) }
+            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat() as IRPrimitiveOrAlias, it, nullableValues, description = null) }
         }
 
 
@@ -147,10 +100,10 @@ internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredSchemaType<
         ).also(block)
 
 
-    fun enum(type: DeferredPrimitiveType, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+    fun enum(type: DeferredPrimitiveType<*>, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
         enum(type, Name.deriveFromTitleCase(name), description, block)
 
-    fun enum(type: DeferredPrimitiveType, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+    fun enum(type: DeferredPrimitiveType<*>, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
         SchemaEnumBuilder(type, name, description, apiTypeFactory, typeRegistry).also(block)
 
 
@@ -192,7 +145,7 @@ internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSch
             }
         }
 
-    operator fun String.invoke(type: DeferredSchemaType<out IRTypeUse<*>>, description: String): SchemaRecordPropertyBuilder =
+    operator fun String.invoke(type: DeferredType<IRTypeUse<*>>, description: String): SchemaRecordPropertyBuilder =
         SchemaRecordPropertyBuilder(this, type, description).also { _properties += it }
 
     /** Marks an optional property whose presents is mandated by the given `scope`. */

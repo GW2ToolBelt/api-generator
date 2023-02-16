@@ -38,7 +38,7 @@ import com.gw2tb.apigen.schema.SchemaEnum
 @LowLevelApiGenApi
 public data class IREnum internal constructor(
     public override val name: Name,
-    public val type: IRPrimitive,
+    public val type: IRPrimitiveOrAlias,
     public val values: Set<Value>,
     public val description: String
 ) : IRTypeDeclaration<SchemaEnum>() {

@@ -34,7 +34,7 @@ internal interface QueriesBuilder<T : IRAPIType> {
 
     fun pathParameter(
         name: String,
-        type: DeferredSchemaType<out IRPrimitive>,
+        type: DeferredPrimitiveType<*>,
         description: String,
         key: String = name,
         camelCase: String = name.firstToLowerCase()
@@ -42,30 +42,30 @@ internal interface QueriesBuilder<T : IRAPIType> {
 
     fun queryParameter(
         name: String,
-        type: DeferredSchemaType<out IRPrimitive>,
+        type: DeferredPrimitiveType<*>,
         description: String,
         key: String = name.lowercase(),
         camelCase: String = name.firstToLowerCase(),
         isOptional: Boolean = false
     )
 
-    fun schema(schema: DeferredSchemaType<out IRTypeUse<*>>)
+    fun schema(schema: DeferredType<IRTypeUse<*>>)
 
     fun array(
-        items: DeferredSchemaType<out IRTypeUse<*>>,
+        items: DeferredType<IRTypeUse<*>>,
         description: String,
         nullableItems: Boolean = false
-    ): DeferredSchemaType<IRArray> =
+    ): DeferredType<IRArray> =
         DeferredSchemaType { typeRegistry, isTopLevel ->
             items.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRArray(it, nullableItems, description) }
         }
 
     fun map(
-        keys: DeferredSchemaType<out IRPrimitive>,
-        values: DeferredSchemaType<out IRTypeUse<*>>,
+        keys: DeferredType<IRPrimitive>,
+        values: DeferredType<IRTypeUse<*>>,
         description: String,
         nullableValues: Boolean = false
-    ): DeferredSchemaType<IRMap> =
+    ): DeferredType<IRMap> =
         DeferredSchemaType { typeRegistry, isTopLevel ->
             values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat(), it, nullableValues, description) }
         }
@@ -99,10 +99,10 @@ internal interface QueriesBuilder<T : IRAPIType> {
     ): DeferredSchemaClass<T>
 
 
-    fun enum(type: DeferredPrimitiveType, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
+    fun enum(type: DeferredPrimitiveType<*>, name: String, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
         enum(type, Name.deriveFromTitleCase(name), description, block)
 
-    fun enum(type: DeferredPrimitiveType, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T>
+    fun enum(type: DeferredPrimitiveType<*>, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T>
 
 
     fun record(name: String, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
@@ -126,6 +126,6 @@ internal interface QueriesBuilderV1 : QueriesBuilder<IRAPIType.V1>
 @OptIn(LowLevelApiGenApi::class)
 internal interface QueriesBuilderV2 : QueriesBuilder<IRAPIType.V2> {
 
-    fun schema(vararg schemas: Pair<SchemaVersion, DeferredSchemaType<out IRTypeUse<*>>>)
+    fun schema(vararg schemas: Pair<SchemaVersion, DeferredType<IRTypeUse<*>>>)
 
 }

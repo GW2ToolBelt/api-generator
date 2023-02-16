@@ -35,7 +35,7 @@ import com.gw2tb.apigen.model.Optionality
 
 internal class SchemaRecordPropertyBuilder(
     private val nameTitleCase: String,
-    private val type: DeferredSchemaType<out IRTypeUse<*>>,
+    private val type: DeferredType<IRTypeUse<*>>,
     private val description: String
 ) {
 

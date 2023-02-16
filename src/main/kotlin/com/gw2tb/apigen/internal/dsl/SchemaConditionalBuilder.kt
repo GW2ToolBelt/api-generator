@@ -86,7 +86,7 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
             val loc = typeRegistry?.getQualifiedDeclarationName(name) ?: error("TypeRegistry is required")
             val interpretations = buildInterpretations(loc, nestedTypeRegistry)
 
-            val versions = buildVersionedSchemaData<IRConditional> {
+            val versions = buildVersionedSchemaData {
                 SchemaVersion.values()
                     .filter { version -> version == SchemaVersion.V2_SCHEMA_CLASSIC || interpretations.hasChangedInVersion(version) || sharedProperties?.hasChangedInVersion(version) == true }
                     .zipSchemaVersionConstraints()

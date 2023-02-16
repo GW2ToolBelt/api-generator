@@ -26,7 +26,7 @@ package com.gw2tb.apigen.schema
  *
  * @since   0.7.0
  */
-public sealed class SchemaPrimitive : SchemaTypeUse() {
+public sealed class SchemaPrimitive : SchemaTypeUse(), SchemaPrimitiveOrAlias {
 
     /**
      * Always returns `false` as a primitive types on their own are never

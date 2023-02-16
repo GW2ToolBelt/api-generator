@@ -19,38 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gw2tb.apigen.ir
-
-import com.gw2tb.apigen.model.v2.SchemaVersion
-import com.gw2tb.apigen.schema.SchemaPrimitive
-import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifier
+package com.gw2tb.apigen.schema
 
 /**
- * A low-level representation of a [SchemaPrimitive].
+ * TODO doc
  *
  * @since   0.7.0
  */
-@LowLevelApiGenApi
-public sealed class IRPrimitive(protected open val schema: SchemaPrimitive) : IRTypeUse<SchemaPrimitive>(), IRPrimitiveOrAlias {
-
-    internal open fun resolve(): SchemaPrimitive = schema
-
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitive =
-        resolve()
-
-}
-
-/**
- * A low-level representation of a [SchemaPrimitiveIdentifier].
- *
- * @since   0.7.0
- */
-@LowLevelApiGenApi
-public sealed class IRPrimitiveIdentifier(override val schema: SchemaPrimitiveIdentifier) : IRPrimitive(schema) {
-
-    override fun resolve(): SchemaPrimitiveIdentifier = schema
-
-    override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitiveIdentifier =
-        resolve()
-
-}
+public sealed interface SchemaPrimitiveOrAlias
