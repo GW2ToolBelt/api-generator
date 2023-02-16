@@ -1040,7 +1040,6 @@ public final class com/gw2tb/apigen/schema/model/APIQuery$Details {
 }
 
 public final class com/gw2tb/apigen/schema/model/APIType {
-	public fun <init> (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;)V
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public final fun component3 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
@@ -1055,7 +1054,6 @@ public final class com/gw2tb/apigen/schema/model/APIType {
 }
 
 public final class com/gw2tb/apigen/schema/model/APIType$InterpretationHint {
-	public fun <init> (Lcom/gw2tb/apigen/model/QualifiedTypeName;Ljava/lang/String;Ljava/lang/String;)V
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QualifiedTypeName;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;

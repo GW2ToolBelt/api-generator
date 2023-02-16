@@ -34,7 +34,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @since   0.7.0
  */
-public data class APIType(
+public data class APIType internal constructor(
     public val name: Name,
     public val schema: SchemaTypeDeclaration,
     public val interpretationHint: InterpretationHint?,
@@ -51,7 +51,7 @@ public data class APIType(
      *
      * @since   0.7.0
      */
-    public data class InterpretationHint(
+    public data class InterpretationHint internal constructor(
         val conditionalBase: QualifiedTypeName,
         val interpretationKey: String,
         val interpretationNestProperty: String?

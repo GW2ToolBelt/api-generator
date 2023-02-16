@@ -44,7 +44,7 @@ public sealed class SchemaTypeReference : SchemaTypeUse() {
      */
     abstract override val isLocalized: Boolean
 
-    internal data class Alias constructor(
+    internal data class Alias(
         override val name: QualifiedTypeName.Alias,
         val alias: SchemaAlias
     ) : SchemaTypeReference(), SchemaPrimitiveOrAlias {
@@ -53,7 +53,7 @@ public sealed class SchemaTypeReference : SchemaTypeUse() {
 
     }
 
-    internal data class Declaration constructor(
+    internal data class Declaration(
         override val name: QualifiedTypeName.Declaration,
         val declaration: SchemaTypeDeclaration
     ) : SchemaTypeReference() {
