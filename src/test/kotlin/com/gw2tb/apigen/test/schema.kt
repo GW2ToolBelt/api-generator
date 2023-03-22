@@ -213,7 +213,6 @@ private fun testPrimitive(
         else -> this
     }
 
-    @OptIn(ExperimentalSerializationApi::class, ExperimentalUnsignedTypes::class)
     val serializer = when (schema) {
         is SchemaBitfield -> ULong.serializer()
         is SchemaBoolean -> Boolean.serializer()
