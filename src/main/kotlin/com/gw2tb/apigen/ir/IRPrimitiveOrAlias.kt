@@ -22,6 +22,7 @@
 package com.gw2tb.apigen.ir
 
 import com.gw2tb.apigen.model.v2.SchemaVersion
+import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifierOrAlias
 import com.gw2tb.apigen.schema.SchemaPrimitiveOrAlias
 
 /**
@@ -31,8 +32,44 @@ import com.gw2tb.apigen.schema.SchemaPrimitiveOrAlias
  */
 public sealed interface IRPrimitiveOrAlias
 
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public sealed interface IRPrimitiveIdentifierOrAlias : IRPrimitiveOrAlias
+
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public tailrec fun IRPrimitiveOrAlias.lowered(): IRPrimitive {
+    if (this is IRPrimitive) return this
+    return (this as IRTypeReference.Alias).alias.type.lowered()
+}
+
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public tailrec fun IRPrimitiveIdentifierOrAlias.lowered(): IRPrimitiveIdentifier {
+    if (this is IRPrimitiveIdentifier) return this
+    return ((this as IRTypeReference.Alias).alias.type as IRPrimitiveIdentifierOrAlias).lowered()
+}
+
 @OptIn(LowLevelApiGenApi::class)
 internal fun IRPrimitiveOrAlias.resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitiveOrAlias = when (this) {
     is IRPrimitive -> resolve(resolverContext, v2SchemaVersion)
+    is IRTypeReference.Alias -> resolve(resolverContext, v2SchemaVersion)
+}
+
+@OptIn(LowLevelApiGenApi::class)
+internal fun IRPrimitiveIdentifierOrAlias.resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): SchemaPrimitiveIdentifierOrAlias = when (this) {
+    is IRPrimitiveIdentifier -> resolve(resolverContext, v2SchemaVersion)
     is IRTypeReference.Alias -> resolve(resolverContext, v2SchemaVersion)
 }

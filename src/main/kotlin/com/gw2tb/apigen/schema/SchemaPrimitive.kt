@@ -43,4 +43,4 @@ public sealed class SchemaPrimitive : SchemaTypeUse(), SchemaPrimitiveOrAlias {
  *
  * @since   0.7.0
  */
-public sealed class SchemaPrimitiveIdentifier : SchemaPrimitive()
+public sealed class SchemaPrimitiveIdentifier : SchemaPrimitive(), SchemaPrimitiveIdentifierOrAlias

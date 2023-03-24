@@ -242,7 +242,7 @@ internal class QueriesBuilderV2Impl(
 
     override fun collect(): Collection<IRAPIQuery.V2> = buildList {
         if (queryTypes != null) {
-            val idType: IRPrimitiveIdentifier = when (val schema = _schema.getOrThrow(SchemaVersion.V2_SCHEMA_CLASSIC).data) {
+            val idType: IRPrimitiveIdentifierOrAlias = when (val schema = _schema.getOrThrow(SchemaVersion.V2_SCHEMA_CLASSIC).data) {
                 is IRTypeReference.Declaration -> when (val declaration = schema.declaration) {
                     is IRConditional -> declaration.sharedProperties.find { it.serialName == idTypeKey }?.type
                     is IRRecord -> declaration.properties.find { it.serialName == idTypeKey }?.type
@@ -251,7 +251,12 @@ internal class QueriesBuilderV2Impl(
                 else -> error("Cannot extract ID type for key \"$idTypeKey\" from type: ${schema.javaClass}")
             }.let {
                 if (it == null) error("Could not find ID member \"$idTypeKey\" for endpoint \"$endpoint\"")
-                it as? IRPrimitiveIdentifier ?: error("ID type is not a primitive identifier type: ${it.javaClass}")
+
+                when (it) {
+                    is IRPrimitiveIdentifier -> it
+                    is IRTypeReference.Alias -> it
+                    else -> error("ID type is not a primitive identifier type: ${it.javaClass}")
+                }
             }
 
             queryTypes.values.forEach { queryType ->
@@ -263,17 +268,17 @@ internal class QueriesBuilderV2Impl(
                 when (queryType) {
                     is QueryType.IDs -> {
                         schema = buildVersionedSchemaData {
-                            add(IRArray(idType, false, description = "the available IDs"), since = since, until = until)
+                            add(IRArray(idType as IRTypeUse<*>, false, description = "the available IDs"), since = since, until = until)
                         }
                     }
                     is QueryType.ByID -> {
                         schema = _schema
-                        IRQueryParameter(queryType.qpKey, idType, queryType.qpName, queryType.qpDescription, false)
+                        IRQueryParameter(queryType.qpKey, idType as IRTypeUse<*>, queryType.qpName, queryType.qpDescription, false)
                             .also { queryParameters[it.key] = it }
                     }
                     is QueryType.ByIDs -> {
                         schema = _schema.mapData { v -> IRArray(v, false, "") }
-                        IRQueryParameter(queryType.qpKey, IRArray(idType, false, null), queryType.qpName, queryType.qpDescription, false)
+                        IRQueryParameter(queryType.qpKey, IRArray(idType as IRTypeUse<*>, false, null), queryType.qpName, queryType.qpDescription, false)
                             .also { queryParameters[it.key] = it }
                     }
                     is QueryType.ByPage -> {

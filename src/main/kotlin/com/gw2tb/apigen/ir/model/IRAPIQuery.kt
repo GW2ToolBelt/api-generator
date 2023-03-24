@@ -100,7 +100,7 @@ public sealed class IRAPIQuery {
      */
     public data class Details internal constructor(
         val queryType: QueryType,
-        val idType: IRPrimitiveIdentifier
+        val idType: IRPrimitiveIdentifierOrAlias
     ) {
 
         internal fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIQuery.Details {

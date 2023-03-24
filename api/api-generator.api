@@ -159,7 +159,7 @@ public abstract class com/gw2tb/apigen/ir/IRPrimitive : com/gw2tb/apigen/ir/IRTy
 	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 }
 
-public abstract class com/gw2tb/apigen/ir/IRPrimitiveIdentifier : com/gw2tb/apigen/ir/IRPrimitive {
+public abstract class com/gw2tb/apigen/ir/IRPrimitiveIdentifier : com/gw2tb/apigen/ir/IRPrimitive, com/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias {
 	public synthetic fun <init> (Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
 	protected fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;
@@ -168,7 +168,15 @@ public abstract class com/gw2tb/apigen/ir/IRPrimitiveIdentifier : com/gw2tb/apig
 	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 }
 
+public abstract interface class com/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias : com/gw2tb/apigen/ir/IRPrimitiveOrAlias {
+}
+
 public abstract interface class com/gw2tb/apigen/ir/IRPrimitiveOrAlias {
+}
+
+public final class com/gw2tb/apigen/ir/IRPrimitiveOrAliasKt {
+	public static final fun lowered (Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifier;
+	public static final fun lowered (Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;)Lcom/gw2tb/apigen/ir/IRPrimitive;
 }
 
 public final class com/gw2tb/apigen/ir/IRProperty {
@@ -279,11 +287,11 @@ public abstract class com/gw2tb/apigen/ir/model/IRAPIQuery {
 
 public final class com/gw2tb/apigen/ir/model/IRAPIQuery$Details {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QueryType;
-	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifier;
-	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifier;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifier;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
+	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;
+	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getIdType ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifier;
+	public final fun getIdType ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;
 	public final fun getQueryType ()Lcom/gw2tb/apigen/model/QueryType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -682,6 +690,11 @@ public final class com/gw2tb/apigen/model/QualifiedTypeName$Declaration : com/gw
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/gw2tb/apigen/model/QualifiedTypeNameKt {
+	public static final fun joinToString (Lcom/gw2tb/apigen/model/QualifiedTypeName;Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static synthetic fun joinToString$default (Lcom/gw2tb/apigen/model/QualifiedTypeName;Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/String;
+}
+
 public abstract class com/gw2tb/apigen/model/QueryType {
 	public static final fun ByID$api_generator (Ljava/lang/String;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/model/QueryType$ByID;
 	public static final fun ByIDs$api_generator (Z)Lcom/gw2tb/apigen/model/QueryType$ByIDs;
@@ -904,10 +917,18 @@ public abstract class com/gw2tb/apigen/schema/SchemaPrimitive : com/gw2tb/apigen
 	public fun isLocalized ()Z
 }
 
-public abstract class com/gw2tb/apigen/schema/SchemaPrimitiveIdentifier : com/gw2tb/apigen/schema/SchemaPrimitive {
+public abstract class com/gw2tb/apigen/schema/SchemaPrimitiveIdentifier : com/gw2tb/apigen/schema/SchemaPrimitive, com/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias {
+}
+
+public abstract interface class com/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias : com/gw2tb/apigen/schema/SchemaPrimitiveOrAlias {
 }
 
 public abstract interface class com/gw2tb/apigen/schema/SchemaPrimitiveOrAlias {
+}
+
+public final class com/gw2tb/apigen/schema/SchemaPrimitiveOrAliasKt {
+	public static final fun lowered (Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;
+	public static final fun lowered (Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;)Lcom/gw2tb/apigen/schema/SchemaPrimitive;
 }
 
 public final class com/gw2tb/apigen/schema/SchemaProperty {
@@ -1029,11 +1050,11 @@ public final class com/gw2tb/apigen/schema/model/APIQuery {
 
 public final class com/gw2tb/apigen/schema/model/APIQuery$Details {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QueryType;
-	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;
-	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
+	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;
+	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getIdType ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;
+	public final fun getIdType ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;
 	public final fun getQueryType ()Lcom/gw2tb/apigen/model/QueryType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

@@ -51,7 +51,7 @@ internal val GW2v2 = GW2APISpecV2 {
 
     val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.") {
         "Tab"(INTEGER, "the tab's ID")
-        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating wether this tab is the active tab")
+        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
         "Build"(
             description = "the stored build",
             type = record(name = "Build", description = "Information about a build.") {

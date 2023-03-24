@@ -21,14 +21,28 @@
  */
 package com.gw2tb.apigen.test
 
+import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.schema.*
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
+import org.junit.jupiter.api.Assertions
+
+@OptIn(LowLevelApiGenApi::class)
+fun assertLoweredEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
+    fun equalsSignature(expected: SchemaTypeUse, actual: SchemaTypeUse): Boolean = when (expected) {
+        is SchemaArray -> actual is SchemaArray && equalsSignature(expected.elements, actual.elements)
+        is SchemaMap -> actual is SchemaMap && equalsSignature(expected.keys as SchemaTypeUse, actual.keys as SchemaTypeUse) && equalsSignature(expected.values, actual.values)
+        is SchemaPrimitive -> actual is SchemaPrimitiveOrAlias && (expected::class == actual.lowered()::class)
+
+        is SchemaTypeReference -> TODO("Not yet implemented")
+    }
+
+    if (!equalsSignature(expected, actual)) Assertions.fail<Unit>("Expected type did not match. Expected: $expected; got $actual")
+}
 
 fun testSchema(
     schema: SchemaTypeDeclaration,
@@ -131,6 +145,17 @@ private fun testDeclaration(
     }
 }
 
+private tailrec fun SchemaPrimitiveOrAlias.serializer(): KSerializer<out Any> {
+    return when (this) {
+        is SchemaBitfield -> ULong.serializer()
+        is SchemaBoolean -> Boolean.serializer()
+        is SchemaDecimal -> Double.serializer()
+        is SchemaInteger -> Long.serializer()
+        is SchemaString -> String.serializer()
+        is SchemaTypeReference.Alias -> alias.type.serializer()
+    }
+}
+
 private fun testEnum(
     context: SchemaMatcherContext,
     schema: SchemaEnum,
@@ -141,14 +166,7 @@ private fun testEnum(
         else -> this
     }
 
-    @OptIn(ExperimentalSerializationApi::class, ExperimentalUnsignedTypes::class)
-    val serializer = when (schema.type) {
-        is SchemaBitfield -> ULong.serializer()
-        is SchemaBoolean -> Boolean.serializer()
-        is SchemaDecimal -> Double.serializer()
-        is SchemaInteger -> Long.serializer()
-        is SchemaString -> String.serializer()
-    }.adjust()
+    val serializer = schema.type.serializer().adjust()
 
     val element = try {
         Json.decodeFromJsonElement(serializer, context.actual)
@@ -213,13 +231,7 @@ private fun testPrimitive(
         else -> this
     }
 
-    val serializer = when (schema) {
-        is SchemaBitfield -> ULong.serializer()
-        is SchemaBoolean -> Boolean.serializer()
-        is SchemaDecimal -> Double.serializer()
-        is SchemaInteger -> Long.serializer()
-        is SchemaString -> String.serializer()
-    }.adjust()
+    val serializer = schema.serializer().adjust()
 
     try {
         Json.decodeFromJsonElement(serializer, context.actual)
@@ -260,7 +272,7 @@ private fun testTypeUse(
     inline: Boolean = false,
     sidePropertyInterpretationKey: String? = null
 ) {
-    require(schema is SchemaPrimitive || !lenient) { "Only primitives may be lenient" }
+    require(schema is SchemaPrimitiveOrAlias || !lenient) { "Only primitives may be lenient" }
 
     when (schema) {
         is SchemaArray -> testArray(context, schema, nullable)

@@ -73,3 +73,20 @@ public sealed class QualifiedTypeName {
     ) : QualifiedTypeName()
 
 }
+
+/**
+ * TODO doc
+ *
+ * @receiver
+ *
+ * @param separator
+ * @param transform
+ *
+ * @return
+ *
+ * @since   0.7.0
+ */
+public fun QualifiedTypeName.joinToString(separator: CharSequence = "/", transform: (Name) -> String): String = when (this) {
+    is QualifiedTypeName.Alias -> transform(name)
+    is QualifiedTypeName.Declaration -> (nest?.joinToString(separator = separator, postfix = separator, transform = transform) ?: "") + transform(name)
+}

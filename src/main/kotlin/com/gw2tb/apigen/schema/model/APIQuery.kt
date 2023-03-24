@@ -24,7 +24,7 @@ package com.gw2tb.apigen.schema.model
 import com.gw2tb.apigen.model.APIEndpoint
 import com.gw2tb.apigen.model.QueryType
 import com.gw2tb.apigen.model.TokenScope
-import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifier
+import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifierOrAlias
 import com.gw2tb.apigen.schema.SchemaTypeUse
 import kotlin.time.Duration
 
@@ -82,7 +82,7 @@ public data class APIQuery internal constructor(
      */
     public data class Details internal constructor(
         val queryType: QueryType,
-        val idType: SchemaPrimitiveIdentifier
+        val idType: SchemaPrimitiveIdentifierOrAlias
     )
 
 }

@@ -68,11 +68,11 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
 
                     actualQuery.pathParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.pathParameters.find { actualParam.key == it.key }!!
-                        assertHintedEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
+                        assertLoweredEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
                     }
                     actualQuery.queryParameters.forEach { (_, actualParam) ->
                         val expectedParam = expectedQuery.queryParameters.find { actualParam.key == it.key }!!
-                        assertHintedEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
+                        assertLoweredEquals(expectedParam.type, actualParam.type.resolve(VoidResolverContext))
                         assertEquals(expectedParam.isOptional, actualParam.isOptional)
                     }
                 })

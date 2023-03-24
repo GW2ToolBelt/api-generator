@@ -2592,16 +2592,16 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         }
 
         inline fun <reified T : IRTypeUse<*>> QueryIDs(): (IRAPIQuery.Details) -> Boolean =
-            { it.queryType is QueryType.IDs && it.idType is T}
+            { it.queryType is QueryType.IDs && it.idType.lowered() is T}
 
         inline fun <reified T : IRTypeUse<*>> QueryByID(): (IRAPIQuery.Details) -> Boolean =
-            { it.queryType is QueryType.ByID && it.idType is T}
+            { it.queryType is QueryType.ByID && it.idType.lowered() is T}
 
         inline fun <reified T : IRTypeUse<*>> QueryByIDs(supportsAll: Boolean = true): (IRAPIQuery.Details) -> Boolean =
-            { it.queryType.let { qt -> qt is QueryType.ByIDs && qt.supportsAll == supportsAll } && it.idType is T }
+            { it.queryType.let { qt -> qt is QueryType.ByIDs && qt.supportsAll == supportsAll } && it.idType.lowered() is T }
 
         inline fun <reified T : IRTypeUse<*>> QueryByPage(): (IRAPIQuery.Details) -> Boolean =
-            { it.queryType is QueryType.ByPage && it.idType is T }
+            { it.queryType is QueryType.ByPage && it.idType.lowered() is T }
 
         fun expectQuery(
             route: String,

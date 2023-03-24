@@ -21,9 +21,40 @@
  */
 package com.gw2tb.apigen.schema
 
+import com.gw2tb.apigen.ir.*
+
 /**
  * TODO doc
  *
  * @since   0.7.0
  */
 public sealed interface SchemaPrimitiveOrAlias
+
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+public sealed interface SchemaPrimitiveIdentifierOrAlias : SchemaPrimitiveOrAlias
+
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public tailrec fun SchemaPrimitiveOrAlias.lowered(): SchemaPrimitive {
+    if (this is SchemaPrimitive) return this
+    return (this as SchemaTypeReference.Alias).alias.type.lowered()
+}
+
+/**
+ * TODO doc
+ *
+ * @since   0.7.0
+ */
+@LowLevelApiGenApi
+public tailrec fun SchemaPrimitiveIdentifierOrAlias.lowered(): SchemaPrimitiveIdentifier {
+    if (this is SchemaPrimitiveIdentifier) return this
+    return ((this as SchemaTypeReference.Alias).alias.type as SchemaPrimitiveIdentifierOrAlias).lowered()
+}

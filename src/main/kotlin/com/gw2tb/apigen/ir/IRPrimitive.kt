@@ -46,7 +46,7 @@ public sealed class IRPrimitive(protected open val schema: SchemaPrimitive) : IR
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-public sealed class IRPrimitiveIdentifier(override val schema: SchemaPrimitiveIdentifier) : IRPrimitive(schema) {
+public sealed class IRPrimitiveIdentifier(override val schema: SchemaPrimitiveIdentifier) : IRPrimitive(schema), IRPrimitiveIdentifierOrAlias {
 
     override fun resolve(): SchemaPrimitiveIdentifier = schema
 
