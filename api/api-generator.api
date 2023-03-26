@@ -754,6 +754,7 @@ public final class com/gw2tb/apigen/model/v2/SchemaVersion : java/lang/Enum {
 	public static final field V2_SCHEMA_2021_04_06T21_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static final field V2_SCHEMA_2021_07_15T13_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static final field V2_SCHEMA_2022_03_09T02_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
+	public static final field V2_SCHEMA_2022_03_23T19_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static final field V2_SCHEMA_CLASSIC Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public final fun getIdentifier ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/v2/SchemaVersion;
