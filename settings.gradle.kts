@@ -37,5 +37,3 @@ plugins {
 }
 
 rootProject.name = "api-generator"
-
-enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
