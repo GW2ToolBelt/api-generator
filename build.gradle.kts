@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import com.gw2tb.build.tasks.MkDocs
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
@@ -100,51 +101,19 @@ tasks {
         outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
     }
 
-    create("mkdocs") {
+    register<MkDocs>("mkdocs") {
         dependsOn(dokkatooGenerateModuleHtml)
 
-        val inputDir = layout.projectDirectory.dir("docs/mkdocs")
-        inputs.dir(inputDir)
-        inputs.file(layout.projectDirectory.file("mkdocs.yml"))
+        inputFile(layout.projectDirectory.file(".github/CONTRIBUTING.md")) {
+            target.set("contributing.md")
+        }
 
-        val changelogFile = layout.projectDirectory.file("docs/changelog/full.md")
-        inputs.file(changelogFile)
+        inputFile(layout.projectDirectory.file("docs/changelog/full.md")) {
+            target.set("changelog.md")
+        }
 
-        val contributingFile = layout.projectDirectory.file(".github/CONTRIBUTING.md")
-        inputs.file(contributingFile)
-
-        val workDir = layout.buildDirectory.dir("mkdocs")
-
-        val outputDir = workDir.map { it.dir("site") }
-        outputs.dir(outputDir)
-
-        doLast {
-            delete(fileTree(workDir) {
-                exclude("sources/api")
-            })
-
-            copy {
-                from(inputDir)
-                into(workDir.map { it.dir("sources") }.get())
-                filter { it.replace("docs/mkdocs/([a-zA-Z-]*).md".toRegex(), "$1") }
-            }
-
-            copy {
-                from(changelogFile)
-                into(workDir.map { it.dir("sources") }.get())
-                rename("full.md", "changelog.md")
-            }
-
-            copy {
-                from(contributingFile)
-                into(workDir.map { it.dir("sources") }.get())
-                rename("CONTRIBUTING.md", "contributing.md")
-            }
-
-            exec {
-                executable = "mkdocs"
-                args("build", "-d", outputDir.get())
-            }
+        inputFiles(layout.projectDirectory.dir("docs/mkdocs")) {
+            this.filter { it.replace("docs/mkdocs/([a-zA-Z-]*).md".toRegex(), "$1") }
         }
     }
 }
