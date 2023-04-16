@@ -19,17 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import dev.adamko.dokkatoo.tasks.DokkatooGenerateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
 import java.net.URL
 
 plugins {
+    alias(libs.plugins.binary.compatibility.validator)
+    alias(libs.plugins.dokkatoo.html)
+    alias(libs.plugins.dokkatoo.javadoc)
+    alias(libs.plugins.gradle.toolchain.switches)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.plugin.serialization)
-    alias(libs.plugins.gradle.toolchain.switches)
-    alias(libs.plugins.dokka)
-    alias(libs.plugins.binary.compatibility.validator)
     id("com.gw2tb.maven-publish-conventions")
 }
 
@@ -55,6 +57,12 @@ kotlin {
     }
 }
 
+dokkatoo {
+    dokkatooPublications.configureEach {
+        failOnWarning.set(true)
+    }
+}
+
 tasks {
     withType<JavaCompile>().configureEach {
         options.release.set(8)
@@ -75,13 +83,11 @@ tasks {
     }
 
     named<Jar>("javadocJar").configure {
-        dependsOn(dokkaJavadoc)
-        from(dokkaJavadoc.get().outputs)
+        from(dokkatooGenerateModuleJavadoc.get().outputs)
     }
 
-    dokkaHtml {
-        outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api").map { it.asFile })
-        failOnWarning.set(true)
+    dokkatooGenerateModuleHtml.configure {
+        outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
 
         dokkaSourceSets.configureEach {
             reportUndocumented.set(true)
@@ -97,7 +103,7 @@ tasks {
     }
 
     create("mkdocs") {
-        dependsOn(dokkaHtml)
+        dependsOn(dokkatooGenerateModuleHtml)
 
         val inputDir = layout.projectDirectory.dir("docs/mkdocs")
         inputs.dir(inputDir)

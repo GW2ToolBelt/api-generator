@@ -1,6 +1,6 @@
 [versions]
 binary-compatibility-validator = "0.13.0"
-dokka = "1.8.10"
+dokkatoo = "1.1.1"
 gradle-toolchain-switches = "0.3.0"
 junit = "5.9.2"
 kotlin = "1.8.20"
@@ -25,8 +25,9 @@ gradle-toolchain-switches = { id = "io.github.themrmilchmann.toolchain-switches"
 # org.jetbrains.kotlinx.binary-compatibility-validator - binary-compatibility-validator
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
 
-# org.jetbrains.dokka - dokka
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+# dev.adamko.dokkatoo - Dokkatoo
+dokkatoo-html = { id = "dev.adamko.dokkatoo-html", version.ref = "dokkatoo" }
+dokkatoo-javadoc = { id = "dev.adamko.dokkatoo-javadoc", version.ref = "dokkatoo" }
 
 # org.jetbrains.kotlin - Kotlin Gradle plugin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
