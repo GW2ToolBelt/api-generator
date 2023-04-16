@@ -52,10 +52,19 @@ jobs:
 
   mkdocs:
     name: Build documentation
-    needs: [validate-gradle]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
+
+      - name: Untar
+        run: |
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
