@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import dev.adamko.dokkatoo.tasks.DokkatooGenerateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
-import java.net.URL
 
 plugins {
     alias(libs.plugins.binary.compatibility.validator)
@@ -58,6 +56,18 @@ kotlin {
 }
 
 dokkatoo {
+    dokkatooSourceSets.configureEach {
+        reportUndocumented.set(true)
+        skipEmptyPackages.set(true)
+        jdkVersion.set(8)
+
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin")
+            remoteLineSuffix.set("#L")
+        }
+    }
+
     dokkatooPublications.configureEach {
         failOnWarning.set(true)
     }
@@ -88,18 +98,6 @@ tasks {
 
     dokkatooGenerateModuleHtml.configure {
         outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
-
-        dokkaSourceSets.configureEach {
-            reportUndocumented.set(true)
-            skipEmptyPackages.set(true)
-            jdkVersion.set(8)
-
-            sourceLink {
-                localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin"))
-                remoteLineSuffix.set("#L")
-            }
-        }
     }
 
     create("mkdocs") {
