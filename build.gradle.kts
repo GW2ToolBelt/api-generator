@@ -61,12 +61,6 @@ dokkatoo {
         reportUndocumented.set(true)
         skipEmptyPackages.set(true)
         jdkVersion.set(8)
-
-        sourceLink {
-            localDirectory.set(file("src/main/kotlin"))
-            remoteUrl("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin")
-            remoteLineSuffix.set("#L")
-        }
     }
 
     dokkatooPublications.configureEach {
@@ -99,6 +93,17 @@ tasks {
 
     dokkatooGenerateModuleHtml.configure {
         outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
+
+        val localKotlinSourceDir = layout.projectDirectory.dir("src/main/kotlin")
+        val version = project.version
+
+        dokkaSourceSets.configureEach {
+            sourceLink {
+                localDirectory.set(localKotlinSourceDir)
+                remoteUrl("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin")
+                remoteLineSuffix.set("#L")
+            }
+        }
     }
 
     register<MkDocs>("mkdocs") {
