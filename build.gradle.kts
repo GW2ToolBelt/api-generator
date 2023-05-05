@@ -47,7 +47,7 @@ kotlin {
     explicitApi()
 
     target {
-        compilations.all {
+        compilations.configureEach {
             compilerOptions.configure {
                 apiVersion.set(KotlinVersion.KOTLIN_1_8)
                 languageVersion.set(KotlinVersion.KOTLIN_1_8)
