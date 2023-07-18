@@ -21,23 +21,24 @@
  */
 package com.gw2tb.apigen.model
 
-internal fun Name(vararg segments: String): Name = Name(
-    camelCase = segments.first().lowercase() + segments.joinToString(separator = ""),
-    snakeCase = segments.joinToString(separator = "_") { it.lowercase() },
-    titleCase = segments.joinToString(separator = "")
-)
-
 /**
  * An abstraction for names that provides several functions to convert a name to
  * a [String] representation in a desired casing.
  *
  * @since   0.7.0
  */
-public data class Name internal constructor(
+@Suppress("DataClassPrivateConstructor")
+public data class Name private constructor(
     private val camelCase: String,
     private val snakeCase: String,
     private val titleCase: String
 ) {
+
+    public constructor(vararg segments: String): this(
+        camelCase = segments.first().lowercase() + segments.drop(1).joinToString(separator = ""),
+        snakeCase = segments.joinToString(separator = "_") { it.lowercase() },
+        titleCase = segments.joinToString(separator = "")
+    )
 
     internal companion object {
 
