@@ -30,7 +30,6 @@ import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.model.v2.SchemaVersion
-import com.gw2tb.apigen.schema.*
 
 @OptIn(LowLevelApiGenApi::class)
 internal class SchemaRecordBuilder<T : IRAPIType>(

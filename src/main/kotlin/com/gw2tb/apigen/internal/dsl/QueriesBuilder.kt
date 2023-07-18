@@ -26,7 +26,6 @@ import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
 
 @APIGenDSL
 @OptIn(LowLevelApiGenApi::class)
