@@ -19,8 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.gw2tb.build.*
-
 plugins {
     id("com.gw2tb.base-conventions")
     `maven-publish`
