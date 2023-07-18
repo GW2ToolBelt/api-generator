@@ -56,6 +56,11 @@ public sealed class QualifiedTypeName : Iterable<Name> {
         override val name: Name
     ) : QualifiedTypeName() {
 
+        /**
+         * TODO
+         *
+         * @since   0.7.0
+         */
         override fun iterator(): Iterator<Name> = iterator {
             yield(name)
         }
@@ -78,6 +83,11 @@ public sealed class QualifiedTypeName : Iterable<Name> {
         override val name: Name
     ) : QualifiedTypeName() {
 
+        /**
+         * TODO
+         *
+         * @since   0.7.0
+         */
         override fun iterator(): Iterator<Name> = iterator {
             if (nest != null) yieldAll(nest)
             yield(name)
