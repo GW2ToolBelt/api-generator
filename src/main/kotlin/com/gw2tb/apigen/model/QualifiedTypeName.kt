@@ -30,7 +30,7 @@ import com.gw2tb.apigen.schema.SchemaTypeDeclaration
  *
  * @since   0.7.0
  */
-public sealed class QualifiedTypeName {
+public sealed class QualifiedTypeName : Iterable<Name> {
 
     /**
      * TODO doc
@@ -54,7 +54,13 @@ public sealed class QualifiedTypeName {
      */
     public data class Alias(
         override val name: Name
-    ) : QualifiedTypeName()
+    ) : QualifiedTypeName() {
+
+        override fun iterator(): Iterator<Name> = iterator {
+            yield(name)
+        }
+
+    }
 
     /**
      * A qualified name for a [SchemaTypeDeclaration].
@@ -70,7 +76,14 @@ public sealed class QualifiedTypeName {
     public data class Declaration(
         val nest: List<Name>?,
         override val name: Name
-    ) : QualifiedTypeName()
+    ) : QualifiedTypeName() {
+
+        override fun iterator(): Iterator<Name> = iterator {
+            if (nest != null) yieldAll(nest)
+            yield(name)
+        }
+
+    }
 
 }
 

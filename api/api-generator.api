@@ -632,6 +632,8 @@ public final class com/gw2tb/apigen/model/Language : java/lang/Enum {
 }
 
 public final class com/gw2tb/apigen/model/Name {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> ([Ljava/lang/String;)V
 	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/model/Name;
 	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/Name;
 	public fun equals (Ljava/lang/Object;)Z
@@ -662,8 +664,9 @@ public final class com/gw2tb/apigen/model/Optionality$REQUIRED : com/gw2tb/apige
 	public fun isOptional ()Z
 }
 
-public abstract class com/gw2tb/apigen/model/QualifiedTypeName {
+public abstract class com/gw2tb/apigen/model/QualifiedTypeName : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
 	public abstract fun getName ()Lcom/gw2tb/apigen/model/Name;
+	public fun iterator ()Ljava/util/Iterator;
 }
 
 public final class com/gw2tb/apigen/model/QualifiedTypeName$Alias : com/gw2tb/apigen/model/QualifiedTypeName {
@@ -674,6 +677,7 @@ public final class com/gw2tb/apigen/model/QualifiedTypeName$Alias : com/gw2tb/ap
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public fun hashCode ()I
+	public fun iterator ()Ljava/util/Iterator;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -687,6 +691,7 @@ public final class com/gw2tb/apigen/model/QualifiedTypeName$Declaration : com/gw
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public final fun getNest ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun iterator ()Ljava/util/Iterator;
 	public fun toString ()Ljava/lang/String;
 }
 
