@@ -14,7 +14,6 @@ env:
 jobs:
   build:
     name: Build
-    needs: [validate-gradle]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
