@@ -19,15 +19,15 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 
 [plugins]
+# dev.adamko.dokkatoo - Dokkatoo
+dokkatoo-html = { id = "dev.adamko.dokkatoo-html", version.ref = "dokkatoo" }
+dokkatoo-javadoc = { id = "dev.adamko.dokkatoo-javadoc", version.ref = "dokkatoo" }
+
 # io.github.themrmilchmann.gradle.toolchainswitches:gradle-toolchain-switches - Gradle Toolchain Switches Plugin
 gradle-toolchain-switches = { id = "io.github.themrmilchmann.toolchain-switches", version.ref = "gradle-toolchain-switches" }
 
 # org.jetbrains.kotlinx.binary-compatibility-validator - binary-compatibility-validator
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
-
-# dev.adamko.dokkatoo - Dokkatoo
-dokkatoo-html = { id = "dev.adamko.dokkatoo-html", version.ref = "dokkatoo" }
-dokkatoo-javadoc = { id = "dev.adamko.dokkatoo-javadoc", version.ref = "dokkatoo" }
 
 # org.jetbrains.kotlin - Kotlin Gradle plugin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
