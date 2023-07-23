@@ -21,3 +21,4 @@ updates:
     labels:
       - "a:chore"
       - "in:dependencies"
+      - "in:docs"
