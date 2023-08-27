@@ -4,7 +4,7 @@ dokkatoo = "1.6.0"
 gradle-toolchain-switches = "0.3.0"
 junit = "5.10.0"
 kotlin = "1.9.0"
-kotlinx-serialization = "1.5.1"
+kotlinx-serialization = "1.6.0"
 
 
 [libraries]
