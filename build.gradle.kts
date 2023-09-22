@@ -96,11 +96,11 @@ tasks {
         }
     }
 
-    named<Jar>("javadocJar").configure {
+    named<Jar>("javadocJar") {
         from(dokkatooGenerateModuleJavadoc.get().outputs)
     }
 
-    dokkatooGenerateModuleHtml.configure {
+    dokkatooGenerateModuleHtml {
         outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
     }
 
