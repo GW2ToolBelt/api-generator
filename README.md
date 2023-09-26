@@ -1,10 +1,10 @@
 # api-generator
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square&label=License)](https://github.com/GW2Toolbelt/api-generator/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=flat-square&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.api-generator/api-generator)
-[![Documentation](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=flat-square&label=Documentation&color=blue)](https://gw2toolbelt.github.io/api-generator/)
-![Kotlin](https://img.shields.io/badge/Kotlin-1%2E8-green.svg?style=flat-square&color=a97bff&logo=Kotlin)
-![Java](https://img.shields.io/badge/Java-8-green.svg?style=flat-square&color=b07219&logo=Java)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge&label=License)](https://github.com/GW2Toolbelt/api-generator/blob/master/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=for-the-badge&label=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.api-generator/api-generator)
+[![Documentation](https://img.shields.io/maven-central/v/com.gw2tb.api-generator/api-generator.svg?style=for-the-badge&label=Documentation&color=blue)](https://gw2toolbelt.github.io/api-generator/)
+![Kotlin](https://img.shields.io/badge/Kotlin-1%2E8-green.svg?style=for-the-badge&color=a97bff&logo=Kotlin)
+![Java](https://img.shields.io/badge/Java-8-green.svg?style=for-the-badge&color=b07219&logo=Java)
 
 A library for programmatically creating programs that interface with data exposed
 by the official Guild Wars 2 API.
