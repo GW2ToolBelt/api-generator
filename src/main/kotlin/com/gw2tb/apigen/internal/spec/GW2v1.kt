@@ -64,7 +64,7 @@ internal val GW2v1 = GW2APISpecV1 {
                             "Hue"(INTEGER, "the hue in HSL colorspace")
                             "Saturation"(DECIMAL, "the saturation in HSL colorspace")
                             "Lightness"(DECIMAL, "the lightness in HSL colorspace")
-                            "RGB"(array(INTEGER), "a list containing precalculated RGB values")
+                            CamelCase("rgb").."RGB"(array(INTEGER), "a list containing precalculated RGB values")
                         }
 
                         localized.."Name"(STRING, "the color's name")
