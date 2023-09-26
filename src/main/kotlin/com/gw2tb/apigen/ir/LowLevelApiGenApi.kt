@@ -21,8 +21,18 @@
  */
 package com.gw2tb.apigen.ir
 
+import com.gw2tb.apigen.schema.SchemaRecord
+
 /**
- * TODO doc
+ * Denotes that the annotated API is part of the low-level API of this library.
+ *
+ * Low-level APIs are wrapped by higher level abstractions and, usually, should
+ * not be used outside the generator itself. However, in some cases, the
+ * additional information available in the low-level API might be necessary.
+ *
+ * For example, [SchemaRecord] is a higher-level representation of [IRRecord].
+ * It provides a simpler API by abstracting away knowledge about schema
+ * versions.
  *
  * @since   0.7.0
  */
