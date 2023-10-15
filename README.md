@@ -22,24 +22,17 @@ relevant for the generated output.)
 
 ### Generating implementations
 
-The library defines several entry-points for retrieving all the information
-necessary to generate implementations for each API version:
+The `com.gw2tb.apigen.APIGenerator` class serves as entry-point for retrieving
+information about the Guild Wars 2 API. The _schema_ API serves as high-level
+abstraction carrying semantic information about how the Guild Wars 2 API data
+should be interpreted.
 
-- `com.gw2tb.apigen.APIVersion#getV1(Set<APIv1Endpoint>)`,
-- `com.gw2tb.apigen.APIVersion#getV2(Set<APIv2Endpoint>)`
+It is recommended to generate one-to-one mappings between schema types mappings
+and appropriate language or library constructs, as well as between queries and
+functions.
 
-and the data exposed by Guild Wars 2 via MumbleLink:
-
-- `com.gw2tb.apigen.MumbleLink.MUMBLELINK_IDENTITY_DEFINITION`.
-
-These entry-points expose the types and queries supported by the API. Types are
-defined as "schema types" - an abstraction that contains necessary information
-about the structure of the APIs data-types. It is recommended to generate a
-one-to-one  mapping between schema mappings and appropriate language or library
-constructs.
-
-For a better understanding of schema types and how to work with them, please
-refer to the [user guide](docs/mkdocs/userguide).
+For a better understanding of schema types and how to work with the library,
+please refer to the [user guide](docs/mkdocs/userguide).
 
 
 ## Building from source
@@ -74,29 +67,11 @@ Additionally `tasks` may be used to print a list of all available tasks.
 
 ### Adding/modifying endpoints
 
-From time to time endpoints are added or updated. These changes need to be
+From time to time, API endpoints are added or updated. These changes need to be
 manually integrated into the [API definition](src/main/kotlin/com/gw2tb/apigen/internal/spec).
-The API definition files use a custom DSL for defining endpoint that attempts to
-be as concise as possible while also providing the additional benefits of type-safety.
-
-Adding a new endpoint is almost as simple as adding a few lines of Kotlin code
-to the appropriate file. For example, the `/v2/build` endpoint looks as follows:
-
-```
-val BUILD_ID = "BuildID"(INTEGER)
-
-"/Build"(summary = "Returns the current build ID.") {
-    schema(record(name = "Build", description = "Information about the current game build.") {
-        CamelCase("id").."ID"(BUILD_ID, "the current build ID")
-    })
-}
-```
-
-Each endpoint definition must contain a `summary` describing what the endpoint
-does, and a `schema` which defines the shape of the returned data.
-
-For further information on which functions to use in what situations, please
-refer to the documentation of the [developer guide](docs/mkdocs/devguide).
+The API definition files use a custom Kotlin-based DSL to define endpoint and
+queries. For information on the DSL and how the library functions, please refer
+to the documentation of the [developer guide](docs/mkdocs/devguide).
 
 
 ## Implementations
