@@ -44,32 +44,32 @@ publishing {
     }
     publications.withType<MavenPublication>().configureEach {
         pom {
-            name.set(project.name)
-            description.set("A library for generating programs that interface with the official Guild Wars 2 API.")
+            name = project.name
+            description = "A library for generating programs that interface with the official Guild Wars 2 API."
             packaging = "jar"
-            url.set("https://github.com/GW2ToolBelt/api-generator")
+            url = "https://github.com/GW2ToolBelt/api-generator"
 
             licenses {
                 license {
-                    name.set("MIT")
-                    url.set("https://github.com/GW2ToolBelt/api-generator/blob/master/LICENSE")
-                    distribution.set("repo")
+                    name = "MIT"
+                    url = "https://github.com/GW2ToolBelt/api-generator/blob/master/LICENSE"
+                    distribution = "repo"
                 }
             }
 
             developers {
                 developer {
-                    id.set("TheMrMilchmann")
-                    name.set("Leon Linhart")
-                    email.set("themrmilchmann@gmail.com")
-                    url.set("https://github.com/TheMrMilchmann")
+                    id = "TheMrMilchmann"
+                    name = "Leon Linhart"
+                    email = "themrmilchmann@gmail.com"
+                    url = "https://github.com/TheMrMilchmann"
                 }
             }
 
             scm {
-                connection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
-                developerConnection.set("scm:git:git://github.com/GW2ToolBelt/api-generator.git")
-                url.set("https://github.com/GW2ToolBelt/api-generator.git")
+                connection = "scm:git:git://github.com/GW2ToolBelt/api-generator.git"
+                developerConnection = "scm:git:git://github.com/GW2ToolBelt/api-generator.git"
+                url = "https://github.com/GW2ToolBelt/api-generator.git"
             }
         }
     }

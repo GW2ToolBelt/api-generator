@@ -36,7 +36,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion = JavaLanguageVersion.of(21)
     }
 
     withJavadocJar()
@@ -49,8 +49,8 @@ kotlin {
     target {
         compilations.configureEach {
             compilerOptions.configure {
-                apiVersion.set(KotlinVersion.KOTLIN_1_8)
-                languageVersion.set(KotlinVersion.KOTLIN_1_8)
+                apiVersion = KotlinVersion.KOTLIN_1_8
+                languageVersion = KotlinVersion.KOTLIN_1_8
             }
         }
     }
@@ -58,33 +58,34 @@ kotlin {
 
 dokkatoo {
     dokkatooSourceSets.configureEach {
-        reportUndocumented.set(true)
-        skipEmptyPackages.set(true)
-        jdkVersion.set(8)
+        reportUndocumented = true
+        skipEmptyPackages = true
+        jdkVersion = 8
 
         val localKotlinSourceDir = layout.projectDirectory.dir("src/main/kotlin")
         val version = project.version
 
         sourceLink {
-            localDirectory.set(localKotlinSourceDir)
+            localDirectory = localKotlinSourceDir
+
             remoteUrl("https://github.com/GW2ToolBelt/api-generator/tree/v${version}/src/main/kotlin")
-            remoteLineSuffix.set("#L")
+            remoteLineSuffix = "#L"
         }
     }
 
     dokkatooPublications.configureEach {
-        failOnWarning.set(true)
+        failOnWarning = true
     }
 }
 
 tasks {
     withType<JavaCompile>().configureEach {
-        options.release.set(8)
+        options.release = 8
     }
 
     withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget = JvmTarget.JVM_1_8
         }
     }
 
@@ -101,18 +102,18 @@ tasks {
     }
 
     dokkatooGenerateModuleHtml {
-        outputDirectory.set(layout.buildDirectory.dir("mkdocs/sources/api"))
+        outputDirectory = layout.buildDirectory.dir("mkdocs/sources/api")
     }
 
     register<MkDocs>("mkdocs") {
         dependsOn(dokkatooGenerateModuleHtml)
 
         inputFile(layout.projectDirectory.file(".github/CONTRIBUTING.md")) {
-            target.set("contributing.md")
+            target = "contributing.md"
         }
 
         inputFile(layout.projectDirectory.file("docs/changelog/full.md")) {
-            target.set("changelog.md")
+            target = "changelog.md"
         }
 
         inputFiles(layout.projectDirectory.dir("docs/mkdocs")) {
