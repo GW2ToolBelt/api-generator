@@ -25,7 +25,7 @@ import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.SchemaTypeUse
 
 /**
- * TODO doc
+ * A low-level representation of a [SchemaTypeUse].
  *
  * @since   0.7.0
  */

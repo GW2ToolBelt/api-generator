@@ -24,21 +24,21 @@ package com.gw2tb.apigen.schema
 import com.gw2tb.apigen.ir.*
 
 /**
- * TODO doc
+ * A [SchemaPrimitive] or a [SchemaAlias].
  *
  * @since   0.7.0
  */
 public sealed interface SchemaPrimitiveOrAlias
 
 /**
- * TODO doc
+ * A [SchemaPrimitiveIdentifier] or a [SchemaAlias].
  *
  * @since   0.7.0
  */
 public sealed interface SchemaPrimitiveIdentifierOrAlias : SchemaPrimitiveOrAlias
 
 /**
- * TODO doc
+ * Lowers a [SchemaPrimitiveOrAlias] to a [SchemaPrimitive].
  *
  * @since   0.7.0
  */
@@ -49,7 +49,7 @@ public tailrec fun SchemaPrimitiveOrAlias.lowered(): SchemaPrimitive {
 }
 
 /**
- * TODO doc
+ * Lowers a [SchemaPrimitiveIdentifierOrAlias] to a [SchemaPrimitiveIdentifier].
  *
  * @since   0.7.0
  */

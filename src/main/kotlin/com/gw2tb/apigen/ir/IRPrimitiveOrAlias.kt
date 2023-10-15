@@ -26,14 +26,14 @@ import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifierOrAlias
 import com.gw2tb.apigen.schema.SchemaPrimitiveOrAlias
 
 /**
- * TODO doc
+ * An [IRPrimitive] or an [IRAlias].
  *
  * @since   0.7.0
  */
 public sealed interface IRPrimitiveOrAlias
 
 /**
- * TODO doc
+ * An [IRPrimitiveIdentifier] or an [IRAlias].
  *
  * @since   0.7.0
  */
@@ -41,7 +41,7 @@ public sealed interface IRPrimitiveOrAlias
 public sealed interface IRPrimitiveIdentifierOrAlias : IRPrimitiveOrAlias
 
 /**
- * TODO doc
+ * Lowers an [IRPrimitiveOrAlias] to a [IRPrimitive].
  *
  * @since   0.7.0
  */
@@ -52,7 +52,7 @@ public tailrec fun IRPrimitiveOrAlias.lowered(): IRPrimitive {
 }
 
 /**
- * TODO doc
+ * Lowers an [IRPrimitiveIdentifierOrAlias] to an [IRPrimitiveIdentifier].
  *
  * @since   0.7.0
  */

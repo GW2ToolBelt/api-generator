@@ -34,10 +34,10 @@ import com.gw2tb.apigen.schema.SchemaProperty
  * @param isDeprecated  whether the property is deprecated
  * @param isInline      whether the property is referencing an object that is
  *                      embedded into the containing object
- * @param isLenient     TODO doc
- * @param isLocalized   TODO doc
- * @param optionality   TODO doc
- * @param serialName    TODO doc
+ * @param isLenient     whether the property should be parsed leniently
+ * @param isLocalized   whether the value is a localized string
+ * @param optionality   the optionality of the property
+ * @param serialName    the serial name of the property
  * @param description   a description of the property
  * @param since         the lower bound version (inclusive)
  * @param until         the upper bound version (exclusive)

@@ -26,14 +26,14 @@ import com.gw2tb.apigen.schema.SchemaAlias
 import com.gw2tb.apigen.schema.SchemaTypeDeclaration
 
 /**
- * TODO doc
+ * A qualified type name is the name for a possibly nested type.
  *
  * @since   0.7.0
  */
 public sealed class QualifiedTypeName : Iterable<Name> {
 
     /**
-     * TODO doc
+     * The simple name of the type.
      *
      * @since   0.7.0
      */
@@ -57,7 +57,7 @@ public sealed class QualifiedTypeName : Iterable<Name> {
     ) : QualifiedTypeName() {
 
         /**
-         * TODO
+         * Returns an iterator that yields the [name] of this alias.
          *
          * @since   0.7.0
          */
@@ -70,10 +70,10 @@ public sealed class QualifiedTypeName : Iterable<Name> {
     /**
      * A qualified name for a [SchemaTypeDeclaration].
      *
-     * Typically, this class will be used to resolve a name against [APIVersion.supportedTypes]
+     * Typically, this class will be used to resolve a name against [APIGenerator]
      * to retrieve the matching [SchemaTypeDeclaration].
      *
-     * @param nest  TODO doc
+     * @param nest  the list of names identifying the nest
      * @param name  the name of the type
      *
      * @since   0.7.0
@@ -84,7 +84,9 @@ public sealed class QualifiedTypeName : Iterable<Name> {
     ) : QualifiedTypeName() {
 
         /**
-         * TODO
+         * Returns an iterator that yields all components of this qualified
+         * name. First, the [nest] elements are yielded one-by-one. Finally,
+         * [name] is yielded.
          *
          * @since   0.7.0
          */
@@ -98,14 +100,14 @@ public sealed class QualifiedTypeName : Iterable<Name> {
 }
 
 /**
- * TODO doc
+ * Converts the receiver to a string.
  *
- * @receiver
+ * @receiver    the qualified name to convert to a string
  *
- * @param separator
- * @param transform
+ * @param separator the separator for the segments
+ * @param transform the function used to transform the [Name] segments
  *
- * @return
+ * @return  the resulting string
  *
  * @since   0.7.0
  */
