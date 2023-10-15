@@ -19,13 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-[data-md-color-scheme="gw2tb-light"] {
+:root {
     --md-primary-fg-color: #631625;
     --md-accent-fg-color:  #ef396a;
 }
 
 [data-md-color-scheme="slate"] {
-    --md-hue: 190;
-    --md-primary-fg-color: #159695;
-    --md-accent-fg-color:  #10e1c8;
+    --md-primary-fg-color: #DB3052;
 }
