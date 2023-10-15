@@ -10,7 +10,7 @@ fallbacks for partially parsing responses when possible.
 
     [GW2APIClient](https://github.com/GW2ToolBelt/GW2APIClient) implements a
     fallback mechanism that can be used to decode partial responses for some
-    endpoints that return lists or maps of elements.
+    endpoints that return lists or maps of elements, and unknown enum values.
 
 A community-driven issue tracker is available at the [gw2api-issues](https://github.com/gw2-api/issues)
 GitHub repository. This is a replacement for the unmaintained [official issue tracker](https://github.com/arenanet/api-cdi)
