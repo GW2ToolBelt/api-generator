@@ -1200,7 +1200,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Item"(INTEGER, "the ID of the dye item")
             optional.."Categories"(
                 description = "the categories of the color",
-                type = tuple(name = "Category", description = "") {
+                type = tuple(name = "Categories", description = "The color's categories.") {
                     "Hue"(
                         description = "the color's hue",
                         type = enum(STRING, name = "Hue", description = "A hue.") {
