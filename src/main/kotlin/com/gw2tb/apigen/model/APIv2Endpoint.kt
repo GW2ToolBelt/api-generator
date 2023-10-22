@@ -33,7 +33,7 @@ package com.gw2tb.apigen.model
  */
 public enum class APIv2Endpoint(
     override val endpointName: Name,
-    override val path: String = endpointName.toCamelCase()
+    override val path: String = endpointName.toSnakeCase()
 ) : APIEndpoint {
     /**
      * The `/v2/account` endpoint.

@@ -33,7 +33,7 @@ package com.gw2tb.apigen.model
  */
 public enum class APIv1Endpoint(
     override val endpointName: Name,
-    override val path: String = endpointName.toCamelCase()
+    override val path: String = endpointName.toSnakeCase()
 ) : APIEndpoint {
     /**
      * The `/v1/build` endpoint.
@@ -66,7 +66,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_EVENT_DETAILS("/event_details"),
+    V1_EVENT_DETAILS(Name.derive(snakeCase = "/event_details", titleCase = "/EventDetails")),
     /**
      * The `/v1/files` endpoint.
      *
@@ -82,7 +82,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_GUILD_DETAILS("/guild_details"),
+    V1_GUILD_DETAILS(Name.derive(snakeCase = "/guild_details", titleCase = "/GuildDetails")),
     /**
      * The `/v1/item_details` endpoint.
      *
@@ -90,7 +90,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_ITEM_DETAILS("/item_details"),
+    V1_ITEM_DETAILS(Name.derive(snakeCase = "/item_details", titleCase = "/ItemDetails")),
     /**
      * The `/v1/items` endpoint.
      *
@@ -106,7 +106,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_MAP_FLOOR("/map_floor"),
+    V1_MAP_FLOOR(Name.derive(snakeCase = "/map_floor", titleCase = "/MapFloor")),
     /**
      * The `/v1/map_names` endpoint.
      *
@@ -114,7 +114,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_MAP_NAMES("/map_names"),
+    V1_MAP_NAMES(Name.derive(snakeCase = "/map_names", titleCase = "/MapNames")),
     /**
      * The `/v1/maps` endpoint.
      *
@@ -130,7 +130,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_RECIPE_DETAILS("/recipe_details"),
+    V1_RECIPE_DETAILS(Name.derive(snakeCase = "/recipe_details", titleCase = "/RecipeDetails")),
     /**
      * The `/v1/recipes` endpoint.
      *
@@ -146,7 +146,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_SKIN_DETAILS("/skin_details"),
+    V1_SKIN_DETAILS(Name.derive(snakeCase = "/skin_details", titleCase = "/SkinDetails")),
     /**
      * The `/v1/skins` endpoint.
      *
@@ -162,7 +162,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_WORLD_NAMES("/world_names"),
+    V1_WORLD_NAMES(Name.derive(snakeCase = "/world_names", titleCase = "/WorldNames")),
     /**
      * The `/v1/wvw/match_details` endpoint.
      *
@@ -170,7 +170,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_WVW_MATCH_DETAILS("/wvw/match_details"),
+    V1_WVW_MATCH_DETAILS(Name.derive(snakeCase = "/wvw/match_details", titleCase = "/WvW/MatchDetails")),
     /**
      * The `/v1/wvw/matches` endpoint.
      *
@@ -178,7 +178,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_WVW_MATCHES("/wvw/matches"),
+    V1_WVW_MATCHES("/WvW/Matches"),
     /**
      * The `/v1/wvw/objective_names` endpoint.
      *
@@ -186,7 +186,7 @@ public enum class APIv1Endpoint(
      *
      * @since   0.7.0
      */
-    V1_WVW_OBJECTIVE_NAMES("/wvw/objective_names");
+    V1_WVW_OBJECTIVE_NAMES(Name.derive(snakeCase = "/wvw/objective_names", titleCase = "/WvW/ObjectiveNames"));
 
     constructor(p: String): this(Name.derive(titleCase = p))
 

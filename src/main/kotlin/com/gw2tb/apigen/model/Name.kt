@@ -54,21 +54,38 @@ public data class Name private constructor(
                 var remaining = this@splitCasing
 
                 while (remaining.isNotEmpty()) {
-                    var segment = remaining.takeWhile { it == '/' || it.isUpperCase() }
+                    val segment = buildString {
+                        if (remaining.first() == '/') {
+                            append("/")
+                            remaining = remaining.drop(1)
+                        }
 
-                    if (segment.length <= (if (segment.startsWith('/')) 2 else 1)) {
-                        segment += remaining.drop(segment.length).takeWhile { it != '/' && !it.isUpperCase() }
+                        var buf = remaining.takeWhile { it != '/' && (!it.isLetter() || it.isUpperCase()) }
+                        remaining = remaining.drop(buf.length)
+                        append(buf)
+
+                        buf = remaining.takeWhile { it != '/' && !it.isUpperCase() }
+                        remaining = remaining.drop(buf.length)
+                        append(buf)
                     }
 
                     if (segment.isNotEmpty()) {
-                        remaining = remaining.substring(segment.length)
                         add(segment)
                     }
                 }
-
             }
 
-            val snakeCase = snakeCase ?: (camelCase ?: titleCase)?.splitCasing()?.joinToString(separator = "_") { it.lowercase() } ?: error("At least one must be non null")
+            fun List<String>.joinToSnakeCase(): String = buildString {
+                println(this@joinToSnakeCase)
+                append(this@joinToSnakeCase.first().lowercase())
+
+                this@joinToSnakeCase.drop(1).forEach { segment ->
+                    if (!segment.startsWith("/")) append("_")
+                    append(segment.lowercase())
+                }
+            }
+
+            val snakeCase = snakeCase ?: (camelCase ?: titleCase)?.splitCasing()?.joinToSnakeCase() ?: error("At least one must be non null")
             val camelCase = camelCase ?: titleCase?.firstToLowerCase() ?: snakeCase.split("_").joinToString(separator = "") { it.firstToUpperCase() }
             val titleCase = titleCase ?: camelCase.firstToUpperCase()
 
