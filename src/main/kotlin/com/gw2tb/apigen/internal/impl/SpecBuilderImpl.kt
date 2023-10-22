@@ -90,8 +90,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
     }
 
     override fun APIv1Endpoint.invoke(
-        endpointTitleCase: String,
-        route: String,
+        path: String,
         querySuffix: String?,
         summary: String,
         cache: Duration?,
@@ -100,7 +99,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV1Impl(
-                route = route,
+                path = path,
                 querySuffix = querySuffix,
                 endpoint = this,
                 idTypeKey = null,
@@ -115,8 +114,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
     }
 
     override fun APIv1Endpoint.invoke(
-        endpointTitleCase: String,
-        route: String,
+        path: String,
         idTypeKey: String,
         summary: String,
         queryTypes: QueryTypes,
@@ -126,7 +124,7 @@ internal class SpecBuilderV1Impl : SpecBuilderImplBase<APIv1Endpoint, IRAPIQuery
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV1Impl(
-                route = route,
+                path = path,
                 querySuffix = null,
                 endpoint = this,
                 idTypeKey = idTypeKey,
@@ -168,8 +166,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
     }
 
     override fun APIv2Endpoint.invoke(
-        endpointTitleCase: String,
-        route: String,
+        path: String,
         querySuffix: String?,
         summary: String,
         cache: Duration?,
@@ -180,7 +177,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV2Impl(
-                route = route,
+                path = path,
                 querySuffix = querySuffix,
                 endpoint = this,
                 idTypeKey = null,
@@ -197,8 +194,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
     }
 
     override fun APIv2Endpoint.invoke(
-        endpointTitleCase: String,
-        route: String,
+        path: String,
         idTypeKey: String,
         summary: String,
         queryTypes: QueryTypes,
@@ -210,7 +206,7 @@ internal class SpecBuilderV2Impl : SpecBuilderImplBase<APIv2Endpoint, IRAPIQuery
     ) {
         queries.computeIfAbsent(this) { mutableListOf() }.add { typeRegistry ->
             QueriesBuilderV2Impl(
-                route = route,
+                path = path,
                 querySuffix = null,
                 endpoint = this,
                 idTypeKey = idTypeKey,

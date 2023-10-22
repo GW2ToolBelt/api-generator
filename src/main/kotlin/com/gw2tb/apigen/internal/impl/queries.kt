@@ -39,7 +39,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
 
     protected abstract val typeRegistry: ScopedTypeRegistry<T>
 
-    protected abstract val route: String
+    protected abstract val path: String
     protected abstract val endpoint: APIEndpoint
     protected abstract val querySuffix: String?
     protected abstract val idTypeKey: String?
@@ -50,8 +50,10 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
     protected abstract val apiTypeFactory: (SchemaVersionedDataImpl<out IRTypeDeclaration<*>>, APIType.InterpretationHint?, Boolean) -> T
 
     protected val pathParameters: MutableMap<String, IRPathParameter> = mutableMapOf()
-    override fun pathParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String) {
-        check(":$key" in (route.split('/')))
+    override fun pathParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String?) {
+        println("$key in ${endpoint.path}")
+
+        check(":$key" in (path.split('/')))
         check(key !in pathParameters)
 
         pathParameters[key] = IRPathParameter(
@@ -116,7 +118,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
 }
 
 internal class QueriesBuilderV1Impl(
-    override val route: String,
+    override val path: String,
     override val querySuffix: String?,
     override val endpoint: APIEndpoint,
     override val idTypeKey: String?,
@@ -137,7 +139,7 @@ internal class QueriesBuilderV1Impl(
 
     override fun collect(): Collection<IRAPIQuery.V1> = listOf(
         IRAPIQuery.V1(
-            path = route,
+            path = path,
             endpoint = endpoint,
             summary = summary,
             pathParameters = pathParameters,
@@ -151,7 +153,7 @@ internal class QueriesBuilderV1Impl(
 }
 
 internal class QueriesBuilderV2Impl(
-    override val route: String,
+    override val path: String,
     override val querySuffix: String?,
     override val endpoint: APIEndpoint,
     override val idTypeKey: String?,
@@ -226,7 +228,7 @@ internal class QueriesBuilderV2Impl(
         queryParameters: Map<String, IRQueryParameter>? = null,
         queryDetails: IRAPIQuery.Details? = null
     ) = IRAPIQuery.V2(
-        path = route,
+        path = path,
         endpoint = endpoint,
         summary = summary,
         pathParameters = pathParameters,

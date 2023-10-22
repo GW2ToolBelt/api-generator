@@ -35,8 +35,8 @@ internal interface QueriesBuilder<T : IRAPIType> {
         name: String,
         type: DeferredPrimitiveType<*>,
         description: String,
-        key: String = name,
-        camelCase: String = name.firstToLowerCase()
+        key: String = Name.deriveFromTitleCase(name).toSnakeCase(),
+        camelCase: String? = null
     )
 
     fun queryParameter(

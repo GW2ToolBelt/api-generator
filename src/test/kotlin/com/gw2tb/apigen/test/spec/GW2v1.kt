@@ -166,7 +166,7 @@ class GW2v1 : SpecTest<IRAPIQuery.V1, IRAPIType.V1, GW2v1.ExpectedAPIv1Query>(
 
         fun expectQuery(
             endpoint: APIv1Endpoint,
-            route: String = endpoint.path,
+            route: String = endpoint.path.toSnakeCase(),
             isLocalized: Boolean = false,
             cache: Duration? = null,
             pathParameters: List<ExpectedPathParameter> = emptyList(),

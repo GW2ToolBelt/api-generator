@@ -29,17 +29,10 @@ package com.gw2tb.apigen.model
 public sealed interface APIEndpoint {
 
     /**
-     * The name of the endpoint.
-     *
-     * @since   0.7.0
-     */
-    public val endpointName: Name
-
-    /**
      * The relative path to the endpoint from the API versions root path.
      *
      * @since   0.7.0
      */
-    public val path: String
+    public val path: Name
 
 }

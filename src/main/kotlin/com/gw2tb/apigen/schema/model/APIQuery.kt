@@ -22,6 +22,7 @@
 package com.gw2tb.apigen.schema.model
 
 import com.gw2tb.apigen.model.APIEndpoint
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.QueryType
 import com.gw2tb.apigen.model.TokenScope
 import com.gw2tb.apigen.schema.SchemaPrimitiveIdentifierOrAlias

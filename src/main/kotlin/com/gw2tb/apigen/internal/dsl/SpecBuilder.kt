@@ -22,14 +22,12 @@
 @file:OptIn(LowLevelApiGenApi::class)
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.*
 import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.IRAPIQuery
 import com.gw2tb.apigen.ir.model.IRAPIType
 import com.gw2tb.apigen.model.*
 import com.gw2tb.apigen.model.v2.*
-import com.gw2tb.apigen.schema.*
 import kotlin.time.*
 
 @Suppress("FunctionName")
@@ -116,8 +114,7 @@ internal interface SpecBuilder<T : IRAPIType> {
 internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
 
     operator fun APIv1Endpoint.invoke(
-        endpointTitleCase: String = path,
-        route: String = path,
+        path: String = this.path.toSnakeCase(),
         querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
@@ -126,8 +123,7 @@ internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
     )
 
     operator fun APIv1Endpoint.invoke(
-        endpointTitleCase: String = path,
-        route: String = path,
+        path: String = this.path.toSnakeCase(),
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,
@@ -141,8 +137,7 @@ internal interface SpecBuilderV1 : SpecBuilder<IRAPIType.V1> {
 internal interface SpecBuilderV2 : SpecBuilder<IRAPIType.V2> {
 
     operator fun APIv2Endpoint.invoke(
-        endpointTitleCase: String = path,
-        route: String = path,
+        path: String = this.path.toSnakeCase(),
         querySuffix: String? = null,
         summary: String,
         cache: Duration? = null,
@@ -153,8 +148,7 @@ internal interface SpecBuilderV2 : SpecBuilder<IRAPIType.V2> {
     )
 
     operator fun APIv2Endpoint.invoke(
-        endpointTitleCase: String = path,
-        route: String = path,
+        path: String = this.path.toSnakeCase(),
         idTypeKey: String = "id",
         summary: String,
         queryTypes: QueryTypes,

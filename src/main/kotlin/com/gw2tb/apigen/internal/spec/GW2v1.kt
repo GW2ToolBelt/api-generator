@@ -98,10 +98,7 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_EVENT_DETAILS(
-        endpointTitleCase = "/EventDetails",
-        summary = "Returns information about the events in the game."
-    ) {
+    V1_EVENT_DETAILS(summary = "Returns information about the events in the game.") {
         schema(record(name = "EventDetails", description = "Information about events.") {
             "Events"(
                 description = "the events",
@@ -151,7 +148,6 @@ internal val GW2v1 = GW2APISpecV1 {
         ))
     }
     V1_GUILD_DETAILS(
-        endpointTitleCase = "/GuildDetails",
         querySuffix = "ByID",
         summary = "Returns information about a guild."
     ) {
@@ -160,7 +156,6 @@ internal val GW2v1 = GW2APISpecV1 {
         schema(GuildDetails)
     }
     V1_GUILD_DETAILS(
-        endpointTitleCase = "/GuildDetails",
         querySuffix = "ByName",
         summary = "Returns information about a guild."
     ) {
@@ -168,10 +163,7 @@ internal val GW2v1 = GW2APISpecV1 {
 
         schema(GuildDetails)
     }
-    V1_ITEM_DETAILS(
-        endpointTitleCase = "/ItemDetails",
-        summary = "Returns information an item."
-    ) {
+    V1_ITEM_DETAILS(summary = "Returns information an item.") {
         queryParameter("ItemID", ITEM_ID, "the ID of the item", key = "item_id")
 
         schema(conditional(
@@ -318,10 +310,7 @@ internal val GW2v1 = GW2APISpecV1 {
             "Items"(array(ITEM_ID), "the IDs of the available items")
         })
     }
-    V1_MAP_FLOOR(
-        endpointTitleCase = "/MapFloor",
-        summary = "Returns information about a map floor."
-    ) {
+    V1_MAP_FLOOR(summary = "Returns information about a map floor.") {
         queryParameter("ContinentID", CONTINENT_ID, "the ID of the continent", key = "continent_id")
         queryParameter("FloorID", FLOOR_ID, "the ID of the floor", key = "floor")
 
@@ -439,10 +428,7 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_MAP_NAMES(
-        endpointTitleCase = "/MapNames",
-        summary = "Returns information about maps."
-    ) {
+    V1_MAP_NAMES(summary = "Returns information about maps.") {
         schema(array(
             description = "the available maps",
             items = record(name = "MapName", description = "Information about a map.") {
@@ -475,10 +461,7 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_RECIPE_DETAILS(
-        endpointTitleCase = "/RecipeDetails",
-        summary = "Returns information about the recipes in the game."
-    ) {
+    V1_RECIPE_DETAILS(summary = "Returns information about the recipes in the game.") {
         queryParameter("RecipeID", RECIPE_ID, "the recipe's ID", key = "recipe_id")
 
         schema(record(name = "RecipeDetails", description = "Information about a crafting recipe.") {
@@ -505,7 +488,6 @@ internal val GW2v1 = GW2APISpecV1 {
         })
     }
     V1_SKIN_DETAILS(
-        endpointTitleCase = "/SkinDetails",
         summary = "Returns information about the skins in the game.",
         cache = 1.hours
     ) {
@@ -560,10 +542,7 @@ internal val GW2v1 = GW2APISpecV1 {
             "Skins"(array(SKIN_ID), "the IDs of the available skins")
         })
     }
-    V1_WORLD_NAMES(
-        endpointTitleCase = "/WorldNames",
-        summary = "Returns information about the available worlds (or servers)."
-    ) {
+    V1_WORLD_NAMES(summary = "Returns information about the available worlds (or servers).") {
         schema(array(
             description = "the available worlds",
             items = record(name = "WorldName", description = "Information about an available world (or server).") {
@@ -572,10 +551,7 @@ internal val GW2v1 = GW2APISpecV1 {
             }
         ))
     }
-    V1_WVW_MATCH_DETAILS(
-        endpointTitleCase = "/WvW/MatchDetails",
-        summary = "Returns detailed information about a WvW match."
-    ) {
+    V1_WVW_MATCH_DETAILS(summary = "Returns detailed information about a WvW match.") {
         queryParameter("MatchID", WVW_MATCH_ID, "the ID of the match", key = "match_id")
 
         schema(record(name = "WvWMatchDetails", description = "Information about a WvW match.") {
@@ -605,10 +581,7 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_WVW_MATCHES(
-        endpointTitleCase = "/WvW/Matches",
-        summary = "Returns information about WvW matches."
-    ) {
+    V1_WVW_MATCHES(summary = "Returns information about WvW matches.") {
         schema(record(name = "WvWMatches", description = "Information about WvW matches.") {
             SerialName("wvw_matches").."WvWMatches"(
                 description = "the matches",
@@ -623,10 +596,7 @@ internal val GW2v1 = GW2APISpecV1 {
             )
         })
     }
-    V1_WVW_OBJECTIVE_NAMES(
-        endpointTitleCase = "/WvW/ObjectivesNames",
-        summary = "Returns information about the available WvW objectives."
-    ) {
+    V1_WVW_OBJECTIVE_NAMES(summary = "Returns information about the available WvW objectives.") {
         schema(array(
             description = "the available objectives",
             items = record(name = "ObjectiveName", description = "Information about a WvW objective.") {

@@ -26,14 +26,12 @@ package com.gw2tb.apigen.model
  *
  * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:1)
  *
- * @param endpointName  the name of the endpoint
- * @param path          the path to the endpoint
+ * @param path  the path to the endpoint
  *
  * @since   0.7.0
  */
 public enum class APIv1Endpoint(
-    override val endpointName: Name,
-    override val path: String = endpointName.toSnakeCase()
+    override val path: Name
 ) : APIEndpoint {
     /**
      * The `/v1/build` endpoint.
@@ -188,6 +186,6 @@ public enum class APIv1Endpoint(
      */
     V1_WVW_OBJECTIVE_NAMES(Name.derive(snakeCase = "/wvw/objective_names", titleCase = "/WvW/ObjectiveNames"));
 
-    constructor(p: String): this(Name.derive(titleCase = p))
+    constructor(p: String): this(Name.derive(snakeCase = p.lowercase(), titleCase = p))
 
 }

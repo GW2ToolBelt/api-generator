@@ -25,6 +25,7 @@ package com.gw2tb.apigen.internal.spec
 import com.gw2tb.apigen.model.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
+import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.SchemaVersion.*
 import kotlin.time.Duration
@@ -1258,7 +1259,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_COMMERCE_EXCHANGE(
-        route = "/Commerce/Exchange/:Type",
+        path = "/commerce/exchange/:type",
         summary = "Returns information about the gem exchange."
     ) {
         pathParameter("Type", STRING, "the exchange type")
@@ -1316,7 +1317,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_COMMERCE_TRANSACTIONS(
-        route = "/Commerce/Transactions/:Relevance",
+        path = "/commerce/transactions/:relevance",
         summary = "Returns information about an account's transactions.",
         cache = Duration.INFINITE, // We don't expect this to change. Ever.
         security = security(ACCOUNT, TRADING_POST)
@@ -1326,7 +1327,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_COMMERCE_TRANSACTIONS(
-        route = "/Commerce/Transactions/:Relevance/:Type",
+        path = "/commerce/transactions/:relevance/:type",
         summary = "Returns information about an account's transactions.",
         queryTypes = queryTypes(BY_PAGE),
         cache = 1.minutes,
@@ -1363,7 +1364,7 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        pathParameter("ContinentID", INTEGER, "the continent's ID", key = "ID", camelCase = "continentID")
+        pathParameter("ContinentID", INTEGER, "the continent's ID", key = "id", camelCase = "continentID")
 
         schema(record(name = "ContinentFloor", description = "Information about a continent floor.") {
             CamelCase("id").."ID"(INTEGER, "the floor's ID")
@@ -1535,7 +1536,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_EMBLEM(
-        route = "/Emblem/:Type",
+        path = "/emblem/:type",
         summary = "Returns information about guild emblem assets.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
@@ -2586,7 +2587,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_PVP_SEASONS_LEADERBOARDS(
-        route = "/PvP/Seasons/:ID/Leaderboards/:Board",
+        path = "/pvp/seasons/:id/leaderboards/:board",
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
@@ -2596,7 +2597,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(STRING, "the available sub-endpoints"))
     }
     V2_PVP_SEASONS_LEADERBOARDS(
-        route = "/PvP/Seasons/:ID/Leaderboards/:Board/:Region",
+        path = "/pvp/seasons/:id/leaderboards/:board/:region",
         idTypeKey = "rank",
         summary = "Returns information about a PvP leaderboard.",
         queryTypes = queryTypes(BY_PAGE),
