@@ -31,9 +31,9 @@ import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.model.v2.SchemaVersion
 
-internal class SchemaConditionalInterpretationBuilder constructor(
+internal class SchemaConditionalInterpretationBuilder(
     private val interpretationKey: String,
-    private val interpretationNestProperty: String,
+    private val interpretationNestProperty: String?,
     private val type: DeferredType<IRTypeUse<*>>
 ) {
 

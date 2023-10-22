@@ -130,13 +130,18 @@ internal class SchemaConditionalBuilder<T : IRAPIType>(
      */
     operator fun String.invoke(
         type: DeferredSchemaClass<T>,
-        nestProperty: String = this.lowercase()
-    ): SchemaConditionalInterpretationBuilder =
-        SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
+        nestProperty: String? = null
+    ): SchemaConditionalInterpretationBuilder {
+        if (!interpretationInNestedProperty && nestProperty != null) TODO()
+
+        @Suppress("NAME_SHADOWING")
+        val nestProperty = if (interpretationInNestedProperty && nestProperty == null) lowercase() else nestProperty
+        return SchemaConditionalInterpretationBuilder(this, nestProperty, type).also { _interpretations += it }
+    }
 
     /** Registers a conditional interpretation using the @receiver's name as key. */
     operator fun DeferredSchemaClass<*>.unaryPlus(): SchemaConditionalInterpretationBuilder =
-        SchemaConditionalInterpretationBuilder(name.toTitleCase(), name.toSnakeCase(), this).also { this@SchemaConditionalBuilder._interpretations += it }
+        SchemaConditionalInterpretationBuilder(name.toTitleCase(), if (this@SchemaConditionalBuilder.interpretationInNestedProperty) name.toSnakeCase() else null, this).also { this@SchemaConditionalBuilder._interpretations += it }
 
     /** Marks a deprecated interpretation. */
     val deprecated get() = Modifiers.deprecated
