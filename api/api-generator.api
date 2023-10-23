@@ -441,8 +441,7 @@ public final class com/gw2tb/apigen/ir/model/IRQueryParameter {
 }
 
 public abstract interface class com/gw2tb/apigen/model/APIEndpoint {
-	public abstract fun getEndpointName ()Lcom/gw2tb/apigen/model/Name;
-	public abstract fun getPath ()Ljava/lang/String;
+	public abstract fun getPath ()Lcom/gw2tb/apigen/model/Name;
 }
 
 public final class com/gw2tb/apigen/model/APIv1Endpoint : java/lang/Enum, com/gw2tb/apigen/model/APIEndpoint {
@@ -465,8 +464,7 @@ public final class com/gw2tb/apigen/model/APIv1Endpoint : java/lang/Enum, com/gw
 	public static final field V1_WVW_MATCHES Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static final field V1_WVW_MATCH_DETAILS Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static final field V1_WVW_OBJECTIVE_NAMES Lcom/gw2tb/apigen/model/APIv1Endpoint;
-	public fun getEndpointName ()Lcom/gw2tb/apigen/model/Name;
-	public fun getPath ()Ljava/lang/String;
+	public fun getPath ()Lcom/gw2tb/apigen/model/Name;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static fun values ()[Lcom/gw2tb/apigen/model/APIv1Endpoint;
 }
@@ -614,8 +612,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_WVW_OBJECTIVES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_RANKS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_UPGRADES Lcom/gw2tb/apigen/model/APIv2Endpoint;
-	public fun getEndpointName ()Lcom/gw2tb/apigen/model/Name;
-	public fun getPath ()Ljava/lang/String;
+	public fun getPath ()Lcom/gw2tb/apigen/model/Name;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static fun values ()[Lcom/gw2tb/apigen/model/APIv2Endpoint;
 }
