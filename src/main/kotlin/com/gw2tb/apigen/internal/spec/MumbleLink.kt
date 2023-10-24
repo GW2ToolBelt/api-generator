@@ -28,11 +28,9 @@ import com.gw2tb.apigen.model.Optionality
 
 @OptIn(LowLevelApiGenApi::class)
 internal val MUMBLE_IDENTITY by lazy {
-    operator fun String.invoke(type: DeferredPrimitiveType<*>, description: String, serialName: String? = null): IRProperty {
-        val name = Name.derive(titleCase = this, snakeCase = serialName)
-
+    operator fun Name.invoke(type: DeferredPrimitiveType<*>, description: String, serialName: String? = null): IRProperty {
         return IRProperty(
-            name = name,
+            name = this,
             type = type.getFlat(),
             description = description,
             isDeprecated = false,
@@ -40,10 +38,15 @@ internal val MUMBLE_IDENTITY by lazy {
             isLenient = false,
             isLocalized = false,
             optionality = Optionality.REQUIRED,
-            serialName = name.toSnakeCase(),
+            serialName = serialName ?: this.toSnakeCase(),
             since = null,
             until = null
         )
+    }
+
+    operator fun String.invoke(type: DeferredPrimitiveType<*>, description: String, serialName: String? = null): IRProperty {
+        val name = Name.derive(titleCase = this, snakeCase = serialName)
+        return name(type, description, serialName)
     }
 
     IRRecord(
@@ -59,7 +62,7 @@ internal val MUMBLE_IDENTITY by lazy {
             "TeamColorId"(INTEGER, "the ID of the current team", serialName = "team_color_id"),
             "Commander"(BOOLEAN, "a flag indicating whether the player currently is commanding a squad"),
             "Map"(MAP_ID, "the ID of the current map"),
-            "FoV"(DECIMAL, "the scaling of the FOV"),
+            Name("FoV")(DECIMAL, "the scaling of the FOV"),
             "UISize"(INTEGER, "the selected UI size", serialName = "uisz")
         )
     )
