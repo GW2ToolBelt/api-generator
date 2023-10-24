@@ -32,8 +32,8 @@ import com.gw2tb.apigen.model.Name
  * type-alias if the target permits. Otherwise, the aliased primitive type
  * should be used instead.
  *
- * @param type          the aliased primitive type
  * @param name          the name of the alias
+ * @param type          the aliased primitive type
  * @param description   a description of the tuple
  *
  * @since   0.7.0

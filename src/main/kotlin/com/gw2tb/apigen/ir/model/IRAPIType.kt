@@ -79,6 +79,7 @@ public sealed class IRAPIType {
             return APIType(
                 name = name,
                 schema = schema,
+                schemaVersion = v2SchemaVersion,
                 interpretationHint = interpretationHint,
                 isTopLevel = isTopLevel,
                 testSet = 1
@@ -104,9 +105,14 @@ public sealed class IRAPIType {
         override fun resolve(resolverContext: ResolverContext, v2SchemaVersion: SchemaVersion?): APIType {
             val schema = _declaration.getOrThrow(v2SchemaVersion!!).data.resolve(resolverContext, v2SchemaVersion)
 
+            val effectiveVersion = _declaration.significantVersions
+                .sorted()
+                .findLast { it <= v2SchemaVersion }
+
             return APIType(
                 name = name,
                 schema = schema,
+                schemaVersion = effectiveVersion,
                 interpretationHint = interpretationHint,
                 isTopLevel = isTopLevel,
                 testSet = 2

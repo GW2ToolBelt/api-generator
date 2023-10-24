@@ -1066,13 +1066,15 @@ public final class com/gw2tb/apigen/schema/model/APIQuery$Details {
 public final class com/gw2tb/apigen/schema/model/APIType {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
-	public final fun component3 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;)Lcom/gw2tb/apigen/schema/model/APIType;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIType;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIType;
+	public final fun component3 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
+	public final fun component4 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
+	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;)Lcom/gw2tb/apigen/schema/model/APIType;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIType;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIType;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getInterpretationHint ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public final fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public final fun getSchemaVersion ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

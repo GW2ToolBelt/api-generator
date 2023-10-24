@@ -23,6 +23,7 @@ package com.gw2tb.apigen.schema.model
 
 import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.model.Name
+import com.gw2tb.apigen.model.v2.SchemaVersion
 import com.gw2tb.apigen.schema.*
 
 /**
@@ -30,6 +31,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @param name                  the type's name
  * @param schema                the type's schema definition
+ * @param schemaVersion         the effective [SchemaVersion] that has most recently affected the type
  * @param interpretationHint    additional information about the type if it represents an interpretation of a [SchemaConditional]
  *
  * @since   0.7.0
@@ -37,6 +39,7 @@ import com.gw2tb.apigen.schema.*
 public data class APIType internal constructor(
     public val name: Name,
     public val schema: SchemaTypeDeclaration,
+    public val schemaVersion: SchemaVersion?,
     public val interpretationHint: InterpretationHint?,
     internal val isTopLevel: Boolean,
     internal val testSet: Int?
