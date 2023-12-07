@@ -59,7 +59,7 @@ jobs:
           rm ${{ env.WORKSPACE_ARCHIVE }}
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
 
       - name: Install dependencies
         run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
