@@ -2101,6 +2101,18 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_JADEBOTS(
+        summary = "Returns information about jade bot skins.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "JadeBot", description = "Information about a jade bot skin.") {
+            CamelCase("id").."ID"(INTEGER, "the skins's ID")
+            localized.."Name"(STRING, "the skins's name")
+            localized.."Description"(STRING, "the skin's description")
+            SerialName("unlock_item").."UnlockItems"(ITEM_ID, "an array of item IDs used to unlock the skin")
+        })
+    }
     V2_LEGENDARYARMORY(
         summary = "Returns information about what can be stored in the legendary armory.",
         queryTypes = defaultQueryTypes(all = true),

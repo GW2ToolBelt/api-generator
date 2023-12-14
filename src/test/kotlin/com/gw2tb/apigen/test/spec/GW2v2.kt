@@ -1277,6 +1277,36 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/jadebots",
+            cache = 1.hours,
+            queryDetails = QueryIDs<IRInteger>()
+        )
+        expectQuery(
+            "/jadebots",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID<IRInteger>()
+        )
+        expectQuery(
+            "/jadebots",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs<IRInteger>()
+        )
+        expectQuery(
+            "/jadebots",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage<IRInteger>()
+        )
+
+        expectQuery(
             "/legendaryarmory",
             cache = 1.hours,
             queryDetails = QueryIDs<IRInteger>()

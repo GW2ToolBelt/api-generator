@@ -786,6 +786,14 @@ public enum class APIv2Endpoint(
      */
     V2_ITEMSTATS("/ItemStats"),
     /**
+     * The `/v2/jadebots` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/jadebots)
+     *
+     * @since   0.7.0
+     */
+    V2_JADEBOTS("/JadeBots"),
+    /**
      * The `/v2/legendaryarmory` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/legendaryarmory)
