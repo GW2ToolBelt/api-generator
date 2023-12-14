@@ -146,6 +146,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_INVENTORY("/Account/Inventory"),
     /**
+     * The `/v2/account/jadebots` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/jadebots)
+     *
+     * @since   0.7.0
+     */
+    V2_ACCOUNT_JADEBOTS("/Account/JadeBots"),
+    /**
      * The `/v2/account/legendaryarmory` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/legendaryarmory)

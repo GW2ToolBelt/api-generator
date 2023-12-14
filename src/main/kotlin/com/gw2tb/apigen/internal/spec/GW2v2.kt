@@ -571,6 +571,12 @@ internal val GW2v2 = GW2APISpecV2 {
             }
         ))
     }
+    V2_ACCOUNT_JADEBOTS(
+        summary = "Returns information about a player's unlocked jade bot skins.",
+        security = security(ACCOUNT, UNLOCKS)
+    ) {
+        schema(array(INTEGER, "an array of IDs containing the ID of each jade bot skin unlocked by the player"))
+    }
     V2_ACCOUNT_LEGENDARYARMORY(
         summary = "Returns information about a player's legendary armory.",
         security = security(ACCOUNT, INVENTORIES, UNLOCKS)

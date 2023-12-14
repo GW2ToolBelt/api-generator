@@ -111,6 +111,11 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/account/jadebots",
+            security = setOf(ACCOUNT, UNLOCKS)
+        )
+
+        expectQuery(
             "/account/legendaryarmory",
             security = setOf(ACCOUNT, INVENTORIES, UNLOCKS)
         )
