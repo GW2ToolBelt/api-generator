@@ -1034,6 +1034,14 @@ public enum class APIv2Endpoint(
      */
     V2_RECIPES_SEARCH("/Recipes/Search"),
     /**
+     * The `/v2/skiffs` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/skiffs)
+     *
+     * @since   0.7.0
+     */
+    V2_SKIFFS("/Skiffs"),
+    /**
      * The `/v2/skills` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/skills)

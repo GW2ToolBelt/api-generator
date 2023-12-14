@@ -2816,6 +2816,24 @@ internal val GW2v2 = GW2APISpecV2 {
 
         schema(array(INTEGER, "the IDs of the found recipes"))
     }
+    V2_SKIFFS(
+        summary = "Returns information about skiff skins.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "Skiff", description = "Information about a skiff skin.") {
+            CamelCase("id").."ID"(INTEGER, "the skin's ID")
+            localized.."Name"(STRING, "the skin's name")
+            "Icon"(STRING, "a render service URL for the skin's icon")
+            SerialName("dye_slots").."DyeSlots"(
+                description = "the skin's dye slots",
+                type = array(record(name = "DyeSlot", description = "Information about a dye slot.") {
+                    SerialName("color_id").."ColorID"(INTEGER, "the ID of the color")
+                    "Material"(STRING, "the slot's material")
+                })
+            )
+        })
+    }
     V2_SKILLS(
         summary = "Returns information about the skills in the game.",
         queryTypes = defaultQueryTypes(),

@@ -595,6 +595,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_RAIDS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_RECIPES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_RECIPES_SEARCH Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_SKIFFS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_SKILLS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_SKINS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_SPECIALIZATIONS Lcom/gw2tb/apigen/model/APIv2Endpoint;

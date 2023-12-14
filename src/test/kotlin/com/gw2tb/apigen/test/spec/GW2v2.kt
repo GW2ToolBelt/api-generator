@@ -2072,6 +2072,36 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/skiffs",
+            cache = 1.hours,
+            queryDetails = QueryIDs<IRInteger>()
+        )
+        expectQuery(
+            "/skiffs",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID<IRInteger>()
+        )
+        expectQuery(
+            "/skiffs",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs<IRInteger>()
+        )
+        expectQuery(
+            "/skiffs",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage<IRInteger>()
+        )
+
+        expectQuery(
             "/skills",
             cache = 1.hours,
             queryDetails = QueryIDs<IRInteger>()
