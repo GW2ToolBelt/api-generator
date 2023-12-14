@@ -500,6 +500,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_ACCOUNT_PVP_HEROES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_RAIDS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_RECIPES Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_SKIFFS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_SKINS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_TITLES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_WALLET Lcom/gw2tb/apigen/model/APIv2Endpoint;

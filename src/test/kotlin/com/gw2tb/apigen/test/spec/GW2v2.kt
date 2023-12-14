@@ -191,6 +191,11 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/account/skiffs",
+            security = setOf(ACCOUNT, UNLOCKS)
+        )
+
+        expectQuery(
             "/account/skins",
             security = setOf(ACCOUNT, UNLOCKS)
         )

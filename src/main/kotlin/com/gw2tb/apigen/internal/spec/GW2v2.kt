@@ -703,6 +703,12 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(INTEGER, "an array of IDs containing the ID of each recipe unlocked by the player"))
     }
+    V2_ACCOUNT_SKIFFS(
+        summary = "Returns information about a player's unlocked skiff skins.",
+        security = security(ACCOUNT, UNLOCKS)
+    ) {
+        schema(array(INTEGER, "an array of IDs containing the ID of each skiff skin unlocked by the player"))
+    }
     V2_ACCOUNT_SKINS(
         summary = "Returns information about a player's unlocked skins.",
         security = security(ACCOUNT, UNLOCKS)

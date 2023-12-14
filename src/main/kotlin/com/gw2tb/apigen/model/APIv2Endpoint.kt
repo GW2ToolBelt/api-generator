@@ -274,6 +274,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_RECIPES("/Account/Recipes"),
     /**
+     * The `/v2/account/skiffs` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/skiffs)
+     *
+     * @since   0.7.0
+     */
+    V2_ACCOUNT_SKIFFS("/Account/Skiffs"),
+    /**
      * The `/v2/account/skins` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/skins)
