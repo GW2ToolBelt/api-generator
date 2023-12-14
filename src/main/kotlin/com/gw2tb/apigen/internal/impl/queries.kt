@@ -51,8 +51,6 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
 
     protected val pathParameters: MutableMap<String, IRPathParameter> = mutableMapOf()
     override fun pathParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String?) {
-        println("$key in ${endpoint.path}")
-
         check(":$key" in (path.split('/')))
         check(key !in pathParameters)
 

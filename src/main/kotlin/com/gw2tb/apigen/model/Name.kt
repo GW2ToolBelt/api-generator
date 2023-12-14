@@ -76,7 +76,6 @@ public data class Name private constructor(
             }
 
             fun List<String>.joinToSnakeCase(): String = buildString {
-                println(this@joinToSnakeCase)
                 append(this@joinToSnakeCase.first().lowercase())
 
                 this@joinToSnakeCase.drop(1).forEach { segment ->
