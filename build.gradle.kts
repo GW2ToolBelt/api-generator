@@ -97,6 +97,13 @@ tasks {
         }
     }
 
+    withType<Jar>().configureEach {
+        isPreserveFileTimestamps = false
+        isReproducibleFileOrder = true
+
+        includeEmptyDirs = false
+    }
+
     named<Jar>("javadocJar") {
         from(dokkatooGenerateModuleJavadoc.get().outputs)
     }
