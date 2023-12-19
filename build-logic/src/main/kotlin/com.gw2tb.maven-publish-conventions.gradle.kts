@@ -47,8 +47,8 @@ publishing {
         pom {
             name = project.name
             description = "A library for generating programs that interface with the official Guild Wars 2 API."
-            packaging = "jar"
             url = "https://github.com/GW2ToolBelt/api-generator"
+            packaging = "jar"
 
             licenses {
                 license {
