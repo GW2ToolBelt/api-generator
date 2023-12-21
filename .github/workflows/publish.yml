@@ -71,7 +71,7 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./build/mkdocs/site
           retention-days: 3
@@ -189,7 +189,7 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4
 
 
   nexus-release:
