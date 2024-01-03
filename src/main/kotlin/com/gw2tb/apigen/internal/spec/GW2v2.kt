@@ -595,7 +595,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(
             description = "the account's luck",
-            items = record(name = "Luck", description = "Information about a plyer's luck.") {
+            items = record(name = "Luck", description = "Information about a player's luck.") {
                 CamelCase("id").."ID"(STRING, "the type of luck (always \"luck\")")
                 "Value"(INTEGER, "the amount of luck")
             }
