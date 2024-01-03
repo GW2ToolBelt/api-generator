@@ -2119,8 +2119,8 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "JadeBot", description = "Information about a jade bot skin.") {
-            CamelCase("id").."ID"(INTEGER, "the skins's ID")
-            localized.."Name"(STRING, "the skins's name")
+            CamelCase("id").."ID"(INTEGER, "the skin's ID")
+            localized.."Name"(STRING, "the skin's name")
             localized.."Description"(STRING, "the skin's description")
             SerialName("unlock_item").."UnlockItems"(ITEM_ID, "an array of item IDs used to unlock the skin")
         })
