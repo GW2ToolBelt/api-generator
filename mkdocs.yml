@@ -1,60 +1,48 @@
-# Project information
-site_name: 'api-generator'
-site_description: 'A library for generating programs that interface with the official Guild Wars 2 API.'
-site_author: 'GW2ToolBelt'
-site_url: 'https://gw2toolbelt.github.io/api-generator'
-
-# Copyright
+site_name: "api-generator"
+site_description: "A library for generating programs that interface with the official Guild Wars 2 API."
+site_author: "GW2ToolBelt"
+site_url: "https://gw2toolbelt.github.io/api-generator"
 copyright: Copyright &copy; 2019 - 2024 Leon Linhart
 
+repo_name: "api-generator"
+repo_url: "https://github.com/GW2ToolBelt/api-generator"
+remote_branch: "gh-pages"
+docs_dir: "docs/site"
 
-edit_uri: 'tree/master/docs'
-remote_branch: 'gh-pages'
-
-docs_dir: 'build/mkdocs/sources'
-
-# Repository
-repo_name: 'api-generator'
-repo_url: 'https://github.com/GW2ToolBelt/api-generator'
-
-
-# Configuration
 theme:
-  name: 'material'
+  name: "material"
   icon:
     logo: material/hammer-wrench
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
+      primary: custom
+      accent: pink
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: red
+      accent: orange
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   font:
-    text: 'Roboto'
-    code: 'JetBrains Mono'
+    text: "Roboto"
+    code: "JetBrains Mono"
   features:
+    - content.tabs.link
     - navigation.footer
     - navigation.instant
     - navigation.sections
     - navigation.tabs
     - navigation.tracking
-    - content.tabs.link
+    - toc.integrate
 
 extra_css:
   - stylesheets/extra.css
 
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: 'https://github.com/GW2ToolBelt'
-
-
-# Extensions
 markdown_extensions:
   - admonition
   - attr_list
@@ -68,9 +56,6 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.details
 
-
-
-# Navigation
 nav:
   - 'api-generator':
     - 'Overview': index.md
@@ -93,3 +78,14 @@ nav:
 #    - 'DSL': devguide/dsl.md
 
   - 'API Reference': api/index.html
+
+plugins:
+  - mike
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: "https://github.com/GW2ToolBelt"
+  version:
+    provider: mike

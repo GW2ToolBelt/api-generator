@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Leon Linhart
+ * Copyright (c) 2019-2024 Leon Linhart
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,10 +20,18 @@
  * SOFTWARE.
  */
 :root {
-    --md-primary-fg-color: #631625;
-    --md-accent-fg-color:  #ef396a;
+    --md-primary-fg-color:        #631625;
+    /*--md-primary-fg-color--light: #ECB7B7;*/
+    /*--md-primary-fg-color--dark:  #90030C;*/
 }
 
 [data-md-color-scheme="slate"] {
-    --md-primary-fg-color: #DB3052;
+    --md-hue: 240;
+    --md-primary-fg-color:        #c44445;
+    /*--md-primary-fg-color--light: #ECB7B7;*/
+    /*--md-primary-fg-color--dark:  #90030C;*/
+}
+
+.md-typeset a {
+    text-decoration: underline;
 }
