@@ -60,11 +60,12 @@ public data class Name private constructor(
                             remaining = remaining.drop(1)
                         }
 
-                        var buf = remaining.takeWhile { it != '/' && (!it.isLetter() || it.isUpperCase()) }
-                        remaining = remaining.drop(buf.length)
-                        append(buf)
+                        if (remaining.first().isUpperCase()) {
+                            append(remaining.first())
+                            remaining = remaining.drop(1)
+                        }
 
-                        buf = remaining.takeWhile { it != '/' && !it.isUpperCase() }
+                        val buf = remaining.takeWhile { it != '/' && !it.isUpperCase() }
                         remaining = remaining.drop(buf.length)
                         append(buf)
                     }

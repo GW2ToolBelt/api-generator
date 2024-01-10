@@ -34,7 +34,7 @@ import kotlin.time.Duration
 @Suppress("FunctionName")
 internal val GW2v2 = GW2APISpecV2 {
     val DAILY_ACHIEVEMENT = record(name = "DailyAchievement", description = "Information about a daily achievement.") {
-        CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
+        "Id"(ACHIEVEMENT_ID, "the achievement's ID")
         "Level"(
             description = "the level requirement for the daily achievement to appear",
             type = record(name = "LevelRequirement", description = "Information about the level requirement of a daily achievement.") {
@@ -42,7 +42,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Max"(INTEGER, "the maximum level for a character to the daily achievement")
             }
         )
-        SerialName("required_access").."RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
+        "RequiredAccess"(array(STRING), "the GW2 campaigns required to see the daily achievement")
     }
 
     @APIGenDSL
@@ -52,12 +52,12 @@ internal val GW2v2 = GW2APISpecV2 {
 
     val CHARACTERS_BUILDTAB = record(name = "CharactersBuildTab", description = "Information about a character's build tab.") {
         "Tab"(INTEGER, "the tab's ID")
-        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
+        "IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
         "Build"(
             description = "the stored build",
             type = record(name = "Build", description = "Information about a build.") {
                 val SPECIALIZATION = record(name = "Specialization", description = "Information about a build's specialization.") {
-                    optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
+                    optional.."Id"(INTEGER, "the specialization's ID")
                     "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
                 }
 
@@ -71,9 +71,9 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Profession"(STRING, "the build's profession")
                 "Specializations"(array(SPECIALIZATION), "the build's specializations")
                 "Skills"(SKILLS, "the build's skills")
-                SerialName("aquatic_skills").."AquaticSkills"(SKILLS, "the build's aquatic skills")
+                "AquaticSkills"(SKILLS, "the build's aquatic skills")
                 optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
-                optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
+                optional.."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
             }
         )
     }
@@ -88,7 +88,7 @@ internal val GW2v2 = GW2APISpecV2 {
         optional.."Guild"(STRING, "the ID of the character's represented guild")
         "Age"(INTEGER, "the amount of seconds the character was played")
         "Created"(STRING, "the ISO-8601 standard timestamp of when the character was created")
-        since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
+        since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
         "Deaths"(INTEGER, "the amount of times the character has been defeated")
         optional.."Title"(INTEGER, "the ID of the character's selected title")
     }
@@ -110,7 +110,7 @@ internal val GW2v2 = GW2APISpecV2 {
         "Equipment"(
             description = "the character's equipment",
             type = array(record(name = "EquipmentSlot", description = "Information a character's equipment slot.") {
-                CamelCase("id").."ID"(ITEM_ID, "the equipment piece's item ID")
+                "Id"(ITEM_ID, "the equipment piece's item ID")
                 until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Slot"(STRING, "the equipment piece's slot")
                 since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Slot"(STRING, "the equipment piece's slot")
                 optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
@@ -119,11 +119,11 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional.."Infusions"(array(ITEM_ID), "the IDs of the infusions slotted into the item")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                 optional.."Binding"(STRING, "the binding of the item")
-                optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                optional.."BoundTo"(STRING, "name of the character the item is bound to")
                 optional.."Stats"(
                     description = "contains information on the stats chosen if the item offers an option for stats/prefix",
                     type = record(name = "Stats", description = "Information about an item's stats.") {
-                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Id"(INTEGER, "the itemstat ID")
                         "Attributes"(
                             description = "the item's attributes",
                             type = record(name = "Attributes", description = "Information about an item's attributes.") {
@@ -149,23 +149,23 @@ internal val GW2v2 = GW2APISpecV2 {
     val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
         "Tab"(INTEGER, "the tab's ID")
         "Name"(STRING, "the equipment configuration's name")
-        SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
+        "IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
         "Equipment"(
             description = "the stored equipment",
             type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
-                CamelCase("id").."ID"(INTEGER, "the equipped item's ID")
+                "Id"(INTEGER, "the equipped item's ID")
                 "Slot"(STRING, "the slot in which the equipment piece is slotted into")
                 optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
                 optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
                 optional.."Upgrades"(array(INTEGER), "the IDs of the upgrade components slotted into the item")
                 optional.."Infusions"(array(INTEGER), "the IDs of the infusions slotted into the item")
                 optional.."Binding"(STRING, "the binding of the item")
-                optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                optional.."BoundTo"(STRING, "name of the character the item is bound to")
                 "Location"(STRING, "the storage location of the equipment piece")
                 optional.."Stats"(
                     description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
                     type = record(name = "Stats", description = "Information about an item's stats.") {
-                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Id"(INTEGER, "the itemstat ID")
                         optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                         optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
                         optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
@@ -178,9 +178,9 @@ internal val GW2v2 = GW2APISpecV2 {
                 )
             })
         )
-        SerialName("equipment_pvp").."EquipmentPvP"(
+        "EquipmentPvp"(
             description = "the character's PvP equipment",
-            type = record(name = "PvPEquipment", "Information about a character's PvP equipment.") {
+            type = record(name = "PvpEquipment", "Information about a character's PvP equipment.") {
                 optional.."Amulet"(INTEGER, "the ID of the selected amulet")
                 optional.."Rune"(INTEGER, "the ID of the selected rune")
                 "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
@@ -193,22 +193,22 @@ internal val GW2v2 = GW2APISpecV2 {
         "Bags"(
             description = "the character's inventory bags",
             type = array(record(name = "Bag", description = "Information about an inventory bag.") {
-                CamelCase("id").."ID"(ITEM_ID, "the bag's item ID")
+                "Id"(ITEM_ID, "the bag's item ID")
                 "Size"(INTEGER, "the bag's size")
                 "Inventory"(
                     description = "the bag's content",
                     type = array(record(name = "Item", description = "Information about an item in a character's inventory.") {
-                        CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                        "Id"(ITEM_ID, "the item's ID")
                         "Count"(INTEGER, "the amount of items in the stack")
                         optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                         optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                         optional.."Upgrades"(array(ITEM_ID), "an array of item IDs for each rune or signet applied to the item")
-                        optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
+                        optional.."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
                         optional.."Infusions"(array(ITEM_ID), "an array of item IDs for each infusion applied to the item")
                         optional.."Stats"(
                             description = "contains information on the stats chosen if the item offers an option for stats/prefix",
                             type = record(name = "Stats", description = "Information about an item's stats.") {
-                                CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                                "Id"(INTEGER, "the itemstat ID")
                                 optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                                 optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
                                 optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
@@ -220,7 +220,7 @@ internal val GW2v2 = GW2APISpecV2 {
                             }
                         )
                         optional.."Binding"(STRING, "the binding of the material")
-                        optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                        optional.."BoundTo"(STRING, "name of the character the item is bound to")
                     }, nullableItems = true)
                 )
             })
@@ -235,20 +235,20 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Legends"(array(STRING, nullableItems = true), "the legend IDs")
         }
 
-        CamelCase("pve").."PvE"(SKILLS, "the character's PvE skills")
-        CamelCase("pvp").."PvP"(SKILLS, "the character's PvP skills")
-        CamelCase("wvw").."WvW"(SKILLS, "the character's WvW skills")
+        "Pve"(SKILLS, "the character's PvE skills")
+        "Pvp"(SKILLS, "the character's PvP skills")
+        "Wvw"(SKILLS, "the character's WvW skills")
     }
 
     val CHARACTERS_SPECIALIZATIONS = record(name = "Specializations", description = "Information about a character's equipped specializations.") {
         val SPECIALIZATION = record(name = "Specialization", description = "Information about an equipped specialization.") {
-            optional..CamelCase("id").."ID"(INTEGER, "the specialization's ID")
+            optional.."Id"(INTEGER, "the specialization's ID")
             "Traits"(array(INTEGER, nullableItems = true), "the IDs of the selected traits")
         }
 
-        CamelCase("pve").."PvE"(array(SPECIALIZATION), "the character's PvE specializations")
-        CamelCase("pvp").."PvP"(array(SPECIALIZATION), "the character's PvP specializations")
-        CamelCase("wvw").."WvW"(array(SPECIALIZATION), "the character's WvW specializations")
+        "Pve"(array(SPECIALIZATION), "the character's PvE specializations")
+        "Pvp"(array(SPECIALIZATION), "the character's PvP specializations")
+        "Wvw"(array(SPECIALIZATION), "the character's WvW specializations")
     }
 
     @APIGenDSL
@@ -256,7 +256,7 @@ internal val GW2v2 = GW2APISpecV2 {
         "Training"(
             description = "the training information for a character's trained skill-trees",
             type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
-                CamelCase("id").."ID"(INTEGER, "the skill tree's ID")
+                "Id"(INTEGER, "the skill tree's ID")
                 "Spent"(INTEGER, "the amount of hero points spent in the tree")
                 "Done"(BOOLEAN, "a flag indicating whether the tree is fully trained")
             })
@@ -273,7 +273,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Status"(STRING, "the boon, condition, or effect referred to by the fact")
             optional.."Duration"(INTEGER, "the duration of the effect in seconds")
             optional.."Description"(STRING, "the description of the status effect")
-            optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+            optional.."ApplyCount"(INTEGER, "the number of stacks applied")
         }
         +record(name = "BuffConversion", description = "Additional information about a buff-conversion.") {
             "Source"(STRING, "the attribute that is used to calculate the attribute gain")
@@ -281,14 +281,14 @@ internal val GW2v2 = GW2APISpecV2 {
             "Target"(STRING, "the attribute that gets added to")
         }
         +record(name = "ComboField", description = "Additional information about a combo-field.") {
-            SerialName("field_type").."FieldType"(STRING, "the type of the field")
+            "FieldType"(STRING, "the type of the field")
         }
         +record(name = "ComboFinisher", description = "Additional information about a combo-finisher.") {
-            SerialName("finisher_type").."FinisherType"(STRING, "the type of finisher")
+            "FinisherType"(STRING, "the type of finisher")
             "Percent"(INTEGER, "the percent chance that the finisher will trigger")
         }
         +record(name = "Damage", description = "Additional information about damage.") {
-            SerialName("hit_count").."HitCount"(INTEGER, "the amount of times the damage hits")
+            "HitCount"(INTEGER, "the amount of times the damage hits")
             SerialName("dmg_multiplier").."DamageMultiplier"(DECIMAL, "the damage multiplier")
         }
         +record(name = "Distance", description = "Additional information about range.") {
@@ -305,7 +305,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Status"(STRING, "the boon, condition, or effect referred to by the fact")
             optional.."Duration"(INTEGER, "the duration of the effect in seconds")
             optional.."Description"(STRING, "the description of the status effect")
-            optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks applied")
+            optional.."ApplyCount"(INTEGER, "the number of stacks applied")
             "Prefix"(
                 description = "A buff's prefix icon and description.",
                 type = record(name = "Prefix", description = "Information about a buff's prefix.") {
@@ -341,33 +341,30 @@ internal val GW2v2 = GW2APISpecV2 {
         security = security(ACCOUNT)
     ) {
         schema(record(name = "Account", description = "Information about a player's account.") {
-            CamelCase("id").."ID"(STRING, "the unique persistent account GUID")
+            "Id"(STRING, "the unique persistent account GUID")
             "Age"(INTEGER, "the age of the account in seconds")
             "Name"(STRING, "the unique account name")
             "World"(INTEGER, "the ID of the home world the account is assigned to")
             "Guilds"(array(STRING), "an array containing the IDs of all guilds the account is a member in")
-            optional(GUILDS)..SerialName("guild_leader").."GuildLeader"(
-                array(STRING),
-                "an array containing the IDs of all guilds the account is a leader of"
-            )
+            optional(GUILDS).."GuildLeader"(array(STRING), "an array containing the IDs of all guilds the account is a leader of")
             "Created"(STRING, "the ISO-8601 standard timestamp of when the account was created")
             "Access"(array(STRING), "an array of what content this account has access to")
             "Commander"(BOOLEAN, "a flag indicating whether the commander tag is unlocked for the account")
-            optional(PROGRESSION)..SerialName("fractal_level").."FractalLevel"(
+            optional(PROGRESSION).."FractalLevel"(
                 INTEGER,
                 "the account's personal fractal level"
             )
             optional(PROGRESSION)..SerialName("daily_ap").."DailyAP"(INTEGER, "the daily AP the account has")
             optional(PROGRESSION)..SerialName("monthly_ap").."MonthlyAP"(INTEGER, "the monthly AP the account has")
-            optional(PROGRESSION)..CamelCase("wvwRank")..SerialName("wvw_rank").."WvWRank"(
+            optional(PROGRESSION).."WvwRank"(
                 INTEGER,
                 "the account's personal wvw rank"
             )
-            since(V2_SCHEMA_2019_02_21T00_00_00_000Z)..SerialName("last_modified").."LastModified"(
+            since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."LastModified"(
                 STRING,
                 "the ISO-8601 standard timestamp of when the account information last changed (as perceived by the API)"
             )
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS)..SerialName("build_storage_slots").."BuildStorageSlots"(
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."BuildStorageSlots"(
                 INTEGER,
                 "the number of the account's account-wide build storage slots unlocked"
             )
@@ -380,7 +377,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of progress information towards all achievements the account has made progress.",
             items = record(name = "AccountAchievement", description = "Information about a player's progress towards an achievement.") {
-                CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
+                "Id"(ACHIEVEMENT_ID, "the achievement's ID")
                 "Done"(BOOLEAN, "a flag indicating whether the account has completed the achievement")
                 optional.."Bits"(array(INTEGER), "an array of numbers (whose exact meaning differs) giving information about the progress towards an achievement")
                 optional.."Current"(INTEGER, "the account's current progress towards the achievement")
@@ -398,18 +395,18 @@ internal val GW2v2 = GW2APISpecV2 {
             description = "a list of slots in a player's bank.",
             nullableItems = true,
             items = record(name = "AccountBankSlot", description = "Information about a bank slot.") {
-                CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                "Id"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                 optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                 optional.."Dyes"(array(INTEGER), "the IDs of the dyes applied to the item")
                 optional.."Upgrades"(array(ITEM_ID), "the array of item IDs of runes or sigils applied to the item")
-                optional..SerialName("upgrade_slot_indices").."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
+                optional.."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
                 optional.."Infusions"(array(ITEM_ID), "the array of item IDs of infusions applied to the item")
                 optional.."Stats"(
                     description = "contains information on the stats chosen if the item offers an option for stats/prefix",
                     type = record(name = "Stats", description = "Information about an item's stats.") {
-                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Id"(INTEGER, "the itemstat ID")
                         "Attributes"(
                             description = "the item's attributes",
                             type = record(name = "Attributes", description = "Information about an item's attributes.") {
@@ -426,7 +423,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     }
                 )
                 optional.."Binding"(STRING, "the binding of the material")
-                optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                optional.."BoundTo"(STRING, "name of the character the item is bound to")
             }
         ))
     }
@@ -444,7 +441,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(
                         nullableItems = true,
                         items = record(name = "Specialization", description = "Information about a build's specialization.") {
-                            CamelCase("id").."ID"(INTEGER, "the specializations ID")
+                            "Id"(INTEGER, "the specializations ID")
                             "Traits"(array(INTEGER, nullableItems = true), "the trait IDs")
                         }
                     )
@@ -457,7 +454,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         optional.."Elite"(INTEGER, "the elite skill's ID")
                     }
                 )
-                optional..SerialName("aquatic_skills").."AuqaticSkills"(
+                optional.."AuqaticSkills"(
                     description = "the build's aquatic skills",
                     type = record(name = "AuqaticSkills", description = "Information about a build's aquatic skills.") {
                         optional.."Heal"(INTEGER, "the heal skill's ID")
@@ -466,7 +463,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     }
                 )
                 optional.."Legends"(array(STRING, nullableItems = true), "the build's legend IDs")
-                optional..SerialName("aquatic_legends").."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
+                optional.."AquaticLegends"(array(STRING, nullableItems = true), "the build's aquatic legend IDs")
             }
         ))
     }
@@ -501,7 +498,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "the finishers unlocked by the account",
             items = record(name = "AccountFinisher", description = "Information about finishers unlocked by an account.") {
-                CamelCase("id").."ID"(INTEGER, "the finisher's ID")
+                "Id"(INTEGER, "the finisher's ID")
                 "Permanent"(BOOLEAN, "whether the finisher is unlock permanently")
                 optional.."Quantity"(INTEGER, "the remaining uses")
             }
@@ -527,7 +524,7 @@ internal val GW2v2 = GW2APISpecV2 {
             V2_SCHEMA_CLASSIC to array(
                 description = "the IDs of the player's unlocked home instance cats",
                 items = record(name = "AccountHomeInstanceCat", description = "Information about a player's unlocked home-instance cat.") {
-                    CamelCase("id").."ID"(INTEGER, "the cat's ID")
+                    "Id"(INTEGER, "the cat's ID")
                     "Hint"(STRING, "the unlock hint")
                 }
             ),
@@ -547,7 +544,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of stacks of items in an account's shared inventory.",
             items = record(name = "AccountInventorySlot", description = "Information about a stack of items in a player's shared inventory.") {
-                CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                "Id"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the amount of items in the stack")
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                 optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
@@ -556,7 +553,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional.."Stats"(
                     description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
                     type = record(name = "Stats", description = "Information about an item's stats.") {
-                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Id"(INTEGER, "the itemstat ID")
                         optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                         optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
                         optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
@@ -584,7 +581,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "the account's legendary armory unlocks.",
             items = record(name = "AccountLegendaryArmoryUnlock", description = "Information about a player's legendary armory item unlock.") {
-                CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                "Id"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the number of copies unlocked")
             }
         ))
@@ -596,7 +593,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "the account's luck",
             items = record(name = "Luck", description = "Information about a player's luck.") {
-                CamelCase("id").."ID"(STRING, "the type of luck (always \"luck\")")
+                "Id"(STRING, "the type of luck (always \"luck\")")
                 "Value"(INTEGER, "the amount of luck")
             }
         ))
@@ -620,7 +617,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of all masteries unlocked by an account.",
             items = record(name = "AccountMastery", description = "Information about a player's unlocked mastery.") {
-                CamelCase("id").."ID"(INTEGER, "the mastery's ID")
+                "Id"(INTEGER, "the mastery's ID")
                 optional.."Level"(INTEGER, "the index of the unlocked mastery level")
             }
         ))
@@ -648,7 +645,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of all materials in an account's vault.",
             items = record(name = "AccountMaterial", description = "Information about a stack of materials in a player's vault.") {
-                CamelCase("id").."ID"(ITEM_ID, "the material's item ID")
+                "Id"(ITEM_ID, "the material's item ID")
                 "Category"(INTEGER, "the material category the item belongs to")
                 "Count"(INTEGER, "the number of the material that is stored in the player's vault")
                 optional.."Binding"(STRING, "the binding of the material")
@@ -734,7 +731,7 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(array(
             description = "A list of all currencies in an account's wallet.",
             items = record(name = "AccountWalletCurrency", description = "Information about a currency in a player's wallet.") {
-                CamelCase("id").."ID"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
+                "Id"(INTEGER, "the currency ID that can be resolved against /v2/currencies")
                 "Value"(INTEGER, "the amount of this currency in the player's wallet")
             }
         ))
@@ -751,12 +748,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Achievement", description = "Information about an achievement.") {
-            CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
+            "Id"(ACHIEVEMENT_ID, "the achievement's ID")
             optional.."Icon"(STRING, "the URL for the achievement's icon")
             localized.."Name"(STRING, "the achievement's localized name")
             localized.."Description"(STRING, "the achievement's localized description")
             localized.."Requirement"(STRING, "the achievement's requirement as listed in-game")
-            localized..SerialName("locked_text").."LockedText"(STRING, "the achievement's in-game description prior to unlocking it")
+            localized.."LockedText"(STRING, "the achievement's in-game description prior to unlocking it")
             "Type"(STRING, "the achievement's type")
             "Flags"(array(STRING), "the achievement's categories")
             "Tiers"(
@@ -780,15 +777,15 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Count"(INTEGER, "the amount of coins")
                     }
                     +record(name = "Items", description = "Information about an item reward.") {
-                        CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                        "Id"(ITEM_ID, "the item's ID")
                         "Count"(INTEGER, "the amount of the item")
                     }
                     +record(name = "Mastery", description = "Information about a mastery point reward.") {
-                        CamelCase("id").."ID"(INTEGER, "the mastery point's ID")
+                        "Id"(INTEGER, "the mastery point's ID")
                         "Region"(STRING, "the mastery point's region")
                     }
                     +record(name = "Title", description = "Information about a title reward") {
-                        CamelCase("id").."ID"(INTEGER, "the title's ID")
+                        "Id"(INTEGER, "the title's ID")
                     }
                 })
             )
@@ -796,11 +793,11 @@ internal val GW2v2 = GW2APISpecV2 {
                 description = "the achievement's bits",
                 type = array(record(name = "Bit", description = "Information about an achievement bit.") {
                     "Type"(STRING, "the bit's type")
-                    optional..CamelCase("id").."ID"(INTEGER, "the ID of the bit's object")
+                    optional.."Id"(INTEGER, "the ID of the bit's object")
                     optional.."Text"(STRING, "the bit's text")
                 })
             )
-            optional..SerialName("point_cap").."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
+            optional.."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
         })
     }
     V2_ACHIEVEMENTS_CATEGORIES(
@@ -809,7 +806,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "AchievementCategory", description = "Information about an achievement category.") {
-            CamelCase("id").."ID"(ACHIEVEMENT_CATEGORY_ID, "the achievement category's ID")
+            "Id"(ACHIEVEMENT_CATEGORY_ID, "the achievement category's ID")
             "Icon"(STRING, "the URL for the achievement category's icon")
             localized.."Name"(STRING, "the achievement category's localized name")
             localized.."Description"(STRING, "the achievement category's localized description")
@@ -818,9 +815,9 @@ internal val GW2v2 = GW2APISpecV2 {
             since(V2_SCHEMA_2022_03_23T19_00_00_000Z).."Achievements"(
                 description = "an array containing information about the achievements that this category contains",
                 type = array(record(name = "Entry", description = "An achievement entry of a category.") {
-                    CamelCase("id").."ID"(ACHIEVEMENT_ID, "the achievement's ID")
+                    "Id"(ACHIEVEMENT_ID, "the achievement's ID")
                     optional.."Flags"(array(STRING), "additional informational flags")
-                    optional..SerialName("required_access").."RequiredAccess"(
+                    optional.."RequiredAccess"(
                         description = "the access constraints for the achievement",
                         type = record(name = "AccessConstraint", description = "Information about the product requirements for an achievement.") {
                             "Product"(STRING, "the product")
@@ -846,18 +843,18 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_ACHIEVEMENTS_DAILY(summary = "Returns information about daily achievements.") {
         schema(record(name = "AchievementsDaily", description = "Information about daily achievements.") {
-            CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
-            CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
-            CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT), "the WvW achievements")
+            "Pve"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
+            "Pvp"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
+            "Wvw"(array(DAILY_ACHIEVEMENT), "the WvW achievements")
             "Fractals"(array(DAILY_ACHIEVEMENT), "the fractal achievements")
             "Special"(array(DAILY_ACHIEVEMENT), "the special achievements (e.g. festival dailies)")
         })
     }
     V2_ACHIEVEMENTS_DAILY_TOMORROW(summary = "Returns information about tomorrow's daily achievements.") {
         schema(record(name = "AchievementsDailyTomorrow", description = "Information about daily achievements.") {
-            CamelCase("pve").."PvE"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
-            CamelCase("pvp").."PvP"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
-            CamelCase("wvw").."WvW"(array(DAILY_ACHIEVEMENT), "the WvW achievements")
+            "Pve"(array(DAILY_ACHIEVEMENT), "the PvE achievements")
+            "Pvp"(array(DAILY_ACHIEVEMENT), "the PvP achievements")
+            "Wvw"(array(DAILY_ACHIEVEMENT), "the WvW achievements")
             "Fractals"(array(DAILY_ACHIEVEMENT), "the fractal achievements")
             "Special"(array(DAILY_ACHIEVEMENT), "the special achievements (e.g. festival dailies)")
         })
@@ -868,7 +865,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "AchievementGroups", description = "Information about an achievement group.") {
-            CamelCase("id").."ID"(ACHIEVEMENT_GROUP_ID, "the achievement group's ID")
+            "Id"(ACHIEVEMENT_GROUP_ID, "the achievement group's ID")
             localized.."Name"(STRING, "the achievement group's localized name")
             localized.."Description"(STRING, "the achievement group's localized description")
             "Order"(INTEGER, "a number that can be used to sort the list of groups")
@@ -887,7 +884,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "BackstoryAnswer", description = "Information about a biography answer.") {
-            CamelCase("id").."ID"(STRING, "the answer's ID")
+            "Id"(STRING, "the answer's ID")
             localized.."Title"(STRING, "the answer's localized title")
             localized.."Description"(STRING, "the answer's localized description")
             localized.."Journal"(STRING, "the answer's localized journal entry")
@@ -902,7 +899,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "BackstoryQuestion", description = "Information about a biography question.") {
-            CamelCase("id").."ID"(INTEGER, "the question's ID")
+            "Id"(INTEGER, "the question's ID")
             localized.."Title"(STRING, "the question's localized title")
             localized.."Description"(STRING, "the question's localized description")
             "Answers"(array(STRING), "the IDs of the possible answers to the question")
@@ -913,7 +910,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_BUILD(summary = "Returns the current build ID.") {
         schema(record(name = "Build", description = "Information about the current game build.") {
-            CamelCase("id").."ID"(BUILD_ID, "the current build ID")
+            "Id"(BUILD_ID, "the current build ID")
         })
     }
     V2_CHARACTERS(
@@ -925,16 +922,16 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "Character", description = "Information about a character.") {
             CHARACTERS_CORE()
 
-            SerialName("wvw_abilities")..CamelCase("wvwAbilities").."WvWAbilities"(
+            "WvwAbilities"(
                 description = "information about the WvW abilities of the character",
-                type = array(record(name = "WvWAbility", description = "Information about a character's WvW ability.") {
-                    CamelCase("id").."ID"(INTEGER, "the ability's ID")
+                type = array(record(name = "WvwAbility", description = "Information about a character's WvW ability.") {
+                    "Id"(INTEGER, "the ability's ID")
                     "Rank"(INTEGER, "the ability's rank")
                 })
             )
-            until(V2_SCHEMA_2021_04_06T21_00_00_000Z)..SerialName("equipment_pvp").."EquipmentPvP"(
+            until(V2_SCHEMA_2021_04_06T21_00_00_000Z).."EquipmentPvp"(
                 description = "information about the character's PvP equipment",
-                type = record(name = "EquipmentPvP", description = "Information about a character's PvP equipment.") {
+                type = record(name = "EquipmentPvp", description = "Information about a character's PvP equipment.") {
                     optional.."Amulet"(INTEGER, "the ID of the character's PvP amulet")
                     optional.."Rune"(INTEGER, "the ID of the character's PvP rune")
                     "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the character's PvP sigils")
@@ -942,37 +939,37 @@ internal val GW2v2 = GW2APISpecV2 {
             )
             "Flags"(array(STRING), "various additional flags")
 
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("build_tabs_unlocked").."BuildTabsUnlocked"(INTEGER, "the number of build tabs unlocked for the character")
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("active_build_tab").."ActiveBuildTab"(INTEGER, "the ID of the character's active build tab")
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("equipment_tabs_unlocked").."EquipmentTabsUnlocked"(INTEGER, "the number of equipment tabs unlocked for the character")
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("active_equipment_tab").."ActiveEquipmentTab"(INTEGER, "the ID of the character's active equipment tab")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."BuildTabsUnlocked"(INTEGER, "the number of build tabs unlocked for the character")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."ActiveBuildTab"(INTEGER, "the ID of the character's active build tab")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."EquipmentTabsUnlocked"(INTEGER, "the number of equipment tabs unlocked for the character")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."ActiveEquipmentTab"(INTEGER, "the ID of the character's active equipment tab")
 
             CHARACTERS_BACKSTORY()
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("build_tabs").."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
             CHARACTERS_CRAFTING()
             CHARACTERS_EQUIPMENT()
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("equipment_tabs").."EquipmentTabs"(
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."EquipmentTabs"(
                 description = "the character's equipment tabs",
                 type = array(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
                     "Tab"(INTEGER, "the tab's ID")
                     "Name"(STRING, "the equipment configuration's name")
-                    SerialName("is_active").."IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
+                    "IsActive"(BOOLEAN, "a flag indicating whether this tab is the active tab")
                     "Equipment"(
                         description = "the stored equipment",
                         type = array(record(name = "Equipment", description = "Information about a piece of equipment.") {
-                            CamelCase("id").."ID"(ITEM_ID, "the equipped item's ID")
+                            "Id"(ITEM_ID, "the equipped item's ID")
                             "Slot"(STRING, "the slot in which the equipment piece is slotted into")
                             optional.."Skin"(SKIN_ID, "the ID of the skin transmuted onto the equipment piece")
                             optional.."Dyes"(array(INTEGER, nullableItems = true), "the IDs of the dyes applied to the item")
                             optional.."Upgrades"(array(ITEM_ID), "the IDs of the upgrade components slotted into the item")
                             optional.."Infusions"(array(ITEM_ID), "the IDs of the infusions slotted into the item")
                             optional.."Binding"(STRING, "the binding of the item")
-                            optional..SerialName("bound_to").."BoundTo"(STRING, "name of the character the item is bound to")
+                            optional.."BoundTo"(STRING, "name of the character the item is bound to")
                             "Location"(STRING, "the storage location of the equipment piece")
                             optional.."Stats"(
                                 description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
                                 type = record(name = "Stats", description = "Information about an item's stats.") {
-                                    CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                                    "Id"(INTEGER, "the itemstat ID")
                                     optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                                     optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
                                     optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
@@ -985,9 +982,9 @@ internal val GW2v2 = GW2APISpecV2 {
                             )
                         })
                     )
-                    since(V2_SCHEMA_2021_04_06T21_00_00_000Z)..SerialName("equipment_pvp").."EquipmentPvP"(
+                    since(V2_SCHEMA_2021_04_06T21_00_00_000Z).."EquipmentPvp"(
                         description = "the character's PvP equipment",
-                        type = record(name = "PvPEquipment", "Information about a character's PvP equipment.") {
+                        type = record(name = "PvpEquipment", "Information about a character's PvP equipment.") {
                             "Amulet"(INTEGER, "the ID of the selected amulet")
                             "Rune"(INTEGER, "the ID of the selected rune")
                             "Sigils"(array(INTEGER, nullableItems = true), "the IDs of the selected sigils")
@@ -1006,7 +1003,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's backstory.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersBackstory", description = "Information about a character's backstory.") {
             CHARACTERS_BACKSTORY()
@@ -1023,7 +1020,7 @@ internal val GW2v2 = GW2APISpecV2 {
         ),
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(CHARACTERS_BUILDTAB)
     }
@@ -1031,7 +1028,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's current build.",
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(CHARACTERS_EQUIPMENTTAB)
     }
@@ -1039,7 +1036,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns general information about a character.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersCore", description = "General Information about a character.") {
             CHARACTERS_CORE()
@@ -1049,7 +1046,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's crafting disciplines.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersCrafting", description = "Information about a character's crafting disciplines.") {
             CHARACTERS_CRAFTING()
@@ -1059,7 +1056,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's equipment.",
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersEquipment", description = "Information about a character's equipment.") {
             CHARACTERS_EQUIPMENT()
@@ -1076,7 +1073,7 @@ internal val GW2v2 = GW2APISpecV2 {
         ),
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(CHARACTERS_EQUIPMENTTAB)
     }
@@ -1084,7 +1081,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's current equipment.",
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(CHARACTERS_EQUIPMENTTAB)
     }
@@ -1092,7 +1089,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's unlock hero points.",
         security = security(ACCOUNT, CHARACTERS, PROGRESSION)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(array(STRING, "the IDs of the heropoints unlocked by the character"))
     }
@@ -1100,7 +1097,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's inventory.",
         security = security(ACCOUNT, CHARACTERS, INVENTORIES)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersInventorySlot", description = "Information about a bag in a character's inventory.") {
             CHARACTERS_INVENTORY()
@@ -1110,7 +1107,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's selected quests.",
         security = security(ACCOUNT, CHARACTERS, PROGRESSION)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(array(INTEGER, "the IDs of the quests selected by the character"))
     }
@@ -1118,7 +1115,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's crafting recipes.",
         security = security(ACCOUNT, UNLOCKS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersRecipes", description = "Information about a character's crafting recipes.") {
             "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
@@ -1128,13 +1125,13 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's Super Adventure Box (SAB) progression.",
         security = security(ACCOUNT, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersSAB", description = "Information about a character's Super Adventure Box (SAB) progression.") {
             "Zones"(
                 description = "the character's completed zones",
                 type = array(record(name = "Zone", description = "Information about a zone completed by a character.") {
-                    CamelCase("id").."ID"(INTEGER, "the zone's ID")
+                    "Id"(INTEGER, "the zone's ID")
                     "Mode"(STRING, "the mode used when completing this zone")
                     "World"(INTEGER, "the world this zone is in")
                     "Zone"(INTEGER, "the zone's number")
@@ -1143,14 +1140,14 @@ internal val GW2v2 = GW2APISpecV2 {
             "Unlocks"(
                 description = "the character's unlocked unlocks",
                 type = array(record(name = "Unlock", description = "Information about an unlock unlocked by a character.") {
-                    CamelCase("id").."ID"(INTEGER, "the unlock's ID")
+                    "Id"(INTEGER, "the unlock's ID")
                     optional.."Name"(STRING, "an unlocalized name describing the unlock")
                 })
             )
             "Songs"(
                 description = "the character's unlocked songs",
                 type = array(record(name = "Song", description = "Information about a song unlocked by a character.") {
-                    CamelCase("id").."ID"(INTEGER, "the song's ID")
+                    "Id"(INTEGER, "the song's ID")
                     optional.."Name"(STRING, "an unlocalized name describing the song")
                 })
             )
@@ -1161,7 +1158,7 @@ internal val GW2v2 = GW2APISpecV2 {
         security = security(ACCOUNT, BUILDS, CHARACTERS),
         until = V2_SCHEMA_2019_12_19T00_00_00_000Z
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersSkills", description = "Information about a character's equipped skills.") {
             "Skills"(CHARACTERS_SKILLS, "the character's equipped skills")
@@ -1172,7 +1169,7 @@ internal val GW2v2 = GW2APISpecV2 {
         security = security(ACCOUNT, BUILDS, CHARACTERS),
         until = V2_SCHEMA_2019_12_19T00_00_00_000Z
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersSpecializations", description = "Information about a character's equipped specializations.") {
             "Specializations"(CHARACTERS_SPECIALIZATIONS, "the character's equipped specializations")
@@ -1182,7 +1179,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a character's (skill-tree) training.",
         security = security(ACCOUNT, BUILDS, CHARACTERS)
     ) {
-        pathParameter("ID", STRING, "the character's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the character's ID")
 
         schema(record(name = "CharactersTraining", description = "Information about a character's (skill-tree) training.") {
             CHARACTERS_TRAINING()
@@ -1200,12 +1197,12 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Hue"(INTEGER, "the hue in HSL colorspace")
                 "Saturation"(DECIMAL, "the saturation in HSL colorspace")
                 "Lightness"(DECIMAL, "the lightness in HSL colorspace")
-                CamelCase("rgb").."RGB"(array(INTEGER), "a list containing precalculated RGB values")
+                "Rgb"(array(INTEGER), "a list containing precalculated RGB values")
             }
 
-            CamelCase("id").."ID"(INTEGER, "the color's ID")
+            "Id"(INTEGER, "the color's ID")
             localized.."Name"(STRING, "the color's name")
-            SerialName("base_rgb").."BaseRGB"(array(INTEGER), "the base RGB values")
+            "BaseRgb"(array(INTEGER), "the base RGB values")
             "Cloth"(APPEARANCE, "detailed information on its appearance when applied on cloth armor")
             "Leather"(APPEARANCE, "detailed information on its appearance when applied on leather armor")
             "Metal"(APPEARANCE, "detailed information on its appearance when applied on metal armor")
@@ -1258,7 +1255,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Items"(
                 description = "the items ready for pickup",
                 type = array(record(name = "Item", description = "Information about an item ready for pickup.") {
-                    CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                    "Id"(ITEM_ID, "the item's ID")
                     "Count"(INTEGER, "the amount of this item ready for pickup")
                 })
             )
@@ -1278,7 +1275,7 @@ internal val GW2v2 = GW2APISpecV2 {
         queryParameter("Quantity", INTEGER, "the amount to exchange")
 
         schema(record(name = "CommerceExchange", description = "Information about an exchange.") {
-            SerialName("coins_per_gem").."CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
+            "CoinsPerGem"(INTEGER, "the number of coins received/required for a single gem")
             "Quantity"(INTEGER, "the number of coins/gems for received for the specified quantity of gems/coins")
         })
     }
@@ -1288,12 +1285,12 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         val LISTING = record(name = "Listing", description = "Information about a listing.") {
             "Listings"(INTEGER, "the number of individual listings this object refers to (e.g. two players selling at the same price will end up in the same listing)")
-            SerialName("unit_price").."UnitPrice"(INTEGER, "the sell offer or buy order price in coins")
+            "UnitPrice"(INTEGER, "the sell offer or buy order price in coins")
             "Quantity"(INTEGER, "the amount of items being sold/bought in this listing")
         }
 
         schema(record(name = "CommerceListing", description = "Information about an item listed in the trading post.") {
-            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+            "Id"(ITEM_ID, "the item's ID")
             "Buys"(array(LISTING), "list of all buy listings")
             "Sells"(array(LISTING), "list of all sell listings")
         })
@@ -1303,19 +1300,19 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes()
     ) {
         schema(record(name = "CommercePrices", description = "Information about an item listed in the trading post.") {
-            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+            "Id"(ITEM_ID, "the item's ID")
             "Whitelisted"(BOOLEAN, "indicates whether a free to play account can purchase or sell this item on the trading post")
             "Buys"(
                 description = "the buy information",
                 type = record(name = "BuyListing", description = "Information about an item's buy listing.") {
-                    SerialName("unit_price").."UnitPrice"(INTEGER, "the highest buy order price in coins")
+                    "UnitPrice"(INTEGER, "the highest buy order price in coins")
                     "Quantity"(INTEGER, "the amount of items being bought")
                 }
             )
             "Sells"(
                 description = "the sell information",
                 type = record(name = "SellListing", description = "Information about an item's sell listing.") {
-                    SerialName("unit_price").."UnitPrice"(INTEGER, "the lowest sell order price in coins")
+                    "UnitPrice"(INTEGER, "the lowest sell order price in coins")
                     "Quantity"(INTEGER, "the amount of items being sold")
                 }
             )
@@ -1349,8 +1346,8 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("Type", STRING, "the transaction type")
 
         schema(record(name = "CommerceTransaction", description = "Information about a transaction.") {
-            CamelCase("id").."ID"(INTEGER, "the transaction's ID")
-            SerialName("item_id").."ItemID"(ITEM_ID, "the item's ID")
+            "Id"(INTEGER, "the transaction's ID")
+            "ItemId"(ITEM_ID, "the item's ID")
             "Price"(INTEGER, "the price in coins")
             "Quantity"(INTEGER, "the quantity of the item")
             "Created"(STRING, "the ISO-8601 standard timestamp of when the transaction was created")
@@ -1363,11 +1360,11 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Continent", description = "Information about a continent.") {
-            CamelCase("id").."ID"(INTEGER, "the continent's ID")
+            "Id"(INTEGER, "the continent's ID")
             localized.."Name"(STRING, "the continent's name")
-            SerialName("continent_dims").."ContinentDims"(array(INTEGER), "the width and height of the continent")
-            SerialName("min_zoom").."MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
-            SerialName("max_zoom").."MaxZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
+            "ContinentDims"(array(INTEGER), "the width and height of the continent")
+            "MinZoom"(INTEGER, "the minimal zoom level for use with the map tile service")
+            "MaxZoom"(INTEGER, "the maximum zoom level for use with the map tile service")
             "Floors"(array(INTEGER), "the IDs of the continent's floors")
         })
     }
@@ -1376,43 +1373,43 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        pathParameter("ContinentID", INTEGER, "the continent's ID", key = "id", camelCase = "continentID")
+        pathParameter("ContinentId", INTEGER, "the continent's ID", key = "id")
 
         schema(record(name = "ContinentFloor", description = "Information about a continent floor.") {
-            CamelCase("id").."ID"(INTEGER, "the floor's ID")
-            SerialName("texture_dims").."TextureDims"(array(INTEGER), "the width and height of the texture")
-            optional..SerialName("clamped_view").."ClampedView"(array(array(INTEGER)), "a rectangle of downloadable textures (Every tile coordinate outside this rectangle is not available on the tile server.)")
+            "Id"(INTEGER, "the floor's ID")
+            "TextureDims"(array(INTEGER), "the width and height of the texture")
+            optional.."ClampedView"(array(array(INTEGER)), "a rectangle of downloadable textures (Every tile coordinate outside this rectangle is not available on the tile server.)")
             "Regions"(
                 description = "the floor's regions",
                 type = map(
                     keys = INTEGER,
                     values = record(name = "Region", description = "Information about a region.") {
-                        CamelCase("id").."ID"(INTEGER, "the region's ID")
+                        "Id"(INTEGER, "the region's ID")
                         localized.."Name"(STRING, "the region's localized name")
-                        SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the region's label")
-                        SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the region, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                        "LabelCoord"(array(DECIMAL), "the coordinate of the region's label")
+                        "ContinentRect"(array(array(INTEGER)), "the dimensions of the region, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
                         "Maps"(
                             description = "the region's maps",
                             type = map(
                                 keys = INTEGER,
                                 values = record(name = "Map", description = "Information about a map.") {
-                                    CamelCase("id").."ID"(INTEGER, "the map's ID")
+                                    "Id"(INTEGER, "the map's ID")
                                     localized.."Name"(STRING, "the map's localized name")
-                                    SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
-                                    SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
-                                    SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
-                                    SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
-                                    SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
-                                    SerialName("label_coord").."LabelCoord"(array(DECIMAL), "the coordinate of the map's label")
-                                    SerialName("points_of_interest").."PointsOfInterest"(
+                                    "MinLevel"(INTEGER, "the minimum level of the map")
+                                    "MaxLevel"(INTEGER, "the maximum level of the map")
+                                    "DefaultFloor"(INTEGER, "the ID of the map's default floor")
+                                    "MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
+                                    "ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+                                    "LabelCoord"(array(DECIMAL), "the coordinate of the map's label")
+                                    "PointsOfInterest"(
                                         description = "the points of interest on the floor (i.e. landmarks, vistas and waypoints)",
                                         type = map(
                                             keys = INTEGER,
                                             values = record(name = "PointOfInterest", description = "Information about a point of interest (i.e. a landmark, vista or waypoint).") {
-                                                CamelCase("id").."ID"(INTEGER, "the PoI's ID")
+                                                "Id"(INTEGER, "the PoI's ID")
                                                 optional..localized.."Name"(STRING, "the PoI's localized name")
                                                 "Type"(STRING, "the type of the PoI (landmark, vista, or waypoint)")
-                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                                "ChatLink"(STRING, "the chat link")
                                                 "Floor"(INTEGER, "the PoI's floor")
                                                 "Coord"(array(DECIMAL), "the PoI's coordinates")
                                                 optional.."Icon"(STRING, "the PoI's icon")
@@ -1422,12 +1419,12 @@ internal val GW2v2 = GW2APISpecV2 {
                                     optional.."GodShrines"(
                                         description = "the god shrines on the floor",
                                         type = array(record(name = "GodShrine", description = "Information about a god shrine.") {
-                                            CamelCase("id").."ID"(INTEGER, "the god shrine's ID")
+                                            "Id"(INTEGER, "the god shrine's ID")
                                             localized.."Name"(STRING, "the god shrine's localized name")
-                                            optional..localized..SerialName("name_contested").."NameContested"(STRING, "the god shrine's localized name (when contested)")
+                                            optional..localized.."NameContested"(STRING, "the god shrine's localized name (when contested)")
                                             optional.."Icon"(STRING, "the god shrine's icon")
-                                            optional..SerialName("icon_contested").."IconContested"(STRING, "the god shrine's icon (when contested)")
-                                            SerialName("poi_id").."PoIID"(INTEGER, "the god shrine's PoI ID")
+                                            optional.."IconContested"(STRING, "the god shrine's icon (when contested)")
+                                            "PoiId"(INTEGER, "the god shrine's PoI ID")
                                             "Coord"(array(DECIMAL), "the god shrine's coordinates")
                                         })
                                     )
@@ -1436,19 +1433,19 @@ internal val GW2v2 = GW2APISpecV2 {
                                         type = map(
                                             keys = INTEGER,
                                             values = record(name = "Task", description = "Information about a task.") {
-                                                CamelCase("id").."ID"(INTEGER, "the task's ID")
+                                                "Id"(INTEGER, "the task's ID")
                                                 localized.."Objective"(STRING, "the adventure's localized objective")
                                                 "Level"(INTEGER, "the task's level")
-                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                                "ChatLink"(STRING, "the chat link")
                                                 "Coord"(array(DECIMAL), "the task's coordinates")
                                                 "Bounds"(array(array(DECIMAL)), "the task's bounds")
                                             }
                                         )
                                     )
-                                    SerialName("skill_challenges").."SkillChallenges"(
+                                    "SkillChallenges"(
                                         description = "the skill challenges on the floor",
                                         type = array(record(name = "SkillChallenge", description = "Information about a skill challenge.") {
-                                            CamelCase("id").."ID"(STRING, "the skill challenge's ID")
+                                            "Id"(STRING, "the skill challenge's ID")
                                             "Coord"(array(DECIMAL), "the skill challenge's coordinates")
                                         })
                                     )
@@ -1457,28 +1454,28 @@ internal val GW2v2 = GW2APISpecV2 {
                                         type = map(
                                             keys = INTEGER,
                                             values = record(name = "Sector", description = "Information about a sector.") {
-                                                CamelCase("id").."ID"(INTEGER, "the sector's ID")
+                                                "Id"(INTEGER, "the sector's ID")
                                                 optional..localized.."Name"(STRING, "the sector's localized name")
                                                 "Level"(INTEGER, "the sector's level")
                                                 "Coord"(array(DECIMAL), "the sector's coordinates")
                                                 "Bounds"(array(array(DECIMAL)), "the sector's bounds")
-                                                SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+                                                "ChatLink"(STRING, "the chat link")
                                             }
                                         )
                                     )
                                     "Adventures"(
                                         description = "the adventures on the floor",
                                         type = array(record(name = "Adventure", description = "Information about an adventure.") {
-                                            CamelCase("id").."ID"(STRING, "the adventure's ID")
+                                            "Id"(STRING, "the adventure's ID")
                                             localized.."Name"(STRING, "the adventure's localized name")
                                             localized.."Description"(STRING, "the adventure's localized description")
                                             "Coord"(array(DECIMAL), "the adventure's coordinates")
                                         })
                                     )
-                                    SerialName("mastery_points").."MasteryPoints"(
+                                    "MasteryPoints"(
                                         description = "the mastery points on the floor",
                                         type = array(record(name = "MasteryPoint", description = "Information about a mastery point.") {
-                                            CamelCase("id").."ID"(INTEGER, "the mastery point's ID")
+                                            "Id"(INTEGER, "the mastery point's ID")
                                             "Region"(STRING, "the mastery region")
                                             "Coord"(array(DECIMAL), "the mastery point's coordinates")
                                         })
@@ -1497,7 +1494,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         queryParameter("Expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
         queryParameter("Permissions", STRING, "a comma separated list of permissions to inherit")
-        queryParameter("URLs", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true, camelCase = "urls")
+        queryParameter("Urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
 
         schema(record(name = "SubToken", description = "A created subtoken.") {
             "Subtoken"(STRING, "a JWT which can be used like an API key")
@@ -1509,7 +1506,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Currency", description = "Information about a currency.") {
-            CamelCase("id").."ID"(INTEGER, "the currency's ID")
+            "Id"(INTEGER, "the currency's ID")
             localized.."Name"(STRING, "the currency's name")
             localized.."Description"(STRING, "a description of the currency")
             "Icon"(STRING, "the currency's icon")
@@ -1522,7 +1519,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "DailyCrafting", description = "Information about an item that can be crafted once per day.") {
-            CamelCase("id").."ID"(STRING, "the ID of the dailycrafting")
+            "Id"(STRING, "the ID of the dailycrafting")
         })
     }
     V2_DUNGEONS(
@@ -1531,11 +1528,11 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Dungeon", description = "Information about a dungeon.") {
-            CamelCase("id").."ID"(STRING, "the dungeon's ID")
+            "Id"(STRING, "the dungeon's ID")
             "Paths"(
                 description = "the dungeon's paths",
                 type = array(record(name = "Path", description = "Information about a dungeon path.") {
-                    CamelCase("id").."ID"(STRING, "the path's ID")
+                    "Id"(STRING, "the path's ID")
                     "Type"(STRING, "the path's type")
                 })
             )
@@ -1556,7 +1553,7 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("Type", STRING, "the layer for the emblem parts")
 
         schema(record(name = "EmblemPart", description = "Information about an emblem part.") {
-            CamelCase("id").."ID"(INTEGER, "the emblem part's ID")
+            "Id"(INTEGER, "the emblem part's ID")
             "Layers"(array(STRING), "an array of URLs to images that make up the various parts of the emblem")
         })
     }
@@ -1566,12 +1563,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Emote", description = "Information about an unlockable emote.") {
-            CamelCase("id").."ID"(STRING, "the emote's ID")
+            "Id"(STRING, "the emote's ID")
             "Commands"(
                 description = "the commands that may be used to trigger the emote",
                 type = array(STRING)
             )
-            SerialName("unlock_items").."UnlockItems"(
+            "UnlockItems"(
                 description = "the IDs of the items that can be used to unlock the emote",
                 type = array(ITEM_ID)
             )
@@ -1583,7 +1580,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "File", description = "Information about an in-game asset.") {
-            CamelCase("id").."ID"(STRING, "the file identifier")
+            "Id"(STRING, "the file identifier")
             "Icon"(STRING, "the URL to the image")
         })
     }
@@ -1593,12 +1590,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Finisher", description = "Information about a finisher.") {
-            CamelCase("id").."ID"(INTEGER, "the finisher's ID")
+            "Id"(INTEGER, "the finisher's ID")
             localized.."Name"(STRING, "the finisher's name")
             "Icon"(STRING, "the URL for the finisher's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of finishers")
-            SerialName("unlock_details").."UnlockDetails"(STRING, "a description explaining how to acquire the finisher")
-            SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the finisher")
+            "UnlockDetails"(STRING, "a description explaining how to acquire the finisher")
+            "UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the finisher")
         })
     }
     V2_GLIDERS(
@@ -1607,47 +1604,44 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Glider", description = "Information about a glider.") {
-            CamelCase("id").."ID"(INTEGER, "the glider's ID")
+            "Id"(INTEGER, "the glider's ID")
             localized.."Name"(STRING, "the glider's name")
             localized.."Description"(STRING, "the glider's description")
             "Icon"(STRING, "the URL for the glider's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of gliders")
-            SerialName("default_dyes").."DefaultDyes"(
-                description = "the IDs of the dyes that are applied to the glider by default",
-                type = array(INTEGER)
-            )
-            SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the glider")
+            "DefaultDyes"(array(INTEGER), "the IDs of the dyes that are applied to the glider by default")
+            "UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the glider")
         })
     }
     V2_GUILD(summary = "Returns information about a guild.") {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(record(name = "Guild", description = "Information about a guild.") {
-            CamelCase("id").."ID"(STRING, "the guild's ID")
+            "Id"(STRING, "the guild's ID")
             "Name"(STRING, "the guild's name")
             "Tag"(STRING, "the guild's tag")
             "Level"(INTEGER, "the guild's level")
-            optional(GUILDS)..SerialName("motd").."MotD"(STRING, "the guild's message of the day")
+            optional(GUILDS).."Motd"(STRING, "the guild's message of the day")
             optional(GUILDS).."Influence"(INTEGER, "the guild's current influence")
             optional(GUILDS).."Aetherium"(INTEGER, "the guild's current aetherium")
             optional(GUILDS).."Favor"(INTEGER, "the guild's current favor")
             optional(GUILDS).."Resonance"(INTEGER, "the guild's current resonance")
-            optional(GUILDS)..SerialName("member_count").."MemberCount"(INTEGER, "the guild's current member count")
-            optional(GUILDS)..SerialName("member_capacity").."MemberCapacity"(INTEGER, "the guild's current member capacity")
+            optional(GUILDS).."MemberCount"(INTEGER, "the guild's current member count")
+            optional(GUILDS).."MemberCapacity"(INTEGER, "the guild's current member capacity")
             "Emblem"(
                 description = "the guild's emblem",
                 type = record(name = "Emblem", description = "") {
                     "Background"(
                         description = "the emblem's background",
                         type = record(name = "Background", description = "Information about a guild emblem's background.") {
-                            CamelCase("id").."ID"(INTEGER, "the background's ID")
+                            "Id"(INTEGER, "the background's ID")
                             "Colors"(array(INTEGER), "the background's colors")
                         }
                     )
                     "Foreground"(
                         description = "the emblem's foreground",
                         type = record(name = "Foreground", description = "Information about a guild emblem's foreground.") {
-                            CamelCase("id").."ID"(INTEGER, "the foreground's ID")
+                            "Id"(INTEGER, "the foreground's ID")
                             "Colors"(array(INTEGER), "the foreground's colors")
                         }
                     )
@@ -1660,7 +1654,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about events in a guild's log.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's log entries",
@@ -1668,7 +1662,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 name = "GuildLogEntry",
                 description = "Information about a logged guild event.",
                 sharedConfigure = {
-                    CamelCase("id").."ID"(INTEGER, "the log entry's ID")
+                    "Id"(INTEGER, "the log entry's ID")
                     "Time"(STRING, "ISO-8601 timestamp for when the log entry was created")
                     optional.."User"(STRING, "the account name of the guild member who generated this log entry")
                     "Type"(STRING, "the type of log entry")
@@ -1676,34 +1670,34 @@ internal val GW2v2 = GW2APISpecV2 {
             ) {
                 "joined"(record(name = "Joined", description = "A log entry indicating that the user joined the guild.") {})
                 "invited"(record(name = "Invited", description = "A log entry indicating that the user has been invited to the guild.") {
-                    SerialName("invited_by").."InvitedBy"(STRING, "the account name of the guild member who invited the user")
+                    "InvitedBy"(STRING, "the account name of the guild member who invited the user")
                 })
                 "kick"(record(name = "Kick", description = "A log entry indicating that the user has been kicked from the guild.") {
-                    SerialName("kicked_by").."KickedBy"(STRING, "the account name of the guild member who kicked the user")
+                    "KickedBy"(STRING, "the account name of the guild member who kicked the user")
                 })
                 "rank_change"(record(name = "RankChange", description = "A log entry indicating that the rank for the user changed.") {
-                    SerialName("changed_by").."ChangedBy"(STRING, "the account name of the guild member who changed the rank of the user")
-                    SerialName("old_rank").."OldRank"(STRING, "the name of the old rank")
-                    SerialName("new_rank").."NewRank"(STRING, "the name of the new rank")
+                    "ChangedBy"(STRING, "the account name of the guild member who changed the rank of the user")
+                    "OldRank"(STRING, "the name of the old rank")
+                    "NewRank"(STRING, "the name of the new rank")
                 })
                 "treasury"(record(name = "Treasury", description = "A log entry indicating that the user has deposited an item into the guild's treasury.") {
-                    SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                    "ItemId"(INTEGER, "the item's ID")
                     "Count"(INTEGER, "how many of the item was deposited")
                 })
                 "stash"(record(name = "Stash", description = "A log entry indicating that the user has deposited/withdrawn an item into the guild stash.") {
                     "Operation"(STRING, "the action (may be \"deposit\", \"withdraw\" or \"move\"")
-                    SerialName("item_id").."ItemID"(INTEGER, "the item's ID")
+                    "ItemId"(INTEGER, "the item's ID")
                     "Count"(INTEGER, "how many of the item was deposited")
                     "Coins"(INTEGER, "the amount of deposited coins")
                 })
-                "motd"(record(name = "MOTD", description = "A log entry indicating that the user has changed the guild's MOTD.") {
-                    CamelCase("motd").."MOTD"(STRING, "the new message of the day")
+                "motd"(record(name = "Motd", description = "A log entry indicating that the user has changed the guild's MOTD.") {
+                    "Motd"(STRING, "the new message of the day")
                 })
                 "upgrade"(record(name = "Upgrade", description = "A log entry indicating that the user has interacted with a guild upgrade.") {
                     "Action"(STRING, "the action (may be \"queued\", \"cancelled\", \"completed\" or \"sped_up\"")
                     optional.."Count"(INTEGER, "how many upgrade were added")
-                    SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the completed upgrade")
-                    optional..SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe that generated the upgrade")
+                    "UpgradeId"(INTEGER, "the ID of the completed upgrade")
+                    optional.."RecipeId"(INTEGER, "the recipe that generated the upgrade")
                 })
             }
         ))
@@ -1712,7 +1706,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's members.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's members",
@@ -1727,12 +1721,12 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's ranks.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's ranks",
             items = record(name = "GuildRank", description = "Information about a guild rank.") {
-                CamelCase("id").."ID"(STRING, "the rank's ID")
+                "Id"(STRING, "the rank's ID")
                 "Order"(INTEGER, "a number that can be used to sort the list of ranks")
                 "Permissions"(array(STRING), "the rank's permissions")
                 "Icon"(STRING, "a render service URL for the rank's icon")
@@ -1743,12 +1737,12 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about the items in a guild's vault.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's vault items",
             items = record(name = "GuildStashSection", description = "Information about a section of a guild's vault.") {
-                SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the guild upgrade that granted access to this section of the guild's vault")
+                "UpgradeId"(INTEGER, "the ID of the guild upgrade that granted access to this section of the guild's vault")
                 "Size"(INTEGER, "the number of slots in this section of the guild's vault")
                 "Coins"(INTEGER, "the number of coins deposited in this section of the guild's vault")
                 "Note"(STRING, "the description set for this section of the guild's vault")
@@ -1757,7 +1751,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(
                         nullableItems = true,
                         items = record(name = "GuildStashSlot", description = "Information about an item in a guild vault's slot.") {
-                            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+                            "Id"(ITEM_ID, "the item's ID")
                             "Count"(INTEGER, "the amount of items in the stack")
                         }
                     )
@@ -1769,12 +1763,12 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's storage.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's storage items",
             items = record(name = "GuildStorageSlot", description = "Information about an item in a guild's storage.") {
-                CamelCase("id").."ID"(INTEGER, "the guild upgrade's ID")
+                "Id"(INTEGER, "the guild upgrade's ID")
                 "Count"(INTEGER, "the amount of the upgrade in the guild's treasury")
             }
         ))
@@ -1783,7 +1777,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's PvP teams.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's PvP teams",
@@ -1796,7 +1790,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     "Forfeits"(INTEGER, "the amount of forfeits")
                 }
 
-                CamelCase("id").."ID"(INTEGER, "the team's ID (only unique within the guild)")
+                "Id"(INTEGER, "the team's ID (only unique within the guild)")
                 "Members"(
                     description = "the team's members",
                     type = array(record(name = "Member", description = "Information about a team member.") {
@@ -1809,15 +1803,15 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Ladders"(map(STRING, STATS), "the stats by ladder (e.g. \"ranked\", \"unranked\")")
                 "Games"(
                     description = "the team's recent PvP games",
-                    type = array(record(name = "PvPGame", description = "Information about a team's PvP game.") {
-                        CamelCase("id").."ID"(STRING, "the game's ID")
-                        SerialName("map_id").."MapID"(INTEGER, "the map's ID")
+                    type = array(record(name = "PvpGame", description = "Information about a team's PvP game.") {
+                        "Id"(STRING, "the game's ID")
+                        "MapId"(INTEGER, "the map's ID")
                         "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
                         "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
                         "Result"(STRING, "the game's result for the team (\"Victory\" or \"Defeat\")")
                         "Team"(STRING, "the team's color (\"Blue\" or \"Red\")")
-                        SerialName("rating_type").."RatingType"(STRING, "the type of rating of the game")
-                        optional..SerialName("rating_change").."RatingChange"(INTEGER, "the change in rating for the team")
+                        "RatingType"(STRING, "the type of rating of the game")
+                        optional.."RatingChange"(INTEGER, "the change in rating for the team")
                         optional.."Season"(STRING, "the ID of the game's PvP season")
                         "Scores"(
                             description = "the game's final scores",
@@ -1831,7 +1825,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Seasons"(
                     description = "the team's season-specific stats",
                     type = array(record(name = "SeasonStats", description = "Information about a team's PvP season.") {
-                        CamelCase("id").."ID"(STRING, "the season's ID")
+                        "Id"(STRING, "the season's ID")
                         "Wins"(INTEGER, "the amount of wins")
                         "Losses"(INTEGER, "the amount of losses")
                         "Rating"(INTEGER, "the team's rating")
@@ -1844,17 +1838,17 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's treasury.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(
             description = "the guild's treasury items",
             items = record(name = "GuildTreasurySlot", description = "Information about an item in a guild's treasury.") {
-                SerialName("item_id").."ItemID"(ITEM_ID, "the item's ID")
+                "ItemId"(ITEM_ID, "the item's ID")
                 "Count"(INTEGER, "the amount of the item in the guild's treasury")
-                SerialName("needed_by").."NeededBy"(
+                "NeededBy"(
                     description = "the currently in-progress upgrades requiring the item",
                     type = array(record(name = "UpgradeRequirement", description = "Information about the usage for an item.") {
-                        SerialName("upgrade_id").."UpgradeID"(INTEGER, "the guild upgrade's ID")
+                        "UpgradeId"(INTEGER, "the guild upgrade's ID")
                         "Count"(INTEGER, "the total amount of the item required for the upgrade")
                     })
                 )
@@ -1865,7 +1859,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about a guild's upgrades.",
         security = security(ACCOUNT, GUILDS)
     ) {
-        pathParameter("ID", STRING, "the guild's ID", camelCase = "id")
+        pathParameter("Id", STRING, "the guild's ID")
 
         schema(array(INTEGER, "the IDs of the guild's unlocked upgrades"))
     }
@@ -1880,7 +1874,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "GuildPermission", description = "Information about a guild permission.") {
-            CamelCase("id").."ID"(STRING, "the permission's ID")
+            "Id"(STRING, "the permission's ID")
             localized.."Name"(STRING, "the permission's localized name")
             localized.."Description"(STRING, "the permission's localized description")
         })
@@ -1894,13 +1888,13 @@ internal val GW2v2 = GW2APISpecV2 {
             name = "GuildUpgrade",
             description = "Information about a guild upgrade.",
             sharedConfigure = {
-                CamelCase("id").."ID"(INTEGER, "the upgrade's ID")
+                "Id"(INTEGER, "the upgrade's ID")
                 localized.."Name"(STRING, "the upgrade's name")
                 localized.."Description"(STRING, "the upgrade's description")
                 "Type"(STRING, "the upgrade's type")
                 "Icon"(STRING, "the URL for the upgrade's icon")
-                SerialName("build_time").."BuildTime"(INTEGER, "the time it takes to build the upgrade")
-                SerialName("required_level").."RequiredLevel"(INTEGER, "the prerequisite level the guild must be at to build the upgrade")
+                "BuildTime"(INTEGER, "the time it takes to build the upgrade")
+                "RequiredLevel"(INTEGER, "the prerequisite level the guild must be at to build the upgrade")
                 "Experience"(INTEGER, "the amount of guild experience that will be awarded upon building the upgrade")
                 "Prerequisites"(array(INTEGER), "an array of upgrade IDs that must be completed before this can be built")
                 "Costs"(
@@ -1909,15 +1903,15 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Type"(STRING, "the cost's type")
                         localized.."Name"(STRING, "the cost's name")
                         "Count"(INTEGER, "the amount needed")
-                        optional..SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the cost's item")
+                        optional.."ItemId"(ITEM_ID, "the ID of the cost's item")
                     })
                 )
             }
         ) {
             +record(name = "AccumulatingCurrency", description = "Information about a mine capacity upgrade.") {}
             +record(name = "BankBag", description = "Information about a guild bank upgrades.") {
-                SerialName("bag_max_items").."BagMaxItems"(INTEGER, "the maximum item slots of the guild bank tab")
-                SerialName("bag_max_coins").."BagMaxCoins"(INTEGER, "the maximum amount of coins that can be stored in the bank tab")
+                "BagMaxItems"(INTEGER, "the maximum item slots of the guild bank tab")
+                "BagMaxCoins"(INTEGER, "the maximum amount of coins that can be stored in the bank tab")
             }
             +record(name = "Boost", description = "Information about a permanent guild buffs upgrade.") {}
             +record(name = "Claimable", description = "Information about a guild WvW tactics.") {}
@@ -1942,7 +1936,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "HomeInstanceCat", description = "Information about a home-instance cat.") {
-            CamelCase("id").."ID"(INTEGER, "the cat's ID")
+            "Id"(INTEGER, "the cat's ID")
             "Hint"(STRING, "the unlock hint")
         })
     }
@@ -1952,7 +1946,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "HomeInstanceNode", description = "Information about a home-instance node.") {
-            CamelCase("id").."ID"(STRING, "the node's ID")
+            "Id"(STRING, "the node's ID")
         })
     }
     V2_ITEMS(
@@ -1961,38 +1955,38 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Item", description = "Information about an item.") {
-            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
+            "Id"(ITEM_ID, "the item's ID")
             localized.."Name"(STRING, "the item's name")
             "Type"(STRING, "the item's type")
-            SerialName("chat_link").."ChatLink"(STRING, "the chat link")
+            "ChatLink"(STRING, "the chat link")
             optional.."Icon"(STRING, "the URL for the item's icon")
             optional..localized.."Description"(STRING, "the item's description")
             "Rarity"(STRING, "the item's rarity")
             "Level"(INTEGER, "the level required to use the item")
-            SerialName("vendor_value").."VendorValue"(INTEGER, "the value in coins when selling the item to a vendor")
-            optional..SerialName("default_skin").."DefaultSkin"(SKIN_ID, "the ID of the item's default skin")
+            "VendorValue"(INTEGER, "the value in coins when selling the item to a vendor")
+            optional.."DefaultSkin"(SKIN_ID, "the ID of the item's default skin")
             "Flags"(array(STRING), "flags applying to the item")
-            SerialName("game_types").."GameTypes"(array(STRING), "the game types in which the item is usable")
+            "GameTypes"(array(STRING), "the game types in which the item is usable")
             "Restrictions"(array(STRING), "restrictions applied to the item")
-            optional..SerialName("upgrades_into").."UpgradesInto"(
+            optional.."UpgradesInto"(
                 description = "lists what items this item can be upgraded into, and the method of upgrading",
                 type = array(record(name = "Upgrade", description = "Information about an item's upgrade.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(ITEM_ID, "the ID that results from performing the upgrade")
+                    "ItemId"(ITEM_ID, "the ID that results from performing the upgrade")
                 })
             )
-            optional..SerialName("upgrades_from").."UpgradesFrom"(
+            optional.."UpgradesFrom"(
                 description = "lists what items this item can be upgraded from, and the method of upgrading",
                 type = array(record(name = "Precursor", description = "Information about an item's precursor.") {
                     "Upgrade"(STRING, "describes the method of upgrading")
-                    SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the item that is upgraded into the item")
+                    "ItemId"(ITEM_ID, "the ID of the item that is upgraded into the item")
                 })
             )
             optional.."Details"(
                 description = "additional information about the item",
                 type = conditional(name = "Details", description = "Additional information about an item.", disambiguationBySideProperty = true) {
                     val INFIX_UPGRADE = record(name = "InfixUpgrade", description = "Information about an item's infix upgrade.") {
-                        CamelCase("id").."ID"(INTEGER, "the itemstat ID")
+                        "Id"(INTEGER, "the itemstat ID")
                         "Attributes"(
                             description = "the list of attribute bonuses granted by this item",
                             type = array(record(name = "Attribute", description = "Information about an infix upgrade's attribute bonuses.") {
@@ -2003,31 +1997,31 @@ internal val GW2v2 = GW2APISpecV2 {
                         optional.."Buff"(
                             description = "object containing an additional effect",
                             type = record(name = "Buff", description = "Information about an infix upgrade's buffs.") {
-                                SerialName("skill_id").."SkillID"(INTEGER, "the skill ID of the effect")
+                                "SkillId"(INTEGER, "the skill ID of the effect")
                                 optional.."Description"(STRING, "the effect's description")
                             }
                         )
                     }
 
                     val UPGRADES = record(name = "Upgrades", description = "Information about an item's upgrades.") {
-                        SerialName("infusion_slots").."InfusionSlots"(
+                        "InfusionSlots"(
                             description = "infusion slots of the armor piece",
                             type = array(record(name = "InfusionSlot", description = "Information about an items infusion slot.") {
                                 "Flags"(array(STRING), "infusion slot type of infusion upgrades")
-                                optional..SerialName("item_id").."ItemID"(ITEM_ID, "the infusion upgrade in the armor piece")
+                                optional.."ItemId"(ITEM_ID, "the infusion upgrade in the armor piece")
                             })
                         )
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
-                        optional..SerialName("suffix_item_id").."SuffixItemID"(INTEGER, "the suffix item ID")
-                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..SerialName("secondary_suffix_item_id").."SecondarySuffixItemID"(ITEM_ID, "the secondary suffix item ID")
-                        optional..SerialName("stat_choices").."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
-                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
+                        optional.."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
+                        optional.."SuffixItemId"(INTEGER, "the suffix item ID")
+                        until(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional..lenient.."SecondarySuffixItemId"(ITEM_ID, "the secondary suffix item ID")
+                        since(V2_SCHEMA_2020_11_17T00_30_00_000Z)..optional.."SecondarySuffixItemId"(ITEM_ID, "the secondary suffix item ID")
+                        optional.."StatChoices"(array(INTEGER), "a list of selectable stat IDs which are visible in /v2/itemstats")
+                        optional.."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
                     }
 
                     +record(name = "Armor", description = "Additional information about an armor item.") {
                         "Type"(STRING, "the armor slot type")
-                        SerialName("weight_class").."WeightClass"(STRING, "the weight class")
+                        "WeightClass"(STRING, "the weight class")
                         "Defense"(INTEGER, "the defense value of the armor piece")
                         inline.."Upgrades"(UPGRADES, "the item's upgrades")
                     }
@@ -2036,18 +2030,18 @@ internal val GW2v2 = GW2APISpecV2 {
                     }
                     +record(name = "Bag", description = "Additional information about a bag.") {
                         "Size"(INTEGER, "the number of bag slots")
-                        SerialName("no_sell_or_sort").."NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
+                        "NoSellOrSort"(BOOLEAN, "whether the bag is invisible")
                     }
                     +record(name = "Consumable", description = "Additional information about a consumable item.") {
                         "Type"(STRING, "the consumable type")
                         optional.."Description"(STRING, "effect description for consumables applying an effect")
-                        optional..SerialName("duration_ms").."DurationMs"(INTEGER, "effect duration in milliseconds")
-                        optional..SerialName("unlock_type").."UnlockType"(STRING, "unlock type for unlock consumables")
-                        optional..SerialName("color_id").."ColorID"(INTEGER, "the dye ID for dye unlocks")
-                        optional..SerialName("recipe_id").."RecipeID"(INTEGER, "the recipe ID for recipe unlocks")
-                        optional..SerialName("extra_recipe_ids").."ExtraRecipeIDs"(array(INTEGER), "additional recipe IDs for recipe unlocks")
-                        optional..SerialName("guild_upgrade_id").."GuildUpgradeID"(INTEGER, "the guild upgrade ID for the item")
-                        optional..SerialName("apply_count").."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
+                        optional.."DurationMs"(INTEGER, "effect duration in milliseconds")
+                        optional.."UnlockType"(STRING, "unlock type for unlock consumables")
+                        optional.."ColorId"(INTEGER, "the dye ID for dye unlocks")
+                        optional.."RecipeId"(INTEGER, "the recipe ID for recipe unlocks")
+                        optional.."ExtraRecipeIds"(array(INTEGER), "additional recipe IDs for recipe unlocks")
+                        optional.."GuildUpgradeId"(INTEGER, "the guild upgrade ID for the item")
+                        optional.."ApplyCount"(INTEGER, "the number of stacks of the effect applied by this item")
                         optional.."Name"(STRING, "the effect type name of the consumable")
                         optional.."Icon"(STRING, "the icon of the effect")
                         optional.."Skins"(array(INTEGER), "a list of skin ids which this item unlocks")
@@ -2060,11 +2054,11 @@ internal val GW2v2 = GW2APISpecV2 {
                     })
                     +record(name = "Gizmo", description = "Additional information about a gizmo.") {
                         "Type"(STRING, "the gizmo type")
-                        optional..SerialName("guild_upgrade_id").."GuildUpgradeID"(INTEGER, "the guild upgrade ID for the item")
-                        optional..SerialName("vendor_ids").."VendorIDs"(array(INTEGER), "the vendor IDs")
+                        optional.."GuildUpgradeId"(INTEGER, "the guild upgrade ID for the item")
+                        optional.."VendorIds"(array(INTEGER), "the vendor IDs")
                     }
                     +record(name = "MiniPet", description = "Additional information about a mini unlock item.") {
-                        SerialName("minipet_id").."MinipetID"(INTEGER, "the miniature it unlocks")
+                        "MinipetId"(INTEGER, "the miniature it unlocks")
                     }
                     "Tool"(record(name = "Tool", description = "Additional information about a tool.") {
                         "Type"(STRING, "the tool type")
@@ -2077,17 +2071,17 @@ internal val GW2v2 = GW2APISpecV2 {
                     +record(name = "UpgradeComponent", description = "Additional information about an upgrade component.") {
                         "Type"(STRING, "the type of the upgrade component")
                         "Flags"(array(STRING), "the items that can be upgraded with the upgrade component")
-                        SerialName("infusion_upgrade_flags").."InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
+                        "InfusionUpgradeFlags"(array(STRING), "applicable infusion slot for infusion upgrades")
                         "Suffix"(STRING, "the suffix appended to the item name when the component is applied")
-                        optional..SerialName("infix_upgrade").."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
+                        optional.."InfixUpgrade"(INFIX_UPGRADE, "infix upgrade object")
                         optional.."Bonuses"(array(STRING), "the bonuses from runes")
-                        optional..SerialName("attribute_adjustment").."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
+                        optional.."AttributeAdjustment"(DECIMAL, "The value to be combined with the gradient multiplier and offset value to calculate the value of an attribute using the itemstats")
                     }
                     +record(name = "Weapon", description = "Additional information about a weapon.") {
                         "Type"(STRING, "the weapon type")
-                        SerialName("min_power").."MinPower"(INTEGER, "minimum weapon strength")
-                        SerialName("max_power").."MaxPower"(INTEGER, "maximum weapon strength")
-                        SerialName("damage_type").."DamageType"(STRING, "the damage type")
+                        "MinPower"(INTEGER, "minimum weapon strength")
+                        "MaxPower"(INTEGER, "maximum weapon strength")
+                        "DamageType"(STRING, "the damage type")
                         "Defense"(INTEGER, "the defense value of the weapon")
                         inline.."Upgrades"(UPGRADES, "the item's upgrades")
                     }
@@ -2101,7 +2095,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "ItemStatSet", description = "Information about a stat set.") {
-            CamelCase("id").."ID"(INTEGER, "the stat set's ID")
+            "Id"(INTEGER, "the stat set's ID")
             "Name"(STRING, "the name of the stat set")
             "Attributes"(
                 description = "the list of attribute bonuses",
@@ -2119,10 +2113,10 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "JadeBot", description = "Information about a jade bot skin.") {
-            CamelCase("id").."ID"(INTEGER, "the skin's ID")
+            "Id"(INTEGER, "the skin's ID")
             localized.."Name"(STRING, "the skin's name")
             localized.."Description"(STRING, "the skin's description")
-            SerialName("unlock_item").."UnlockItems"(ITEM_ID, "an array of item IDs used to unlock the skin")
+            "UnlockItem"(ITEM_ID, "the ID of the item used to unlock the skin")
         })
     }
     V2_LEGENDARYARMORY(
@@ -2131,8 +2125,8 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "LegendaryArmorySlot", description = "Information about an item that can be stored in the legendary armory.") {
-            CamelCase("id").."ID"(ITEM_ID, "the item's ID")
-            SerialName("max_count").."MaxCount"(INTEGER, "the maximum number of copies of this item that can be stored in the armory for an account")
+            "Id"(ITEM_ID, "the item's ID")
+            "MaxCount"(INTEGER, "the maximum number of copies of this item that can be stored in the armory for an account")
         })
     }
     V2_LEGENDS(
@@ -2141,7 +2135,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Legend", description = "Information about a Revenant legend.") {
-            CamelCase("id").."ID"(STRING, "the legend's ID")
+            "Id"(STRING, "the legend's ID")
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the build template ID of the legend")
             "Swap"(INTEGER, "the ID of the profession (swap Legend) skill")
             "Heal"(INTEGER, "the ID of the heal skill")
@@ -2158,11 +2152,11 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Mailcarrier", description = "Information about a mailcarrier.") {
-            CamelCase("id").."ID"(INTEGER, "the mailcarrier's ID")
+            "Id"(INTEGER, "the mailcarrier's ID")
             "Icon"(STRING, "the URL for the mailcarrier's icon")
             localized.."Name"(STRING, "the mailcarrier's name")
             "Order"(INTEGER, "a number that can be used to sort the list of mailcarriers")
-            SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "the IDs of the items that can be used to unlock the mailcarrier")
+            "UnlockItems"(array(ITEM_ID), "the IDs of the items that can be used to unlock the mailcarrier")
             "Flags"(array(STRING), "additional flags describing the mailcarrier")
         })
     }
@@ -2172,7 +2166,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "MapChest", description = "Information about a Hero's Choice Chests that can be acquired once per day.") {
-            CamelCase("id").."ID"(STRING, "the ID of the chest")
+            "Id"(STRING, "the ID of the chest")
         })
     }
     V2_MAPS(
@@ -2181,19 +2175,19 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Map", description = "Information about a map.") {
-            CamelCase("id").."ID"(INTEGER, "the map's ID")
+            "Id"(INTEGER, "the map's ID")
             localized.."Name"(STRING, "the map's name")
             "Type"(STRING, "the type of map")
-            SerialName("min_level").."MinLevel"(INTEGER, "the minimum level of the map")
-            SerialName("max_level").."MaxLevel"(INTEGER, "the maximum level of the map")
-            SerialName("default_floor").."DefaultFloor"(INTEGER, "the ID of the map's default floor")
+            "MinLevel"(INTEGER, "the minimum level of the map")
+            "MaxLevel"(INTEGER, "the maximum level of the map")
+            "DefaultFloor"(INTEGER, "the ID of the map's default floor")
             "Floors"(array(INTEGER), "the IDs of the floors available on the map")
-            SerialName("region_id").."RegionID"(INTEGER, "the ID of the region the map belongs to")
-            optional..localized..SerialName("region_name").."RegionName"(STRING, "the name of the region the map belongs to")
-            SerialName("continent_id").."ContinentID"(INTEGER, "the ID of the continent the map belongs to")
-            optional..localized..SerialName("continent_name").."ContinentName"(STRING, "the name of the continent the map belongs to")
-            SerialName("map_rect").."MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
-            SerialName("continent_rect").."ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
+            "RegionId"(INTEGER, "the ID of the region the map belongs to")
+            optional..localized.."RegionName"(STRING, "the name of the region the map belongs to")
+            "ContinentId"(INTEGER, "the ID of the continent the map belongs to")
+            optional..localized.."ContinentName"(STRING, "the name of the continent the map belongs to")
+            "MapRect"(array(array(INTEGER)), "the dimensions of the map, given as the coordinates of the lower-left (SW) and upper-right (NE) corners")
+            "ContinentRect"(array(array(INTEGER)), "the dimensions of the map within the continent coordinate system, given as the coordinates of the upper-left (NW) and lower-right (SE) corners")
         })
     }
     V2_MASTERIES(
@@ -2202,7 +2196,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Mastery", description = "Information about a mastery.") {
-            CamelCase("id").."ID"(INTEGER, "the mastery's ID")
+            "Id"(INTEGER, "the mastery's ID")
             localized.."Name"(STRING, "the mastery's name")
             localized.."Requirement"(STRING, "the written out requirement to unlock the mastery track")
             "Order"(INTEGER, "the order in which the mastery track appears in a list")
@@ -2215,8 +2209,8 @@ internal val GW2v2 = GW2APISpecV2 {
                     localized.."Description"(STRING, "the mastery level's description")
                     localized.."Instruction"(STRING, "the in-game instruction for the mastery level")
                     "Icon"(STRING, "the URL for the mastery level's icon")
-                    SerialName("point_cost").."PointCost"(INTEGER, "the amount of mastery points required to unlock the level")
-                    SerialName("exp_cost").."ExpCost"(INTEGER, "the amount of experience required to unlock the level")
+                    "PointCost"(INTEGER, "the amount of mastery points required to unlock the level")
+                    "ExpCost"(INTEGER, "the amount of experience required to unlock the level")
                 })
             )
         })
@@ -2227,7 +2221,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "MaterialCategory", description = "Information about a material category.") {
-            CamelCase("id").."ID"(INTEGER, "the category's ID")
+            "Id"(INTEGER, "the category's ID")
             localized.."Name"(STRING, "the category's name")
             "Items"(array(ITEM_ID), "the IDs of the items in this category")
             "Order"(INTEGER, "the category's sorting key")
@@ -2239,12 +2233,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Mini", description = "Information about a mini.") {
-            CamelCase("id").."ID"(INTEGER, "the mini's ID")
+            "Id"(INTEGER, "the mini's ID")
             localized.."Name"(STRING, "the mini's name")
             optional..localized.."Description"(STRING, "the description of how to unlock the mini")
             "Icon"(STRING, "the URL for the mini's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of minis")
-            SerialName("item_id").."ItemID"(ITEM_ID, "the ID of the item that can be used to unlock the mini")
+            "ItemId"(ITEM_ID, "the ID of the item that can be used to unlock the mini")
         })
     }
     V2_MOUNTS(
@@ -2259,14 +2253,14 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "MountSkin", description = "Information about a mount skin.") {
-            CamelCase("id").."ID"(INTEGER, "the mount skin's ID")
+            "Id"(INTEGER, "the mount skin's ID")
             localized.."Name"(STRING, "the mount skin's name")
             "Icon"(STRING, "a render service URL for the mount skin's icon")
             "Mount"(STRING, "the mount type id for the mount skin")
-            SerialName("dye_slots").."DyeSlots"(
+            "DyeSlots"(
                 description = "the mount skin's dye slots",
                 type = array(record(name = "DyeSlot", description = "Information about a dye slot.") {
-                    SerialName("color_id").."ColorID"(INTEGER, "the ID of the color")
+                    "ColorId"(INTEGER, "the ID of the color")
                     "Material"(STRING, "the slot's material")
                 })
             )
@@ -2278,14 +2272,14 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "MountType", description = "Information about a mount type.") {
-            CamelCase("id").."ID"(STRING, "the mount type's ID")
+            "Id"(STRING, "the mount type's ID")
             localized.."Name"(STRING, "the mount type's name")
-            SerialName("default_skin").."DefaultSkin"(INTEGER, "the ID of the mount type's default skin")
+            "DefaultSkin"(INTEGER, "the ID of the mount type's default skin")
             "Skins"(array(INTEGER), "the IDs of the skins available for the mount type")
             "Skills"(
                 description = "the mount type's skills",
                 type = array(record(name = "Skill", description = "Information about a mount skill.") {
-                    CamelCase("id").."ID"(INTEGER, "the mount skill's ID")
+                    "Id"(INTEGER, "the mount skill's ID")
                     "Slot"(STRING, "the mount skill's slot")
                 })
             )
@@ -2297,7 +2291,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Novelty", description = "Information about a novelty.") {
-            CamelCase("id").."ID"(INTEGER, "the novelty's ID")
+            "Id"(INTEGER, "the novelty's ID")
             localized.."Name"(STRING, "the novelty's name")
             "Icon"(STRING, "a render service URL for the novelty's icon")
             localized.."Description"(STRING, "the novelty's description")
@@ -2315,13 +2309,10 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Outfit", description = "Information about an outfit.") {
-            CamelCase("id").."ID"(INTEGER, "the outfit's ID")
+            "Id"(INTEGER, "the outfit's ID")
             localized.."Name"(STRING, "the outfit's name")
             "Icon"(STRING, "the outfit's icon")
-            SerialName("unlock_items").."UnlockItems"(
-                description = "the IDs of the items that can be used to unlock the outfit",
-                type = array(ITEM_ID)
-            )
+            "UnlockItems"(array(ITEM_ID), "the IDs of the items that can be used to unlock the outfit")
         })
     }
     V2_PETS(
@@ -2330,14 +2321,14 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Pet", description = "Information about a pet.") {
-            CamelCase("id").."ID"(INTEGER, "the pet's ID")
+            "Id"(INTEGER, "the pet's ID")
             localized.."Name"(STRING, "the pet's name")
             localized.."Description"(STRING, "the pet's description")
             "Icon"(STRING, "a render service URL for the pet's icon")
             "Skills"(
                 description = "the pet's skills",
                 type = array(record(name = "Skill", description = "Information about a pet's skill.") {
-                    CamelCase("id").."ID"(INTEGER, "the skill's ID")
+                    "Id"(INTEGER, "the skill's ID")
                 })
             )
         })
@@ -2348,7 +2339,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Profession", description = "Information about a playable profession.") {
-            CamelCase("id").."ID"(STRING, "the profession's ID")
+            "Id"(STRING, "the profession's ID")
             localized.."Name"(STRING, "the profession's localized name")
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Code"(INTEGER, "the profession's palette code")
             "Icon"(STRING, "a render service URL for the profession's icon")
@@ -2364,7 +2355,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Skills"(
                             description = "the skills for the weapon if wielded by this profession",
                             type = array(record(name = "Skill", description = "Information about a weapon's skills.") {
-                                CamelCase("id").."ID"(INTEGER, "the skill's ID")
+                                "Id"(INTEGER, "the skill's ID")
                                 "Slot"(STRING, "the skill's slot")
                                 optional.."Attunement"(STRING, "the elementalist attunement for this skill")
                                 optional.."Offhand"(STRING, "the offhand weapon for this skill")
@@ -2377,7 +2368,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skills"(
                 description = "the profession specific skills",
                 type = array(record(name = "Skill", description = "Information about a profession skill.") {
-                    CamelCase("id").."ID"(INTEGER, "the skill's ID")
+                    "Id"(INTEGER, "the skill's ID")
                     "Slot"(STRING, "the skill's slot")
                     "Type"(STRING, "the skill's type")
                     optional.."Attunement"(STRING, "the elementalist attunement for this skill")
@@ -2387,7 +2378,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Training"(
                 description = "array of trainings of this profession",
                 type = array(record(name = "Training", description = "Information about training track.") {
-                    CamelCase("id").."ID"(INTEGER, "the training's ID")
+                    "Id"(INTEGER, "the training's ID")
                     "Category"(STRING, "the training's category")
                     localized.."Name"(STRING, "the training's localized name")
                     "Track"(
@@ -2395,13 +2386,13 @@ internal val GW2v2 = GW2APISpecV2 {
                         type = array(record(name = "Track", description = "Information about a skill/trait in a track.") {
                             "Cost"(INTEGER, "the amount of skill points required to unlock this step")
                             "Type"(STRING, "the type of the step (e.g. Skill, Trait)")
-                            optional..SerialName("skill_id").."SkillID"(INTEGER, "the ID of the skill unlocked by this step")
-                            optional..SerialName("trait_id").."TraitID"(INTEGER, "the ID of the trait unlocked by this step")
+                            optional.."SkillId"(INTEGER, "the ID of the skill unlocked by this step")
+                            optional.."TraitId"(INTEGER, "the ID of the trait unlocked by this step")
                         })
                     )
                 })
             )
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..SerialName("skills_by_palette").."SkillsByPalette"(
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."SkillsByPalette"(
                 description = "mappings from palette IDs to skill IDs",
                 type = array(array(INTEGER))
             )
@@ -2418,8 +2409,8 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "PvPAmulet", description = "Information about a PvP amulet.") {
-            CamelCase("id").."ID"(INTEGER, "the amulet's ID")
+        schema(record(name = "PvpAmulet", description = "Information about a PvP amulet.") {
+            "Id"(INTEGER, "the amulet's ID")
             localized.."Name"(STRING, "the amulet's localized name")
             "Icon"(STRING, "a render service URL for the amulet's icon")
             "Attributes"(
@@ -2445,16 +2436,16 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours,
         security = security(ACCOUNT, PVP)
     ) {
-        schema(record(name = "PvPGame", description = "Information about an account's PvP game.") {
-            CamelCase("id").."ID"(STRING, "the game's ID")
-            SerialName("map_id").."MapID"(INTEGER, "the map's ID")
+        schema(record(name = "PvpGame", description = "Information about an account's PvP game.") {
+            "Id"(STRING, "the game's ID")
+            "MapId"(INTEGER, "the map's ID")
             "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
             "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
             "Result"(STRING, "the game's result for the account (\"Victory\" or \"Defeat\")")
             "Team"(STRING, "the player's team (\"Blue\" or \"Red\")")
             "Profession"(STRING, "the ID of the player's profession")
-            SerialName("rating_type").."RatingType"(STRING, "the type of rating of the game")
-            optional..SerialName("rating_change").."RatingChange"(INTEGER, "the change in rating for the account")
+            "RatingType"(STRING, "the type of rating of the game")
+            optional.."RatingChange"(INTEGER, "the change in rating for the account")
             optional.."Season"(STRING, "the ID of the game's PvP season")
             "Scores"(
                 description = "the game's final scores",
@@ -2470,8 +2461,8 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "PvPHero", description = "Information about a PvP hero.") {
-            CamelCase("id").."ID"(STRING, "the PvP hero's ID")
+        schema(record(name = "PvpHero", description = "Information about a PvP hero.") {
+            "Id"(STRING, "the PvP hero's ID")
             localized.."Name"(STRING, "the hero's localized name")
             localized.."Description"(STRING, "the hero's localized description")
             localized.."Type"(STRING, "the flavor type describing the hero")
@@ -2488,11 +2479,11 @@ internal val GW2v2 = GW2APISpecV2 {
             "Skins"(
                 description = "the hero's skins",
                 type = array(record(name = "Skin", description = "Information about a PvP hero's skin.") {
-                    CamelCase("id").."ID"(INTEGER, "the PvP hero skin's ID")
+                    "Id"(INTEGER, "the PvP hero skin's ID")
                     localized.."Name"(STRING, "the hero skin's localized name")
                     "Icon"(STRING, "a render service URL for the skin's icon")
                     "Default"(BOOLEAN, "whether the skin is the champion's default skin")
-                    SerialName("unlock_items").."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the skin")
+                    "UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the skin")
                 })
             )
         })
@@ -2502,18 +2493,18 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "PvPRank", description = "Information about a PvP rank.") {
-            CamelCase("id").."ID"(INTEGER, "the PvP rank's ID")
-            SerialName("finisher_id").."FinisherID"(INTEGER, "the rank finisher's ID")
+        schema(record(name = "PvpRank", description = "Information about a PvP rank.") {
+            "Id"(INTEGER, "the PvP rank's ID")
+            "FinisherId"(INTEGER, "the rank finisher's ID")
             localized.."Name"(STRING, "the rank's localized name")
             "Icon"(STRING, "a render service URL for the rank's icon")
-            SerialName("min_rank").."MinRank"(INTEGER, "the minimum PvP level required for the rank")
-            SerialName("max_rank").."MaxRank"(INTEGER, "the maximum PvP level for the rank")
+            "MinRank"(INTEGER, "the minimum PvP level required for the rank")
+            "MaxRank"(INTEGER, "the maximum PvP level for the rank")
             "Levels"(
                 description = "the rank's levels",
                 type = array(record(name = "Level", description = "Information about a PvP rank's level.") {
-                    SerialName("min_rank").."MinRank"(INTEGER, "the minimum PvP level required for the level")
-                    SerialName("max_rank").."MaxRank"(INTEGER, "the maximum PvP level for the level")
+                    "MinRank"(INTEGER, "the minimum PvP level required for the level")
+                    "MaxRank"(INTEGER, "the maximum PvP level for the level")
                     "Points"(INTEGER, "the amount of PvP experience needed to go from the given minimum rank to maximum rank")
                 })
             )
@@ -2524,8 +2515,8 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "PvPSeason", description = "Information about a PvP season.") {
-            CamelCase("id").."ID"(STRING, "the PvP season's ID")
+        schema(record(name = "PvpSeason", description = "Information about a PvP season.") {
+            "Id"(STRING, "the PvP season's ID")
             localized.."Name"(STRING, "the season's localized name")
             "Start"(STRING, "the ISO-8601 standard timestamp of when the season started")
             "End"(STRING, "the ISO-8601 standard timestamp of when the season ended")
@@ -2535,9 +2526,9 @@ internal val GW2v2 = GW2APISpecV2 {
                 type = array(record(name = "Division", description = "Information about a division.") {
                     localized.."Name"(STRING, "the division's localized name")
                     "Flags"(array(STRING), "the flags providing additional information about the division")
-                    SerialName("large_icon").."LargeIcon"(STRING, "the render service URL for the division's large icon")
-                    SerialName("small_icon").."SmallIcon"(STRING, "the render service URL for the division's small icon")
-                    SerialName("pip_icon").."PipIcon"(STRING, "the render service URL for the division's pip icon")
+                    "LargeIcon"(STRING, "the render service URL for the division's large icon")
+                    "SmallIcon"(STRING, "the render service URL for the division's small icon")
+                    "PipIcon"(STRING, "the render service URL for the division's pip icon")
                     "Tiers"(
                         description = "the division's tiers",
                         type = array(record(name = "Tier", description = "Information about a division's tier.") {
@@ -2553,7 +2544,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     localized.."Description"(STRING, "the rank's localized description")
                     "Icon"(STRING, "the render service URL for the rank's icon")
                     "Overlay"(STRING, "the render service URL for the rank's overlay icon")
-                    SerialName("overlay_small").."OverlaySmall"(STRING, "the render service URL for the rank's overlay icon")
+                    "OverlaySmall"(STRING, "the render service URL for the rank's overlay icon")
                     "Tiers"(
                         description = "the rank's tiers",
                         type = array(record(name = "Tier", description = "Information about a rank's tier.") {
@@ -2586,7 +2577,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Scorings"(
                             description = "the leaderboard's scoring information",
                             type = array(record(name = "Scoring", description = "Information about scoring.") {
-                                CamelCase("id").."ID"(STRING, "the scoring's ID")
+                                "Id"(STRING, "the scoring's ID")
                                 "Type"(STRING, "the scoring's type")
                                 localized.."Description"(STRING, "the scoring's localized description")
                                 localized.."Name"(STRING, "the scoring's localized name")
@@ -2606,7 +2597,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
-        pathParameter("ID", STRING, "the season's ID")
+        pathParameter("Id", STRING, "the season's ID")
 
         schema(array(STRING, "the available sub-endpoints"))
     }
@@ -2615,7 +2606,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Returns information about the available sub-endpoints.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
-        pathParameter("ID", STRING, "the season's ID")
+        pathParameter("Id", STRING, "the season's ID")
         pathParameter("Board", STRING, "the board")
 
         schema(array(STRING, "the available sub-endpoints"))
@@ -2627,21 +2618,21 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = queryTypes(BY_PAGE),
         cache = 1.hours
     ) {
-        pathParameter("ID", STRING, "the season's ID")
+        pathParameter("Id", STRING, "the season's ID")
         pathParameter("Board", STRING, "the board")
         pathParameter("Region", STRING, "the region")
 
-        schema(record(name = "PvPSeasonsLeaderboardEntry", description = "Information about a leaderboard entry.") {
+        schema(record(name = "PvpSeasonsLeaderboardEntry", description = "Information about a leaderboard entry.") {
             optional.."Name"(STRING, "the account's name")
-            optional..CamelCase("id").."ID"(STRING, "the guild's ID")
+            optional.."Id"(STRING, "the guild's ID")
             "Rank"(INTEGER, "the account's rank")
             optional.."Team"(STRING, "the guild team's name")
-            optional..SerialName("team_id").."TeamID"(INTEGER, "the guild team's ID")
+            optional.."TeamId"(INTEGER, "the guild team's ID")
             "Date"(STRING, "the date at which the rank was reached")
             "Scores"(
                 description = "the entry's scoring values",
                 type = array(record(name = "Scoring", description = "Information about a leaderboard entry's scoring") {
-                    CamelCase("id").."ID"(STRING, "the scoring's ID")
+                    "Id"(STRING, "the scoring's ID")
                     "Value"(INTEGER, "the scoring's value")
                 })
             )
@@ -2653,11 +2644,11 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(
             description = "the player's standings information for recent seasons",
-            items = record(name = "PvPStandings", description = "Information about an account's PvP standings.") {
+            items = record(name = "PvpStandings", description = "Information about an account's PvP standings.") {
                 "Current"(
                     description = "the season's current standing",
                     type = record(name = "Current", description = "Information about the current standing.") {
-                        SerialName("total_points").."TotalPoints"(INTEGER, "the total number of points")
+                        "TotalPoints"(INTEGER, "the total number of points")
                         "Division"(INTEGER, "the index of the reached division")
                         "Tier"(INTEGER, "the index of the reached tier")
                         "Points"(INTEGER, "the number of pips towards the next tier")
@@ -2669,14 +2660,14 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Best"(
                     description = "the season's best standing",
                     type = record(name = "Best", description = "Information about the season's best standing.") {
-                        SerialName("total_points").."TotalPoints"(INTEGER, "the total number of points")
+                        "TotalPoints"(INTEGER, "the total number of points")
                         "Division"(INTEGER, "the index of the reached division")
                         "Tier"(INTEGER, "the index of the reached tier")
                         "Points"(INTEGER, "the number of pips towards the next tier")
                         "Repeats"(INTEGER, "the number of times the account maxed out the repeat division")
                     }
                 )
-                SerialName("season_id").."SeasonID"(STRING, "the season's ID")
+                "SeasonId"(STRING, "the season's ID")
             }
         ))
     }
@@ -2685,7 +2676,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours,
         security = security(ACCOUNT, PVP)
     ) {
-        schema(record(name = "PvPStats", description = "Information about an account's PvP stats.") {
+        schema(record(name = "PvpStats", description = "Information about an account's PvP stats.") {
             val STATS = record(name = "Stats", description = "Information about category-specific PvP stats.") {
                 "Wins"(INTEGER, "the amount of wins")
                 "Losses"(INTEGER, "the amount of losses")
@@ -2694,9 +2685,9 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Forfeits"(INTEGER, "the amount of forfeits")
             }
 
-            SerialName("pvp_rank").."PvPRank"(INTEGER, "the account's PvP rank")
-            SerialName("pvp_rank_points").."PvPRankPoints"(INTEGER, "the account's PvP rank points")
-            SerialName("pvp_rank_rollovers").."PvPRankRollovers"(INTEGER, "the number of times the account leveled up after reaching rank 80")
+            "PvpRank"(INTEGER, "the account's PvP rank")
+            "PvpRankPoints"(INTEGER, "the account's PvP rank points")
+            "PvpRankRollovers"(INTEGER, "the number of times the account leveled up after reaching rank 80")
             "Aggregate"(STATS, "the aggregated statistics")
             "Professions"(map(STRING, STATS), "the stats by profession ID")
             "Ladders"(map(STRING, STATS), "the stats by ladder (e.g. \"ranked\", \"unranked\")")
@@ -2708,8 +2699,8 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Quaggan", description = "Information about an image of a quaggan.") {
-            CamelCase("id").."ID"(STRING, "the quaggans's ID")
-            CamelCase("url").."URL"(STRING, "the URL to the quaggan image")
+            "Id"(STRING, "the quaggans's ID")
+            "Url"(STRING, "the URL to the quaggan image")
         })
     }
     V2_QUESTS(
@@ -2718,7 +2709,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Quest", description = "Information about a quest.") {
-            CamelCase("id").."ID"(INTEGER, "the quest's ID")
+            "Id"(INTEGER, "the quest's ID")
             localized.."Name"(STRING, "the quest's localized name")
             "Level"(INTEGER, "the minimum level required to begin the quest")
             "Story"(INTEGER, "the story's ID")
@@ -2737,7 +2728,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Race", description = "Information about a playable race.") {
-            CamelCase("id").."ID"(STRING, "the race's ID")
+            "Id"(STRING, "the race's ID")
             localized.."Name"(STRING, "the race's localized name")
             "Skills"(array(INTEGER), "an array of racial skill IDs")
         })
@@ -2748,15 +2739,15 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Raid", description = "Information about a raid.") {
-            CamelCase("id").."ID"(STRING, "the raid's ID")
+            "Id"(STRING, "the raid's ID")
             "Wings"(
                 description = "the raid's wings",
                 type = array(record(name = "Wing", description = "Information about a wing.") {
-                    CamelCase("id").."ID"(STRING, "the wing's ID")
+                    "Id"(STRING, "the wing's ID")
                     "Events"(
                         description = "the wing's events",
                         type = array(record(name = "Event", description = "Information about an event.") {
-                            CamelCase("id").."ID"(STRING, "the event's ID")
+                            "Id"(STRING, "the event's ID")
                             "Type"(STRING, "the event's type")
                         })
                     )
@@ -2770,18 +2761,18 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Recipe", description = "Information about a crafting recipe.") {
-            CamelCase("id").."ID"(INTEGER, "the recipe's ID")
+            "Id"(INTEGER, "the recipe's ID")
             "Type"(STRING, "the recipe's type")
-            SerialName("output_item_id").."OutputItemID"(ITEM_ID, "the ID of the produced item")
-            SerialName("output_item_count").."OutputItemCount"(INTEGER, "the amount of items produced")
+            "OutputItemId"(ITEM_ID, "the ID of the produced item")
+            "OutputItemCount"(INTEGER, "the amount of items produced")
             SerialName("time_to_craft_ms").."CraftTimeMillis"(INTEGER, "the time in milliseconds it takes to craft the item")
             "Disciplines"(array(STRING), "the crafting disciplines that can use the recipe")
-            SerialName("min_rating").."MinRating"(INTEGER, "the minimum rating required to use the recipe")
+            "MinRating"(INTEGER, "the minimum rating required to use the recipe")
             "Flags"(array(STRING), "the flags applying to the recipe")
             until(V2_SCHEMA_2022_03_09T02_00_00_000Z).."Ingredients"(
                 description = "the recipe's ingredients",
                 type = array(record(name = "Ingredient", description = "Information about a recipe ingredient.") {
-                    SerialName("item_id").."ItemID"(ITEM_ID, "the ingredient's item ID")
+                    "ItemId"(ITEM_ID, "the ingredient's item ID")
                     "Count"(INTEGER, "the quantity of this ingredient")
                 })
             )
@@ -2792,7 +2783,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     description = "Information about a recipe ingredient.",
                     sharedConfigure = {
                         "Type"(STRING, "the ingredient's type")
-                        CamelCase("id").."ID"(INTEGER, "the ingredient's ID")
+                        "Id"(INTEGER, "the ingredient's ID")
                         "Count"(INTEGER, "the amount")
                     }
                 ) {
@@ -2801,15 +2792,15 @@ internal val GW2v2 = GW2APISpecV2 {
                     +record(name = "Item", description = "An item ingredient.") {}
                 })
             )
-            optional..until(V2_SCHEMA_2022_03_09T02_00_00_000Z)..SerialName("guild_ingredients").."GuildIngredients"(
+            optional..until(V2_SCHEMA_2022_03_09T02_00_00_000Z).."GuildIngredients"(
                 description = "the recipe's guild ingredients",
                 type = array(record(name = "GuildIngredient", description = "Information about a recipe guild ingredient.") {
-                    SerialName("upgrade_id").."UpgradeID"(STRING, "the guild ingredient's guild upgrade ID")
+                    "UpgradeId"(STRING, "the guild ingredient's guild upgrade ID")
                     "Count"(INTEGER, "the quantity of this guild ingredient")
                 })
             )
-            optional..SerialName("output_upgrade_id").."OutputUpgradeID"(INTEGER, "the ID of the produced guild upgrade")
-            SerialName("chat_link").."ChatLink"(STRING, "the recipe's chat code")
+            optional.."OutputUpgradeId"(INTEGER, "the ID of the produced guild upgrade")
+            "ChatLink"(STRING, "the recipe's chat code")
         })
     }
     V2_RECIPES_SEARCH(
@@ -2834,13 +2825,13 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Skiff", description = "Information about a skiff skin.") {
-            CamelCase("id").."ID"(INTEGER, "the skin's ID")
+            "Id"(INTEGER, "the skin's ID")
             localized.."Name"(STRING, "the skin's name")
             "Icon"(STRING, "a render service URL for the skin's icon")
-            SerialName("dye_slots").."DyeSlots"(
+            "DyeSlots"(
                 description = "the skin's dye slots",
                 type = array(record(name = "DyeSlot", description = "Information about a dye slot.") {
-                    SerialName("color_id").."ColorID"(INTEGER, "the ID of the color")
+                    "ColorId"(INTEGER, "the ID of the color")
                     "Material"(STRING, "the slot's material")
                 })
             )
@@ -2852,14 +2843,14 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Skill", description = "Information about a skill.") {
-            CamelCase("id").."ID"(INTEGER, "the skill's ID")
+            "Id"(INTEGER, "the skill's ID")
             localized.."Name"(STRING, "the skill's localized name")
             localized.."Description"(STRING, "the skill's localized description")
             "Icon"(STRING, "a render service URL for the skill's icon")
-            SerialName("chat_link").."ChatLink"(STRING, "the skill's chat code")
+            "ChatLink"(STRING, "the skill's chat code")
             optional.."Flags"(array(STRING), "additional skill flags")
             optional.."Type"(STRING, "the type of skill")
-            optional..SerialName("weapon_type").."WeaponType"(STRING, "the type of weapon that the skill is on. (May be \"None\".)")
+            optional.."WeaponType"(STRING, "the type of weapon that the skill is on. (May be \"None\".)")
             optional.."Professions"(array(STRING), "the IDs of the professions that can use the skill")
             optional.."Specialization"(INTEGER, "the ID of the specialization required for the skill")
             optional.."Slot"(STRING, "the slot that the skill fits into")
@@ -2877,7 +2868,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     FACTS()
                 })
             )
-            optional..SerialName("traited_facts").."TraitedFacts"(
+            optional.."TraitedFacts"(
                 description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
                 type = array(conditional(
                     name = "TraitedFact",
@@ -2886,7 +2877,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Type"(STRING, "the type of the fact")
                         optional.."Icon"(STRING, "the URL for the fact's icon")
                         optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
-                        SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                        "RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
                         optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
                     }
                 ) { FACTS() })
@@ -2894,14 +2885,14 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Categories"(array(STRING), "the categories that the skill falls under")
             optional.."Attunement"(STRING, "the attunement required for the skill")
             optional.."Cost"(INTEGER, "the cost associated with the skill")
-            optional..SerialName("dual_wield").."DualWield"(STRING, "the type of off-hand weapon that must be equipped for this dual-wield skill to appear")
-            optional..SerialName("flip_skill").."FlipSkill"(INTEGER, "the ID of the skill that the skill flips over into")
+            optional.."DualWield"(STRING, "the type of off-hand weapon that must be equipped for this dual-wield skill to appear")
+            optional.."FlipSkill"(INTEGER, "the ID of the skill that the skill flips over into")
             optional.."Initiative"(INTEGER, "the skill's initiative cost")
-            optional..SerialName("next_chain").."NextChain"(INTEGER, "the ID of the next skill in the chain")
-            optional..SerialName("prev_chain").."PrevChain"(INTEGER, "the ID of the previous skill in the chain")
-            optional..SerialName("transform_skills").."TransformSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
-            optional..SerialName("bundle_skills").."BundleSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
-            optional..SerialName("toolbelt_skill").."ToolbeltSkill"(INTEGER, "the ID of the associated toolbelt skill")
+            optional.."NextChain"(INTEGER, "the ID of the next skill in the chain")
+            optional.."PrevChain"(INTEGER, "the ID of the previous skill in the chain")
+            optional.."TransformSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
+            optional.."BundleSkills"(array(INTEGER), "the IDs of the skills that will replace the player's skills when using the skill")
+            optional.."ToolbeltSkill"(INTEGER, "the ID of the associated toolbelt skill")
         })
     }
     V2_SKINS(
@@ -2910,7 +2901,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Skin", description = "Information about a skin.") {
-            CamelCase("id").."ID"(SKIN_ID, "the skin's ID")
+            "Id"(SKIN_ID, "the skin's ID")
             localized.."Name"(STRING, "the skin's localized name")
             "Type"(STRING, "the skin's type")
             "Flags"(array(STRING), "additional skin flags (ShowInWardrobe, NoCost, HideIfLocked, OverrideRarity)")
@@ -2923,12 +2914,12 @@ internal val GW2v2 = GW2APISpecV2 {
                 type = conditional(name = "Details", description = "Additional information about a skin.", disambiguationBySideProperty = true) {
                     "Armor"(record(name = "Armor", description = "Additional information about an armor skin.") {
                         "Type"(STRING, "the skin's armor slot")
-                        SerialName("weight_class").."WeightClass"(STRING, "the skin's armor weight")
-                        SerialName("dye_slots").."DyeSlots"(
+                        "WeightClass"(STRING, "the skin's armor weight")
+                        "DyeSlots"(
                             description = "the skin's dye slots",
                             type = record(name = "DyeSlots", description = "Information about a skin's sye slots.") {
                                 val DYE_SLOT = record(name = "DyeSlot", description = "Information about a dye slot.") {
-                                    SerialName("color_id").."ColorID"(INTEGER, "the default color's ID")
+                                    "ColorId"(INTEGER, "the default color's ID")
                                     "Material"(STRING, "the material type")
                                 }
 
@@ -2958,7 +2949,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     })
                     "Weapon"(record(name = "Weapon", description = "Additional information about a weapon skin.") {
                         "Type"(STRING, "the skin's weapon type")
-                        SerialName("damage_type").."DamageType"(STRING, "the skin's damage type")
+                        "DamageType"(STRING, "the skin's damage type")
                     })
                 }
             )
@@ -2970,16 +2961,16 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Specialization", description = "Information about a specialization.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the specialization")
+            "Id"(INTEGER, "the ID of the specialization")
             localized.."Name"(STRING, "the localized name of the specialization")
             "Profession"(STRING, "the ID of the profession the specialization belongs to")
             "Elite"(BOOLEAN, "a flag indicating whether the specialization is an elite specialization")
             "Icon"(STRING, "a render service URL for the specialization's icon")
             "Background"(STRING, "a render service URL for the specialization's background image")
-            SerialName("minor_traits").."MinorTraits"(array(INTEGER), "a list of all IDs of the specialization's minor traits")
-            SerialName("major_traits").."MajorTraits"(array(INTEGER), "a list of all IDs of the specialization's major traits")
-            optional..SerialName("weapon_trait").."WeaponTrait"(INTEGER, "the ID of the elite specialization's weapon trait")
-            optional..SerialName("profession_icon").."ProfessionIcon"(STRING, "a render service URL for the elite specialization's icon")
+            "MinorTraits"(array(INTEGER), "a list of all IDs of the specialization's minor traits")
+            "MajorTraits"(array(INTEGER), "a list of all IDs of the specialization's major traits")
+            optional.."WeaponTrait"(INTEGER, "the ID of the elite specialization's weapon trait")
+            optional.."ProfessionIcon"(STRING, "a render service URL for the elite specialization's icon")
             optional..SerialName("profession_icon_big").."BigProfessionIcon"(STRING, "a render service URL for a large variant of the elite specialization's icon")
         })
     }
@@ -2989,7 +2980,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Story", description = "Information about a Story Journal season.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the story")
+            "Id"(INTEGER, "the ID of the story")
             "Season"(STRING, "the ID of the story's season")
             localized.."Name"(STRING, "the localized name of the story")
             localized.."Description"(STRING, "the localized description of the story")
@@ -3012,7 +3003,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "StorySeason", description = "Information about a Story Journal season.") {
-            CamelCase("id").."ID"(STRING, "the ID of the season")
+            "Id"(STRING, "the ID of the season")
             localized.."Name"(STRING, "the localized name of the season")
             "Order"(INTEGER, "a number that can be used to sort the list of seasons")
             "Stories"(array(INTEGER), "the IDs of the stories in the season")
@@ -3024,7 +3015,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Title", description = "Information about a title.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the title")
+            "Id"(INTEGER, "the ID of the title")
             localized.."Name"(STRING, "the display name of the title")
             deprecated..optional.."Achievement"(ACHIEVEMENT_ID, "the ID of the achievement that grants this title")
             optional.."Achievements"(array(ACHIEVEMENT_ID), "the IDs of the achievements that grant this title")
@@ -3037,7 +3028,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(
             V2_SCHEMA_CLASSIC to record(name = "TokenInfo", description = "Information about an API key.") {
-                CamelCase("id").."ID"(STRING, "the API key that was requested")
+                "Id"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
                     description = "an array of strings describing which permissions the API key has",
@@ -3045,7 +3036,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 )
             },
             V2_SCHEMA_2019_05_22T00_00_00_000Z to record(name = "TokenInfo", description = "Information about an API key.") {
-                CamelCase("id").."ID"(STRING, "the API key that was requested")
+                "Id"(STRING, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
                     description = "an array of strings describing which permissions the API key has",
@@ -3055,9 +3046,9 @@ internal val GW2v2 = GW2APISpecV2 {
                 inline..optional.."SubtokenDetails"(
                     description = "",
                     type = record(name = "SubtokenDetails", description = "Additional information about a subtoken") {
-                        SerialName("expires_at").."ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
-                        SerialName("issued_at").."IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
-                        CamelCase("urls").."URLs"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
+                        "ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
+                        "IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
+                        "Urls"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
                     }
                 )
             }
@@ -3069,7 +3060,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "Trait", description = "Information about a trait.") {
-            CamelCase("id").."ID"(INTEGER, "the trait's ID")
+            "Id"(INTEGER, "the trait's ID")
             "Tier"(INTEGER, "the trait's tier")
             "Order"(INTEGER, "the trait's order")
             localized.."Name"(STRING, "the trait's localized name")
@@ -3087,7 +3078,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     }
                 ) { FACTS() })
             )
-            optional..SerialName("traited_facts").."TraitedFacts"(
+            optional.."TraitedFacts"(
                 description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
                 type = array(conditional(
                     name = "TraitedFact",
@@ -3096,7 +3087,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         "Type"(STRING, "the type of the fact")
                         optional.."Icon"(STRING, "the URL for the fact's icon")
                         optional..localized.."Text"(STRING, "an arbitrary localized string describing the fact")
-                        SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                        "RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
                         optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
                     }
                 ) { FACTS() })
@@ -3104,11 +3095,11 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Skills"(
                 description = "a list of skills related to this trait",
                 type = array(record(name = "Skill", description = "Information about a skill related to a trait.") {
-                    CamelCase("id").."ID"(INTEGER, "the skill's ID")
+                    "Id"(INTEGER, "the skill's ID")
                     localized.."Name"(STRING, "the skill's localized name")
                     localized.."Description"(STRING, "the skill's localized description")
                     "Icon"(STRING, "a render service URL for the skill's icon")
-                    SerialName("chat_link").."ChatLink"(STRING, "the skill's chat code")
+                    "ChatLink"(STRING, "the skill's chat code")
                     optional.."Categories"(array(STRING), "the categories that the skill falls under")
                     optional.."Flags"(array(STRING), "additional skill flags")
                     optional.."Facts"(
@@ -3123,7 +3114,7 @@ internal val GW2v2 = GW2APISpecV2 {
                             }
                         ) { FACTS() })
                     )
-                    optional..SerialName("traited_facts").."TraitedFacts"(
+                    optional.."TraitedFacts"(
                         description = "Information about a trait's fact (i.e. effect/property) that is only active if a specific trait is active.",
                         type = array(conditional(
                             name = "TraitedFact",
@@ -3132,7 +3123,7 @@ internal val GW2v2 = GW2APISpecV2 {
                                 "Type"(STRING, "the type of the fact")
                                 optional.."Icon"(STRING, "the URL for the fact's icon")
                                 optional.."Text"(STRING, "an arbitrary localized string describing the fact")
-                                SerialName("requires_trait").."RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
+                                "RequiresTrait"(INTEGER, "specifies which trait has to be selected in order for this fact to take effect")
                                 optional.."Overrides"(INTEGER, "the array index of the facts object it will override, if the trait specified in requires_trait is selected")
                             }
                         ) { FACTS() })
@@ -3149,7 +3140,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "WorldBoss", description = "Information about a worldboss that reward boss chests that can be opened once a day.") {
-            CamelCase("id").."ID"(STRING, "the worldboss's ID")
+            "Id"(STRING, "the worldboss's ID")
         })
     }
     V2_WORLDS(
@@ -3158,7 +3149,7 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "World", description = "Information about an available world (or server).") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the world")
+            "Id"(INTEGER, "the ID of the world")
             localized.."Name"(STRING, "the name of the world")
             "Population"(STRING, "the population level of the world")
         })
@@ -3168,8 +3159,8 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "WvWAbility", description = "Information about an ability in the World versus World game mode.") {
-            CamelCase("id").."ID"(INTEGER, "the ID of the ability")
+        schema(record(name = "WvwAbility", description = "Information about an ability in the World versus World game mode.") {
+            "Id"(INTEGER, "the ID of the ability")
             localized.."Name"(STRING, "the ability's localized name")
             localized.."Description"(STRING, "the ability's localized description")
             "Icon"(STRING, "a render service URL for the ability's icon")
@@ -3187,22 +3178,22 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
     ) {
-        schema(record(name = "WvWMatch", description = "General information about a WvW match.") {
-            CamelCase("id").."ID"(STRING, "the match's ID")
-            SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
-            SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+        schema(record(name = "WvwMatch", description = "General information about a WvW match.") {
+            "Id"(STRING, "the match's ID")
+            "StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
+            "EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
             "Scores"(map(STRING, INTEGER), "the total scores by team color")
             "Worlds"(map(STRING, INTEGER), "the IDs of the three primary servers by team color")
-            SerialName("all_worlds").."AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
+            "AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
             "Deaths"(map(STRING, INTEGER), "the total deaths by team color")
             "Kills"(map(STRING, INTEGER), "the total kills by team color")
-            SerialName("victory_points").."VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
+            "VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
             "Skirmishes"(
                 description = "the match's skirmishes",
                 type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
-                    CamelCase("id").."ID"(INTEGER, "the skirmish's ID")
+                    "Id"(INTEGER, "the skirmish's ID")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
-                    SerialName("map_scores").."MapScores"(
+                    "MapScores"(
                         description = "the scores by map",
                         type = array(record(name = "MapScores", description = "Map-specific information about scores.") {
                             "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
@@ -3214,7 +3205,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Maps"(
                 description = "the total scores by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(INTEGER, "the map's ID")
+                    "Id"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                     "Deaths"(map(STRING, INTEGER), "the deaths by team color")
@@ -3222,16 +3213,16 @@ internal val GW2v2 = GW2APISpecV2 {
                     "Objectives"(
                         description = "the list of the map's objective",
                         type = array(record(name = "Objective", description = "Information about a map objective.") {
-                            CamelCase("id").."ID"(STRING, "the objective's ID")
+                            "Id"(STRING, "the objective's ID")
                             "Type"(STRING, "the objective's type")
                             "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
-                            SerialName("last_flipped").."LastFlipped"(STRING, "the ISO-8601 standard timestamp of when the objective was last flipped")
-                            optional..SerialName("claimed_by").."ClaimedBy"(STRING, "the guild ID of the guild that currently has claimed this objective")
-                            optional..SerialName("claimed_at").."ClaimedAt"(STRING, "the ISO-8601 standard timestamp of when the objective was claimed")
-                            SerialName("points_tick").."PointsTick"(INTEGER, "the amount of points per tick given by the objective")
-                            SerialName("points_capture").."PointsCapture"(INTEGER, "the amount of points awarded for capturing the objective")
-                            optional..SerialName("guild_upgrades").."GuildUpgrades"(array(INTEGER), "the IDs of the currently slotted guild upgrades")
-                            optional..SerialName("yaks_delivered").."YaksDelivered"(INTEGER, "the total number of shipments delivered to the objective")
+                            "LastFlipped"(STRING, "the ISO-8601 standard timestamp of when the objective was last flipped")
+                            optional.."ClaimedBy"(STRING, "the guild ID of the guild that currently has claimed this objective")
+                            optional.."ClaimedAt"(STRING, "the ISO-8601 standard timestamp of when the objective was claimed")
+                            "PointsTick"(INTEGER, "the amount of points per tick given by the objective")
+                            "PointsCapture"(INTEGER, "the amount of points awarded for capturing the objective")
+                            optional.."GuildUpgrades"(array(INTEGER), "the IDs of the currently slotted guild upgrades")
+                            optional.."YaksDelivered"(INTEGER, "the total number of shipments delivered to the objective")
                         }
                     ))
                     "Bonuses"(
@@ -3250,12 +3241,12 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
     ) {
-        schema(record(name = "WvWMatchOverview", description = "General information about a WvW match.") {
-            CamelCase("id").."ID"(STRING, "the match's ID")
+        schema(record(name = "WvwMatchOverview", description = "General information about a WvW match.") {
+            "Id"(STRING, "the match's ID")
             "Worlds"(map(STRING, INTEGER), "the IDs of the three primary servers by team color")
-            SerialName("all_worlds").."AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
-            SerialName("start_time").."StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
-            SerialName("end_time").."EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+            "AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
+            "StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
+            "EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
         })
     }
     V2_WVW_MATCHES_SCORES(
@@ -3263,16 +3254,16 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
     ) {
-        schema(record(name = "WvWMatchScore", description = "Information about a WvW match scores.") {
-            CamelCase("id").."ID"(STRING, "the match's ID")
+        schema(record(name = "WvwMatchScore", description = "Information about a WvW match scores.") {
+            "Id"(STRING, "the match's ID")
             "Scores"(map(STRING, INTEGER), "the total scores by team color")
-            SerialName("victory_points").."VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
+            "VictoryPoints"(map(STRING, INTEGER), "the victory points by team color")
             "Skirmishes"(
                 description = "the match's skirmishes",
                 type = array(record(name = "Skirmish", description = "Information about skirmish scores.") {
-                    CamelCase("id").."ID"(INTEGER, "the skirmish's ID")
+                    "Id"(INTEGER, "the skirmish's ID")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
-                    SerialName("map_scores").."MapScores"(
+                    "MapScores"(
                         description = "the scores by map",
                         type = array(record(name = "MapScores", description = "Map-specific information about scores.") {
                             "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
@@ -3284,7 +3275,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Maps"(
                 description = "the total scores by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(INTEGER, "the map's ID")
+                    "Id"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Scores"(map(STRING, INTEGER), "the scores by team color")
                 })
@@ -3296,14 +3287,14 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.seconds
     ) {
-        schema(record(name = "WvWMatchStats", description = "Information about a WvW match stats.") {
-            CamelCase("id").."ID"(STRING, "the match's ID")
+        schema(record(name = "WvwMatchStats", description = "Information about a WvW match stats.") {
+            "Id"(STRING, "the match's ID")
             "Deaths"(map(STRING, INTEGER), "the deaths by team color")
             "Kills"(map(STRING, INTEGER), "the deaths by team color")
             "Maps"(
                 description = "the stats by map",
                 type = array(record(name = "Map", description = "Map-specific information about scores.") {
-                    CamelCase("id").."ID"(INTEGER, "the map's ID")
+                    "Id"(INTEGER, "the map's ID")
                     "Type"(STRING, "the map's type (i.e. \"Center\", \"RedHome\", \"BlueHome\", or \"GreenHome\")")
                     "Deaths"(map(STRING, INTEGER), "the deaths by team color")
                     "Kills"(map(STRING, INTEGER), "the deaths by team color")
@@ -3316,18 +3307,18 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "WvWObjective", description = "Information about an objective in the World versus World game mode.") {
-            CamelCase("id").."ID"(STRING, "the ID of the objective")
+        schema(record(name = "WvwObjective", description = "Information about an objective in the World versus World game mode.") {
+            "Id"(STRING, "the ID of the objective")
             localized.."Name"(STRING, "the name of the objective")
             "Type"(STRING, "the type of the objective")
-            SerialName("sector_id").."SectorID"(INTEGER, "the map sector the objective can be found in")
-            SerialName("map_id").."MapID"(INTEGER, "the ID of the map the objective can be found on")
-            SerialName("map_type").."MapType"(STRING, "the type of the map the objective can be found on")
+            "SectorId"(INTEGER, "the map sector the objective can be found in")
+            "MapId"(INTEGER, "the ID of the map the objective can be found on")
+            "MapType"(STRING, "the type of the map the objective can be found on")
             optional.."Coord"(array(DECIMAL), "an array of three numbers representing the X, Y and Z coordinates of the objectives marker on the map")
-            optional..SerialName("label_coord").."LabelCoord"(array(DECIMAL), "an array of two numbers representing the X and Y coordinates of the sector centroid")
+            optional.."LabelCoord"(array(DECIMAL), "an array of two numbers representing the X and Y coordinates of the sector centroid")
             optional.."Marker"(STRING, "the icon link")
-            SerialName("chat_link").."ChatLink"(STRING, "the chat code for the objective")
-            optional..SerialName("upgrade_id").."UpgradeID"(INTEGER, "the ID of the upgrades available for the objective")
+            "ChatLink"(STRING, "the chat code for the objective")
+            optional.."UpgradeId"(INTEGER, "the ID of the upgrades available for the objective")
         })
     }
     V2_WVW_RANKS(
@@ -3335,10 +3326,10 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "WvWRank", description = "Information about an achievable rank in the World versus World game mode.") {
-            CamelCase("id").."ID"(WVW_RANK_ID, "the ID of the rank")
+        schema(record(name = "WvwRank", description = "Information about an achievable rank in the World versus World game mode.") {
+            "Id"(WVW_RANK_ID, "the ID of the rank")
             localized.."Title"(STRING, "the title of the rank")
-            SerialName("min_rank").."MinRank"(INTEGER, "the WvW level required to unlock this rank")
+            "MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })
     }
     V2_WVW_UPGRADES(
@@ -3346,13 +3337,13 @@ internal val GW2v2 = GW2APISpecV2 {
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
-        schema(record(name = "WvWUpgrade", description = "Information about an upgrade for objectives in the World versus World game mode.") {
-            CamelCase("id").."ID"(INTEGER, "the upgrade's ID")
+        schema(record(name = "WvwUpgrade", description = "Information about an upgrade for objectives in the World versus World game mode.") {
+            "Id"(INTEGER, "the upgrade's ID")
             "Tiers"(
                 description = "the different tiers of the upgrade",
                 type = array(record(name = "Tier", description = "Information about an upgrade tier.") {
                     localized.."Name"(STRING, "the name of the upgrade tier")
-                    SerialName("yaks_required").."YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
+                    "YaksRequired"(INTEGER, "the amount of dolyaks required to reach this upgrade tier")
                     "Upgrades"(
                         description = "the upgrades available at the tier",
                         type = array(record(name = "Upgrade", description = "Information about an upgrade.") {

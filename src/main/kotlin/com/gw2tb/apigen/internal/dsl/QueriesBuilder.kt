@@ -21,7 +21,6 @@
  */
 package com.gw2tb.apigen.internal.dsl
 
-import com.gw2tb.apigen.internal.impl.*
 import com.gw2tb.apigen.ir.*
 import com.gw2tb.apigen.ir.model.*
 import com.gw2tb.apigen.model.Name
@@ -43,8 +42,8 @@ internal interface QueriesBuilder<T : IRAPIType> {
         name: String,
         type: DeferredPrimitiveType<*>,
         description: String,
-        key: String = name.lowercase(),
-        camelCase: String = name.firstToLowerCase(),
+        key: String = Name.deriveFromTitleCase(name).toSnakeCase(),
+        camelCase: String? = null,
         isOptional: Boolean = false
     )
 

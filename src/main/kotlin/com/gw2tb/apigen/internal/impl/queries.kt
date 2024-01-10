@@ -63,7 +63,7 @@ internal abstract class QueriesBuilderImplBase<Q : IRAPIQuery, T : IRAPIType> : 
     }
 
     protected val queryParameters: MutableMap<String, IRQueryParameter> = mutableMapOf()
-    override fun queryParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String, isOptional: Boolean) {
+    override fun queryParameter(name: String, type: DeferredPrimitiveType<*>, description: String, key: String, camelCase: String?, isOptional: Boolean) {
         check(key !in queryParameters)
 
         queryParameters[key] = IRQueryParameter(
