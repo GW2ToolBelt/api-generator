@@ -454,7 +454,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         optional.."Elite"(INTEGER, "the elite skill's ID")
                     }
                 )
-                optional.."AuqaticSkills"(
+                optional.."AquaticSkills"(
                     description = "the build's aquatic skills",
                     type = record(name = "AuqaticSkills", description = "Information about a build's aquatic skills.") {
                         optional.."Heal"(INTEGER, "the heal skill's ID")
