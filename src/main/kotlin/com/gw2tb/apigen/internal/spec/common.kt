@@ -25,76 +25,76 @@ import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.model.Name
 
 /** A common alias for achievement IDs. */
-internal val ACHIEVEMENT_ID = Alias(INTEGER, "AchievementID")
+internal val ACHIEVEMENT_ID = Alias(INTEGER, "AchievementId")
 
 /** A common alias for achievement category IDs. */
-internal val ACHIEVEMENT_CATEGORY_ID = Alias(INTEGER, "AchievementCategoryID")
+internal val ACHIEVEMENT_CATEGORY_ID = Alias(INTEGER, "AchievementCategoryId")
 
 /** A common alias for achievement group IDs. */
-internal val ACHIEVEMENT_GROUP_ID = Alias(STRING, "AchievementGroupID")
+internal val ACHIEVEMENT_GROUP_ID = Alias(STRING, "AchievementGroupId")
 
 /** A common alias for build IDs. */
-internal val BUILD_ID = Alias(INTEGER, "BuildID")
+internal val BUILD_ID = Alias(INTEGER, "BuildId")
 
 /** A common alias for color IDs. */
-internal val COLOR_ID = Alias(INTEGER, "ColorID")
+internal val COLOR_ID = Alias(INTEGER, "ColorId")
 
 /** A common alias for continent IDs. */
-internal val CONTINENT_ID = Alias(INTEGER, "ContinentID")
+internal val CONTINENT_ID = Alias(INTEGER, "ContinentId")
 
 /** A common alias for event IDs. */
-internal val EVENT_ID = Alias(STRING, "EventID")
+internal val EVENT_ID = Alias(STRING, "EventId")
 
 /** A common alias for floor IDs. */
-internal val FLOOR_ID = Alias(INTEGER, "FloorID")
+internal val FLOOR_ID = Alias(INTEGER, "FloorId")
 
 /** A common alias for guild IDs. */
-internal val GUILD_ID = Alias(STRING, "GuildID")
+internal val GUILD_ID = Alias(STRING, "GuildId")
 
 /** A common alias for guild upgrade IDs. */
-internal val GUILD_UPGRADE_ID = Alias(INTEGER, "GuildUpgradeID")
+internal val GUILD_UPGRADE_ID = Alias(INTEGER, "GuildUpgradeId")
 
 /** A common alias for item IDs. */
-internal val ITEM_ID = Alias(INTEGER, "ItemID")
+internal val ITEM_ID = Alias(INTEGER, "ItemId")
 
 /** A common alias for itemstat IDs. */
-internal val ITEMSTAT_ID = Alias(INTEGER, "ItemStatID")
+internal val ITEMSTAT_ID = Alias(INTEGER, "ItemStatId")
 
 /** A common alias for map IDs. */
-internal val MAP_ID = Alias(INTEGER, "MapID")
+internal val MAP_ID = Alias(INTEGER, "MapId")
 
 /** A common alias for mini IDs. */
-internal val MINI_ID = Alias(INTEGER, "MiniID")
+internal val MINI_ID = Alias(INTEGER, "MiniId")
 
 /** A common alias for profession IDs. */
-internal val PROFESSION_ID = Alias(INTEGER, "ProfessionID")
+internal val PROFESSION_ID = Alias(INTEGER, "ProfessionId")
 
 /** A common alias for recipe IDs. */
-internal val RECIPE_ID = Alias(INTEGER, "RecipeID")
+internal val RECIPE_ID = Alias(INTEGER, "RecipeId")
 
 /** A common alias for race IDs. */
-internal val RACE_ID = Alias(INTEGER, "RaceID")
+internal val RACE_ID = Alias(INTEGER, "RaceId")
 
 /** A common alias for region IDs. */
-internal val REGION_ID = Alias(INTEGER, "RegionID")
+internal val REGION_ID = Alias(INTEGER, "RegionId")
 
 /** A common alias for skill IDs. */
-internal val SKILL_ID = Alias(INTEGER, "SkillID")
+internal val SKILL_ID = Alias(INTEGER, "SkillId")
 
 /** A common alias for skin IDs. */
-internal val SKIN_ID = Alias(INTEGER, "SkinID")
+internal val SKIN_ID = Alias(INTEGER, "SkinId")
 
 /** A common alias for specialization IDs. */
-internal val SPECIALIZATION_ID = Alias(INTEGER, "SpecializationID")
+internal val SPECIALIZATION_ID = Alias(INTEGER, "SpecializationId")
 
 /** A common alias for world IDs. */
-internal val WORLD_ID = Alias(INTEGER, "WorldID")
+internal val WORLD_ID = Alias(INTEGER, "WorldId")
 
 /** A common alias for WvW match IDs. */
-internal val WVW_MATCH_ID = Alias(STRING, Name("WvW", "Match", "ID"))
+internal val WVW_MATCH_ID = Alias(STRING, "WvwMatchId")
 
 /** A common alias for WvW objective IDs. */
-internal val WVW_OBJECTIVE_ID = Alias(STRING, Name("WvW", "Objective", "ID"))
+internal val WVW_OBJECTIVE_ID = Alias(STRING, "WvwObjectiveId")
 
 /** A common alias for WvW rank IDs. */
-internal val WVW_RANK_ID = Alias(INTEGER, Name("WvW", "Rank", "ID"))
+internal val WVW_RANK_ID = Alias(INTEGER, "WvwRankId")
