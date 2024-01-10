@@ -306,7 +306,7 @@ internal val GW2v1 = GW2APISpecV1 {
         })
     }
     V1_ITEMS(summary = "Returns the IDs of the available items.") {
-        schema(record(name = "ItemIDs", description = "Information about the available items.") {
+        schema(record(name = "ItemIds", description = "Information about the available items.") {
             "Items"(array(ITEM_ID), "the IDs of the available items")
         })
     }
@@ -483,7 +483,7 @@ internal val GW2v1 = GW2APISpecV1 {
         })
     }
     V1_RECIPES(summary = "Returns the IDs of the available recipes.") {
-        schema(record(name = "RecipeIDs", description = "Information about the available recipes.") {
+        schema(record(name = "RecipeIds", description = "Information about the available recipes.") {
             "Recipes"(array(RECIPE_ID), "the IDs of the available recipes")
         })
     }
@@ -538,7 +538,7 @@ internal val GW2v1 = GW2APISpecV1 {
         })
     }
     V1_SKINS(summary = "Returns the IDs of the available skins.") {
-        schema(record(name = "SkinIDs", description = "Information about the available skins.") {
+        schema(record(name = "SkinIds", description = "Information about the available skins.") {
             "Skins"(array(SKIN_ID), "the IDs of the available skins")
         })
     }
