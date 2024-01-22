@@ -42,7 +42,7 @@ jobs:
           retention-days: 1
 
 
-  mkdocs:
+  build-docs:
     name: Build Documentation
     needs: build
     runs-on: ubuntu-latest
@@ -65,14 +65,14 @@ jobs:
         run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
 
       - name: MkDocs Build
-        run: |
-          mkdocs build
+        run: mkdocs build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./build/site
           retention-days: 3
+
 
   check:
     name: Check
@@ -120,7 +120,7 @@ jobs:
   cleanup:
     name: Cleanup
     if: ${{ always() }}
-    needs: check
+    needs: [build-docs, check]
     runs-on: ubuntu-latest
     permissions:
       actions: write
