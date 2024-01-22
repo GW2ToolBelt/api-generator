@@ -76,6 +76,10 @@ dokkatoo {
     dokkatooPublications.configureEach {
         failOnWarning = true
     }
+
+    versions {
+        jetbrainsDokka = libs.versions.dokka
+    }
 }
 
 tasks {
