@@ -71,7 +71,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build/mkdocs/site
+          path: ./build/site
           retention-days: 3
 
   check:

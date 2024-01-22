@@ -8,6 +8,7 @@ repo_name: "api-generator"
 repo_url: "https://github.com/GW2ToolBelt/api-generator"
 remote_branch: "gh-pages"
 docs_dir: "docs/site"
+site_dir: "build/site"
 
 theme:
   name: "material"
