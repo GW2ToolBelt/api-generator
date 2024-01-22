@@ -113,23 +113,7 @@ tasks {
     }
 
     dokkatooGenerateModuleHtml {
-        outputDirectory = layout.buildDirectory.dir("mkdocs/sources/api")
-    }
-
-    register<MkDocs>("mkdocs") {
-        dependsOn(dokkatooGenerateModuleHtml)
-
-        inputFile(layout.projectDirectory.file(".github/CONTRIBUTING.md")) {
-            target = "contributing.md"
-        }
-
-        inputFile(layout.projectDirectory.file("docs/changelog/full.md")) {
-            target = "changelog.md"
-        }
-
-        inputFiles(layout.projectDirectory.dir("docs/mkdocs")) {
-            this.filter { it.replace("docs/mkdocs/([a-zA-Z-]*).md".toRegex(), "$1") }
-        }
+        outputDirectory = layout.buildDirectory.dir("docs/site/api")
     }
 }
 
