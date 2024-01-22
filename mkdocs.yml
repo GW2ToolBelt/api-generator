@@ -52,9 +52,10 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.betterem
-  - pymdownx.superfences
-  - pymdownx.tabbed
   - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 nav:
   - 'api-generator':
