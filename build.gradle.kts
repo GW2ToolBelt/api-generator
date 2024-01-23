@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import dev.adamko.dokkatoo.tasks.DokkatooGenerateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
@@ -109,6 +110,10 @@ tasks {
 
     named<Jar>("javadocJar") {
         from(dokkatooGeneratePublicationJavadoc.get().outputs)
+    }
+
+    withType<DokkatooGenerateTask>().configureEach {
+        workerMaxHeapSize = "4G"
     }
 
     dokkatooGeneratePublicationHtml {
