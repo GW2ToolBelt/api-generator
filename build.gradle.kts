@@ -108,11 +108,11 @@ tasks {
     }
 
     named<Jar>("javadocJar") {
-        from(dokkatooGenerateModuleJavadoc.get().outputs)
+        from(dokkatooGeneratePublicationJavadoc.get().outputs)
     }
 
-    dokkatooGenerateModuleHtml {
-        outputDirectory = layout.buildDirectory.dir("docs/site/api")
+    dokkatooGeneratePublicationHtml {
+        outputDirectory = layout.projectDirectory.dir("docs/site/api")
     }
 }
 
