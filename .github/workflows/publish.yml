@@ -27,11 +27,13 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JDK_VERSION }}
 
-      - name: Gradle Assemble
-        uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: assemble --info -S --show-version
           gradle-home-cache-cleanup: true
+
+      - name: Gradle Assemble
+        run: ./gradlew assemble --info -S --show-version
 
       - name: Tar files
         run: tar -cvf ${{ env.WORKSPACE_ARCHIVE }} .
@@ -64,7 +66,12 @@ jobs:
       - name: Install dependencies
         run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
 
-      - name: Gradle MkDocs
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: Gradle MkDocs # TODO Refactor me!
         uses: gradle/gradle-build-action@v2
         with:
           arguments: mkdocs --info -S --show-version
@@ -100,11 +107,13 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JDK_VERSION }}
 
-      - name: Gradle Check
-        uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
           gradle-home-cache-cleanup: true
+
+      - name: Gradle Check
+        run: ./gradlew check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
 
 
   create-staging-repository:
@@ -147,8 +156,12 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JDK_VERSION }}
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-home-cache-cleanup: true
+
       - name: Gradle Publish
-        uses: gradle/gradle-build-action@v2
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
@@ -156,9 +169,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_stagingRepositoryId: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
-        with:
-          arguments: publishAllPublicationsToMavenRepository --info -S --show-version
-          gradle-home-cache-cleanup: true
+        run: ./gradlew publishAllPublicationsToMavenRepository --info -S --show-version
 
 
   close-staging-repository:
