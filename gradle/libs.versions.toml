@@ -1,6 +1,6 @@
 [versions]
 binary-compatibility-validator = "0.14.0"
-dokka = "1.9.10"
+dokka = "1.9.20"
 dokkatoo = "2.0.0"
 gradle-toolchain-switches = "0.3.0"
 junit = "5.10.2"
