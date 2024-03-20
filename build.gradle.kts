@@ -57,6 +57,10 @@ kotlin {
 }
 
 dokkatoo {
+    dokkaGeneratorIsolation = ProcessIsolation {
+        maxHeapSize = "4G"
+    }
+
     dokkatooSourceSets.configureEach {
         reportUndocumented = true
         skipEmptyPackages = true
@@ -110,10 +114,6 @@ tasks {
 
     named<Jar>("javadocJar") {
         from(dokkatooGeneratePublicationJavadoc.get().outputs)
-    }
-
-    withType<DokkatooGenerateTask>().configureEach {
-        workerMaxHeapSize = "4G"
     }
 
     dokkatooGeneratePublicationHtml {
