@@ -74,7 +74,7 @@ public class APIGenerator(
      *
      * @since   0.7.0
      */
-    public val irApiV1: IRAPIVersion<IRAPIQuery.V1, IRAPIType.V1>
+    public val irApiV1: IRAPIVersion<IRAPIQuery.V1, IRAPIType.V1> = GW2v1.build(v1Endpoints)
 
     /**
      * Version 1 (`v1`) of the Guild Wars 2 API.
@@ -88,7 +88,7 @@ public class APIGenerator(
      *
      * @since   0.7.0
      */
-    public val irApiV2: IRAPIVersion<IRAPIQuery.V2, IRAPIType.V2>
+    public val irApiV2: IRAPIVersion<IRAPIQuery.V2, IRAPIType.V2> = GW2v2.build(v2Endpoints)
 
     /**
      * Version 2 (`v2`) of the Guild Wars 2 API.
@@ -105,9 +105,6 @@ public class APIGenerator(
     public val mumbleIdentity: SchemaTypeDeclaration?
 
     init {
-        irApiV1 = GW2v1.build(v1Endpoints)
-        irApiV2 = GW2v2.build(v2Endpoints)
-
         aliases = collectAliases { collector ->
             apiV1 = irApiV1.resolve(collector)
             apiV2 = irApiV2.resolve(collector, v2SchemaVersion)
