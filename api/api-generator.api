@@ -505,6 +505,10 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_ACCOUNT_SKINS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_TITLES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_WALLET Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_WIZARDSVAULT_DAILY Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_WIZARDSVAULT_LISTINGS Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_WIZARDSVAULT_SPECIAL Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_WIZARDSVAULT_WEEKLY Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_WORLDBOSSES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACHIEVEMENTS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACHIEVEMENTS_CATEGORIES Lcom/gw2tb/apigen/model/APIv2Endpoint;
@@ -606,6 +610,9 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_TITLES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_TOKENINFO Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_TRAITS Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_WIZARDSVAULT Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_WIZARDSVAULT_LISTINGS Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_WIZARDSVAULT_OBJECTIVES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WORLDBOSSES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WORLDS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_ABILITIES Lcom/gw2tb/apigen/model/APIv2Endpoint;
