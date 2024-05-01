@@ -2327,6 +2327,33 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/wizardsvault/listings",
+            cache = 1.hours,
+            queryDetails = QueryIDs<IRInteger>()
+        )
+        expectQuery(
+            "/wizardsvault/listings",
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID<IRInteger>()
+        )
+        expectQuery(
+            "/wizardsvault/listings",
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs<IRInteger>()
+        )
+        expectQuery(
+            "/wizardsvault/listings",
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage<IRInteger>()
+        )
+
+        expectQuery(
             "/worldbosses",
             cache = 1.hours,
             queryDetails = QueryIDs<IRString>()

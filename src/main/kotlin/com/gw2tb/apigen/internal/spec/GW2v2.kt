@@ -3134,6 +3134,26 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the trait's icon")
         })
     }
+    V2_WIZARDSVAULT_LISTINGS(
+        summary = "Returns information about the items available in the Wizard's Vault.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "WizardsVaultListing", description = "Information about an item available in the Wizard's Vault.") {
+            "Id"(INTEGER, "the listing's ID")
+            "ItemId"(ITEM_ID, "the item's ID")
+            "ItemCount"(INTEGER, "the amount of items the player receives")
+            "Type"(
+                description = "the type of the listing",
+                type = enum(STRING, name = "Type", description = "the type of the listing") {
+                    "Featured"(description = "a featured listing")
+                    "Normal"(description = "a normal listing in the current rewards tab")
+                    "Legacy"(description = "a normal listing in the legacy rewards tab")
+                }
+            )
+            "Cost"(INTEGER, "the cost of this listing (in Astral Acclaim)")
+        })
+    }
     V2_WORLDBOSSES(
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day.",
         queryTypes = defaultQueryTypes(all = true),
