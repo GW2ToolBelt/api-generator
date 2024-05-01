@@ -330,6 +330,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_WIZARDSVAULT_LISTINGS("/Account/WizardsVault/Listings"),
     /**
+     * The `/v2/wizardsvault/special` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/wizardsvault/special)
+     *
+     * @since   0.7.0
+     */
+    V2_ACCOUNT_WIZARDSVAULT_SPECIAL("/Account/WizardsVault/Special"),
+    /**
      * The `/v2/account/worldbosses` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/worldbosses)

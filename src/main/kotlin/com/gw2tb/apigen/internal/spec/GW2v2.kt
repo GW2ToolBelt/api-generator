@@ -251,6 +251,16 @@ internal val GW2v2 = GW2APISpecV2 {
         "Wvw"(array(SPECIALIZATION), "the character's WvW specializations")
     }
 
+    val WIZARDS_VAULT_OBJECTIVE_PROGRESS = record(name = "WizardsVaultObjectiveProgress", description = "Information about progress towards a Wizard's Vault objective.") {
+        "Id"(INTEGER, "the objective's ID")
+        "Title"(STRING, "the objective's title")
+        "Track"(STRING, "the objective's track")
+        "Acclaim"(INTEGER, "the amount of Astral Acclaim rewarded by the objective")
+        "ProgressCurrent"(INTEGER, "the current progress towards the objective")
+        "ProgressComplete"(INTEGER, "the treshold for the objective to be considered complete")
+        "Claimed"(BOOLEAN, "a flag indicating whether the objective has been claimed")
+    }
+
     @APIGenDSL
     fun SchemaRecordBuilder<*>.CHARACTERS_TRAINING() {
         "Training"(
@@ -746,18 +756,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "MetaRewardItemId"(ITEM_ID, "the item ID of the daily meta achievement reward")
             "MetaRewardAstral"(INTEGER, "the amount of Astral Acclaim rewarded by the daily meta achievement")
             "MetaRewardClaimed"(BOOLEAN, "a flag indicating whether the daily meta achievement reward has been claimed")
-            "Objectives"(
-                description = "the progess towards the daily Wizard's Vault objectives",
-                type = array(record(name = "Objective", description = "Information about progress towards a daily Wizard's Vault objective.") {
-                    "Id"(INTEGER, "the objective's ID")
-                    "Title"(STRING, "the objective's title")
-                    "Track"(STRING, "the objective's track")
-                    "Acclaim"(INTEGER, "the amount of Astral Acclaim rewarded by the objective")
-                    "ProgressCurrent"(INTEGER, "the current progress towards the objective")
-                    "ProgressComplete"(INTEGER, "the treshold for the objective to be considered complete")
-                    "Claimed"(BOOLEAN, "a flag indicating whether the objective has been claimed")
-                })
-            )
+            "Objectives"(array(WIZARDS_VAULT_OBJECTIVE_PROGRESS), "the progress towards the Wizard's Vault objectives")
         })
     }
     V2_ACCOUNT_WIZARDSVAULT_LISTINGS(
@@ -783,6 +782,14 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional.."PurchaseLimit"(INTEGER, "the maximum amount of times this listing can be purchased")
             })
         )
+    }
+    V2_ACCOUNT_WIZARDSVAULT_SPECIAL(
+        summary = "Returns information about a player's current special Wizard's Vault objectives.",
+        security = security(ACCOUNT)
+    ) {
+        schema(record(name = "AccountWizardsVaultSpecial", description = "Information about a player's current special Wizard's Vault objectives.") {
+            "Objectives"(array(WIZARDS_VAULT_OBJECTIVE_PROGRESS), "the progress towards the Wizard's Vault objectives")
+        })
     }
     V2_ACCOUNT_WORLDBOSSES(
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset.",
