@@ -760,6 +760,30 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_ACCOUNT_WIZARDSVAULT_LISTINGS(
+        summary = "Returns information about a player's available Wizard's Vault listings.",
+        security = security(ACCOUNT)
+    ) {
+        schema(array(
+            description = "a list of the player's available Wizard's Vault listings.",
+            items = record(name = "AccountWizardsVaultListings", description = "Information about a player's available Wizard's Vault listings.") {
+                "Id"(INTEGER, "the listing's ID")
+                "ItemId"(ITEM_ID, "the ID of the listed item")
+                "ItemCount"(INTEGER, "the amount of items the player receives")
+                "Type"(
+                    description = "the type of the listing",
+                    type = enum(STRING, name = "Type", description = "the type of the listing") {
+                        "Featured"(description = "a featured listing")
+                        "Normal"(description = "a normal listing in the current rewards tab")
+                        "Legacy"(description = "a normal listing in the legacy rewards tab")
+                    }
+                )
+                "Cost"(INTEGER, "the cost of this listing (in Astral Acclaim)")
+                optional.."Purchased"(INTEGER, "the amount of times this listing has been purchased")
+                optional.."PurchaseLimit"(INTEGER, "the maximum amount of times this listing can be purchased")
+            })
+        )
+    }
     V2_ACCOUNT_WORLDBOSSES(
         summary = "Returns which world bosses that can be looted once per day a player has defeated since the most recent daily reset.",
         security = security(ACCOUNT, PROGRESSION)
