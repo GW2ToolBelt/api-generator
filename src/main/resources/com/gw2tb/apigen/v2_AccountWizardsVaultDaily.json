@@ -1,0 +1,56 @@
+[
+    {
+        "meta_progress_current": 4,
+        "meta_progress_complete": 4,
+        "meta_reward_item_id": 99961,
+        "meta_reward_astral": 20,
+        "meta_reward_claimed": true,
+        "objectives": [
+            {
+                "id": 62,
+                "title": "Complete a Renown Heart",
+                "track": "PvE",
+                "acclaim": 10,
+                "progress_current": 1,
+                "progress_complete": 1,
+                "claimed": true
+            },
+            {
+                "id": 140,
+                "title": "Defeat 5 Veteran Enemies",
+                "track": "PvE",
+                "acclaim": 10,
+                "progress_current": 0,
+                "progress_complete": 5,
+                "claimed": false
+            },
+            {
+                "id": 92,
+                "title": "View a Vista in the Horn of Maguuma",
+                "track": "PvE",
+                "acclaim": 10,
+                "progress_current": 1,
+                "progress_complete": 1,
+                "claimed": true
+            },
+            {
+                "id": 20,
+                "title": "Perform 3 Combo Skills in Combat",
+                "track": "PvE",
+                "acclaim": 10,
+                "progress_current": 3,
+                "progress_complete": 3,
+                "claimed": true
+            },
+            {
+                "id": 133,
+                "title": "Log In",
+                "track": "PvE",
+                "acclaim": 5,
+                "progress_current": 1,
+                "progress_complete": 1,
+                "claimed": true
+            }
+        ]
+    }
+]

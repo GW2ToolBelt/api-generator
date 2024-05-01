@@ -314,6 +314,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_WALLET("/Account/Wallet"),
     /**
+     * The `/v2/wizardsvault/daily` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/wizardsvault/daily)
+     *
+     * @since   0.7.0
+     */
+    V2_ACCOUNT_WIZARDSVAULT_DAILY("/Account/WizardsVault/Daily"),
+    /**
      * The `/v2/account/worldbosses` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/worldbosses)
