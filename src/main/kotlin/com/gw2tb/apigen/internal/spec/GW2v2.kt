@@ -3154,6 +3154,25 @@ internal val GW2v2 = GW2APISpecV2 {
             "Cost"(INTEGER, "the cost of this listing (in Astral Acclaim)")
         })
     }
+    V2_WIZARDSVAULT_OBJECTIVES(
+        summary = "Returns information about the Wizard's Vault's objectives.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "WizardsVaultObjective", description = "Information about a Wizard's Vault's objective.") {
+            "Id"(INTEGER, "the objective's ID")
+            "Title"(STRING, "the objective's title")
+            "Track"(
+                description = "the objective's track",
+                type = enum(STRING, name = "Track", description = "the objective's track") {
+                    "PvE"(description = "a PvE objective")
+                    "PvP"(description = "a PvP objective")
+                    "WvW"(description = "a WvW objective")
+                }
+            )
+            "Acclaim"(INTEGER, "the amount of Astral Acclaim the player receives for completing the objective")
+        })
+    }
     V2_WORLDBOSSES(
         summary = "Returns information about the worldbosses that reward boss chests that can be opened once a day.",
         queryTypes = defaultQueryTypes(all = true),

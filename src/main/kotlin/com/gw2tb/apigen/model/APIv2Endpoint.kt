@@ -1130,6 +1130,14 @@ public enum class APIv2Endpoint(
      */
     V2_WIZARDSVAULT_LISTINGS("/WizardsVault/Listings"),
     /**
+     * The `/v2/wizardsvault/objectives` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wizardsvault/objectives)
+     *
+     * @since   0.7.0
+     */
+    V2_WIZARDSVAULT_OBJECTIVES("/WizardsVault/Objectives"),
+    /**
      * The `/v2/worldbosses` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/worldbosses)
