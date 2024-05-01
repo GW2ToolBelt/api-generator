@@ -338,6 +338,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_WIZARDSVAULT_SPECIAL("/Account/WizardsVault/Special"),
     /**
+     * The `/v2/wizardsvault/weekly` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/wizardsvault/weekly)
+     *
+     * @since   0.7.0
+     */
+    V2_ACCOUNT_WIZARDSVAULT_WEEKLY("/Account/WizardsVault/Weekly"),
+    /**
      * The `/v2/account/worldbosses` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/worldbosses)

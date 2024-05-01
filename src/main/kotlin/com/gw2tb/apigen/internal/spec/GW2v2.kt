@@ -752,7 +752,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(record(name = "AccountWizardsVaultDaily", description = "Information about a player's current daily Wizard's Vault objectives.") {
             "MetaProgressCurrent"(INTEGER, "the current progress towards the daily meta achievement")
-            "MetaProgressComplete"(INTEGER, "the treshold for the daily meta achievement to be considered complete")
+            "MetaProgressComplete"(INTEGER, "the threshold for the daily meta achievement to be considered complete")
             "MetaRewardItemId"(ITEM_ID, "the item ID of the daily meta achievement reward")
             "MetaRewardAstral"(INTEGER, "the amount of Astral Acclaim rewarded by the daily meta achievement")
             "MetaRewardClaimed"(BOOLEAN, "a flag indicating whether the daily meta achievement reward has been claimed")
@@ -788,6 +788,19 @@ internal val GW2v2 = GW2APISpecV2 {
         security = security(ACCOUNT)
     ) {
         schema(record(name = "AccountWizardsVaultSpecial", description = "Information about a player's current special Wizard's Vault objectives.") {
+            "Objectives"(array(WIZARDS_VAULT_OBJECTIVE_PROGRESS), "the progress towards the Wizard's Vault objectives")
+        })
+    }
+    V2_ACCOUNT_WIZARDSVAULT_WEEKLY(
+        summary = "Returns information about a player's current weekly Wizard's Vault objectives.",
+        security = security(ACCOUNT)
+    ) {
+        schema(record(name = "AccountWizardsVaultWeekly", description = "Information about a player's current weekly Wizard's Vault objectives.") {
+            "MetaProgressCurrent"(INTEGER, "the current progress towards the weekly meta achievement")
+            "MetaProgressComplete"(INTEGER, "the threshold for the weekly meta achievement to be considered complete")
+            "MetaRewardItemId"(ITEM_ID, "the item ID of the weekly meta achievement reward")
+            "MetaRewardAstral"(INTEGER, "the amount of Astral Acclaim rewarded by the weekly meta achievement")
+            "MetaRewardClaimed"(BOOLEAN, "a flag indicating whether the weekly meta achievement reward has been claimed")
             "Objectives"(array(WIZARDS_VAULT_OBJECTIVE_PROGRESS), "the progress towards the Wizard's Vault objectives")
         })
     }
