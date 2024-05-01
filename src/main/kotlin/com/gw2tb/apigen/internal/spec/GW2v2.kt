@@ -3134,6 +3134,18 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the trait's icon")
         })
     }
+    V2_WIZARDSVAULT(
+        summary = "Returns information about current Wizard's Vault season.",
+        cache = 1.hours
+    ) {
+        schema(record(name = "WizardsVaultSeason", description = "Information about a Wizard's Vault season.") {
+            "Title"(STRING, "current season's title")
+            "Start"(STRING, "the ISO-8601 standard timestamp of the start of the season")
+            "End"(STRING, "the ISO-8601 standard timestamp of the end of the season")
+            "Listings"(array(INTEGER), "the IDs of the available listings")
+            "Objectives"(array(INTEGER), "the IDs of the available objectives")
+        })
+    }
     V2_WIZARDSVAULT_LISTINGS(
         summary = "Returns information about the items available in the Wizard's Vault.",
         queryTypes = defaultQueryTypes(all = true),

@@ -1122,6 +1122,14 @@ public enum class APIv2Endpoint(
      */
     V2_TRAITS("/Traits"),
     /**
+     * The `/v2/wizardsvault` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wizardsvault)
+     *
+     * @since   0.7.0
+     */
+    V2_WIZARDSVAULT("/WizardsVault"),
+    /**
      * The `/v2/wizardsvault/listings` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wizardsvault/listings)
