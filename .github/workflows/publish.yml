@@ -6,8 +6,16 @@ on:
         description: The environment to publish to
         type: environment
 
+
+concurrency:
+  group: "publish"
+  cancel-in-progress: false
+
+
 env:
   JDK_VERSION: "21"
+  DOCS_BUNDLE: docs.bundle
+  DOCS_BUNDLE_ARTIFACT: docs-bundle
   WORKSPACE_ARCHIVE: workspace.tar
   WORKSPACE_ARTIFACT: build-results
 
@@ -38,59 +46,17 @@ jobs:
         run: ./gradlew assemble --info -S --show-version
 
       - name: Tar files
-        run: tar -cvf ${{ env.WORKSPACE_ARCHIVE }} .
+        run: tar --exclude='.git' --exclude=${{ env.WORKSPACE_ARCHIVE }} -cvf ${{ env.WORKSPACE_ARCHIVE }} .
 
-      - name: Upload workspace artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.WORKSPACE_ARTIFACT }}
           path: ${{ env.WORKSPACE_ARCHIVE }}
           retention-days: 1
 
-  mkdocs:
-    name: Build Documentation
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.WORKSPACE_ARTIFACT }}
-          path: .
-
-      - name: Untar
-        run: |
-          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
-          rm ${{ env.WORKSPACE_ARCHIVE }}
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-
-      - name: Install dependencies
-        run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-home-cache-cleanup: true
-
-      - name: Gradle MkDocs # TODO Refactor me!
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: mkdocs --info -S --show-version
-          gradle-home-cache-cleanup: true
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build/mkdocs/site
-          retention-days: 3
 
   check:
     name: Check
-    strategy:
-      matrix:
-        jdk: [ 8, 11, 17, 21 ]
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -117,7 +83,89 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Gradle Check
-        run: ./gradlew check --info -S --show-version -Ptoolchain.test.version=${{ matrix.jdk }}
+        run: ./gradlew check --info -S --show-version
+
+
+  build-docs:
+    name: Build Documentation
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.WORKSPACE_ARTIFACT }}
+          path: .
+
+      - name: Untar
+        run: |
+          tar -xvf ${{ env.WORKSPACE_ARCHIVE }}
+          rm ${{ env.WORKSPACE_ARCHIVE }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+      - name: Install dependencies
+        run: pip3 install --no-deps -r .github/workflows/mkdocs-requirements.txt
+
+      - name: Configure git for mike
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git fetch origin gh-pages
+
+      - name: Get Version
+        id: version
+        run: grep '^version=' gradle.properties >> $GITHUB_OUTPUT
+
+      - name: Mike Deploy
+        env:
+          VERSION_NAME: ${{ steps.version.outputs.version }}
+        run: mike deploy -u $VERSION_NAME latest
+
+      - name: Create Bundle
+        run: git bundle create ${{ env.DOCS_BUNDLE }} gh-pages
+
+      - name: Upload workspace artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUNDLE_ARTIFACT }}
+          path: ${{ env.DOCS_BUNDLE }}
+          retention-days: 1
+
+
+  ghp-release:
+    name: Release Documentation to GitHub Pages
+    needs: [build-docs, close-staging-repository]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUNDLE_ARTIFACT }}
+          path: .
+
+      - name: Unpack git bundle
+        run: |
+          git fetch ${{ env.DOCS_BUNDLE }} gh-pages:gh-pages
+          git switch --force gh-pages
+
+      - name: Configure git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Push to GH Pages
+        run: git push origin gh-pages
 
 
   create-staging-repository:
@@ -133,7 +181,7 @@ jobs:
           username: ${{ secrets.SONATYPE_USERNAME }}
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staging-profile-id: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-          description: ${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
     outputs:
       staging-repository-id: ${{ steps.create.outputs.staging-repository-id }}
 
@@ -168,8 +216,8 @@ jobs:
 
       - name: Gradle Publish
         env:
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeBaseUrl: ${{ vars.SONATYPE_BASE_URL }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -189,28 +237,12 @@ jobs:
           username: ${{ secrets.SONATYPE_USERNAME }}
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staging-repository-id: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
-          description: ${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}
-
-
-  gh-pages-release:
-    name: Release to GitHub Pages
-    needs: [mkdocs, close-staging-repository]
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
 
 
   nexus-release:
     name: Release to Nexus
-    needs: [create-staging-repository, close-staging-repository]
+    needs: [create-staging-repository, close-staging-repository, ghp-release]
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -221,7 +253,7 @@ jobs:
           username: ${{ secrets.SONATYPE_USERNAME }}
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staging-repository-id: ${{ needs.create-staging-repository.outputs.staging-repository-id }}
-          description: ${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}
+          description: "${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}"
 
 
   # So, what's happening here?
@@ -241,8 +273,15 @@ jobs:
     if: ${{ always() }}
     needs: nexus-release
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - name: Cleanup
         uses: GeekyEggo/delete-artifact@24928e75e6e6590170563b8ddae9fac674508aa1
         with:
           name: ${{ env.WORKSPACE_ARTIFACT }}
+
+      - name: Cleanup
+        uses: GeekyEggo/delete-artifact@24928e75e6e6590170563b8ddae9fac674508aa1
+        with:
+          name: ubuntu-latest-${{ env.DOCS_BUNDLE_ARTIFACT }}
