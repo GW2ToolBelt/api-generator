@@ -50,6 +50,8 @@ kotlin {
             compilerOptions.configure {
                 apiVersion = KotlinVersion.KOTLIN_1_8
                 languageVersion = KotlinVersion.KOTLIN_1_8
+
+                freeCompilerArgs.add("-Xjdk-release=1.8")
             }
         }
     }
