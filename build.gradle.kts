@@ -45,15 +45,13 @@ java {
 kotlin {
     explicitApi()
 
-    target {
-        compilations.configureEach {
-            compilerOptions.configure {
-                apiVersion = KotlinVersion.KOTLIN_1_8
-                languageVersion = KotlinVersion.KOTLIN_1_8
+    compilerOptions {
+        apiVersion = KotlinVersion.KOTLIN_1_8
+        languageVersion = KotlinVersion.KOTLIN_1_8
 
-                freeCompilerArgs.add("-Xjdk-release=1.8")
-            }
-        }
+        jvmTarget = JvmTarget.JVM_1_8
+
+        freeCompilerArgs.add("-Xjdk-release=1.8")
     }
 }
 
@@ -90,12 +88,6 @@ dokkatoo {
 tasks {
     withType<JavaCompile>().configureEach {
         options.release = 8
-    }
-
-    withType<KotlinCompile>().configureEach {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
-        }
     }
 
     withType<Test>().configureEach {
