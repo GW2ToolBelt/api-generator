@@ -765,7 +765,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(
             description = "a list of the player's available Wizard's Vault listings.",
-            items = record(name = "AccountWizardsVaultListings", description = "Information about a player's available Wizard's Vault listings.") {
+            items = record(name = "AccountWizardsVaultListing", description = "Information about a Wizard's Vault listing available for a player.") {
                 "Id"(INTEGER, "the listing's ID")
                 "ItemId"(ITEM_ID, "the ID of the listed item")
                 "ItemCount"(INTEGER, "the amount of items the player receives")
