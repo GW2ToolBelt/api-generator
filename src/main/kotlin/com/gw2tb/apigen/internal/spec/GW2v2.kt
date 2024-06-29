@@ -874,6 +874,31 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = 1.hours
     ) {
         schema(record(name = "AchievementCategory", description = "Information about an achievement category.") {
+            val ENTRY = record(name = "Entry", description = "An achievement entry of a category.") {
+                "Id"(ACHIEVEMENT_ID, "the achievement's ID")
+                optional.."Flags"(array(STRING), "additional informational flags")
+                optional.."RequiredAccess"(
+                    description = "the access constraints for the achievement",
+                    type = record(name = "AccessConstraint", description = "Information about the product requirements for an achievement.") {
+                        "Product"(STRING, "the product")
+                        "Condition"(
+                            description = "the type of the condition",
+                            type = enum(STRING, name = "ConditionType", description = "Information about a condition for an access constraint.") {
+                                "HasAccess"("the account has access")
+                                "NoAccess"("the account does not have access")
+                            }
+                        )
+                    }
+                )
+                optional.."Level"(
+                    description = "the level constraints for the achievement",
+                    type = tuple(name = "LevelConstraint", description = "Information about the level requirements for an achievement.") {
+                        "Minimum"(INTEGER, "the minimum level for the achievement")
+                        "Maximum"(INTEGER, "the maximum level for the achievement")
+                    }
+                )
+            }
+
             "Id"(ACHIEVEMENT_CATEGORY_ID, "the achievement category's ID")
             "Icon"(STRING, "the URL for the achievement category's icon")
             localized.."Name"(STRING, "the achievement category's localized name")
@@ -882,30 +907,11 @@ internal val GW2v2 = GW2APISpecV2 {
             until(V2_SCHEMA_2022_03_23T19_00_00_000Z).."Achievements"(array(ACHIEVEMENT_ID), "an array containing the IDs of the achievements that this category contains")
             since(V2_SCHEMA_2022_03_23T19_00_00_000Z).."Achievements"(
                 description = "an array containing information about the achievements that this category contains",
-                type = array(record(name = "Entry", description = "An achievement entry of a category.") {
-                    "Id"(ACHIEVEMENT_ID, "the achievement's ID")
-                    optional.."Flags"(array(STRING), "additional informational flags")
-                    optional.."RequiredAccess"(
-                        description = "the access constraints for the achievement",
-                        type = record(name = "AccessConstraint", description = "Information about the product requirements for an achievement.") {
-                            "Product"(STRING, "the product")
-                            "Condition"(
-                                description = "the type of the condition",
-                                type = enum(STRING, name = "ConditionType", description = "Information about a condition for an access constraint.") {
-                                    "HasAccess"("the account has access")
-                                    "NoAccess"("the account does not have access")
-                                }
-                            )
-                        }
-                    )
-                    optional.."Level"(
-                        description = "the level constraints for the achievement",
-                        type = tuple(name = "LevelConstraint", description = "Information about the level requirements for an achievement.") {
-                            "Minimum"(INTEGER, "the minimum level for the achievement")
-                            "Maximum"(INTEGER, "the maximum level for the achievement")
-                        }
-                    )
-                })
+                type = array(ENTRY)
+            )
+            since(V2_SCHEMA_2022_03_23T19_00_00_000Z)..optional.."Tomorrow"(
+                description = "an array containing information about the achievements that this category will contain the next day",
+                type = array(ENTRY)
             )
         })
     }
