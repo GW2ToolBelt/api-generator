@@ -104,7 +104,7 @@ internal abstract class DeferredSchemaClass<T : IRAPIType> : DeferredType<IRType
         enum(type, Name.deriveFromTitleCase(name), description, block)
 
     fun enum(type: DeferredPrimitiveType<*>, name: Name, description: String, block: SchemaEnumBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
-        SchemaEnumBuilder(type, name, description, apiTypeFactory, typeRegistry).also(block)
+        SchemaEnumBuilder(type, name, description, apiTypeFactory, nestedTypeRegistry).also(block)
 
 
     fun record(name: String, description: String, block: SchemaRecordBuilder<T>.() -> Unit): DeferredSchemaClass<T> =
