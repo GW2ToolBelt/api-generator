@@ -25,7 +25,6 @@ package com.gw2tb.apigen.internal.spec
 import com.gw2tb.apigen.model.APIv2Endpoint.*
 import com.gw2tb.apigen.internal.dsl.*
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
-import com.gw2tb.apigen.model.Name
 import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.model.v2.SchemaVersion.*
 import kotlin.time.Duration
