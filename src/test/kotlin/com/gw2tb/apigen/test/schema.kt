@@ -489,6 +489,7 @@ private class SchemaMatcher(
 
     override fun close() {
         check(!this::_errors.isInitialized) { "SchemaMatcher has already been closed" }
+        trackingConsumer.report(this::error)
         _errors = mutableErrors.toList()
     }
 
