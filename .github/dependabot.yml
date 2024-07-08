@@ -19,6 +19,18 @@ updates:
           - "actions/upload-artifact"
           - "actions/upload-pages-artifact"
 
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+        interval: "daily"
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: "build"
+    labels:
+      - "a:chore"
+      - "in:build"
+      - "in:dependencies"
+
   - package-ecosystem: "pip"
     directory: "/.github/workflows/"
     schedule:
