@@ -70,7 +70,7 @@ publishing {
             scm {
                 connection = "scm:git:git://github.com/GW2ToolBelt/api-generator.git"
                 developerConnection = "scm:git:git://github.com/GW2ToolBelt/api-generator.git"
-                url = "https://github.com/GW2ToolBelt/api-generator.git"
+                url = "https://github.com/GW2ToolBelt/api-generator"
             }
         }
     }
