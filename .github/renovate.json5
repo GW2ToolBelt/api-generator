@@ -1,10 +1,13 @@
 {
     extends: ["config:base"],
     labels: ["a:chore", "in:dependencies"],
+    enabledManagers: [
+        "gradle",
+        "gradle-wrapper"
+    ],
     packageRules: [
         {
             description: "Update Gradle wrapper",
-            matchPackageNames: ["gradle"],
             matchManagers: ["gradle-wrapper"],
             addLabels: ["in:build"]
         },
