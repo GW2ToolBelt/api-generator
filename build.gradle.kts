@@ -24,12 +24,12 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
-    alias(libs.plugins.binary.compatibility.validator)
-    alias(libs.plugins.dokkatoo.html)
-    alias(libs.plugins.dokkatoo.javadoc)
-    alias(libs.plugins.gradle.toolchain.switches)
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(buildDeps.plugins.binary.compatibility.validator)
+    alias(buildDeps.plugins.dokkatoo.html)
+    alias(buildDeps.plugins.dokkatoo.javadoc)
+    alias(buildDeps.plugins.gradle.toolchain.switches)
+    alias(buildDeps.plugins.kotlin.jvm)
+    alias(buildDeps.plugins.kotlin.plugin.serialization)
     id("com.gw2tb.maven-publish-conventions")
 }
 
@@ -81,7 +81,7 @@ dokkatoo {
     }
 
     versions {
-        jetbrainsDokka = libs.versions.dokka
+        jetbrainsDokka = buildDeps.versions.dokka
     }
 }
 
@@ -126,6 +126,6 @@ dependencies {
     api(kotlin("stdlib"))
     api(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(buildDeps.junit.jupiter.api)
+    testRuntimeOnly(buildDeps.junit.jupiter.engine)
 }
