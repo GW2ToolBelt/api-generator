@@ -1,0 +1,21 @@
+{
+    extends: ["config:base"],
+    labels: ["a:chore", "in:dependencies"],
+    packageRules: [
+        {
+            description: "Update Gradle wrapper",
+            matchPackageNames: ["gradle"],
+            matchManagers: ["gradle-wrapper"],
+            addLabels: ["in:build"]
+        },
+        {
+            description: "Update build dependencies in build.versions.toml",
+            matchFileNames: ["gradle/build.versions.toml"],
+            addLabels: ["in:build"]
+        },
+        {
+            description: "Update library dependencies in libs.versions.toml",
+            matchFileNames: ["gradle/libs.versions.toml"]
+        }
+    ]
+}
