@@ -23,7 +23,6 @@ package com.gw2tb.apigen
 
 import com.gw2tb.apigen.schema.model.APIType
 import com.gw2tb.apigen.model.v2.*
-import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 /** Provides access to data that may be used for testing.
