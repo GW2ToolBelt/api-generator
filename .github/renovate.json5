@@ -5,6 +5,7 @@
         "gradle",
         "gradle-wrapper"
     ],
+    dependencyDashboard: false,
     packageRules: [
         {
             description: "Update Gradle wrapper",
@@ -20,5 +21,7 @@
             description: "Update library dependencies in libs.versions.toml",
             matchFileNames: ["gradle/libs.versions.toml"]
         }
-    ]
+    ],
+    prHourlyLimit: 0,
+    prConcurrentLimit: 0
 }
