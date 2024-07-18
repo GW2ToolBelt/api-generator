@@ -1,27 +1,3 @@
 {
-    extends: ["config:base"],
-    labels: ["a:chore", "in:dependencies"],
-    enabledManagers: [
-        "gradle",
-        "gradle-wrapper"
-    ],
-    dependencyDashboard: false,
-    packageRules: [
-        {
-            description: "Update Gradle wrapper",
-            matchManagers: ["gradle-wrapper"],
-            addLabels: ["in:build"]
-        },
-        {
-            description: "Update build dependencies in build.versions.toml",
-            matchFileNames: ["gradle/build.versions.toml"],
-            addLabels: ["in:build"]
-        },
-        {
-            description: "Update library dependencies in libs.versions.toml",
-            matchFileNames: ["gradle/libs.versions.toml"]
-        }
-    ],
-    prHourlyLimit: 0,
-    prConcurrentLimit: 0
+    "extends": ["github>GW2ToolBelt/.github//.github/renovate.json5"],
 }
