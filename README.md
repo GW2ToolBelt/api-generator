@@ -32,7 +32,7 @@ and appropriate language or library constructs, as well as between queries and
 functions.
 
 For a better understanding of schema types and how to work with the library,
-please refer to the [user guide](docs/mkdocs/userguide).
+please refer to the [user guide](https://gw2toolbelt.github.io/api-generator/latest/userguide/introduction/).
 
 
 ## Building from source
