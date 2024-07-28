@@ -12,6 +12,6 @@ fallbacks for partially parsing responses when possible.
     fallback mechanism that can be used to decode partial responses for some
     endpoints that return lists or maps of elements, and unknown enum values.
 
-A community-driven issue tracker is available at the [gw2api-issues](https://github.com/gw2-api/issues)
+A community-driven issue tracker is available at the [gw2-api/issues](https://github.com/gw2-api/issues)
 GitHub repository. This is a replacement for the unmaintained [official issue tracker](https://github.com/arenanet/api-cdi)
 and should be used to report bugs.
