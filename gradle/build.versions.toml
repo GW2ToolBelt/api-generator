@@ -4,7 +4,7 @@ dokka = "1.9.20"
 dokkatoo = "2.3.1"
 gradle-toolchain-switches = "0.3.0"
 junit = "5.11.0"
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 
 
 [libraries]
