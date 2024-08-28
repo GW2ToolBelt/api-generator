@@ -481,6 +481,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_ACCOUNT_FINISHERS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_GLIDERS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_HOME Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_HOMESTEAD_GLYPHS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_HOME_CATS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_HOME_NODES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_INVENTORY Lcom/gw2tb/apigen/model/APIv2Endpoint;

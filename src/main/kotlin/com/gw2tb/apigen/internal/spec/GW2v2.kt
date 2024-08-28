@@ -546,6 +546,12 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(STRING, "an array of IDs containing th ID of each home instance node unlocked by the player"))
     }
+    V2_ACCOUNT_HOMESTEAD_GLYPHS(
+        summary = "Returns information about which glyphs are stored in player's homestead",
+        security = security(ACCOUNT, PROGRESSION, UNLOCKS)
+    ) {
+        schema(array(HOMESTEAD_GLYPH_ID, "an array of IDs containing the ID of each glyph stored in the player's homestead"))
+    }
     V2_ACCOUNT_INVENTORY(
         summary = "Returns information about a player's shared inventory slots.",
         security = security(ACCOUNT, INVENTORIES)

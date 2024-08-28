@@ -138,6 +138,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_HOME_NODES("/Account/Home/Nodes"),
     /**
+     * The `/v2/account/homestead/glyphs` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/homestead/glyphs)
+     *
+     * @since   0.8.0
+     */
+    V2_ACCOUNT_HOMESTEAD_GLYPHS("/Account/Homestead/Glyphs"),
+    /**
      * The `/v2/account/inventory` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/inventory)
