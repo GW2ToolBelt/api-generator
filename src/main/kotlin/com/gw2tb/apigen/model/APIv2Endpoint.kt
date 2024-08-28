@@ -842,6 +842,14 @@ public enum class APIv2Endpoint(
      */
     V2_HOMESTEAD_DECORATIONS("/Homestead/Decorations"),
     /**
+     * The `/v2/homestead/decorations/categories` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/homestead/decorations/categories)
+     *
+     * @since   0.8.0
+     */
+    V2_HOMESTEAD_DECORATIONS_CATEGORIES("/Homestead/Decorations/Categories"),
+    /**
      * The `/v2/homestead/glyphs` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/homestead/glyphs)

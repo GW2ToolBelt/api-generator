@@ -2054,6 +2054,16 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the decoration's icon")
         })
     }
+    V2_HOMESTEAD_DECORATIONS_CATEGORIES(
+        summary = "Returns information about homestead decoration categories.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "HomesteadDecorationCategory", description = "Information about a homestead decoration category.") {
+            "Id"(HOMESTEAD_DECORATION_CATEGORY_ID, "the category's ID")
+            localized.."Name"(STRING, "the category's name")
+        })
+    }
     V2_HOMESTEAD_GLYPHS(
         summary = "Returns information about glyphs storable in the homestead.",
         queryTypes = defaultQueryTypes(all = true),

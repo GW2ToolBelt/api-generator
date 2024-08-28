@@ -569,6 +569,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_GUILD_UPGRADES__STATIC Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_HOME Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_HOMESTEAD_DECORATIONS Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_HOMESTEAD_DECORATIONS_CATEGORIES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_HOMESTEAD_GLYPHS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_HOME_CATS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_HOME_NODES Lcom/gw2tb/apigen/model/APIv2Endpoint;
