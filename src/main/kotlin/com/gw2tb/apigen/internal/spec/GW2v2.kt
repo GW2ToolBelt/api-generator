@@ -2028,6 +2028,24 @@ internal val GW2v2 = GW2APISpecV2 {
             "Id"(STRING, "the node's ID")
         })
     }
+    V2_HOMESTEAD_GLYPHS(
+        summary = "Returns information about glyphs storable in the homestead.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "HomesteadGlyph", description = "Information about a glyph that can be stored in a homestead.") {
+            "Id"(HOMESTEAD_GLYPH_ID, "the node's ID")
+            "ItemId"(ITEM_ID, "the ID of the glyph item")
+            "Slot"(
+                description = "the slot the glyph can be stored in",
+                type = enum(STRING, name = "Slot", description = "the type of slot") {
+                    "harvesting"(name = "Harvesting", description = "the harvesting slot")
+                    "logging"(name = "Logging", description = "the logging slot")
+                    "mining"(name = "Mining", description = "the mining slot")
+                }
+            )
+        })
+    }
     V2_ITEMS(
         summary = "Returns information about items in the game.",
         queryTypes = defaultQueryTypes(),

@@ -1,0 +1,182 @@
+[
+    {
+        "id": "alchemy_harvesting",
+        "item_id": 90805,
+        "slot": "harvesting"
+    },
+    {
+        "id": "alchemy_logging",
+        "item_id": 90805,
+        "slot": "logging"
+    },
+    {
+        "id": "alchemy_mining",
+        "item_id": 90805,
+        "slot": "mining"
+    },
+    {
+        "id": "crucible_harvesting",
+        "item_id": 90488,
+        "slot": "harvesting"
+    },
+    {
+        "id": "crucible_logging",
+        "item_id": 90488,
+        "slot": "logging"
+    },
+    {
+        "id": "crucible_mining",
+        "item_id": 90488,
+        "slot": "mining"
+    },
+    {
+        "id": "forester_harvesting",
+        "item_id": 87550,
+        "slot": "harvesting"
+    },
+    {
+        "id": "forester_logging",
+        "item_id": 87550,
+        "slot": "logging"
+    },
+    {
+        "id": "forester_mining",
+        "item_id": 87550,
+        "slot": "mining"
+    },
+    {
+        "id": "herbalist_harvesting",
+        "item_id": 88241,
+        "slot": "harvesting"
+    },
+    {
+        "id": "herbalist_logging",
+        "item_id": 88241,
+        "slot": "logging"
+    },
+    {
+        "id": "herbalist_mining",
+        "item_id": 88241,
+        "slot": "mining"
+    },
+    {
+        "id": "leatherworker_harvesting",
+        "item_id": 87473,
+        "slot": "harvesting"
+    },
+    {
+        "id": "leatherworker_logging",
+        "item_id": 87473,
+        "slot": "logging"
+    },
+    {
+        "id": "leatherworker_mining",
+        "item_id": 87473,
+        "slot": "mining"
+    },
+    {
+        "id": "prospector_harvesting",
+        "item_id": 87534,
+        "slot": "harvesting"
+    },
+    {
+        "id": "prospector_logging",
+        "item_id": 87534,
+        "slot": "logging"
+    },
+    {
+        "id": "prospector_mining",
+        "item_id": 87534,
+        "slot": "mining"
+    },
+    {
+        "id": "scavenger_harvesting",
+        "item_id": 87442,
+        "slot": "harvesting"
+    },
+    {
+        "id": "scavenger_logging",
+        "item_id": 87442,
+        "slot": "logging"
+    },
+    {
+        "id": "scavenger_mining",
+        "item_id": 87442,
+        "slot": "mining"
+    },
+    {
+        "id": "tailor_harvesting",
+        "item_id": 87407,
+        "slot": "harvesting"
+    },
+    {
+        "id": "tailor_logging",
+        "item_id": 87407,
+        "slot": "logging"
+    },
+    {
+        "id": "tailor_mining",
+        "item_id": 87407,
+        "slot": "mining"
+    },
+    {
+        "id": "unbound_harvesting",
+        "item_id": 87428,
+        "slot": "harvesting"
+    },
+    {
+        "id": "unbound_logging",
+        "item_id": 87428,
+        "slot": "logging"
+    },
+    {
+        "id": "unbound_mining",
+        "item_id": 87428,
+        "slot": "mining"
+    },
+    {
+        "id": "virtue_harvesting",
+        "item_id": 92820,
+        "slot": "harvesting"
+    },
+    {
+        "id": "virtue_logging",
+        "item_id": 92820,
+        "slot": "logging"
+    },
+    {
+        "id": "virtue_mining",
+        "item_id": 92820,
+        "slot": "mining"
+    },
+    {
+        "id": "volatility_harvesting",
+        "item_id": 87698,
+        "slot": "harvesting"
+    },
+    {
+        "id": "volatility_logging",
+        "item_id": 87698,
+        "slot": "logging"
+    },
+    {
+        "id": "volatility_mining",
+        "item_id": 87698,
+        "slot": "mining"
+    },
+    {
+        "id": "watchknight_harvesting",
+        "item_id": 87438,
+        "slot": "harvesting"
+    },
+    {
+        "id": "watchknight_logging",
+        "item_id": 87438,
+        "slot": "logging"
+    },
+    {
+        "id": "watchknight_mining",
+        "item_id": 87438,
+        "slot": "mining"
+    }
+]
