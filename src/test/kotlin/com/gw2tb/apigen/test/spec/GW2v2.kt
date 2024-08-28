@@ -1260,6 +1260,36 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/homestead/decorations",
+            cache = 1.hours,
+            queryDetails = QueryIDs<IRInteger>()
+        )
+        expectQuery(
+            "/homestead/decorations",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("id", INTEGER)),
+            queryDetails = QueryByID<IRInteger>()
+        )
+        expectQuery(
+            "/homestead/decorations",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(ExpectedQueryParameter("ids", INTEGER.array)),
+            queryDetails = QueryByIDs<IRInteger>(supportsAll = false)
+        )
+        expectQuery(
+            "/homestead/decorations",
+            isLocalized = true,
+            cache = 1.hours,
+            queryParameters = listOf(
+                ExpectedQueryParameter("page", INTEGER),
+                ExpectedQueryParameter("page_size", INTEGER, isOptional = true)
+            ),
+            queryDetails = QueryByPage<IRInteger>()
+        )
+
+        expectQuery(
             "/homestead/glyphs",
             cache = 1.hours,
             queryDetails = QueryIDs<IRString>()

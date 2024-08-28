@@ -2040,13 +2040,27 @@ internal val GW2v2 = GW2APISpecV2 {
             "Id"(STRING, "the node's ID")
         })
     }
+    V2_HOMESTEAD_DECORATIONS(
+        summary = "Returns information about homestead decorations.",
+        queryTypes = defaultQueryTypes(),
+        cache = 1.hours
+    ) {
+        schema(record(name = "HomesteadDecoration", description = "Information about a homestead decoration.") {
+            "Id"(HOMESTEAD_DECORATION_ID, "the decoration's ID")
+            localized.."Name"(STRING, "the decoration's name")
+            localized.."Description"(STRING, "the decoration's description")
+            "Categories"(array(HOMESTEAD_DECORATION_CATEGORY_ID), "the decoration's categories")
+            "MaxCount"(INTEGER, "the maximum number of this decoration that can be placed in the homestead")
+            "Icon"(STRING, "the URL for the decoration's icon")
+        })
+    }
     V2_HOMESTEAD_GLYPHS(
         summary = "Returns information about glyphs storable in the homestead.",
         queryTypes = defaultQueryTypes(all = true),
         cache = 1.hours
     ) {
         schema(record(name = "HomesteadGlyph", description = "Information about a glyph that can be stored in a homestead.") {
-            "Id"(HOMESTEAD_GLYPH_ID, "the node's ID")
+            "Id"(HOMESTEAD_GLYPH_ID, "the glyph's ID")
             "ItemId"(ITEM_ID, "the ID of the glyph item")
             "Slot"(
                 description = "the slot the glyph can be stored in",
