@@ -106,6 +106,11 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/account/homestead/decorations",
+            security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
+        )
+
+        expectQuery(
             "/account/homestead/glyphs",
             security = setOf(ACCOUNT, PROGRESSION, UNLOCKS)
         )

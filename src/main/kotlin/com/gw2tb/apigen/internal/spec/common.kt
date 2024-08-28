@@ -54,6 +54,9 @@ internal val GUILD_ID = Alias(STRING, "GuildId")
 /** A common alias for guild upgrade IDs. */
 internal val GUILD_UPGRADE_ID = Alias(INTEGER, "GuildUpgradeId")
 
+/** A common alias for homestead decoration IDs. */
+internal val HOMESTEAD_DECORATION_ID = Alias(INTEGER, "HomesteadDecorationId")
+
 /** A common alias for homestead glyph IDs. */
 internal val HOMESTEAD_GLYPH_ID = Alias(STRING, "HomesteadGlyphId")
 
