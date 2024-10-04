@@ -151,7 +151,14 @@ internal abstract class AbstractSchemaRecordBuilder<T : IRAPIType> : DeferredSch
     /** Marks an optional property whose presents is mandated by the given `scope`. */
     fun optional(scope: TokenScope): IPropertyModifier = object : IPropertyModifier {
         override fun applyTo(property: SchemaRecordPropertyBuilder) {
-            property.optionality = Optionality.MANDATED(scope)
+            property.optionality = Optionality.MANDATED(setOf(scope))
+        }
+    }
+
+    /** Marks an optional property whose presents is mandated by the given `scopes`. */
+    fun optional(vararg scopes: TokenScope): IPropertyModifier = object : IPropertyModifier {
+        override fun applyTo(property: SchemaRecordPropertyBuilder) {
+            property.optionality = Optionality.MANDATED(setOf(*scopes))
         }
     }
 

@@ -49,13 +49,13 @@ public sealed class Optionality {
     }
 
     /**
-     * The property is required for a key with the appropriate [scope].
+     * The property is required for a key with the appropriate [scopes].
      *
-     * @param scope the mandating scope
+     * @param scopes    the mandating scopes
      *
      * @since   0.7.0
      */
-    public class MANDATED(public val scope: TokenScope) : Optionality() {
+    public class MANDATED(public val scopes: Set<TokenScope>) : Optionality() {
         override val isOptional: Boolean = true
     }
 

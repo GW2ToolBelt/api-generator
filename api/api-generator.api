@@ -662,8 +662,8 @@ public abstract class com/gw2tb/apigen/model/Optionality {
 }
 
 public final class com/gw2tb/apigen/model/Optionality$MANDATED : com/gw2tb/apigen/model/Optionality {
-	public fun <init> (Lcom/gw2tb/apigen/model/TokenScope;)V
-	public final fun getScope ()Lcom/gw2tb/apigen/model/TokenScope;
+	public fun <init> (Ljava/util/Set;)V
+	public final fun getScopes ()Ljava/util/Set;
 	public fun isOptional ()Z
 }
 
