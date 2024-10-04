@@ -511,7 +511,7 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
 
         expectQuery(
             "/characters/:id/equipment",
-            security = setOf(ACCOUNT, BUILDS, CHARACTERS),
+            security = setOf(ACCOUNT, BUILDS, CHARACTERS, INVENTORIES),
             pathParameters = listOf(
                 ExpectedPathParameter("id", STRING)
             )

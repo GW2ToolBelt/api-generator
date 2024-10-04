@@ -1145,7 +1145,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
     V2_CHARACTERS_EQUIPMENT(
         summary = "Returns information about a character's equipment.",
-        security = security(ACCOUNT, BUILDS, CHARACTERS)
+        security = security(ACCOUNT, BUILDS, CHARACTERS, INVENTORIES)
     ) {
         pathParameter("Id", STRING, "the character's ID")
 
