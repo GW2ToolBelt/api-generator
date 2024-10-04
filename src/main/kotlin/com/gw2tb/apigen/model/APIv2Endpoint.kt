@@ -1290,6 +1290,14 @@ public enum class APIv2Endpoint(
      */
     V2_WVW_RANKS("/WvW/Ranks"),
     /**
+     * The `/v2/wvw/timers` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/timers)
+     *
+     * @since   0.8.0
+     */
+    V2_WVW_TIMERS("/WvW/Timers"),
+    /**
      * The `/v2/wvw/upgrades` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/upgrades)

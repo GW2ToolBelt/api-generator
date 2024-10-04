@@ -105,7 +105,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
 
     @APIGenDSL
-    fun SchemaRecordBuilder<*>.CHARACTERS_EQUIPMENT() {
+    fun SchemaRecordBuilder<*>.CHARACTERS_EQUIPMENT() =
         "Equipment"(
             description = "the character's equipment",
             type = array(record(name = "EquipmentSlot", description = "Information a character's equipment slot.") {
@@ -143,7 +143,6 @@ internal val GW2v2 = GW2APISpecV2 {
                 since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
             })
         )
-    }
 
     val CHARACTERS_EQUIPMENTTAB = record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
         "Tab"(INTEGER, "the tab's ID")
@@ -1038,7 +1037,7 @@ internal val GW2v2 = GW2APISpecV2 {
             CHARACTERS_BACKSTORY()
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
             CHARACTERS_CRAFTING()
-            CHARACTERS_EQUIPMENT()
+            optional(BUILDS, INVENTORIES)..CHARACTERS_EQUIPMENT()
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."EquipmentTabs"(
                 description = "the character's equipment tabs",
                 type = array(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
@@ -3515,6 +3514,12 @@ internal val GW2v2 = GW2APISpecV2 {
             localized.."Title"(STRING, "the title of the rank")
             "MinRank"(INTEGER, "the WvW level required to unlock this rank")
         })
+    }
+    V2_WVW_TIMERS(
+        summary = "Returns information about timers.",
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+    ) {
+        schema(array(STRING, "the available sub-endpoints"))
     }
     V2_WVW_UPGRADES(
         summary = "Returns information about available upgrades for objectives in the World versus World game mode.",
