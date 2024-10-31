@@ -259,6 +259,11 @@ internal val GW2v2 = GW2APISpecV2 {
         "Claimed"(BOOLEAN, "a flag indicating whether the objective has been claimed")
     }
 
+    val WVW_TIMERS = record(name = "WvwTimers", description = "Information about regional WvW timers.") {
+        SerialName("eu")..CamelCase("eu").."EU"(STRING, "the ISO-8601 standard timestamp for the next tick in the EU region")
+        SerialName("na")..CamelCase("na").."NA"(STRING, "the ISO-8601 standard timestamp for the next tick in the NA region")
+    }
+
     @APIGenDSL
     fun SchemaRecordBuilder<*>.CHARACTERS_TRAINING() {
         "Training"(
@@ -3520,6 +3525,12 @@ internal val GW2v2 = GW2APISpecV2 {
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
+    }
+    V2_WVW_TIMERS_LOCKOUT(
+        summary = "Returns information about the WvW lockout times.",
+        cache = 1.hours
+    ) {
+        schema(WVW_TIMERS)
     }
     V2_WVW_UPGRADES(
         summary = "Returns information about available upgrades for objectives in the World versus World game mode.",
