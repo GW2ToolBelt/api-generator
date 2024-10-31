@@ -2768,6 +2768,11 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/wvw/timers/teamassignment",
+            cache = 1.hours
+        )
+
+        expectQuery(
             "/wvw/upgrades",
             cache = 1.hours,
             queryDetails = QueryIDs<IRInteger>()

@@ -3532,6 +3532,12 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(WVW_TIMERS)
     }
+    V2_WVW_TIMERS_TEAMASSIGNMENT(
+        summary = "Returns information about the WvW team assignment times.",
+        cache = 1.hours
+    ) {
+        schema(WVW_TIMERS)
+    }
     V2_WVW_UPGRADES(
         summary = "Returns information about available upgrades for objectives in the World versus World game mode.",
         queryTypes = defaultQueryTypes(all = true),

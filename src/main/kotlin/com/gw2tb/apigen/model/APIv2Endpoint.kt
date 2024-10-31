@@ -1306,6 +1306,14 @@ public enum class APIv2Endpoint(
      */
     V2_WVW_TIMERS_LOCKOUT("/WvW/Timers/Lockout"),
     /**
+     * The `/v2/wvw/timers/teamAssignment` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/timers/teamAssignment)
+     *
+     * @since   0.8.0
+     */
+    V2_WVW_TIMERS_TEAMASSIGNMENT("/WvW/Timers/TeamAssignment"),
+    /**
      * The `/v2/wvw/upgrades` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/upgrades)
