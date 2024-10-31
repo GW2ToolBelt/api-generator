@@ -35,7 +35,7 @@ rootProject.name = "api-generator"
 
 dependencyResolutionManagement {
     versionCatalogs {
-        create("buildDeps") {
+        register("buildDeps") {
             from(files("./gradle/build.versions.toml"))
         }
     }
