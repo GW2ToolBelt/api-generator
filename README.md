@@ -39,7 +39,7 @@ please refer to the [user guide](https://gw2toolbelt.github.io/api-generator/lat
 
 ### Setup
 
-This project uses [Gradle's toolchain support](https://docs.gradle.org/8.9/userguide/toolchains.html)
+This project uses [Gradle's toolchain support](https://docs.gradle.org/current/userguide/toolchains.html)
 to detect and select the JDKs required to run the build. Please refer to the
 build scripts to find out which toolchains are requested.
 
