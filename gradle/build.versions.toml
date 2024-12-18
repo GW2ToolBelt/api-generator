@@ -1,7 +1,6 @@
 [versions]
 binary-compatibility-validator = "0.16.3"
-dokka = "1.9.20"
-dokkatoo = "2.4.0"
+dokka = "2.0.0"
 gradle-toolchain-switches = "0.3.0"
 junit = "5.11.4"
 kotlin = "2.1.0"
@@ -16,14 +15,14 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 
 
 [plugins]
-# dev.adamko.dokkatoo - Dokkatoo
-# https://github.com/adamko-dev/dokkatoo
-dokkatoo-html = { id = "dev.adamko.dokkatoo-html", version.ref = "dokkatoo" }
-dokkatoo-javadoc = { id = "dev.adamko.dokkatoo-javadoc", version.ref = "dokkatoo" }
-
 # io.github.themrmilchmann.gradle.toolchainswitches:gradle-toolchain-switches - Gradle Toolchain Switches Plugin
 # https://github.com/TheMrMilchmann/gradle-toolchain-switches
 gradle-toolchain-switches = { id = "io.github.themrmilchmann.toolchain-switches", version.ref = "gradle-toolchain-switches" }
+
+# org.jetbrains.dokka - Dokka Gradle Plugin
+# https://github.com/Kotlin/dokka
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 
 # org.jetbrains.kotlinx.binary-compatibility-validator - binary-compatibility-validator
 # https://github.com/Kotlin/binary-compatibility-validator

@@ -21,15 +21,14 @@
  */
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
     alias(buildDeps.plugins.binary.compatibility.validator)
-    alias(buildDeps.plugins.dokkatoo.html)
-    alias(buildDeps.plugins.dokkatoo.javadoc)
     alias(buildDeps.plugins.gradle.toolchain.switches)
     alias(buildDeps.plugins.kotlin.jvm)
     alias(buildDeps.plugins.kotlin.plugin.serialization)
+    alias(buildDeps.plugins.dokka)
+    alias(buildDeps.plugins.dokka.javadoc)
     id("com.gw2tb.maven-publish-conventions")
 }
 
@@ -55,12 +54,12 @@ kotlin {
     }
 }
 
-dokkatoo {
+dokka {
     dokkaGeneratorIsolation = ProcessIsolation {
         maxHeapSize = "4G"
     }
 
-    dokkatooSourceSets.configureEach {
+    dokkaSourceSets.configureEach {
         reportUndocumented = true
         skipEmptyPackages = true
         jdkVersion = 8
@@ -76,12 +75,8 @@ dokkatoo {
         }
     }
 
-    dokkatooPublications.configureEach {
+    dokkaPublications.configureEach {
         failOnWarning = true
-    }
-
-    versions {
-        jetbrainsDokka = buildDeps.versions.dokka
     }
 }
 
@@ -106,10 +101,10 @@ tasks {
     }
 
     named<Jar>("javadocJar") {
-        from(dokkatooGeneratePublicationJavadoc.get().outputs)
+        from(dokkaGeneratePublicationHtml.get().outputs)
     }
 
-    dokkatooGeneratePublicationHtml {
+    dokkaGeneratePublicationHtml {
         outputDirectory = layout.projectDirectory.dir("docs/site/api")
     }
 }
