@@ -32,7 +32,8 @@ import com.gw2tb.apigen.model.TokenScope.*
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.test.*
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.util.*
 import kotlin.time.Duration
 
