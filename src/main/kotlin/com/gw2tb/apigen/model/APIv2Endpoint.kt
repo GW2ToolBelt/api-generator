@@ -370,6 +370,14 @@ public enum class APIv2Endpoint(
      */
     V2_ACCOUNT_WORLDBOSSES("/Account/WorldBosses"),
     /**
+     * The `/v2/account/wvw` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/account/wvw)
+     *
+     * @since   0.8.0
+     */
+    V2_ACCOUNT_WVW("/Account/WvW"),
+    /**
      * The `/v2/achievements` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/achievements)

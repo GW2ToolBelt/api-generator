@@ -512,6 +512,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_ACCOUNT_WIZARDSVAULT_SPECIAL Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_WIZARDSVAULT_WEEKLY Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACCOUNT_WORLDBOSSES Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_ACCOUNT_WVW Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACHIEVEMENTS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACHIEVEMENTS_CATEGORIES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_ACHIEVEMENTS_DAILY Lcom/gw2tb/apigen/model/APIv2Endpoint;

@@ -838,6 +838,15 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(array(STRING, "an array of IDs for each world boss that can be looted once per day that the player has defeated since the most recent daily reset"))
     }
+    V2_ACCOUNT_WVW(
+        summary = "Returns information about a player's WvW assignment.",
+        security = security(ACCOUNT, WVW)
+    ) {
+        schema(record(name = "AccountWvw", description = "Information about an account's WvW assignment.") {
+            optional.."Guild"(GUILD_ID, "the ID of the WvW guild the account is assigned to")
+            "Team"(INTEGER, "the ID of the WvW team the account is assigned to")
+        })
+    }
     V2_ACHIEVEMENTS(
         summary = "Returns information about achievements.",
         queryTypes = defaultQueryTypes(),

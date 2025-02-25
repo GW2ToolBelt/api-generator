@@ -252,6 +252,11 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/account/wvw",
+            security = setOf(ACCOUNT, WVW)
+        )
+
+        expectQuery(
             "/achievements",
             cache = 1.hours,
             queryDetails = QueryIDs<IRInteger>()
