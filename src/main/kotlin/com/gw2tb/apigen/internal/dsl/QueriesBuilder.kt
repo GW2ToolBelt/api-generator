@@ -59,13 +59,13 @@ internal interface QueriesBuilder<T : IRAPIType> {
         }
 
     fun map(
-        keys: DeferredType<IRPrimitive>,
+        keys: DeferredPrimitiveType<*>,
         values: DeferredType<IRTypeUse<*>>,
         description: String,
         nullableValues: Boolean = false
     ): DeferredType<IRMap> =
         DeferredSchemaType { typeRegistry, isTopLevel ->
-            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat(), it, nullableValues, description) }
+            values.get(typeRegistry, interpretationHint = null, isTopLevel).mapData { IRMap(keys.getFlat() as IRPrimitiveOrAlias, it, nullableValues, description) }
         }
 
     fun conditional(
