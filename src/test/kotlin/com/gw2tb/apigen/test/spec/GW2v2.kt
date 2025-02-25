@@ -2596,6 +2596,14 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
         )
 
         expectQuery(
+            "/wvw/guilds/:region",
+            cache = Duration.INFINITE,
+            pathParameters = listOf(
+                ExpectedPathParameter("region", STRING)
+            )
+        )
+
+        expectQuery(
             "/wvw/matches",
             cache = 1.seconds,
             queryDetails = QueryIDs<IRString>()

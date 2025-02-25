@@ -3362,10 +3362,18 @@ internal val GW2v2 = GW2APISpecV2 {
         })
     }
     V2_WVW_GUILDS(
-        summary = "Returns information about guilds.",
+        summary = "Returns information about WvW team assignments.",
         cache = Duration.INFINITE // We don't expect this to change. Ever.
     ) {
         schema(array(STRING, "the available sub-endpoints"))
+    }
+    V2_WVW_GUILDS__REGION(
+        summary = "Returns information about WvW team assignments.",
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+    ) {
+        pathParameter("region", STRING, "the region to query")
+
+        schema(map(GUILD_ID, STRING, "a mapping from guild IDs to their respective team assignments"))
     }
     V2_WVW_MATCHES(
         summary = "Returns information about the active WvW matches.",

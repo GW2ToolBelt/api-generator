@@ -1250,6 +1250,14 @@ public enum class APIv2Endpoint(
      */
     V2_WVW_GUILDS("/WvW/Guilds"),
     /**
+     * The `/v2/wvw/guilds/:region` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/guilds/:region)
+     *
+     * @since   0.8.0
+     */
+    V2_WVW_GUILDS__REGION("/WvW/Guilds/:Region"),
+    /**
      * The `/v2/wvw/matches` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/wvw/matches)
