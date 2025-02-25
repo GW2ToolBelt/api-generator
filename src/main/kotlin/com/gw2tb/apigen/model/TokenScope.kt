@@ -86,5 +86,11 @@ public enum class TokenScope {
      *
      * @since   0.7.0
      */
-    WALLET
+    WALLET,
+    /**
+     * The `wvw` scope.
+     *
+     * @since   0.8.0
+     */
+    WVW
 }

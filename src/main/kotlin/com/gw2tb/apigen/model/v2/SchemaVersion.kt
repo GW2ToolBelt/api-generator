@@ -106,5 +106,11 @@ public enum class SchemaVersion(public val identifier: String?) {
      *
      * @since   0.7.0
      */
-    V2_SCHEMA_2022_03_23T19_00_00_000Z("2022-03-23T19:00:00.000Z")
+    V2_SCHEMA_2022_03_23T19_00_00_000Z("2022-03-23T19:00:00.000Z"),
+    /**
+     * The `2024-07-20T01:00:00.000Z` version.
+     *
+     * @since   0.8.0
+     */
+    V2_SCHEMA_2024_07_20T01_00_00_000Z("2024-07-20T01:00:00.000Z")
 }
