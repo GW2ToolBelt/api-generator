@@ -621,6 +621,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_WORLDBOSSES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WORLDS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_ABILITIES Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static final field V2_WVW_GUILDS Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_MATCHES Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_MATCHES_OVERVIEW Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_MATCHES_SCORES Lcom/gw2tb/apigen/model/APIv2Endpoint;

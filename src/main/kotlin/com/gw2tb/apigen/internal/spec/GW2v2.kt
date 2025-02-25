@@ -3361,6 +3361,12 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_WVW_GUILDS(
+        summary = "Returns information about guilds.",
+        cache = Duration.INFINITE // We don't expect this to change. Ever.
+    ) {
+        schema(array(STRING, "the available sub-endpoints"))
+    }
     V2_WVW_MATCHES(
         summary = "Returns information about the active WvW matches.",
         queryTypes = defaultQueryTypes(all = true),
