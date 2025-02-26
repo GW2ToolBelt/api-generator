@@ -800,5 +800,27 @@
         "elite": 43357
       }
     }
+  },
+  {
+    "name": "Linux Debizahn",
+    "race": "Charr",
+    "gender": "Male",
+    "flags": [],
+    "profession": "Guardian",
+    "level": 80,
+    "guild": "EEBAF715-BDC4-4C46-9D9F-1B80EFD20DF0",
+    "age": 85280,
+    "last_modified": "2025-02-18T19:14:00Z",
+    "created": "2017-06-07T10:13:00Z",
+    "deaths": 3,
+    "crafting": [],
+    "title": 117,
+    "backstory": [
+      "15-84",
+      "7-55",
+      "17-92",
+      "182-177",
+      "16-90"
+    ]
   }
 ]

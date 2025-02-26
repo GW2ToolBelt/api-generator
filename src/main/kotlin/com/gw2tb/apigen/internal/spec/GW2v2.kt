@@ -187,7 +187,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
 
     @APIGenDSL
-    fun SchemaRecordBuilder<*>.CHARACTERS_INVENTORY() {
+    fun SchemaRecordBuilder<*>.CHARACTERS_INVENTORY() =
         "Bags"(
             description = "the character's inventory bags",
             type = array(record(name = "Bag", description = "Information about an inventory bag.") {
@@ -223,7 +223,6 @@ internal val GW2v2 = GW2APISpecV2 {
                 )
             })
         )
-    }
 
     val CHARACTERS_SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
         val SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
@@ -265,7 +264,7 @@ internal val GW2v2 = GW2APISpecV2 {
     }
 
     @APIGenDSL
-    fun SchemaRecordBuilder<*>.CHARACTERS_TRAINING() {
+    fun SchemaRecordBuilder<*>.CHARACTERS_TRAINING() =
         "Training"(
             description = "the training information for a character's trained skill-trees",
             type = array(record(name = "Training", description = "Information about a character's trained skill-tree.") {
@@ -274,7 +273,6 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Done"(BOOLEAN, "a flag indicating whether the tree is fully trained")
             })
         )
-    }
 
     @APIGenDSL
     fun SchemaConditionalBuilder<*>.FACTS() {
@@ -1033,14 +1031,14 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "Character", description = "Information about a character.") {
             CHARACTERS_CORE()
 
-            "WvwAbilities"(
+            optional(BUILDS, PROGRESSION).."WvwAbilities"(
                 description = "information about the WvW abilities of the character",
                 type = array(record(name = "WvwAbility", description = "Information about a character's WvW ability.") {
                     "Id"(INTEGER, "the ability's ID")
                     "Rank"(INTEGER, "the ability's rank")
                 })
             )
-            until(V2_SCHEMA_2021_04_06T21_00_00_000Z).."EquipmentPvp"(
+            until(V2_SCHEMA_2021_04_06T21_00_00_000Z)..optional(BUILDS, PVP).."EquipmentPvp"(
                 description = "information about the character's PvP equipment",
                 type = record(name = "EquipmentPvp", description = "Information about a character's PvP equipment.") {
                     optional.."Amulet"(INTEGER, "the ID of the character's PvP amulet")
@@ -1056,10 +1054,10 @@ internal val GW2v2 = GW2APISpecV2 {
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."ActiveEquipmentTab"(INTEGER, "the ID of the character's active equipment tab")
 
             CHARACTERS_BACKSTORY()
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."BuildTabs"(array(CHARACTERS_BUILDTAB), "the character's build tabs")
             CHARACTERS_CRAFTING()
             optional(BUILDS, INVENTORIES)..CHARACTERS_EQUIPMENT()
-            since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."EquipmentTabs"(
+            since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."EquipmentTabs"(
                 description = "the character's equipment tabs",
                 type = array(record(name = "CharactersEquipmentTab", description = "Information about a character's equipment tab.") {
                     "Tab"(INTEGER, "the tab's ID")
@@ -1103,11 +1101,11 @@ internal val GW2v2 = GW2APISpecV2 {
                     )
                 })
             )
-            CHARACTERS_INVENTORY()
-            "Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
-            until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Skills"(CHARACTERS_SKILLS, "the character's equipped skills")
-            until(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Specializations"(CHARACTERS_SPECIALIZATIONS, "the character's equipped specializations")
-            CHARACTERS_TRAINING()
+            optional(INVENTORIES)..CHARACTERS_INVENTORY()
+            optional(INVENTORIES).."Recipes"(array(INTEGER), "the IDs of the character's crafting recipes")
+            until(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."Skills"(CHARACTERS_SKILLS, "the character's equipped skills")
+            until(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."Specializations"(CHARACTERS_SPECIALIZATIONS, "the character's equipped specializations")
+            optional(BUILDS)..CHARACTERS_TRAINING()
         })
     }
     V2_CHARACTERS_BACKSTORY(
