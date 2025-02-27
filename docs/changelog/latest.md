@@ -1,47 +1,34 @@
-### 0.7.0
+### 0.8.0
 
-_Released 2024 Jun 30_
+_Released 2025 Feb 27_
 
 #### Improvements
 
 - Endpoints
-    - Added support for `/v2/account/jadebots`. [[GH-259](https://github.com/GW2ToolBelt/api-generator/issues/259)]
-    - Added support for `/v2/account/skiffs`. [[GH-261](https://github.com/GW2ToolBelt/api-generator/issues/261)]
-    - Added support for `/v2/account/wizardsvault/daily`. [[GH-297](https://github.com/GW2ToolBelt/api-generator/issues/297)]
-    - Added support for `/v2/account/wizardsvault/listings`. [[GH-298](https://github.com/GW2ToolBelt/api-generator/issues/298)]
-    - Added support for `/v2/account/wizardsvault/special`. [[GH-299](https://github.com/GW2ToolBelt/api-generator/issues/299)]
-    - Added support for `/v2/account/wizardsvault/weekly`. [[GH-300](https://github.com/GW2ToolBelt/api-generator/issues/300)]
-    - Added support for `/v2/jadebots`. [[GH-258](https://github.com/GW2ToolBelt/api-generator/issues/258)]
-    - Added support for `/v2/skiffs`. [[GH-260](https://github.com/GW2ToolBelt/api-generator/issues/260)]
-    - Added support for `/v2/wizardsvault`. [[GH-296](https://github.com/GW2ToolBelt/api-generator/issues/296)]
-    - Added support for `/v2/wizardsvault/listings`. [[GH-294](https://github.com/GW2ToolBelt/api-generator/issues/294)]
-    - Added support for `/v2/wizardsvault/objectives`. [[GH-295](https://github.com/GW2ToolBelt/api-generator/issues/295)]
-- Added a `SchemaBitfield` type to be used for bitfields. This type should
-  always be mapped to 64bit integers.
-- Added support for V2 schema `2022-03-23T19:00:00.000Z`.
-- Introduced a low-level API to move the version information out of the schema
-  API into an intermediate representation (IR).
-    - APIs can now be generated for specific schema versions making it
-      significantly easier for consumers to work with.
-- Introduced a `Name` abstraction to make case conversion for names an explicit
-  operation.
-- Introduced the concept of inlined properties for reference types.
-    - Inlined properties can be used to group elements into logical units without
-      affecting the serial representation.
-- Introduced _enums_. Enums allow defining a known set of values for an element. [[GH-152](https://github.com/GW2ToolBelt/api-generator/issues/152)]
-- Introduced _tuples_. Tuples are arrays with a fixed size where each element
-  may carry different semantic information. [[GH-189](https://github.com/GW2ToolBelt/api-generator/issues/189)]
+    - Added support for `/v2/account/homestead/decorations`. [[GH-357](https://github.com/GW2ToolBelt/api-generator/issues/357)]
+    - Added support for `/v2/account/homestead/glyphs`. [[GH-355](https://github.com/GW2ToolBelt/api-generator/issues/355)]
+    - Added support for `/v2/account/wvw`. [[GH-326](https://github.com/GW2ToolBelt/api-generator/issues/326)]
+    - Added support for `/v2/homestead/decorations`. [[GH-356](https://github.com/GW2ToolBelt/api-generator/issues/356)]
+    - Added support for `/v2/homestead/decorations/categories`. [[GH-358](https://github.com/GW2ToolBelt/api-generator/issues/358)]
+    - Added support for `/v2/homestead/glyphs`. [[GH-354](https://github.com/GW2ToolBelt/api-generator/issues/354)]
+    - Added support for `/v2/wvw/guilds`. [[GH-331](https://github.com/GW2ToolBelt/api-generator/issues/331)]
+    - Added support for `/v2/wvw/guilds/:region`. [[GH-332](https://github.com/GW2ToolBelt/api-generator/issues/332)]
+    - Added support for `/v2/wvw/timers`. [[GH-327](https://github.com/GW2ToolBelt/api-generator/issues/327)]
+    - Added support for `/v2/wvw/timers/lockout`. [[GH-328](https://github.com/GW2ToolBelt/api-generator/issues/328)]
+    - Added support for `/v2/wvw/timers/teamAssignment`. [[GH-329](https://github.com/GW2ToolBelt/api-generator/issues/329)]
+    - Added `inventories` to required permissions to access `/v2/characters/:id/equipment`. [[GH-342](https://github.com/GW2ToolBelt/api-generator/issues/342)]
+- Added support for V2 schema `2024-07-20T01:00:00.000Z`.
+- Added support for fields whose presence is dependent on the availability of
+  multiple token scopes.
+- Introduced aliases for many unmapped ID types. [[GH-283](https://github.com/GW2ToolBelt/api-generator/issues/283)]
 
 #### Fixes
 
 - Endpoints:
-    - `/v2/account`:
-        - Fixed the optionality of `build_storage_slots` for tokens without `BUILDS`
-          scope.
-    - `/v2/characters`:
-        - Made `amulet` and `runes` optional.
-- Changed the type of `worldID` in the `MumbleLinkIdentity` to `BITFIELD`.
+    - `/v2/character`
+        - Corrected token scope information for conditional fields. [[GH-342](https://github.com/GW2ToolBelt/api-generator/issues/342)]
 
 #### Breaking Changes
 
-- The library now requires Kotlin 1.8.
+- The API of `Optionality.MANDATED` has been changed to expose a `Set<TokenScope>`
+  instead of single token scope.
