@@ -301,39 +301,39 @@ private fun testProperty(
     schema: SchemaProperty,
     isInlinedOptional: Boolean
 ) {
-    val childContext = if (schema.isInline) {
+    (if (schema.isInline) {
         context.pushVirtual(schema.serialName)
     } else {
         context.push(schema.serialName)
-    }
+    }).use { childContext ->
+        if (childContext === null) {
+            // It's fine if an optional property cannot be found
+            if (schema.optionality.isOptional || (isInlinedOptional)) return
 
-    if (childContext === null) {
-        // It's fine if an optional property cannot be found
-        if (schema.optionality.isOptional || (isInlinedOptional)) return
-
-        context.error("Could not find required property: ${schema.serialName}")
-    } else {
-        val propertyType = schema.type
-        val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference.Declaration
-            && propertyType.declaration is SchemaConditional
-            && propertyType.declaration.selectorInSideProperty
-        ) {
-            context.actual.jsonObject[propertyType.declaration.selector]?.jsonPrimitive?.content ?: run {
-                context.error("Could not find required discriminator '${propertyType.declaration.selector}'")
-                return
-            }
+            context.error("Could not find required property: ${schema.serialName}")
         } else {
-            null
-        }
+            val propertyType = schema.type
+            val sidePropertyInterpretationKey = if (propertyType is SchemaTypeReference.Declaration
+                && propertyType.declaration is SchemaConditional
+                && propertyType.declaration.selectorInSideProperty
+            ) {
+                context.actual.jsonObject[propertyType.declaration.selector]?.jsonPrimitive?.content ?: run {
+                    context.error("Could not find required discriminator '${propertyType.declaration.selector}'")
+                    return
+                }
+            } else {
+                null
+            }
 
-        testTypeUse(
-            context = childContext,
-            schema = schema.type,
-            nullable = schema.optionality.isOptional,
-            lenient = schema.isLenient,
-            inline = schema.isInline,
-            sidePropertyInterpretationKey = sidePropertyInterpretationKey
-        )
+            testTypeUse(
+                context = childContext,
+                schema = schema.type,
+                nullable = schema.optionality.isOptional,
+                lenient = schema.isLenient,
+                inline = schema.isInline,
+                sidePropertyInterpretationKey = sidePropertyInterpretationKey
+            )
+        }
     }
 }
 
@@ -362,7 +362,9 @@ private interface SchemaMatcherContext : AutoCloseable {
     val actual: JsonElement
     val path: String
 
-    fun error(message: String, cause: Throwable? = null)
+    fun error(message: String, cause: Throwable? = null) = error(path, message, cause)
+
+    fun error(path: String, message: String, cause: Throwable? = null)
 
     private fun doPush(actual: JsonElement, path: String): SchemaMatcherContext {
         return object : SchemaMatcherContext {
@@ -370,11 +372,11 @@ private interface SchemaMatcherContext : AutoCloseable {
             override val trackingConsumer = TrackingConsumer(actual)
 
             override val actual: JsonElement get() = actual
-            override val path: String get() = "${this@SchemaMatcherContext.path}/$path"
+            override val path: String get() = "${this@SchemaMatcherContext.path}$path"
 
-            override fun error(message: String, cause: Throwable?) {
+            override fun error(path: String, message: String, cause: Throwable?) {
                 // TODO preserve path
-                this@SchemaMatcherContext.error(message, cause)
+                this@SchemaMatcherContext.error(this.path, message, cause)
             }
 
             override fun close() {
@@ -395,7 +397,7 @@ private interface SchemaMatcherContext : AutoCloseable {
         val jsonElement = actual.jsonObject[key] ?: return null
         (trackingConsumer as TrackingConsumer.Object).consume(key)
 
-        return doPush(actual = jsonElement, path)
+        return doPush(actual = jsonElement, "/$path")
     }
 
     fun pushVirtual(path: String): SchemaMatcherContext {
@@ -482,7 +484,7 @@ private class SchemaMatcher(
         return _errors.toList()
     }
 
-    override fun error(message: String, cause: Throwable?) {
+    override fun error(path: String, message: String, cause: Throwable?) {
         check(!this::_errors.isInitialized) { "SchemaMatcher has already been closed" }
         mutableErrors += SchemaMismatch(path, message, cause)
     }

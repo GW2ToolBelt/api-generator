@@ -2843,7 +2843,7 @@ class GW2v2 : SpecTest<IRAPIQuery.V2, IRAPIType.V2, GW2v2.ExpectedAPIv2Query>(
             val type = irType.resolve(VoidResolverContext, v2SchemaVersion = version)
             val schema = type.schema
 
-            yield(DynamicTest.dynamicTest("$prefix${type.name}${if (version != com.gw2tb.apigen.model.v2.SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
+            yield(DynamicTest.dynamicTest("$prefix${type.name.toTitleCase()}${if (version != com.gw2tb.apigen.model.v2.SchemaVersion.V2_SCHEMA_CLASSIC) "+${version.identifier}" else ""}") {
                 val data = TestData[type, version]
                 assertSchema(schema, data)
             })

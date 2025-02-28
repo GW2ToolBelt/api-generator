@@ -98,7 +98,7 @@ abstract class SpecTest<Q : IRAPIQuery, T : IRAPIType, EQ : SpecTest.ExpectedAPI
 
             if (errors.isNotEmpty()) {
                 errors.forEach { error ->
-                    System.err.println("[${error.path}] ${error.message}")
+                    System.err.println("${error.path} - ${error.message}")
                     error.cause?.printStackTrace()
                 }
 
