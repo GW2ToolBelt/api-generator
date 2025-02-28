@@ -1079,14 +1079,20 @@ internal val GW2v2 = GW2APISpecV2 {
                                 description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
                                 type = record(name = "Stats", description = "Information about an item's stats.") {
                                     "Id"(ITEMSTAT_ID, "the itemstat ID")
-                                    optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
-                                    optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
-                                    optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
-                                    optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
-                                    optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
-                                    optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
-                                    optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
-                                    optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                                    "Attributes"(
+                                        description = "the item's attributes",
+                                        type = record(name = "Attributes", description = "Information about an item's attributes.") {
+                                            optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
+                                            optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                            optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the item")
+                                            optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
+                                            optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
+                                            optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
+                                            optional..SerialName("ConditionDuration").."ConditionDuration"(INTEGER, "the amount of condition duration given by the item")
+                                            optional..SerialName("Healing").."Healing"(INTEGER, "the amount of healing given by the item")
+                                            optional..SerialName("BoonDuration").."BoonDuration"(INTEGER, "the amount of boon duration given by the item")
+                                        }
+                                    )
                                 }
                             )
                         })
