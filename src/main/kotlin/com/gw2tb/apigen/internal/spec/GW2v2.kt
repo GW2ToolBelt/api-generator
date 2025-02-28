@@ -374,7 +374,7 @@ internal val GW2v2 = GW2APISpecV2 {
             since(V2_SCHEMA_2024_07_20T01_00_00_000Z)..optional(WVW).."Wvw"(
                 description = "information about the account's WvW progression and team",
                 type = record(name = "AccountWvw", description = "Information about an account's WvW progression and team.") {
-                    optional(PROGRESSION).."WvwRank"(INTEGER, "the account's personal wvw rank")
+                    optional(PROGRESSION).."Rank"(INTEGER, "the account's personal wvw rank")
                     "TeamId"(INTEGER, "the ID of the WvW team the account is assigned to")
                 }
             )
