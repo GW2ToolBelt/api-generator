@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.gw2tb.apigen.ir</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../index.html">
+                    api-generator
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+0.8.1        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":/main"
+                                       data-filter=":/main"/>
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    api-generator
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="api-generator::com.gw2tb.apigen.ir////PointingToDeclaration//-251573632">
+  <div class="breadcrumbs"><a href="../../index.html">api-generator</a><span class="delimiter">/</span><span class="current">com.gw2tb.apigen.ir</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1686513437%2FClasslikes%2F-251573632" anchor-label="IRAlias" id="-1686513437%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-alias/index.html"><span><span>IRAlias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1686513437%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-alias/index.html">IRAlias</a> : <a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-alias/index.html">SchemaAlias</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-alias/index.html">SchemaAlias</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="365586682%2FClasslikes%2F-251573632" anchor-label="IRArray" id="365586682%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-array/index.html"><span><span>IRArray</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="365586682%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-array/index.html">IRArray</a> : <a href="-i-r-type-use/index.html">IRTypeUse</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-array/index.html">SchemaArray</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-array/index.html">SchemaArray</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2139360126%2FClasslikes%2F-251573632" anchor-label="IRBitfield" id="-2139360126%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-bitfield/index.html"><span><span>IRBitfield</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2139360126%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-i-r-bitfield/index.html">IRBitfield</a> : <a href="-i-r-primitive/index.html">IRPrimitive</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-bitfield/index.html">SchemaBitfield</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1588858251%2FClasslikes%2F-251573632" anchor-label="IRBoolean" id="1588858251%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-boolean/index.html"><span><span>IRBoolean</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1588858251%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-i-r-boolean/index.html">IRBoolean</a> : <a href="-i-r-primitive/index.html">IRPrimitive</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-boolean/index.html">SchemaBoolean</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1076195347%2FClasslikes%2F-251573632" anchor-label="IRConditional" id="-1076195347%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-conditional/index.html"><span><span>IRConditional</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1076195347%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-conditional/index.html">IRConditional</a> : <a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-conditional/index.html">SchemaConditional</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-conditional/index.html">SchemaConditional</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1664444798%2FClasslikes%2F-251573632" anchor-label="IRDecimal" id="-1664444798%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-decimal/index.html"><span><span>IRDecimal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1664444798%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-i-r-decimal/index.html">IRDecimal</a> : <a href="-i-r-primitive/index.html">IRPrimitive</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-decimal/index.html">SchemaDecimal</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1930587406%2FClasslikes%2F-251573632" anchor-label="IREnum" id="1930587406%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-enum/index.html"><span><span>IREnum</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1930587406%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-enum/index.html">IREnum</a> : <a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-enum/index.html">SchemaEnum</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-enum/index.html">SchemaEnum</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1281835723%2FClasslikes%2F-251573632" anchor-label="IRInteger" id="-1281835723%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-integer/index.html"><span><span>IRInteger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1281835723%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-i-r-integer/index.html">IRInteger</a> : <a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-integer/index.html">SchemaInteger</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="62941143%2FClasslikes%2F-251573632" anchor-label="IRMap" id="62941143%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-map/index.html"><span><span>IRMap</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="62941143%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-map/index.html">IRMap</a> : <a href="-i-r-type-use/index.html">IRTypeUse</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-map/index.html">SchemaMap</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-map/index.html">SchemaMap</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1915365076%2FClasslikes%2F-251573632" anchor-label="IRPrimitive" id="-1915365076%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-primitive/index.html"><span><span>IRPrimitive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1915365076%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-i-r-primitive/index.html">IRPrimitive</a> : <a href="-i-r-type-use/index.html">IRTypeUse</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-primitive/index.html">SchemaPrimitive</a><span class="token operator">&gt; </span>, <a href="-i-r-primitive-or-alias/index.html">IRPrimitiveOrAlias</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-primitive/index.html">SchemaPrimitive</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-842574141%2FClasslikes%2F-251573632" anchor-label="IRPrimitiveIdentifier" id="-842574141%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-primitive-identifier/index.html"><span>IRPrimitive</span><wbr></wbr><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-842574141%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a> : <a href="-i-r-primitive/index.html">IRPrimitive</a>, <a href="-i-r-primitive-identifier-or-alias/index.html">IRPrimitiveIdentifierOrAlias</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-primitive-identifier/index.html">SchemaPrimitiveIdentifier</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1946517490%2FClasslikes%2F-251573632" anchor-label="IRPrimitiveIdentifierOrAlias" id="1946517490%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-primitive-identifier-or-alias/index.html"><span>IRPrimitive</span><wbr></wbr><span>Identifier</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Alias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1946517490%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-i-r-primitive-identifier-or-alias/index.html">IRPrimitiveIdentifierOrAlias</a> : <a href="-i-r-primitive-or-alias/index.html">IRPrimitiveOrAlias</a></div><div class="brief "><p class="paragraph">An <a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a> or an <a href="-i-r-alias/index.html">IRAlias</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="475800937%2FClasslikes%2F-251573632" anchor-label="IRPrimitiveOrAlias" id="475800937%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-primitive-or-alias/index.html"><span>IRPrimitive</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Alias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="475800937%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-i-r-primitive-or-alias/index.html">IRPrimitiveOrAlias</a></div><div class="brief "><p class="paragraph">An <a href="-i-r-primitive/index.html">IRPrimitive</a> or an <a href="-i-r-alias/index.html">IRAlias</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1357343674%2FClasslikes%2F-251573632" anchor-label="IRProperty" id="1357343674%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-property/index.html"><span><span>IRProperty</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1357343674%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-property/index.html">IRProperty</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-property/index.html">SchemaProperty</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="204093502%2FClasslikes%2F-251573632" anchor-label="IRRecord" id="204093502%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-record/index.html"><span><span>IRRecord</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="204093502%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-record/index.html">IRRecord</a> : <a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-record/index.html">SchemaRecord</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-record/index.html">SchemaRecord</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="306248830%2FClasslikes%2F-251573632" anchor-label="IRString" id="306248830%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-string/index.html"><span><span>IRString</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="306248830%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-i-r-string/index.html">IRString</a> : <a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-string/index.html">SchemaString</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="241827435%2FClasslikes%2F-251573632" anchor-label="IRTuple" id="241827435%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-tuple/index.html"><span><span>IRTuple</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="241827435%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-i-r-tuple/index.html">IRTuple</a> : <a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-tuple/index.html">SchemaTuple</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-tuple/index.html">SchemaTuple</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-944434989%2FClasslikes%2F-251573632" anchor-label="IRTypeDeclaration" id="-944434989%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-type-declaration/index.html"><span>IRType</span><wbr></wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-944434989%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-i-r-type-declaration/index.html">IRTypeDeclaration</a><span class="token operator">&lt;</span><a href="-i-r-type-declaration/index.html">S</a><span class="token operator"> : </span><a href="../com.gw2tb.apigen.schema/-schema-type-declaration/index.html">SchemaTypeDeclaration</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-type-declaration/index.html">SchemaTypeDeclaration</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1231467742%2FClasslikes%2F-251573632" anchor-label="IRTypeReference" id="-1231467742%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-type-reference/index.html"><span>IRType</span><wbr></wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1231467742%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-i-r-type-reference/index.html">IRTypeReference</a> : <a href="-i-r-type-use/index.html">IRTypeUse</a><span class="token operator">&lt;</span><a href="../com.gw2tb.apigen.schema/-schema-type-reference/index.html">SchemaTypeReference</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-type-reference/index.html">SchemaTypeReference</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1934846618%2FClasslikes%2F-251573632" anchor-label="IRTypeUse" id="-1934846618%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-r-type-use/index.html"><span>IRType</span><wbr></wbr><span><span>Use</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1934846618%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-i-r-type-use/index.html">IRTypeUse</a><span class="token operator">&lt;</span><a href="-i-r-type-use/index.html">S</a><span class="token operator"> : </span><a href="../com.gw2tb.apigen.schema/-schema-type-use/index.html">SchemaTypeUse</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">A low-level representation of a <a href="../com.gw2tb.apigen.schema/-schema-type-use/index.html">SchemaTypeUse</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2104342614%2FClasslikes%2F-251573632" anchor-label="LowLevelApiGenApi" id="2104342614%2FClasslikes%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-low-level-api-gen-api/index.html"><span>Low</span><wbr></wbr><span>Level</span><wbr></wbr><span>Api</span><wbr></wbr><span>Gen</span><wbr></wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2104342614%2FClasslikes%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">annotation class </span><a href="-low-level-api-gen-api/index.html">LowLevelApiGenApi</a></div><div class="brief "><p class="paragraph">Denotes that the annotated API is part of the low-level API of this library.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1942969259%2FFunctions%2F-251573632" anchor-label="lowered" id="-1942969259%2FFunctions%2F-251573632" data-filterable-set=":/main"></a>
+          <div class="table-row" data-filterable-current=":/main" data-filterable-set=":/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="lowered.html"><span><span>lowered</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1942969259%2FFunctions%2F-251573632"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/main"><div class="symbol monospace"><span class="token keyword">tailrec </span><span class="token keyword">fun </span><a href="-i-r-primitive-identifier-or-alias/index.html">IRPrimitiveIdentifierOrAlias</a><span class="token punctuation">.</span><a href="lowered.html"><span class="token function">lowered</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a></div><div class="brief "><p class="paragraph">Lowers an <a href="-i-r-primitive-identifier-or-alias/index.html">IRPrimitiveIdentifierOrAlias</a> to an <a href="-i-r-primitive-identifier/index.html">IRPrimitiveIdentifier</a>.</p></div><div class="symbol monospace"><span class="token keyword">tailrec </span><span class="token keyword">fun </span><a href="-i-r-primitive-or-alias/index.html">IRPrimitiveOrAlias</a><span class="token punctuation">.</span><a href="lowered.html"><span class="token function">lowered</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-i-r-primitive/index.html">IRPrimitive</a></div><div class="brief "><p class="paragraph">Lowers an <a href="-i-r-primitive-or-alias/index.html">IRPrimitiveOrAlias</a> to a <a href="-i-r-primitive/index.html">IRPrimitive</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
