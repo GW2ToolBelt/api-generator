@@ -1829,6 +1829,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 "Name"(STRING, "the member's account name")
                 "Rank"(STRING, "the member's rank")
                 "Joined"(STRING, "the ISO-8601 timestamp of when the member joined the guild")
+                "WvwMember"(BOOLEAN, "whether the member has selected the guild as their WvW guild")
             }
         ))
     }
