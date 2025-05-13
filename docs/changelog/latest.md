@@ -1,11 +1,9 @@
-### 0.8.1
+### 0.9.0
 
-_Released 2025 Feb 28_
+_Released 2025 May 13_
 
-#### Fixes
+#### Improvements
 
 - Endpoints:
-  - `/v2/account`
-    - Fixed the WvW `rank` property introduced in schema version `2024-07-20T01:00:00.000Z`.
-  - `/v2/character`
-    - Fixed the nesting of item attributes in equipment tabs.
+  - `/v2/guild/:id/members`:
+    - Added support for `wvw_member`.

@@ -1,3 +1,16 @@
+### 0.9.0
+
+_Released 2025 May 13_
+
+#### Improvements
+
+- Endpoints:
+  - `/v2/guild/:id/members`:
+    - Added support for `wvw_member`.
+
+
+---
+
 ### 0.8.1
 
 _Released 2025 Feb 28_
