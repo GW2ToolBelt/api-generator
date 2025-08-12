@@ -30,7 +30,6 @@ publishing {
             name = project.name
             description = "A library for generating programs that interface with the official Guild Wars 2 API."
             url = "https://github.com/GW2ToolBelt/api-generator"
-            packaging = "jar"
 
             licenses {
                 license {
