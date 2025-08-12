@@ -1163,8 +1163,6 @@ public final class com/gw2tb/apigen/schema/model/QueryParameter {
 	public final fun component3 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component4 ()Ljava/lang/String;
 	public final fun component5 ()Z
-	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Z)Lcom/gw2tb/apigen/schema/model/QueryParameter;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/QueryParameter;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/QueryParameter;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKey ()Ljava/lang/String;

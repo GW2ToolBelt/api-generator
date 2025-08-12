@@ -35,6 +35,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class QueryParameter internal constructor(
     val key: String,
     val type: SchemaTypeUse,
