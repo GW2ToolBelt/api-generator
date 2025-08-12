@@ -48,9 +48,9 @@ kotlin {
         apiVersion = KotlinVersion.KOTLIN_2_2
         languageVersion = KotlinVersion.KOTLIN_2_2
 
-        jvmTarget = JvmTarget.JVM_1_8
+        jvmTarget = JvmTarget.JVM_17
 
-        freeCompilerArgs.add("-Xjdk-release=1.8")
+        freeCompilerArgs.add("-Xjdk-release=17")
     }
 }
 
@@ -62,7 +62,7 @@ dokka {
     dokkaSourceSets.configureEach {
         reportUndocumented = true
         skipEmptyPackages = true
-        jdkVersion = 8
+        jdkVersion = 17
 
         val localKotlinSourceDir = layout.projectDirectory.dir("src/main/kotlin")
         val version = project.version
@@ -82,7 +82,7 @@ dokka {
 
 tasks {
     withType<JavaCompile>().configureEach {
-        options.release = 8
+        options.release = 17
     }
 
     withType<Test>().configureEach {
