@@ -464,6 +464,7 @@ public final class com/gw2tb/apigen/model/APIv1Endpoint : java/lang/Enum, com/gw
 	public static final field V1_WVW_MATCHES Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static final field V1_WVW_MATCH_DETAILS Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static final field V1_WVW_OBJECTIVE_NAMES Lcom/gw2tb/apigen/model/APIv1Endpoint;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public fun getPath ()Lcom/gw2tb/apigen/model/Name;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/APIv1Endpoint;
 	public static fun values ()[Lcom/gw2tb/apigen/model/APIv1Endpoint;
@@ -634,6 +635,7 @@ public final class com/gw2tb/apigen/model/APIv2Endpoint : java/lang/Enum, com/gw
 	public static final field V2_WVW_TIMERS_LOCKOUT Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_TIMERS_TEAMASSIGNMENT Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static final field V2_WVW_UPGRADES Lcom/gw2tb/apigen/model/APIv2Endpoint;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public fun getPath ()Lcom/gw2tb/apigen/model/Name;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/APIv2Endpoint;
 	public static fun values ()[Lcom/gw2tb/apigen/model/APIv2Endpoint;
@@ -645,6 +647,7 @@ public final class com/gw2tb/apigen/model/Language : java/lang/Enum {
 	public static final field FRENCH Lcom/gw2tb/apigen/model/Language;
 	public static final field GERMAN Lcom/gw2tb/apigen/model/Language;
 	public static final field SPANISH Lcom/gw2tb/apigen/model/Language;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getLanguage ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/Language;
 	public static fun values ()[Lcom/gw2tb/apigen/model/Language;
@@ -764,6 +767,7 @@ public final class com/gw2tb/apigen/model/TokenScope : java/lang/Enum {
 	public static final field UNLOCKS Lcom/gw2tb/apigen/model/TokenScope;
 	public static final field WALLET Lcom/gw2tb/apigen/model/TokenScope;
 	public static final field WVW Lcom/gw2tb/apigen/model/TokenScope;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/TokenScope;
 	public static fun values ()[Lcom/gw2tb/apigen/model/TokenScope;
 }
@@ -782,6 +786,7 @@ public final class com/gw2tb/apigen/model/v2/SchemaVersion : java/lang/Enum {
 	public static final field V2_SCHEMA_2022_03_23T19_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static final field V2_SCHEMA_2024_07_20T01_00_00_000Z Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static final field V2_SCHEMA_CLASSIC Lcom/gw2tb/apigen/model/v2/SchemaVersion;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getIdentifier ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public static fun values ()[Lcom/gw2tb/apigen/model/v2/SchemaVersion;
