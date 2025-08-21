@@ -2304,6 +2304,20 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_LOGOS(
+        summary = "Returns information about logos.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "Logo", description = "Information about a logo.") {
+            "Id"(LOGO_ID, "the logo's ID")
+            localized.."Name"(STRING, "the logo's name")
+            localized.."Description"(STRING, "the logo's description")
+            "Icon"(STRING, "the URL for the logo's icon")
+            "UnlockItems"(array(ITEM_ID), "the IDs of the items that can be used to unlock the logo")
+            "Flags"(array(STRING), "additional flags describing the logo")
+        })
+    }
     V2_MAILCARRIERS(
         summary = "Returns information about mailcarriers.",
         queryTypes = defaultQueryTypes(all = true),

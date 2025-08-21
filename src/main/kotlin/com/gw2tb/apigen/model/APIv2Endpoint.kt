@@ -906,6 +906,14 @@ public enum class APIv2Endpoint(
      */
     V2_LEGENDS("/Legends"),
     /**
+     * The `/v2/logos` endpoint.
+     *
+     * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/logos)
+     *
+     * @since   0.9.0
+     */
+    V2_LOGOS("/Logos"),
+    /**
      * The `/v2/mailcarriers` endpoint.
      *
      * [Read more on the official Wiki](https://wiki.guildwars2.com/wiki/API:2/mailcarriers)
