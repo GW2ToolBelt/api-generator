@@ -40,6 +40,7 @@ public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
      */
     public abstract val name: QualifiedTypeName
 
+    @ConsistentCopyVisibility
     internal data class Alias internal constructor(
         override val name: QualifiedTypeName.Alias,
         internal val alias: IRAlias
@@ -54,6 +55,7 @@ public sealed class IRTypeReference : IRTypeUse<SchemaTypeReference>() {
 
     }
 
+    @ConsistentCopyVisibility
     internal data class Declaration internal constructor(
         override val name: QualifiedTypeName.Declaration,
         internal val declaration: IRTypeDeclaration<*>

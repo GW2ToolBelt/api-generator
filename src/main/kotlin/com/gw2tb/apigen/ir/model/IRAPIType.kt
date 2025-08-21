@@ -65,6 +65,7 @@ public sealed class IRAPIType {
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class V1 internal constructor(
         val declaration: IRTypeDeclaration<*>,
         override val interpretationHint: InterpretationHint?,
@@ -94,6 +95,7 @@ public sealed class IRAPIType {
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class V2 internal constructor(
         private val _declaration: SchemaVersionedData<IRTypeDeclaration<*>>,
         override val interpretationHint: InterpretationHint?,

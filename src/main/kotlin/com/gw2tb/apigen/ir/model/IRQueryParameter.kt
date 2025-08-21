@@ -40,6 +40,7 @@ import com.gw2tb.apigen.model.v2.SchemaVersion
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRQueryParameter internal constructor(
     val key: String,
     val type: IRTypeUse<*>,

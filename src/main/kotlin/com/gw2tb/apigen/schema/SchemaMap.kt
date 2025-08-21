@@ -49,6 +49,7 @@ package com.gw2tb.apigen.schema
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaMap internal constructor(
     public val keys: SchemaPrimitiveOrAlias,
     public val values: SchemaTypeUse,

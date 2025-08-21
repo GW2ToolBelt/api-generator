@@ -50,6 +50,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaConditional internal constructor(
     public override val name: Name,
     public val selector: String,
@@ -81,6 +82,7 @@ public data class SchemaConditional internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Interpretation internal constructor(
         public val interpretationKey: String,
         public val interpretationNestProperty: String?,

@@ -36,6 +36,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class APIType internal constructor(
     public val name: Name,
     public val schema: SchemaTypeDeclaration,
@@ -54,6 +55,7 @@ public data class APIType internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class InterpretationHint internal constructor(
         val conditionalBase: QualifiedTypeName,
         val interpretationKey: String,

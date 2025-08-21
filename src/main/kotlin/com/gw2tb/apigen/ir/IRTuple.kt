@@ -35,6 +35,7 @@ import com.gw2tb.apigen.schema.SchemaTuple
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRTuple internal constructor(
     public override val name: Name,
     public val elements: Set<Element>,
@@ -62,6 +63,7 @@ public data class IRTuple internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Element internal constructor(
         public val name: Name,
         public val type: IRTypeUse<*>,

@@ -45,6 +45,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaTuple internal constructor(
     public override val name: Name,
     public val elements: List<Element>,
@@ -80,6 +81,7 @@ public data class SchemaTuple internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Element internal constructor(
         public val name: Name,
         public val type: SchemaTypeUse,

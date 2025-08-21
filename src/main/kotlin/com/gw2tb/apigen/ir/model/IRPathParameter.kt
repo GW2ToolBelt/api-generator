@@ -39,6 +39,7 @@ import com.gw2tb.apigen.model.Name
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRPathParameter internal constructor(
     public val key: String,
     public val type: IRTypeUse<*>,

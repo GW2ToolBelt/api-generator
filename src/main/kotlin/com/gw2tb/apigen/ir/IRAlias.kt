@@ -35,6 +35,7 @@ import com.gw2tb.apigen.schema.SchemaAlias
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRAlias internal constructor(
     public override val name: Name,
     public val type: IRPrimitive,

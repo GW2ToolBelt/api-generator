@@ -36,6 +36,7 @@ import com.gw2tb.apigen.schema.*
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class PathParameter internal constructor(
     public val key: String,
     public val type: SchemaTypeUse,

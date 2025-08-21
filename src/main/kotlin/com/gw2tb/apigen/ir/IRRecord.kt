@@ -36,6 +36,7 @@ import com.gw2tb.apigen.schema.SchemaRecord
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRRecord internal constructor(
     public override val name: Name,
     public val description: String,

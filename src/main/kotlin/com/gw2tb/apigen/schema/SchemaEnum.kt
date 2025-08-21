@@ -43,6 +43,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaEnum internal constructor(
     public override val name: Name,
     public val type: SchemaPrimitiveOrAlias,
@@ -67,6 +68,7 @@ public data class SchemaEnum internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Value internal constructor(
         public val name: Name,
         public val value: String,

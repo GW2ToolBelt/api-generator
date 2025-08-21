@@ -40,6 +40,7 @@ import com.gw2tb.apigen.schema.model.APIVersion
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRAPIVersion<Q : IRAPIQuery, T : IRAPIType> internal constructor(
     val supportedLanguages: Set<Language>,
     val supportedQueries: Set<Q>,

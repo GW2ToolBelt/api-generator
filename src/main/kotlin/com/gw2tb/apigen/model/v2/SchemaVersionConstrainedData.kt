@@ -30,6 +30,7 @@ package com.gw2tb.apigen.model.v2
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaVersionConstrainedData<out T> internal constructor(
     val data: T,
     val since: SchemaVersion = SchemaVersion.V2_SCHEMA_CLASSIC,

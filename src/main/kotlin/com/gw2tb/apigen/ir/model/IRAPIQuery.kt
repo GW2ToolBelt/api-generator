@@ -98,6 +98,7 @@ public sealed class IRAPIQuery {
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Details internal constructor(
         val queryType: QueryType,
         val idType: IRPrimitiveIdentifierOrAlias
@@ -122,6 +123,7 @@ public sealed class IRAPIQuery {
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class V1 internal constructor(
         override val path: String,
         override val endpoint: APIEndpoint,
@@ -169,6 +171,7 @@ public sealed class IRAPIQuery {
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class V2 internal constructor(
         override val path: String,
         override val endpoint: APIEndpoint,

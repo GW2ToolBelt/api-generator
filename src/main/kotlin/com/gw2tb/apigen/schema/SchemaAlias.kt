@@ -38,6 +38,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaAlias internal constructor(
     public override val name: Name,
     public val type: SchemaPrimitive,

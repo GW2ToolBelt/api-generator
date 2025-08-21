@@ -77,6 +77,7 @@ import com.gw2tb.apigen.model.Optionality
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaProperty internal constructor(
     public val name: Name,
     public val type: SchemaTypeUse,

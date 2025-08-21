@@ -35,6 +35,7 @@ import com.gw2tb.apigen.schema.SchemaMap
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRMap internal constructor(
     public val keys: IRPrimitiveOrAlias,
     public val values: IRTypeUse<*>,

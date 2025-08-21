@@ -33,6 +33,7 @@ import com.gw2tb.apigen.model.QualifiedTypeName
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class APIVersion internal constructor(
     val supportedLanguages: Set<Language>,
     val supportedQueries: Set<APIQuery>,

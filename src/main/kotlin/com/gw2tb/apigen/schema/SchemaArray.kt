@@ -48,6 +48,7 @@ package com.gw2tb.apigen.schema
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaArray internal constructor(
     public val elements: SchemaTypeUse,
     public val nullableElements: Boolean,

@@ -34,6 +34,7 @@ import com.gw2tb.apigen.schema.SchemaArray
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRArray internal constructor(
     public val elements: IRTypeUse<*>,
     public val nullableElements: Boolean,

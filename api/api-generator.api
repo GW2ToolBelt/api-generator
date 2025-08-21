@@ -20,8 +20,6 @@ public final class com/gw2tb/apigen/ir/IRAlias : com/gw2tb/apigen/ir/IRTypeDecla
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRPrimitive;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRPrimitive;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/IRAlias;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRAlias;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRPrimitive;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRAlias;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -35,8 +33,6 @@ public final class com/gw2tb/apigen/ir/IRArray : com/gw2tb/apigen/ir/IRTypeUse {
 	public final fun component1 ()Lcom/gw2tb/apigen/ir/IRTypeUse;
 	public final fun component2 ()Z
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/ir/IRTypeUse;ZLjava/lang/String;)Lcom/gw2tb/apigen/ir/IRArray;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRArray;Lcom/gw2tb/apigen/ir/IRTypeUse;ZLjava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRArray;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getElements ()Lcom/gw2tb/apigen/ir/IRTypeUse;
@@ -62,8 +58,6 @@ public final class com/gw2tb/apigen/ir/IRConditional : com/gw2tb/apigen/ir/IRTyp
 	public final fun component5 ()Ljava/util/Set;
 	public final fun component6 ()Ljava/util/Set;
 	public final fun component7 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZZLjava/util/Set;Ljava/util/Set;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/IRConditional;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRConditional;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZZLjava/util/Set;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRConditional;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getInterpretationInNestedProperty ()Z
@@ -84,8 +78,6 @@ public final class com/gw2tb/apigen/ir/IRConditional$Interpretation {
 	public final fun component4 ()Z
 	public final fun component5 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public final fun component6 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;ZLcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/ir/IRConditional$Interpretation;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRConditional$Interpretation;Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;ZLcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRConditional$Interpretation;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getInterpretationKey ()Ljava/lang/String;
 	public final fun getInterpretationNestProperty ()Ljava/lang/String;
@@ -106,8 +98,6 @@ public final class com/gw2tb/apigen/ir/IREnum : com/gw2tb/apigen/ir/IRTypeDeclar
 	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;
 	public final fun component3 ()Ljava/util/Set;
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;Ljava/util/Set;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/IREnum;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IREnum;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IREnum;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -122,8 +112,6 @@ public final class com/gw2tb/apigen/ir/IREnum$Value {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/IREnum$Value;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IREnum$Value;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IREnum$Value;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -141,8 +129,6 @@ public final class com/gw2tb/apigen/ir/IRMap : com/gw2tb/apigen/ir/IRTypeUse {
 	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRTypeUse;
 	public final fun component3 ()Z
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;Lcom/gw2tb/apigen/ir/IRTypeUse;ZLjava/lang/String;)Lcom/gw2tb/apigen/ir/IRMap;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRMap;Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;Lcom/gw2tb/apigen/ir/IRTypeUse;ZLjava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRMap;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKeys ()Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;
@@ -191,8 +177,6 @@ public final class com/gw2tb/apigen/ir/IRProperty {
 	public final fun component7 ()Lcom/gw2tb/apigen/model/Optionality;
 	public final fun component8 ()Ljava/lang/String;
 	public final fun component9 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRTypeUse;ZZZZLcom/gw2tb/apigen/model/Optionality;Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/ir/IRProperty;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRProperty;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRTypeUse;ZZZZLcom/gw2tb/apigen/model/Optionality;Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRProperty;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -213,8 +197,6 @@ public final class com/gw2tb/apigen/ir/IRRecord : com/gw2tb/apigen/ir/IRTypeDecl
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/util/Set;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/util/Set;)Lcom/gw2tb/apigen/ir/IRRecord;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRRecord;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRRecord;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -232,8 +214,6 @@ public final class com/gw2tb/apigen/ir/IRTuple : com/gw2tb/apigen/ir/IRTypeDecla
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/util/Set;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/util/Set;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/IRTuple;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRTuple;Lcom/gw2tb/apigen/model/Name;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRTuple;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getElements ()Ljava/util/Set;
@@ -249,8 +229,6 @@ public final class com/gw2tb/apigen/ir/IRTuple$Element {
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Z
 	public final fun component5 ()Z
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRTypeUse;Ljava/lang/String;ZZ)Lcom/gw2tb/apigen/ir/IRTuple$Element;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRTuple$Element;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/ir/IRTypeUse;Ljava/lang/String;ZZILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRTuple$Element;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -288,8 +266,6 @@ public abstract class com/gw2tb/apigen/ir/model/IRAPIQuery {
 public final class com/gw2tb/apigen/ir/model/IRAPIQuery$Details {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QueryType;
 	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;
-	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getIdType ()Lcom/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias;
 	public final fun getQueryType ()Lcom/gw2tb/apigen/model/QueryType;
@@ -306,8 +282,6 @@ public final class com/gw2tb/apigen/ir/model/IRAPIQuery$V1 : com/gw2tb/apigen/ir
 	public final fun component6 ()Ljava/lang/String;
 	public final fun component7-FghU774 ()Lkotlin/time/Duration;
 	public final fun component8 ()Lcom/gw2tb/apigen/ir/IRTypeUse;
-	public final fun copy-rl3MWlM (Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/ir/IRTypeUse;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V1;
-	public static synthetic fun copy-rl3MWlM$default (Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V1;Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/ir/IRTypeUse;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V1;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getCache-FghU774 ()Lkotlin/time/Duration;
 	public fun getEndpoint ()Lcom/gw2tb/apigen/model/APIEndpoint;
@@ -333,8 +307,6 @@ public final class com/gw2tb/apigen/ir/model/IRAPIQuery$V2 : com/gw2tb/apigen/ir
 	public final fun component7-FghU774 ()Lkotlin/time/Duration;
 	public final fun component8 ()Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;
 	public final fun component9 ()Ljava/util/Set;
-	public final fun copy-BqdlHlk (Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;Ljava/util/Set;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedDataImpl;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V2;
-	public static synthetic fun copy-BqdlHlk$default (Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V2;Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/ir/model/IRAPIQuery$Details;Ljava/util/Set;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/internal/impl/SchemaVersionedDataImpl;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIQuery$V2;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun flatten (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public fun get (Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/model/v2/SchemaVersionConstrainedData;
@@ -365,8 +337,6 @@ public abstract class com/gw2tb/apigen/ir/model/IRAPIType {
 public final class com/gw2tb/apigen/ir/model/IRAPIType$V1 : com/gw2tb/apigen/ir/model/IRAPIType {
 	public final fun component1 ()Lcom/gw2tb/apigen/ir/IRTypeDeclaration;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/ir/IRTypeDeclaration;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;Z)Lcom/gw2tb/apigen/ir/model/IRAPIType$V1;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIType$V1;Lcom/gw2tb/apigen/ir/IRTypeDeclaration;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIType$V1;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDeclaration ()Lcom/gw2tb/apigen/ir/IRTypeDeclaration;
 	public fun getInterpretationHint ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
@@ -377,8 +347,6 @@ public final class com/gw2tb/apigen/ir/model/IRAPIType$V1 : com/gw2tb/apigen/ir/
 
 public final class com/gw2tb/apigen/ir/model/IRAPIType$V2 : com/gw2tb/apigen/ir/model/IRAPIType, com/gw2tb/apigen/model/v2/SchemaVersionedData {
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/model/v2/SchemaVersionedData;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;Z)Lcom/gw2tb/apigen/ir/model/IRAPIType$V2;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIType$V2;Lcom/gw2tb/apigen/model/v2/SchemaVersionedData;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIType$V2;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun flatten (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public fun get (Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/model/v2/SchemaVersionConstrainedData;
@@ -396,8 +364,6 @@ public final class com/gw2tb/apigen/ir/model/IRAPIVersion {
 	public final fun component1 ()Ljava/util/Set;
 	public final fun component2 ()Ljava/util/Set;
 	public final fun component3 ()Ljava/util/Map;
-	public final fun copy (Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;)Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRAPIVersion;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRAPIVersion;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getSupportedLanguages ()Ljava/util/Set;
 	public final fun getSupportedQueries ()Ljava/util/Set;
@@ -411,8 +377,6 @@ public final class com/gw2tb/apigen/ir/model/IRPathParameter {
 	public final fun component2 ()Lcom/gw2tb/apigen/ir/IRTypeUse;
 	public final fun component3 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/ir/model/IRPathParameter;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRPathParameter;Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRPathParameter;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKey ()Ljava/lang/String;
@@ -428,8 +392,6 @@ public final class com/gw2tb/apigen/ir/model/IRQueryParameter {
 	public final fun component3 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component4 ()Ljava/lang/String;
 	public final fun component5 ()Z
-	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Z)Lcom/gw2tb/apigen/ir/model/IRQueryParameter;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/model/IRQueryParameter;Ljava/lang/String;Lcom/gw2tb/apigen/ir/IRTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZILjava/lang/Object;)Lcom/gw2tb/apigen/ir/model/IRQueryParameter;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKey ()Ljava/lang/String;
@@ -656,8 +618,6 @@ public final class com/gw2tb/apigen/model/Language : java/lang/Enum {
 public final class com/gw2tb/apigen/model/Name {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun <init> ([Ljava/lang/String;)V
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/model/Name;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/Name;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public final fun toCamelCase ()Ljava/lang/String;
@@ -796,8 +756,6 @@ public final class com/gw2tb/apigen/model/v2/SchemaVersionConstrainedData {
 	public final fun component1 ()Ljava/lang/Object;
 	public final fun component2 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public final fun component3 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
-	public final fun copy (Ljava/lang/Object;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/model/v2/SchemaVersionConstrainedData;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/model/v2/SchemaVersionConstrainedData;Ljava/lang/Object;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/model/v2/SchemaVersion;ILjava/lang/Object;)Lcom/gw2tb/apigen/model/v2/SchemaVersionConstrainedData;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getData ()Ljava/lang/Object;
 	public final fun getSince ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
@@ -819,8 +777,6 @@ public final class com/gw2tb/apigen/schema/SchemaAlias : com/gw2tb/apigen/schema
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaPrimitive;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaAlias;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaAlias;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaPrimitive;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaAlias;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -833,8 +789,6 @@ public final class com/gw2tb/apigen/schema/SchemaArray : com/gw2tb/apigen/schema
 	public final fun component1 ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun component2 ()Z
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZLjava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaArray;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaArray;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZLjava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaArray;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getElements ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
@@ -860,8 +814,6 @@ public final class com/gw2tb/apigen/schema/SchemaConditional : com/gw2tb/apigen/
 	public final fun component5 ()Ljava/util/Map;
 	public final fun component6 ()Ljava/util/Map;
 	public final fun component7 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZZLjava/util/Map;Ljava/util/Map;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaConditional;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaConditional;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ZZLjava/util/Map;Ljava/util/Map;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaConditional;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getInterpretationInNestedProperty ()Z
@@ -879,8 +831,6 @@ public final class com/gw2tb/apigen/schema/SchemaConditional$Interpretation {
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun component4 ()Z
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Z)Lcom/gw2tb/apigen/schema/SchemaConditional$Interpretation;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaConditional$Interpretation;Ljava/lang/String;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaConditional$Interpretation;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getInterpretationKey ()Ljava/lang/String;
 	public final fun getInterpretationNestProperty ()Ljava/lang/String;
@@ -899,8 +849,6 @@ public final class com/gw2tb/apigen/schema/SchemaEnum : com/gw2tb/apigen/schema/
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;
 	public final fun component3 ()Ljava/util/Set;
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;Ljava/util/Set;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaEnum;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaEnum;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaEnum;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -914,8 +862,6 @@ public final class com/gw2tb/apigen/schema/SchemaEnum$Value {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaEnum$Value;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaEnum$Value;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaEnum$Value;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -933,8 +879,6 @@ public final class com/gw2tb/apigen/schema/SchemaMap : com/gw2tb/apigen/schema/S
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun component3 ()Z
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZLjava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaMap;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaMap;Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZLjava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaMap;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKeys ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveOrAlias;
@@ -973,8 +917,6 @@ public final class com/gw2tb/apigen/schema/SchemaProperty {
 	public final fun component7 ()Lcom/gw2tb/apigen/model/Optionality;
 	public final fun component8 ()Ljava/lang/String;
 	public final fun component9 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZZZZLcom/gw2tb/apigen/model/Optionality;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaProperty;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaProperty;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ZZZZLcom/gw2tb/apigen/model/Optionality;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaProperty;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -993,8 +935,6 @@ public final class com/gw2tb/apigen/schema/SchemaRecord : com/gw2tb/apigen/schem
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/util/Map;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/util/Map;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaRecord;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaRecord;Lcom/gw2tb/apigen/model/Name;Ljava/util/Map;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaRecord;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -1011,8 +951,6 @@ public final class com/gw2tb/apigen/schema/SchemaTuple : com/gw2tb/apigen/schema
 	public final fun component1 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component2 ()Ljava/util/List;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Ljava/util/List;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaTuple;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaTuple;Lcom/gw2tb/apigen/model/Name;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaTuple;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getElements ()Ljava/util/List;
@@ -1027,8 +965,6 @@ public final class com/gw2tb/apigen/schema/SchemaTuple$Element {
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Z
 	public final fun component5 ()Z
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZ)Lcom/gw2tb/apigen/schema/SchemaTuple$Element;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaTuple$Element;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Ljava/lang/String;ZZILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaTuple$Element;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -1063,8 +999,6 @@ public final class com/gw2tb/apigen/schema/model/APIQuery {
 	public final fun component7-FghU774 ()Lkotlin/time/Duration;
 	public final fun component8 ()Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
 	public final fun component9 ()Ljava/util/Set;
-	public final fun copy-cMDqwZA (Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/schema/model/APIQuery$Details;Ljava/util/Set;Lcom/gw2tb/apigen/schema/SchemaTypeUse;)Lcom/gw2tb/apigen/schema/model/APIQuery;
-	public static synthetic fun copy-cMDqwZA$default (Lcom/gw2tb/apigen/schema/model/APIQuery;Ljava/lang/String;Lcom/gw2tb/apigen/model/APIEndpoint;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/lang/String;Lkotlin/time/Duration;Lcom/gw2tb/apigen/schema/model/APIQuery$Details;Ljava/util/Set;Lcom/gw2tb/apigen/schema/SchemaTypeUse;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIQuery;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCache-FghU774 ()Lkotlin/time/Duration;
 	public final fun getDetails ()Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
@@ -1083,8 +1017,6 @@ public final class com/gw2tb/apigen/schema/model/APIQuery {
 public final class com/gw2tb/apigen/schema/model/APIQuery$Details {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QueryType;
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;
-	public final fun copy (Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIQuery$Details;Lcom/gw2tb/apigen/model/QueryType;Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIQuery$Details;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getIdType ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifierOrAlias;
 	public final fun getQueryType ()Lcom/gw2tb/apigen/model/QueryType;
@@ -1097,8 +1029,6 @@ public final class com/gw2tb/apigen/schema/model/APIType {
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public final fun component3 ()Lcom/gw2tb/apigen/model/v2/SchemaVersion;
 	public final fun component4 ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
-	public final fun copy (Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;)Lcom/gw2tb/apigen/schema/model/APIType;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIType;Lcom/gw2tb/apigen/model/Name;Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;Lcom/gw2tb/apigen/model/v2/SchemaVersion;Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;ZLjava/lang/Integer;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIType;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getInterpretationHint ()Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
 	public final fun getName ()Lcom/gw2tb/apigen/model/Name;
@@ -1112,8 +1042,6 @@ public final class com/gw2tb/apigen/schema/model/APIType$InterpretationHint {
 	public final fun component1 ()Lcom/gw2tb/apigen/model/QualifiedTypeName;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Lcom/gw2tb/apigen/model/QualifiedTypeName;Ljava/lang/String;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;Lcom/gw2tb/apigen/model/QualifiedTypeName;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIType$InterpretationHint;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getConditionalBase ()Lcom/gw2tb/apigen/model/QualifiedTypeName;
 	public final fun getInterpretationKey ()Ljava/lang/String;
@@ -1126,8 +1054,6 @@ public final class com/gw2tb/apigen/schema/model/APIVersion {
 	public final fun component1 ()Ljava/util/Set;
 	public final fun component2 ()Ljava/util/Set;
 	public final fun component3 ()Ljava/util/Map;
-	public final fun copy (Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;)Lcom/gw2tb/apigen/schema/model/APIVersion;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/APIVersion;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/APIVersion;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getSupportedLanguages ()Ljava/util/Set;
 	public final fun getSupportedQueries ()Ljava/util/Set;
@@ -1141,8 +1067,6 @@ public final class com/gw2tb/apigen/schema/model/PathParameter {
 	public final fun component2 ()Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public final fun component3 ()Lcom/gw2tb/apigen/model/Name;
 	public final fun component4 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/schema/model/PathParameter;
-	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/model/PathParameter;Ljava/lang/String;Lcom/gw2tb/apigen/schema/SchemaTypeUse;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/model/PathParameter;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getKey ()Ljava/lang/String;

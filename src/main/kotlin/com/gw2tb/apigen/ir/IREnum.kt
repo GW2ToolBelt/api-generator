@@ -36,6 +36,7 @@ import com.gw2tb.apigen.schema.SchemaEnum
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IREnum internal constructor(
     public override val name: Name,
     public val type: IRPrimitiveOrAlias,
@@ -64,6 +65,7 @@ public data class IREnum internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Value internal constructor(
         public val name: Name,
         public val value: String,

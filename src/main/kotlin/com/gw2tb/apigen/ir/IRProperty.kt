@@ -45,6 +45,7 @@ import com.gw2tb.apigen.schema.SchemaProperty
  * @since   0.7.0
  */
 @LowLevelApiGenApi
+@ConsistentCopyVisibility
 public data class IRProperty internal constructor(
     public val name: Name,
     public val type: IRTypeUse<*>,

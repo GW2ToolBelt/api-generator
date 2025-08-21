@@ -40,6 +40,7 @@ import com.gw2tb.apigen.model.Name
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class SchemaRecord internal constructor(
     public override val name: Name,
     public val properties: Map<String, SchemaProperty>,

@@ -27,7 +27,7 @@ package com.gw2tb.apigen.model
  *
  * @since   0.7.0
  */
-@Suppress("DataClassPrivateConstructor")
+@ConsistentCopyVisibility
 public data class Name private constructor(
     private val camelCase: String,
     private val snakeCase: String,

@@ -59,6 +59,7 @@ import kotlin.time.Duration
  *
  * @since   0.7.0
  */
+@ConsistentCopyVisibility
 public data class APIQuery internal constructor(
     public val path: String,
     public val endpoint: APIEndpoint,
@@ -81,6 +82,7 @@ public data class APIQuery internal constructor(
      *
      * @since   0.7.0
      */
+    @ConsistentCopyVisibility
     public data class Details internal constructor(
         val queryType: QueryType,
         val idType: SchemaPrimitiveIdentifierOrAlias
