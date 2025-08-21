@@ -894,10 +894,24 @@ internal val GW2v2 = GW2APISpecV2 {
             )
             optional.."Bits"(
                 description = "the achievement's bits",
-                type = array(record(name = "Bit", description = "Information about an achievement bit.") {
-                    "Type"(STRING, "the bit's type")
-                    optional.."Id"(INTEGER, "the ID of the bit's object")
-                    optional.."Text"(STRING, "the bit's text")
+                type = array(conditional(
+                    name = "Bit",
+                    description = "Information about an achievement bit.",
+                    sharedConfigure = {
+                        "Type"(STRING, "the type of bit")
+                        optional.."Text"(STRING, "the bit's textual description")
+                    }
+                ) {
+                    +record(name = "Item", description = "Information about an achievement bit tied to an item.") {
+                        "Id"(ITEM_ID, "the item's ID")
+                    }
+                    +record(name = "MiniPet", description = "Information about an achievement bit tied to a mini pet.") {
+                        "Id"(MINI_ID, "the mini pet's ID")
+                    }
+                    +record(name = "Skin", description = "Information about an achievement bit tied to a skin.") {
+                        "Id"(SKIN_ID, "the skin's ID")
+                    }
+                    +record(name = "Text", description = "Information about a text-only achievement bit.") {}
                 })
             )
             optional.."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
