@@ -86,7 +86,31 @@
             "active": true
         },
         {
+            "path": "/v2/account/homestead",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/account/homestead/decorations",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/homestead/glyphs",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
             "path": "/v2/account/inventory",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/jadebots",
             "lang": false,
             "auth": true,
             "active": true
@@ -200,6 +224,12 @@
             "active": true
         },
         {
+            "path": "/v2/account/skiffs",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
             "path": "/v2/account/skins",
             "lang": false,
             "auth": true,
@@ -218,7 +248,37 @@
             "active": true
         },
         {
+            "path": "/v2/account/wizardsvault/daily",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/wizardsvault/listings",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/wizardsvault/special",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/wizardsvault/weekly",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
             "path": "/v2/account/worldbosses",
+            "lang": false,
+            "auth": true,
+            "active": true
+        },
+        {
+            "path": "/v2/account/wvw",
             "lang": false,
             "auth": true,
             "active": true
@@ -239,13 +299,13 @@
             "path": "/v2/achievements/daily",
             "lang": false,
             "auth": false,
-            "active": true
+            "active": false
         },
         {
             "path": "/v2/achievements/daily/tomorrow",
             "lang": false,
             "auth": false,
-            "active": true
+            "active": false
         },
         {
             "path": "/v2/achievements/groups",
@@ -602,6 +662,42 @@
             "active": true
         },
         {
+            "path": "/v2/homestead",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/homestead",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/homestead/decorations",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/homestead/decorations/categories",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/homestead/decorations/categories/:id",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/homestead/glyphs",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/items",
             "lang": true,
             "auth": false,
@@ -614,6 +710,12 @@
             "active": true
         },
         {
+            "path": "/v2/jadebots",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/legendaryarmory",
             "lang": false,
             "auth": false,
@@ -621,6 +723,12 @@
         },
         {
             "path": "/v2/legends",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/logos",
             "lang": false,
             "auth": false,
             "active": true
@@ -818,6 +926,12 @@
             "active": true
         },
         {
+            "path": "/v2/skiffs",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/skills",
             "lang": true,
             "auth": false,
@@ -872,6 +986,18 @@
             "active": false
         },
         {
+            "path": "/v2/wizardsvault/listings",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/wizardsvault/objectives",
+            "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/worldbosses",
             "lang": false,
             "auth": false,
@@ -886,6 +1012,18 @@
         {
             "path": "/v2/wvw/abilities",
             "lang": true,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/wvw/guilds",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/wvw/guilds/:region",
+            "lang": false,
             "auth": false,
             "active": true
         },
@@ -950,6 +1088,24 @@
             "active": false
         },
         {
+            "path": "/v2/wvw/timers",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/wvw/timers/lockout",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
+            "path": "/v2/wvw/timers/teamAssignment",
+            "lang": false,
+            "auth": false,
+            "active": true
+        },
+        {
             "path": "/v2/wvw/upgrades",
             "lang": true,
             "auth": false,
@@ -1000,6 +1156,10 @@
         {
             "v": "2022-03-23T19:00:00.000Z",
             "desc": "Change `/v2/achievements/categories` to show tomorrow's dailies and show access requirements for relevant achievements."
+        },
+        {
+            "v": "2024-07-20T01:00:00.000Z",
+            "desc": "Add wvw `team_id` to `/v2/account` to show world restructuring team id and move wvw fields into `wvw`"
         }
     ]
 }

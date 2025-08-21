@@ -111,6 +111,9 @@ internal val JADEBOT_ID = Alias(INTEGER, "JadeBotId")
 /** A common alias for legend IDs. */
 internal val LEGEND_ID = Alias(STRING, "LegendId")
 
+/** A common alias for legend IDs. */
+internal val LOGO_ID = Alias(STRING, "LogoId")
+
 /** A common alias for mail carrier IDs. */
 internal val MAILCARRIER_ID = Alias(INTEGER, "MailCarrierId")
 

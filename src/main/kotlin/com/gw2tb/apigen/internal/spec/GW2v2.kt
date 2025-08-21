@@ -2318,6 +2318,16 @@ internal val GW2v2 = GW2APISpecV2 {
             )
         })
     }
+    V2_LOGOS(
+        summary = "Returns logos of the game, its events, and expansions.",
+        queryTypes = defaultQueryTypes(all = true),
+        cache = 1.hours
+    ) {
+        schema(record(name = "Logo", description = "Information about a logo related to Guild Wars 2.") {
+            "Id"(LOGO_ID, "the logo's ID")
+            "Url"(STRING, "the URL to the quaggan image")
+        })
+    }
     V2_MAILCARRIERS(
         summary = "Returns information about mailcarriers.",
         queryTypes = defaultQueryTypes(all = true),
