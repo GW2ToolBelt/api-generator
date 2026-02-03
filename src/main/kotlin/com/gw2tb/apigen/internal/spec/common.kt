@@ -201,6 +201,9 @@ internal val TITLE_ID = Alias(INTEGER, "TitleId")
 /** A common alias for trait IDs. */
 internal val TRAIT_ID = Alias(INTEGER, "TraitId")
 
+/** A common alias for transaction IDs. */
+internal val TRANSACTION_ID = Alias(INTEGER, "TransactionId")
+
 /** A common alias for wizard's vault listing IDs. */
 internal val WIZARDS_VAULT_LISTING_ID = Alias(INTEGER, "WizardsVaultListingId")
 

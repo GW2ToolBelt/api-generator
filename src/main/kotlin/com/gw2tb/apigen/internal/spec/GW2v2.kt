@@ -430,6 +430,7 @@ internal val GW2v2 = GW2APISpecV2 {
                             type = record(name = "Attributes", description = "Information about an item's attributes.") {
                                 optional..SerialName("Power").."Power"(INTEGER, "the amount of power given by the item")
                                 optional..SerialName("Precision").."Precision"(INTEGER, "the amount of precision given by the item")
+                                optional..SerialName("CritDamage").."CritDamage"(INTEGER, "the amount of crit damage given by the item")
                                 optional..SerialName("Toughness").."Toughness"(INTEGER, "the amount of toughness given by the item")
                                 optional..SerialName("Vitality").."Vitality"(INTEGER, "the amount of vitality given by the item")
                                 optional..SerialName("ConditionDamage").."ConditionDamage"(INTEGER, "the amount of condition damage given by the item")
@@ -912,7 +913,9 @@ internal val GW2v2 = GW2APISpecV2 {
                     +record(name = "Skin", description = "Information about an achievement bit tied to a skin.") {
                         "Id"(SKIN_ID, "the skin's ID")
                     }
-                    +record(name = "Text", description = "Information about a text-only achievement bit.") {}
+                    +record(name = "Text", description = "Information about a text-only achievement bit.") {
+                        "Text"(STRING, "the bit's textual description")
+                    }
                 })
             )
             optional.."PointCap"(INTEGER, "the maximum number of AP that can be rewarded by an achievement flagged as \"Repeatable\"")
