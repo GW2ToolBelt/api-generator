@@ -1118,8 +1118,8 @@ internal val GW2v2 = GW2APISpecV2 {
                     since(V2_SCHEMA_2021_04_06T21_00_00_000Z).."EquipmentPvp"(
                         description = "the character's PvP equipment",
                         type = record(name = "PvpEquipment", "Information about a character's PvP equipment.") {
-                            "Amulet"(PVP_AMULET_ID, "the ID of the selected amulet")
-                            "Rune"(ITEM_ID, "the ID of the selected rune")
+                            optional.."Amulet"(PVP_AMULET_ID, "the ID of the selected amulet")
+                            optional.."Rune"(ITEM_ID, "the ID of the selected rune")
                             "Sigils"(array(ITEM_ID, nullableItems = true), "the IDs of the selected sigils")
                         }
                     )
