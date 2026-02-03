@@ -23,5 +23,16 @@
         "count": 1,
         "skin": 2395,
         "binding": "Account"
+    },
+    {
+        "id": 102031,
+        "count": 1,
+        "upgrades": [
+            87698
+        ],
+        "upgrade_slot_indices": [
+            0
+        ],
+        "binding": "Account"
     }
 ]

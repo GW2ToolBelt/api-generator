@@ -585,6 +585,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 optional.."Charges"(INTEGER, "the amount of charges remaining on the item")
                 optional.."Skin"(SKIN_ID, "the ID of the skin applied to the item")
                 optional.."Upgrades"(array(ITEM_ID), "the array of item IDs of runes or sigils applied to the item")
+                optional.."UpgradeSlotIndices"(array(INTEGER), "the slot of the corresponding upgrade")
                 optional.."Infusions"(array(ITEM_ID), "the array of item IDs of infusions applied to the item")
                 optional.."Stats"(
                     description = "information about the stats chosen for the item (if the item offers the option to select stats/prefix)",
