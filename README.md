@@ -91,7 +91,7 @@ Feel free to open a pull request to have it added!
 #### api-generator
 
 ```
-Copyright (c) 2019-2025 Leon Linhart
+Copyright (c) 2019-2026 Leon Linhart
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
