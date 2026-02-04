@@ -1,9 +1,30 @@
-### 0.9.0
+### 0.10.0
 
-_Released 2025 May 13_
+_Released 2026 Feb 04_
 
 #### Improvements
 
 - Endpoints:
-  - `/v2/guild/:id/members`:
-    - Added support for `wvw_member`.
+  - Added support for `/v2/logos`. [[GH-489](https://github.com/GW2ToolBelt/api-generator/issues/489)]
+  - The achievement bits for `/v2/achievements` are now a conditional based on
+    the "type" field.
+    - This enables type-safe access to the ID of the bit depending on the bits
+      type.
+
+#### Fixes
+
+- Endpoints:
+  - `/v2/account/bank`:
+    - Added support for the `CritDamage` item stat property. [[GH-539](https://github.com/GW2ToolBelt/api-generator/issues/539)]
+  - `/v2/account/inventory`:
+    - Added support for the `upgrade_slot_indices` property. [[GH-541](https://github.com/GW2ToolBelt/api-generator/issues/541)]
+  - `/v2/character`:
+    - Marked PvP equipment as optional. [[GH-538](https://github.com/GW2ToolBelt/api-generator/issues/538)]
+
+#### Breaking Changes
+
+- Increased minimum required Java version to 17 (from 8).
+- Increased minimum required Kotlin version to 2.2 (from 1.8).
+- The `copy` functions of data classes with no publicly accessible constructors
+  are no longer available. This includes (but is not limited to) the IR and
+  schema types.
