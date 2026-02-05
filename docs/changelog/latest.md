@@ -1,3 +1,13 @@
+### 0.10.1
+
+_Released 2026 Feb 05_
+
+#### Fixes
+
+- The API reference is now correctly published again.
+
+---
+
 ### 0.10.0
 
 _Released 2026 Feb 04_
