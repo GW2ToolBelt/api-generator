@@ -207,7 +207,14 @@ public final class com/gw2tb/apigen/ir/IRRecord : com/gw2tb/apigen/ir/IRTypeDecl
 }
 
 public final class com/gw2tb/apigen/ir/IRString : com/gw2tb/apigen/ir/IRPrimitiveIdentifier {
-	public static final field INSTANCE Lcom/gw2tb/apigen/ir/IRString;
+	public fun <init> (Lcom/gw2tb/apigen/schema/SchemaString$Format;)V
+	public final fun component1 ()Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaString$Format;)Lcom/gw2tb/apigen/ir/IRString;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/ir/IRString;Lcom/gw2tb/apigen/schema/SchemaString$Format;ILjava/lang/Object;)Lcom/gw2tb/apigen/ir/IRString;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFormat ()Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/gw2tb/apigen/ir/IRTuple : com/gw2tb/apigen/ir/IRTypeDeclaration {
@@ -945,7 +952,22 @@ public final class com/gw2tb/apigen/schema/SchemaRecord : com/gw2tb/apigen/schem
 }
 
 public final class com/gw2tb/apigen/schema/SchemaString : com/gw2tb/apigen/schema/SchemaPrimitiveIdentifier {
-	public static final field INSTANCE Lcom/gw2tb/apigen/schema/SchemaString;
+	public fun <init> (Lcom/gw2tb/apigen/schema/SchemaString$Format;)V
+	public final fun component1 ()Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public final fun copy (Lcom/gw2tb/apigen/schema/SchemaString$Format;)Lcom/gw2tb/apigen/schema/SchemaString;
+	public static synthetic fun copy$default (Lcom/gw2tb/apigen/schema/SchemaString;Lcom/gw2tb/apigen/schema/SchemaString$Format;ILjava/lang/Object;)Lcom/gw2tb/apigen/schema/SchemaString;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFormat ()Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gw2tb/apigen/schema/SchemaString$Format : java/lang/Enum {
+	public static final field TIMESTAMP Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public static final field UUID Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/gw2tb/apigen/schema/SchemaString$Format;
+	public static fun values ()[Lcom/gw2tb/apigen/schema/SchemaString$Format;
 }
 
 public final class com/gw2tb/apigen/schema/SchemaTuple : com/gw2tb/apigen/schema/SchemaTypeDeclaration {
