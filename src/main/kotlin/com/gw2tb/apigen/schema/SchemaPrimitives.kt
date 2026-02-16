@@ -84,6 +84,9 @@ public object SchemaInteger : SchemaPrimitiveIdentifier()
  * [format] should be taken into account to map to a more fitting type where
  * applicable.
  *
+ * @param format    the format of the string if it carries additional semantic
+ *                  meaning, or `null` if it is arbitrary
+ *
  * @since   0.7.0
  */
 public data class SchemaString(
