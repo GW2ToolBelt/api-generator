@@ -603,7 +603,8 @@ internal val GW2v2 = GW2APISpecV2 {
                     }
                 )
                 optional.."Binding"(STRING, "the binding of the item")
-            }
+            },
+            nullableItems = true
         ))
     }
     V2_ACCOUNT_JADEBOTS(
