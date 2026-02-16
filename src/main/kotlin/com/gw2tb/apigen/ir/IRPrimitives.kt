@@ -61,4 +61,6 @@ public object IRInteger : IRPrimitiveIdentifier(SchemaInteger)
  * @since   0.7.0
  */
 @LowLevelApiGenApi
-public object IRString : IRPrimitiveIdentifier(SchemaString)
+public data class IRString(
+    public val format: SchemaString.Format?
+) : IRPrimitiveIdentifier(SchemaString(format))

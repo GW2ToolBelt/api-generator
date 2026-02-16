@@ -76,10 +76,39 @@ public object SchemaInteger : SchemaPrimitiveIdentifier()
 /**
  * A schema primitive representing JSON strings.
  *
+ * The [format], if not null, specifies the format of the data in the string.
+ *
  * ### Mapping
  *
- * SchemaStrings should be mapped to string types.
+ * In general, SchemaStrings can be mapped to string types. If possible, the
+ * [format] should be taken into account to map to a more fitting type where
+ * applicable.
  *
  * @since   0.7.0
  */
-public object SchemaString : SchemaPrimitiveIdentifier()
+public data class SchemaString(
+    val format: Format?
+) : SchemaPrimitiveIdentifier() {
+
+    /**
+     * The format of the string's content.
+     *
+     * @since   0.11.0
+     */
+    public enum class Format {
+        /**
+         * An ISO-8601 timestamp.
+         *
+         * @since   0.11.0
+         */
+        TIMESTAMP,
+
+        /**
+         * A UUID.
+         *
+         * @since   0.11.0
+         */
+        UUID
+    }
+
+}

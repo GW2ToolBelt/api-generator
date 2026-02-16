@@ -86,8 +86,8 @@ internal val GW2v2 = GW2APISpecV2 {
         "Level"(INTEGER, "the character's level")
         optional.."Guild"(GUILD_ID, "the ID of the character's represented guild")
         "Age"(INTEGER, "the amount of seconds the character was played")
-        "Created"(STRING, "the ISO-8601 standard timestamp of when the character was created")
-        since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."LastModified"(STRING, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
+        "Created"(TIMESTAMP, "the ISO-8601 standard timestamp of when the character was created")
+        since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."LastModified"(TIMESTAMP, "the ISO-8601 standard timestamp of when the API record of the character was last modified")
         "Deaths"(INTEGER, "the amount of times the character has been defeated")
         optional.."Title"(TITLE_ID, "the ID of the character's selected title")
     }
@@ -259,8 +259,8 @@ internal val GW2v2 = GW2APISpecV2 {
     }
 
     val WVW_TIMERS = record(name = "WvwTimers", description = "Information about regional WvW timers.") {
-        SerialName("eu")..CamelCase("eu").."EU"(STRING, "the ISO-8601 standard timestamp for the next tick in the EU region")
-        SerialName("na")..CamelCase("na").."NA"(STRING, "the ISO-8601 standard timestamp for the next tick in the NA region")
+        SerialName("eu")..CamelCase("eu").."EU"(TIMESTAMP, "the ISO-8601 standard timestamp for the next tick in the EU region")
+        SerialName("na")..CamelCase("na").."NA"(TIMESTAMP, "the ISO-8601 standard timestamp for the next tick in the NA region")
     }
 
     @APIGenDSL
@@ -352,13 +352,13 @@ internal val GW2v2 = GW2APISpecV2 {
         security = security(ACCOUNT)
     ) {
         schema(record(name = "Account", description = "Information about a player's account.") {
-            "Id"(STRING, "the unique persistent account GUID")
+            "Id"(UUID, "the unique persistent account GUID")
             "Age"(INTEGER, "the age of the account in seconds")
             "Name"(STRING, "the unique account name")
             "World"(WORLD_ID, "the ID of the home world the account is assigned to")
             "Guilds"(array(GUILD_ID), "an array containing the IDs of all guilds the account is a member in")
             optional(GUILDS).."GuildLeader"(array(GUILD_ID), "an array containing the IDs of all guilds the account is a leader of")
-            "Created"(STRING, "the ISO-8601 standard timestamp of when the account was created")
+            "Created"(TIMESTAMP, "the ISO-8601 standard timestamp of when the account was created")
             "Access"(array(STRING), "an array of what content this account has access to")
             "Commander"(BOOLEAN, "a flag indicating whether the commander tag is unlocked for the account")
             optional(PROGRESSION).."FractalLevel"(
@@ -379,7 +379,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 }
             )
             since(V2_SCHEMA_2019_02_21T00_00_00_000Z).."LastModified"(
-                STRING,
+                TIMESTAMP,
                 "the ISO-8601 standard timestamp of when the account information last changed (as perceived by the API)"
             )
             since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional(BUILDS).."BuildStorageSlots"(
@@ -1479,12 +1479,12 @@ internal val GW2v2 = GW2APISpecV2 {
         pathParameter("Type", STRING, "the transaction type")
 
         schema(record(name = "CommerceTransaction", description = "Information about a transaction.") {
-            "Id"(INTEGER, "the transaction's ID")
+            "Id"(TRANSACTION_ID, "the transaction's ID")
             "ItemId"(ITEM_ID, "the item's ID")
             "Price"(INTEGER, "the price in coins")
             "Quantity"(INTEGER, "the quantity of the item")
-            "Created"(STRING, "the ISO-8601 standard timestamp of when the transaction was created")
-            optional.."Purchased"(STRING, "the ISO-8601 standard timestamp of when the transaction was completed")
+            "Created"(TIMESTAMP, "the ISO-8601 standard timestamp of when the transaction was created")
+            optional.."Purchased"(TIMESTAMP, "the ISO-8601 standard timestamp of when the transaction was completed")
         })
     }
     V2_CONTINENTS(
@@ -1625,7 +1625,7 @@ internal val GW2v2 = GW2APISpecV2 {
         summary = "Creates a new subtoken.",
         security = security(ACCOUNT)
     ) {
-        queryParameter("Expire", STRING, "an ISO-8601 datetime specifying when the generated subtoken will expire")
+        queryParameter("Expire", TIMESTAMP, "an ISO-8601 datetime specifying when the generated subtoken will expire")
         queryParameter("Permissions", STRING, "a comma separated list of permissions to inherit")
         queryParameter("Urls", STRING, "a comma separated list of endpoints that will be accessible using this subtoken", isOptional = true)
 
@@ -1796,7 +1796,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 description = "Information about a logged guild event.",
                 sharedConfigure = {
                     "Id"(INTEGER, "the log entry's ID")
-                    "Time"(STRING, "ISO-8601 timestamp for when the log entry was created")
+                    "Time"(TIMESTAMP, "ISO-8601 timestamp for when the log entry was created")
                     optional.."User"(STRING, "the account name of the guild member who generated this log entry")
                     "Type"(STRING, "the type of log entry")
                 }
@@ -1846,7 +1846,7 @@ internal val GW2v2 = GW2APISpecV2 {
             items = record(name = "GuildMember", description = "Information about a guild member.") {
                 "Name"(STRING, "the member's account name")
                 "Rank"(STRING, "the member's rank")
-                "Joined"(STRING, "the ISO-8601 timestamp of when the member joined the guild")
+                "Joined"(TIMESTAMP, "the ISO-8601 timestamp of when the member joined the guild")
                 "WvwMember"(BOOLEAN, "whether the member has selected the guild as their WvW guild")
             }
         ))
@@ -1940,8 +1940,8 @@ internal val GW2v2 = GW2APISpecV2 {
                     type = array(record(name = "PvpGame", description = "Information about a team's PvP game.") {
                         "Id"(PVP_GAME_ID, "the game's ID")
                         "MapId"(MAP_ID, "the map's ID")
-                        "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
-                        "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
+                        "Started"(TIMESTAMP, "the ISO-8601 standard timestamp of when the game started")
+                        "Ended"(TIMESTAMP, "the ISO-8601 standard timestamp of when the game ended")
                         "Result"(STRING, "the game's result for the team (\"Victory\" or \"Defeat\")")
                         "Team"(STRING, "the team's color (\"Blue\" or \"Red\")")
                         "RatingType"(STRING, "the type of rating of the game")
@@ -2625,8 +2625,8 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "PvpGame", description = "Information about an account's PvP game.") {
             "Id"(PVP_GAME_ID, "the game's ID")
             "MapId"(MAP_ID, "the map's ID")
-            "Started"(STRING, "the ISO-8601 standard timestamp of when the game started")
-            "Ended"(STRING, "the ISO-8601 standard timestamp of when the game ended")
+            "Started"(TIMESTAMP, "the ISO-8601 standard timestamp of when the game started")
+            "Ended"(TIMESTAMP, "the ISO-8601 standard timestamp of when the game ended")
             "Result"(STRING, "the game's result for the account (\"Victory\" or \"Defeat\")")
             "Team"(STRING, "the player's team (\"Blue\" or \"Red\")")
             "Profession"(PROFESSION_ID, "the ID of the player's profession")
@@ -2704,8 +2704,8 @@ internal val GW2v2 = GW2APISpecV2 {
         schema(record(name = "PvpSeason", description = "Information about a PvP season.") {
             "Id"(PVP_SEASON_ID, "the PvP season's ID")
             localized.."Name"(STRING, "the season's localized name")
-            "Start"(STRING, "the ISO-8601 standard timestamp of when the season started")
-            "End"(STRING, "the ISO-8601 standard timestamp of when the season ended")
+            "Start"(TIMESTAMP, "the ISO-8601 standard timestamp of when the season started")
+            "End"(TIMESTAMP, "the ISO-8601 standard timestamp of when the season ended")
             "Active"(BOOLEAN, "whether the season is currently active")
             "Divisions"(
                 description = "the season's divisions",
@@ -3214,7 +3214,7 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(
             V2_SCHEMA_CLASSIC to record(name = "TokenInfo", description = "Information about an API key.") {
-                "Id"(STRING, "the API key that was requested")
+                "Id"(UUID, "the API key that was requested")
                 "Name"(STRING, "the name given to the API key by the account owner")
                 "Permissions"(
                     description = "an array of strings describing which permissions the API key has",
@@ -3232,8 +3232,8 @@ internal val GW2v2 = GW2APISpecV2 {
                 inline..optional.."SubtokenDetails"(
                     description = "",
                     type = record(name = "SubtokenDetails", description = "Additional information about a subtoken") {
-                        "ExpiresAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken expires")
-                        "IssuedAt"(STRING, "if a subtoken is given, ISO8601 timestamp indicating when the given subtoken was created")
+                        "ExpiresAt"(TIMESTAMP, "if a subtoken is given, ISO-8601 timestamp indicating when the given subtoken expires")
+                        "IssuedAt"(TIMESTAMP, "if a subtoken is given, ISO-8601 timestamp indicating when the given subtoken was created")
                         "Urls"(array(STRING), "an array of strings describing what endpoints are available to this token (if the given subtoken is restricted to a list of URLs)")
                     }
                 )
@@ -3326,8 +3326,8 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(record(name = "WizardsVaultSeason", description = "Information about a Wizard's Vault season.") {
             "Title"(STRING, "current season's title")
-            "Start"(STRING, "the ISO-8601 standard timestamp of the start of the season")
-            "End"(STRING, "the ISO-8601 standard timestamp of the end of the season")
+            "Start"(TIMESTAMP, "the ISO-8601 standard timestamp of the start of the season")
+            "End"(TIMESTAMP, "the ISO-8601 standard timestamp of the end of the season")
             "Listings"(array(INTEGER), "the IDs of the available listings")
             "Objectives"(array(INTEGER), "the IDs of the available objectives")
         })
@@ -3431,8 +3431,8 @@ internal val GW2v2 = GW2APISpecV2 {
     ) {
         schema(record(name = "WvwMatch", description = "General information about a WvW match.") {
             "Id"(WVW_MATCH_ID, "the match's ID")
-            "StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
-            "EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+            "StartTime"(TIMESTAMP, "the ISO-8601 standard timestamp of when the match's start")
+            "EndTime"(TIMESTAMP, "the ISO-8601 standard timestamp of when the match's end")
             "Scores"(map(STRING, INTEGER), "the total scores by team color")
             "Worlds"(map(STRING, WORLD_ID), "the IDs of the three primary servers by team color")
             "AllWorlds"(map(STRING, array(WORLD_ID)), "the IDs of the servers by team color")
@@ -3467,9 +3467,9 @@ internal val GW2v2 = GW2APISpecV2 {
                             "Id"(STRING, "the objective's ID")
                             "Type"(STRING, "the objective's type")
                             "Owner"(STRING, "the objective's owner (i.e. \"Red\", \"Green\", \"Blue\", or \"Neutral\")")
-                            "LastFlipped"(STRING, "the ISO-8601 standard timestamp of when the objective was last flipped")
+                            "LastFlipped"(TIMESTAMP, "the ISO-8601 standard timestamp of when the objective was last flipped")
                             optional.."ClaimedBy"(STRING, "the guild ID of the guild that currently has claimed this objective")
-                            optional.."ClaimedAt"(STRING, "the ISO-8601 standard timestamp of when the objective was claimed")
+                            optional.."ClaimedAt"(TIMESTAMP, "the ISO-8601 standard timestamp of when the objective was claimed")
                             "PointsTick"(INTEGER, "the amount of points per tick given by the objective")
                             "PointsCapture"(INTEGER, "the amount of points awarded for capturing the objective")
                             optional.."GuildUpgrades"(array(INTEGER), "the IDs of the currently slotted guild upgrades")
@@ -3496,8 +3496,8 @@ internal val GW2v2 = GW2APISpecV2 {
             "Id"(WVW_MATCH_ID, "the match's ID")
             "Worlds"(map(STRING, WORLD_ID), "the IDs of the three primary servers by team color")
             "AllWorlds"(map(STRING, array(INTEGER)), "the IDs of the servers by team color")
-            "StartTime"(STRING, "the ISO-8601 standard timestamp of when the match's start")
-            "EndTime"(STRING, "the ISO-8601 standard timestamp of when the match's end")
+            "StartTime"(TIMESTAMP, "the ISO-8601 standard timestamp of when the match's start")
+            "EndTime"(TIMESTAMP, "the ISO-8601 standard timestamp of when the match's end")
         })
     }
     V2_WVW_MATCHES_SCORES(

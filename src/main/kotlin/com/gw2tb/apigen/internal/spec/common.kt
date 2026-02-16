@@ -31,7 +31,7 @@ internal val ACHIEVEMENT_ID = Alias(INTEGER, "AchievementId")
 internal val ACHIEVEMENT_CATEGORY_ID = Alias(INTEGER, "AchievementCategoryId")
 
 /** A common alias for achievement group IDs. */
-internal val ACHIEVEMENT_GROUP_ID = Alias(STRING, "AchievementGroupId")
+internal val ACHIEVEMENT_GROUP_ID = Alias(UUID, "AchievementGroupId")
 
 /** A common alias for backstory answer IDs. */
 internal val BACKSTORY_ANSWER_ID = Alias(STRING, "BackstoryAnswerId")
@@ -64,7 +64,7 @@ internal val EMBLEM_ID = Alias(INTEGER, "EmblemId")
 internal val EMOTE_ID = Alias(STRING, "EmoteId")
 
 /** A common alias for event IDs. */
-internal val EVENT_ID = Alias(STRING, "EventId")
+internal val EVENT_ID = Alias(UUID, "EventId")
 
 /** A common alias for file IDs. */
 internal val FILE_ID = Alias(STRING, "FileId")
@@ -79,7 +79,7 @@ internal val FLOOR_ID = Alias(INTEGER, "FloorId")
 internal val GLIDER_ID = Alias(INTEGER, "GliderId")
 
 /** A common alias for guild IDs. */
-internal val GUILD_ID = Alias(STRING, "GuildId")
+internal val GUILD_ID = Alias(UUID, "GuildId")
 
 /** A common alias for guild upgrade IDs. */
 internal val GUILD_UPGRADE_ID = Alias(INTEGER, "GuildUpgradeId")
@@ -151,7 +151,7 @@ internal val PROFESSION_ID = Alias(STRING, "ProfessionId")
 internal val PVP_AMULET_ID = Alias(INTEGER, "PvpAmuletId")
 
 /** A common alias for PvP game IDs. */
-internal val PVP_GAME_ID = Alias(STRING, "PvpGameId")
+internal val PVP_GAME_ID = Alias(UUID, "PvpGameId")
 
 /** A common alias for PvP hero IDs. */
 internal val PVP_HERO_ID = Alias(STRING, "PvpHeroId")
@@ -160,7 +160,7 @@ internal val PVP_HERO_ID = Alias(STRING, "PvpHeroId")
 internal val PVP_RANK_ID = Alias(INTEGER, "PvpRankId")
 
 /** A common alias for PvP season IDs. */
-internal val PVP_SEASON_ID = Alias(STRING, "PvpSeasonId")
+internal val PVP_SEASON_ID = Alias(UUID, "PvpSeasonId")
 
 /** A common alias for Quaggan IDs. */
 internal val QUAGGAN_ID = Alias(STRING, "QuagganId")
@@ -193,7 +193,7 @@ internal val SPECIALIZATION_ID = Alias(INTEGER, "SpecializationId")
 internal val STORY_ID = Alias(INTEGER, "StoryId")
 
 /** A common alias for story season IDs. */
-internal val STORY_SEASON_ID = Alias(STRING, "StorySeasonId")
+internal val STORY_SEASON_ID = Alias(UUID, "StorySeasonId")
 
 /** A common alias for title IDs. */
 internal val TITLE_ID = Alias(INTEGER, "TitleId")

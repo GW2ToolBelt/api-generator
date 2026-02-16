@@ -24,12 +24,17 @@ package com.gw2tb.apigen.test
 import com.gw2tb.apigen.ir.LowLevelApiGenApi
 import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.schema.*
+import com.gw2tb.apigen.schema.SchemaString.Format
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.Assertions
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @OptIn(LowLevelApiGenApi::class)
 fun assertLoweredEquals(expected: SchemaTypeUse, actual: SchemaTypeUse) {
@@ -145,13 +150,18 @@ private fun testDeclaration(
     }
 }
 
+@OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
 private tailrec fun SchemaPrimitiveOrAlias.serializer(): KSerializer<out Any> {
     return when (this) {
         is SchemaBitfield -> ULong.serializer()
         is SchemaBoolean -> Boolean.serializer()
         is SchemaDecimal -> Double.serializer()
         is SchemaInteger -> Long.serializer()
-        is SchemaString -> String.serializer()
+        is SchemaString -> when (format) {
+            Format.TIMESTAMP -> Instant.serializer()
+            Format.UUID -> Uuid.serializer()
+            null -> String.serializer()
+        }
         is SchemaTypeReference.Alias -> alias.type.serializer()
     }
 }

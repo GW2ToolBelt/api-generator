@@ -33,4 +33,4 @@ internal val DECIMAL get() = SchemaDecimal
 internal val INTEGER get() = SchemaInteger
 
 /** Alias for [SchemaString]. */
-internal val STRING get() = SchemaString
+internal val STRING get() = SchemaString(format = null)

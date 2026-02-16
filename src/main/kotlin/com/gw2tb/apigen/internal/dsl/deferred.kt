@@ -30,20 +30,19 @@ import com.gw2tb.apigen.model.QualifiedTypeName
 import com.gw2tb.apigen.schema.*
 import com.gw2tb.apigen.schema.model.APIType
 
-/** Alias for [SchemaBitfield] */
 internal val BITFIELD: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRBitfield)
 
-/** Alias for [SchemaBoolean]. */
 internal val BOOLEAN: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRBoolean)
 
-/** Alias for [SchemaDecimal]. */
 internal val DECIMAL: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRDecimal)
 
-/** Alias for [SchemaInteger]. */
 internal val INTEGER: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRInteger)
 
-/** Alias for [SchemaString]. */
-internal val STRING: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRString)
+internal val STRING: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRString(format = null))
+
+internal val UUID: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRString(format = SchemaString.Format.UUID))
+
+internal val TIMESTAMP: DeferredPrimitiveType.BuiltIn = DeferredPrimitiveType.BuiltIn(IRString(format = SchemaString.Format.TIMESTAMP))
 
 internal fun Alias(type: DeferredPrimitiveType.BuiltIn, name: String, description: String = "TODO"): DeferredPrimitiveType.Alias = // TODO desc
     Alias(type, Name.deriveFromTitleCase(name), description)
