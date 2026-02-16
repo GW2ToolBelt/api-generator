@@ -221,7 +221,7 @@ internal val GW2v2 = GW2APISpecV2 {
                         optional.."BoundTo"(STRING, "name of the character the item is bound to")
                     }, nullableItems = true)
                 )
-            })
+            }, nullableItems = true)
         )
 
     val CHARACTERS_SKILLS = record(name = "Skills", description = "Information about a character's equipped skills.") {
