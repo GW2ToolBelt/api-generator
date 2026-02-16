@@ -141,6 +141,7 @@ internal val GW2v2 = GW2APISpecV2 {
                 )
                 since(V2_SCHEMA_2019_12_19T00_00_00_000Z).."Location"(STRING, "the storage location of the equipment piece")
                 since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
+                since(V2_SCHEMA_2019_12_19T00_00_00_000Z)..optional.."Tabs"(array(INTEGER), "the IDs of the tabs in which this item is used")
             })
         )
 

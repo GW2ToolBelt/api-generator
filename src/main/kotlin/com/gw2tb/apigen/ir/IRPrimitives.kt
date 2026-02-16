@@ -58,6 +58,9 @@ public object IRInteger : IRPrimitiveIdentifier(SchemaInteger)
 /**
  * A low-level representation of a [SchemaString].
  *
+ * @param format    the format of the string if it carries additional semantic
+ *                  meaning, or `null` if it is arbitrary
+ *
  * @since   0.7.0
  */
 @LowLevelApiGenApi
