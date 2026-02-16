@@ -1,40 +1,19 @@
-### 0.10.1
+### 0.11.0
 
-_Released 2026 Feb 05_
-
-#### Fixes
-
-- The API reference is now correctly published again.
-
----
-
-### 0.10.0
-
-_Released 2026 Feb 04_
+_Released 2026 Feb 16_
 
 #### Improvements
 
-- Endpoints:
-  - Added support for `/v2/logos`. [[GH-489](https://github.com/GW2ToolBelt/api-generator/issues/489)]
-  - The achievement bits for `/v2/achievements` are now a conditional based on
-    the "type" field.
-    - This enables type-safe access to the ID of the bit depending on the bits
-      type.
+- Added support for strings formats to encode additional semantic properties of a string's contents via the
+  `SchemaString.format` property. [[GH-461](https://github.com/GW2ToolBelt/api-generator/issues/461)]
+  - ISO-8601 timestamps and UUIDs are now properly marked as such and can now be mapped to more appropriate types.
 
 #### Fixes
 
 - Endpoints:
-  - `/v2/account/bank`:
-    - Added support for the `CritDamage` item stat property. [[GH-539](https://github.com/GW2ToolBelt/api-generator/issues/539)]
   - `/v2/account/inventory`:
-    - Added support for the `upgrade_slot_indices` property. [[GH-541](https://github.com/GW2ToolBelt/api-generator/issues/541)]
-  - `/v2/character`:
-    - Marked PvP equipment as optional. [[GH-538](https://github.com/GW2ToolBelt/api-generator/issues/538)]
-
-#### Breaking Changes
-
-- Increased minimum required Java version to 17 (from 8).
-- Increased minimum required Kotlin version to 2.2 (from 1.8).
-- The `copy` functions of data classes with no publicly accessible constructors
-  are no longer available. This includes (but is not limited to) the IR and
-  schema types.
+    - Inventory slots are now marked as nullable. [[GH-546](https://github.com/GW2ToolBelt/api-generator/issues/546)]
+  - `/v2/characters/:id/equipment`:
+    - Added missing `count` field. [[GH-543](https://github.com/GW2ToolBelt/api-generator/issues/543)]
+  - `/v2/characters/:id/inventory`:
+    - Bag slots are now marked as nullable. [[GH-544](https://github.com/GW2ToolBelt/api-generator/issues/544)]

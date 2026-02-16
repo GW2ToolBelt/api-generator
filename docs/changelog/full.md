@@ -1,3 +1,26 @@
+### 0.11.0
+
+_Released 2026 Feb 16_
+
+#### Improvements
+
+- Added support for strings formats to encode additional semantic properties of a string's contents via the
+  `SchemaString.format` property. [[GH-461](https://github.com/GW2ToolBelt/api-generator/issues/461)]
+  - ISO-8601 timestamps and UUIDs are now properly marked as such and can now be mapped to more appropriate types.
+
+#### Fixes
+
+- Endpoints:
+  - `/v2/account/inventory`:
+    - Inventory slots are now marked as nullable. [[GH-546](https://github.com/GW2ToolBelt/api-generator/issues/546)]
+  - `/v2/characters/:id/equipment`:
+    - Added missing `count` field. [[GH-543](https://github.com/GW2ToolBelt/api-generator/issues/543)]
+  - `/v2/characters/:id/inventory`:
+    - Bag slots are now marked as nullable. [[GH-544](https://github.com/GW2ToolBelt/api-generator/issues/544)]
+
+
+---
+
 ### 0.10.1
 
 _Released 2026 Feb 05_
