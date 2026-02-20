@@ -2,14 +2,5 @@
     extends: ["github>GW2ToolBelt/.github//.github/renovate.json5"],
     enabledManagers: [
         "pyenv"
-    ],
-    packageRules: [
-        {
-            "managerFilePatterns": [
-                "/(^|/)\\.python-version$/"
-            ],
-            "versioning": "docker",
-            "pinDigests": false
-        }
     ]
 }
