@@ -883,7 +883,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     +record(name = "Coins", description = "Information about a coin reward.") {
                         "Count"(INTEGER, "the amount of coins")
                     }
-                    +record(name = "Items", description = "Information about an item reward.") {
+                    +record(name = "Item", description = "Information about an item reward.") {
                         "Id"(ITEM_ID, "the item's ID")
                         "Count"(INTEGER, "the amount of the item")
                     }

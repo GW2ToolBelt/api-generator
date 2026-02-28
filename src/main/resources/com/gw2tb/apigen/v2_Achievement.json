@@ -512,5 +512,114 @@
                 "id": 118
             }
         ]
+    },
+    {
+        "id": 2190,
+        "name": "Ley-Stein-Rüstung",
+        "description": "",
+        "requirement": "Schaltet alle  Skins für Ley-Stein-Rüstungen in Eurer Garderobe frei.",
+        "locked_text": "",
+        "type": "ItemSet",
+        "flags": [
+            "IgnoreNearlyComplete",
+            "Pvp",
+            "RepairOnLogin",
+            "Permanent"
+        ],
+        "bits": [
+            {
+                "type": "Skin",
+                "id": 6420
+            },
+            {
+                "type": "Skin",
+                "id": 6185
+            },
+            {
+                "type": "Skin",
+                "id": 6426
+            },
+            {
+                "type": "Skin",
+                "id": 6248
+            },
+            {
+                "type": "Skin",
+                "id": 6241
+            },
+            {
+                "type": "Skin",
+                "id": 6151
+            },
+            {
+                "type": "Skin",
+                "id": 6315
+            },
+            {
+                "type": "Skin",
+                "id": 6433
+            },
+            {
+                "type": "Skin",
+                "id": 6308
+            },
+            {
+                "type": "Skin",
+                "id": 6339
+            },
+            {
+                "type": "Skin",
+                "id": 6436
+            },
+            {
+                "type": "Skin",
+                "id": 6332
+            },
+            {
+                "type": "Skin",
+                "id": 6148
+            },
+            {
+                "type": "Skin",
+                "id": 6154
+            },
+            {
+                "type": "Skin",
+                "id": 6232
+            },
+            {
+                "type": "Skin",
+                "id": 6317
+            },
+            {
+                "type": "Skin",
+                "id": 6146
+            },
+            {
+                "type": "Skin",
+                "id": 6354
+            }
+        ],
+        "tiers": [
+            {
+                "count": 6,
+                "points": 1
+            },
+            {
+                "count": 12,
+                "points": 1
+            },
+            {
+                "count": 18,
+                "points": 3
+            }
+        ],
+        "rewards": [
+            {
+                "type": "Item",
+                "id": 49208,
+                "count": 1
+            }
+        ]
     }
 ]
