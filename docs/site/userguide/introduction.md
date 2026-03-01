@@ -6,7 +6,7 @@ This user guide is designed to make you familiar with the API of api-generator.
 
 ## Installation
 
-api-generator requires Java 8 (1.8) and Kotlin 1.8 or later.
+api-generator requires Java 17 and Kotlin 2.2 or later.
 
 The library is published to [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.gw2tb.api-generator/api-generator)
 with the coordinates `com.gw2tb.api-generator:api-generator` and can be consumed
