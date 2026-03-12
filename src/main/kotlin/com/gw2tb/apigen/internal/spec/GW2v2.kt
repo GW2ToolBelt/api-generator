@@ -909,9 +909,9 @@ internal val GW2v2 = GW2APISpecV2 {
                     +record(name = "Item", description = "Information about an achievement bit tied to an item.") {
                         "Id"(ITEM_ID, "the item's ID")
                     }
-                    +record(name = "MiniPet", description = "Information about an achievement bit tied to a mini pet.") {
+                    "Minipet"(record(name = "MiniPet", description = "Information about an achievement bit tied to a mini pet.") {
                         "Id"(MINI_ID, "the mini pet's ID")
-                    }
+                    })
                     +record(name = "Skin", description = "Information about an achievement bit tied to a skin.") {
                         "Id"(SKIN_ID, "the skin's ID")
                     }
