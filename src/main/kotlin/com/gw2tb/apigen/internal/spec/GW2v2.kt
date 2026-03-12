@@ -306,6 +306,9 @@ internal val GW2v2 = GW2APISpecV2 {
         +record(name = "Distance", description = "Additional information about range.") {
             "Distance"(INTEGER, "the distance value")
         }
+        +record(name = "Duration", description = "Additional information about a duration.") {
+            "Duration"(INTEGER, "the duration in seconds")
+        }
         +record(name = "NoData", description = "No (special) additional information.") {}
         +record(name = "Number", description = "An additional number.") {
             "Value"(INTEGER, "the number value as referenced by text")
