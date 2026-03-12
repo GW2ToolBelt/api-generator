@@ -1156,5 +1156,37 @@
         "flags": [],
         "id": 34505,
         "chat_link": "[&BsmGAAA=]"
+    },
+    {
+        "name": "Vanish in the Deep",
+        "facts": [
+            {
+                "text": "Recharge",
+                "type": "Recharge",
+                "icon": "https://render.guildwars2.com/file/D767B963D120F077C3B163A05DC05A7317D7DB70/156651.png",
+                "value": 20
+            },
+            {
+                "text": "Apply Buff/Condition",
+                "type": "Buff",
+                "icon": "https://render.guildwars2.com/file/3BD4670638470439F3325B444FAF7D5FA620CCE5/62777.png",
+                "duration": 2,
+                "status": "Stealth",
+                "description": "Currently invisible. Ends if you deal damage.",
+                "apply_count": 1
+            }
+        ],
+        "description": "Stealth into the depths.",
+        "icon": "https://render.guildwars2.com/file/317BE10A960E59E65F341518792F71101422E8B4/103762.png",
+        "type": "Weapon",
+        "weapon_type": "None",
+        "professions": [
+            "Thief"
+        ],
+        "slot": "Downed_3",
+        "dual_wield": "None",
+        "flags": [],
+        "id": 13080,
+        "chat_link": "[&BhgzAAA=]"
     }
 ]

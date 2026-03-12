@@ -3073,7 +3073,7 @@ internal val GW2v2 = GW2APISpecV2 {
             optional.."Categories"(array(STRING), "the categories that the skill falls under")
             optional.."Attunement"(STRING, "the attunement required for the skill")
             optional.."Cost"(INTEGER, "the cost associated with the skill")
-            optional.."DualWield"(SKILL_ID, "the type of off-hand weapon that must be equipped for this dual-wield skill to appear")
+            optional.."DualWield"(STRING, "the type of off-hand weapon that must be equipped for this dual-wield skill to appear")
             optional.."FlipSkill"(SKILL_ID, "the ID of the skill that the skill flips over into")
             optional.."Initiative"(SKILL_ID, "the skill's initiative cost")
             optional.."NextChain"(SKILL_ID, "the ID of the next skill in the chain")
