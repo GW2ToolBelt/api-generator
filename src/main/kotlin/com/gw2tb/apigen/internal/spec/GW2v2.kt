@@ -3037,7 +3037,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Id"(SKILL_ID, "the skill's ID")
             localized.."Name"(STRING, "the skill's localized name")
             localized.."Description"(STRING, "the skill's localized description")
-            "Icon"(STRING, "a render service URL for the skill's icon")
+            optional.."Icon"(STRING, "a render service URL for the skill's icon")
             "ChatLink"(STRING, "the skill's chat code")
             optional.."Flags"(array(STRING), "additional skill flags")
             optional.."Type"(STRING, "the type of skill")
