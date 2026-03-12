@@ -3106,7 +3106,7 @@ internal val GW2v2 = GW2APISpecV2 {
                     "Armor"(record(name = "Armor", description = "Additional information about an armor skin.") {
                         "Type"(STRING, "the skin's armor slot")
                         "WeightClass"(STRING, "the skin's armor weight")
-                        "DyeSlots"(
+                        optional.."DyeSlots"(
                             description = "the skin's dye slots",
                             type = record(name = "DyeSlots", description = "Information about a skin's sye slots.") {
                                 val DYE_SLOT = record(name = "DyeSlot", description = "Information about a dye slot.") {
