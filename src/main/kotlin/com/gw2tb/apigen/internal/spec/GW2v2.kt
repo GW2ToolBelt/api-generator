@@ -1748,7 +1748,7 @@ internal val GW2v2 = GW2APISpecV2 {
             "Icon"(STRING, "the URL for the glider's icon")
             "Order"(INTEGER, "a (non-unique) number that can be used as basis to sort the list of gliders")
             "DefaultDyes"(array(DYE_ID), "the IDs of the dyes that are applied to the glider by default")
-            "UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the glider")
+            optional.."UnlockItems"(array(ITEM_ID), "an array of item IDs used to unlock the glider") // https://github.com/gw2-api/issues/issues/151
         })
     }
     V2_GUILD(summary = "Returns information about a guild.") {
