@@ -25,7 +25,7 @@ public final class com/gw2tb/apigen/ir/IRAlias : com/gw2tb/apigen/ir/IRTypeDecla
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public final fun getType ()Lcom/gw2tb/apigen/ir/IRPrimitive;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -38,7 +38,7 @@ public final class com/gw2tb/apigen/ir/IRArray : com/gw2tb/apigen/ir/IRTypeUse {
 	public final fun getElements ()Lcom/gw2tb/apigen/ir/IRTypeUse;
 	public final fun getNullableElements ()Z
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -67,7 +67,7 @@ public final class com/gw2tb/apigen/ir/IRConditional : com/gw2tb/apigen/ir/IRTyp
 	public final fun getSelectorInSideProperty ()Z
 	public final fun getSharedProperties ()Ljava/util/Set;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -104,7 +104,7 @@ public final class com/gw2tb/apigen/ir/IREnum : com/gw2tb/apigen/ir/IRTypeDeclar
 	public final fun getType ()Lcom/gw2tb/apigen/ir/IRPrimitiveOrAlias;
 	public final fun getValues ()Ljava/util/Set;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -135,23 +135,23 @@ public final class com/gw2tb/apigen/ir/IRMap : com/gw2tb/apigen/ir/IRTypeUse {
 	public final fun getNullableValues ()Z
 	public final fun getValues ()Lcom/gw2tb/apigen/ir/IRTypeUse;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 	public fun toString ()Ljava/lang/String;
 }
 
 public abstract class com/gw2tb/apigen/ir/IRPrimitive : com/gw2tb/apigen/ir/IRTypeUse, com/gw2tb/apigen/ir/IRPrimitiveOrAlias {
 	public synthetic fun <init> (Lcom/gw2tb/apigen/schema/SchemaPrimitive;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	protected fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 }
 
 public abstract class com/gw2tb/apigen/ir/IRPrimitiveIdentifier : com/gw2tb/apigen/ir/IRPrimitive, com/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias {
 	public synthetic fun <init> (Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
 	protected fun getSchema ()Lcom/gw2tb/apigen/schema/SchemaPrimitiveIdentifier;
-	public synthetic fun resolve$api_generator ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaPrimitive;
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator ()Lcom/gw2tb/apigen/schema/SchemaPrimitive;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaPrimitive;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeUse;
 }
 
 public abstract interface class com/gw2tb/apigen/ir/IRPrimitiveIdentifierOrAlias : com/gw2tb/apigen/ir/IRPrimitiveOrAlias {
@@ -202,7 +202,7 @@ public final class com/gw2tb/apigen/ir/IRRecord : com/gw2tb/apigen/ir/IRTypeDecl
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public final fun getProperties ()Ljava/util/Set;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -226,7 +226,7 @@ public final class com/gw2tb/apigen/ir/IRTuple : com/gw2tb/apigen/ir/IRTypeDecla
 	public final fun getElements ()Ljava/util/Set;
 	public fun getName ()Lcom/gw2tb/apigen/model/Name;
 	public fun hashCode ()I
-	public synthetic fun resolve$api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
+	public synthetic fun resolve$com_gw2tb_api_generator_api_generator (Lcom/gw2tb/apigen/ir/ResolverContext;Lcom/gw2tb/apigen/model/v2/SchemaVersion;)Lcom/gw2tb/apigen/schema/SchemaTypeDeclaration;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -691,9 +691,9 @@ public final class com/gw2tb/apigen/model/QualifiedTypeNameKt {
 }
 
 public abstract class com/gw2tb/apigen/model/QueryType {
-	public static final fun ByID$api_generator (Ljava/lang/String;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/model/QueryType$ByID;
-	public static final fun ByIDs$api_generator (Z)Lcom/gw2tb/apigen/model/QueryType$ByIDs;
-	public static final fun ByIDs$api_generator (ZLjava/lang/String;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/model/QueryType$ByIDs;
+	public static final fun ByID$com_gw2tb_api_generator_api_generator (Ljava/lang/String;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/model/QueryType$ByID;
+	public static final fun ByIDs$com_gw2tb_api_generator_api_generator (Z)Lcom/gw2tb/apigen/model/QueryType$ByIDs;
+	public static final fun ByIDs$com_gw2tb_api_generator_api_generator (ZLjava/lang/String;Lcom/gw2tb/apigen/model/Name;Ljava/lang/String;)Lcom/gw2tb/apigen/model/QueryType$ByIDs;
 }
 
 public abstract class com/gw2tb/apigen/model/QueryType$ByID : com/gw2tb/apigen/model/QueryType {
